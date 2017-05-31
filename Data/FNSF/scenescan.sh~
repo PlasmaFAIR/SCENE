@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+# Define runname
+
+echo 'What do you want to call your run?'
+
+read runname
+
+if [ ! -d "$runname" ]
+
+then mkdir "$runname"
+fi
+

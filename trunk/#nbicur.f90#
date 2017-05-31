@@ -1,0 +1,10 @@
+subroutine nbicur()
+
+
+  !  This calculates the contribution of neutral beam current for each
+  !  flux surface
+
+
+  use param
+  implicit none
+  
