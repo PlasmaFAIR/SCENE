@@ -138,7 +138,7 @@
       call broken(10,5,10,5)
       call lincol(3)
       call ptjoin(sx2,sy2,1,ncon2,1)
-      call lincol(0)
+        call lincol(0)
       call full
       !call frame
   end subroutine tstplt3

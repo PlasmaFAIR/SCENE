@@ -95,9 +95,9 @@ for i in ${values[@]}
   sed -i -e "s/'$param.*/'$param' $i/g" $device'.'$dat
 
 
-  yes $device | ~/SCENE/trunk/scene
+  yes $device | ~/SCENEv2/trunk/scene
 
-  python ~/SCENE/graphs/graphs.py
+  yes $device | ipython ~/SCENEv2/graphs/graphs.py
  
   cd ..
 
