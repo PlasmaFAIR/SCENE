@@ -1334,3 +1334,272 @@
 
 
 
+
+
+   recursive function elong(con, id)
+
+     ! Calculate elongation (or derivative with psi if id=1)
+     
+     use param
+     implicit none
+
+     integer :: con, id
+
+     integer :: i,j
+     double precision :: rmin, rmax,zmax
+     double precision :: psi, elong
+
+     double precision :: elong_l, elong_u, psi_l, psi_u
+
+     rmin = 1.e6
+     rmax = 0.
+     zmax = 0.
+     !find max r,z and min r
+     do i =1,npts
+
+        if (rpts(con,i) .lt. rmin) then
+           rmin = rpts(con,i)
+
+        else if (rpts(con,i) .gt. rmax) then
+           rmax = rpts(con,i)
+        end if
+
+        if (zpts(con,i) .gt. zmax) then
+           zmax = zpts(con,i)
+        end if
+
+
+     end do
+             
+        
+        
+     !Elongation
+     if (id .eq. 0) then
+        elong = 2.* zmax/(rmax - rmin)
+
+
+     !Derivative
+     else if (id .eq. 1) then
+
+        !forward difference if first contour
+        if (con .eq. 1) then
+
+           elong_u = elong(con+1,0)
+           elong_l = elong(con,0)
+
+           psi_u = psiv(con+1)
+           psi_l = psiv(con)
+
+        ! backwards difference if last contour
+        else if (con .eq. ncon) then
+
+           elong_u = elong(con, 0)
+           elong_l = elong(con-1,0)
+
+           psi_u = psiv(con)
+           psi_l = psiv(con-1)
+
+        !centred difference
+        else
+                     
+           elong_l = elong(con-1,0)
+           elong_u = elong(con+1,0)
+
+           psi_l = psiv(con-1)
+           psi_u = psiv(con+1)
+        end if
+        
+        elong = (elong_u - elong_l)/(psi_u - psi_l)
+     end if
+
+   end function elong
+   
+        
+
+     
+     
+   recursive function shift(con, id)
+
+     !Calculates shift from r0 by looking at average r
+     
+     use param
+     implicit none
+
+     integer :: id, con
+     double precision :: shift
+     double precision :: shift_l, shift_u, psi_u,psi_l
+
+     if (id .eq. 0) then 
+
+        shift = (sum(rpts(con, :))/max(1, size(rpts(con,:)))) - r0
+
+     
+     else if (id .eq. 1) then
+
+        !forward difference for first point
+        if (con .eq. 1) then
+           
+           shift_l =  shift(con,0)
+           shift_u =  shift(con+1,0)
+
+           psi_l = psiv(con)
+           psi_u = psiv(con+1)
+
+        !backward different for the last point
+        else if (con .eq. ncon) then
+
+           shift_l =  shift(con-1,0)
+           shift_u =  shift(con,0)
+
+           psi_l = psiv(con-1)
+           psi_u = psiv(con)
+
+        ! centred difference
+        else
+
+           shift_l =  shift(con-1,0)
+           shift_u =  shift(con+1,0)
+
+           psi_l = psiv(con-1)
+           psi_u = psiv(con+1)
+
+        end if
+
+        shift = (shift_u - shift_l)/(psi_u - psi_l)
+     end if
+
+   end function shift
+   
+
+   subroutine dpsidrho (dpdr)
+
+     use param
+     implicit none
+
+     integer :: i
+     double precision, dimension(ncon) :: rho,dpdr
+     
+
+     rho = maxval(rpts, dim=2)
+
+     do i =1,ncon
+
+        if (i .eq. 1) then
+
+           dpdr(i) = (psiv(i+1)-psiv(i)) / (rho(i+1) - rho(i))
+
+        else if (i .eq. ncon) then
+
+           dpdr(i) = (psiv(i) - psiv(i-1)) / (rho(i) - rho(i-1))
+
+        else
+
+           dpdr(i) = (psiv(i+1) - psiv(i-1)) / (rho(i+1) - rho(i-1))
+
+        end if
+
+     end do
+     
+   end subroutine dpsidrho
+   
+
+   subroutine dVdrho(voldiff)
+
+     use param
+     implicit none
+
+     
+     double precision, dimension(ncon)  :: voldiff, flxvol
+     integer ::i, j,k
+
+     
+     double precision :: flxarea
+     double precision :: flxvol_l, flxvol_u, psi_u, psi_l
+
+     double precision :: r_l, r_r, z_l, z_r, shift
+
+     ! for each contour calculate area with trapeze rule
+     do i= 1, ncon
+
+        flxarea = 0.
+
+        do j = 1, npts-1
+
+           r_l = rpts(i,j)
+           r_r = rpts(i,j+1)
+           
+           z_l = zpts(i,j)
+           z_r = zpts(i,j+1)
+
+           !write(nw,*) 'Co-ordinates (',i,',',j,')',  r_l, r_r, z_l, z_r
+           flxarea = flxarea + (abs(z_l+z_r) * abs(r_l-r_r) /2)
+           !write(nw,*) flxarea
+        end do
+
+        
+        write(nw,*) 'Area of flux surface ', i, flxarea
+        !area time 2pi * R  (R = r0 + shift)
+        flxvol(i) = flxarea * 2. * pi * (shift(i,0) + r0)
+
+        
+     end do
+
+  
+     ! Calculates gradient 
+     do k =1,ncon
+        if (k .eq. 1) then
+
+           flxvol_l = flxvol(k)
+           flxvol_u = flxvol(k+1)
+
+           psi_l = psiv(k)
+           psi_u = psiv(k+1)
+
+        else if (k .eq. ncon) then
+
+           flxvol_l = flxvol(k-1)
+           flxvol_u = flxvol(k)
+
+           psi_l = psiv(k-1)
+           psi_u = psiv(k)
+
+        else
+
+           flxvol_l = flxvol(k-1)
+           flxvol_u = flxvol(k+1)
+
+           psi_l = flxvol(k-1)
+           psi_u = flxvol(k+1)
+
+        end if
+
+
+        voldiff(k) = (flxvol_u - flxvol_l)/(psi_u - psi_l)
+     end do
+
+   end subroutine dVdrho
+   
+   
+   subroutine lam(lambdas)
+
+     use param
+     implicit none
+
+     double precision, dimension(ncon) :: lambdas
+
+     double precision :: psi, ne, dense
+     integer :: i
+     
+     do i=1,ncon
+        psi = psiv(i)
+
+        ne = dense(psi,0)
+
+        lambdas(i) = 2.8e17 * E_b/ne
+
+     end do
+
+
+   end subroutine lam
+
+   

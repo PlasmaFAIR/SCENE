@@ -9,7 +9,7 @@ torcur.f90 extj.f90 output.f90 ffdgen.f90 usrcal.f90 elite_data.f90 \
 baleq.f90 test_profs.f90 helena.f90 bandat.f90 setnt.f90 \
 chease_dat.f90 gfile.f90 flxorb.f90 lynton.f90 fastbs.f90 caxe_out.f90 \
 bandit.f90 mercier.f90 gs2.f90 astradat.f90 tokameq.f90 \
-getdata.f90 geqdsk.f90
+getdata.f90 geqdsk.f90 nbicur.f90
 OBJS= \
 param.o balpar.o balloon.o \
 coldat.o scene.o init.o equil.o profs.o flxsur.o \
@@ -17,7 +17,8 @@ flxav.o hirsig.o hirsh.o splines.o signeo.o \
 torcur.o extj.o output.o ffdgen.o usrcal.o elite_data.o \
 baleq.o test_profs.o helena.o bandat.o setnt.o chease_dat.o \
 gfile.o flxorb.o lynton.o fastbs.o caxe_out.o bandit.o  \
-mercier.o gs2.o astradat.o tokameq.o getdata.o geqdsk.o
+mercier.o gs2.o astradat.o tokameq.o getdata.o geqdsk.o \
+nbicur.o
 #
 INPUT=	
 LIBRARIES =  \
@@ -38,11 +39,11 @@ LIBRARIES =  \
 
 
 
- 
+
 
 
  # /fuslwf/home/kthcmr/GS2D/gs2dlib.a
-            
+
 DEBUG     = #-heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing

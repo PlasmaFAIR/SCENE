@@ -251,11 +251,23 @@ module param
   double precision, dimension(:,:), allocatable:: gradj
 !  Spitzer current profile
   double precision, dimension(:,:), allocatable:: spit
+  ! Neutral beam current
+  double precision, dimension(:,:), allocatable:: nbph
 !
 !  And the total current to go with these....
  double precision totbs,totps,totdi,totex,totex2,totgs,spiti,alfbs
 ! Loop voltage (total, Spitzer and nc  without b/strap)
  double precision vloop,vspit,vnobs
+!
+!
+!---------------------------------------------------------------
+! 
+!   Neutral Beam parameters
+! Beam paramters: width in r and z, tangency radius and beam energy
+ double precision:: sig_r, sig_z, R_t,E_b,Z_beam
+ double precision :: A_beam, I_0
+ double precision :: Z_hat, y_c
+ 
 !
 !---------------------------------------------------------------
 !

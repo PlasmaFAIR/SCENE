@@ -128,7 +128,7 @@
       if (ipswtch.eq.3) call setnt
       write(6,*)' done setnt'
 !  Plot out some useful figs
-
+      call nbicur()
       if (igr.eq.0) call getdata
 !  Plot stability plots if igr set to 3
 !      if (igr.eq.3) call stab

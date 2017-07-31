@@ -40,7 +40,9 @@ subroutine nbicur()
   kapps = 0.
   dels = 0.
   delps = 0.
-
+  h=0.
+  n_f=0.
+  
   ! Calculate shafranov shift and elongation for each flux surface 
  do con = 1, ncon
 
@@ -53,11 +55,12 @@ subroutine nbicur()
   end do
 
   !Calculate dpsi/drho and dvol/drho for each flux surface
-  call dpsidrho(dpdr)
-
+  call dpsidrho(dpdrs)
+  print*, dpdrs
   call dVdrho(volps)
-
+  write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
+  write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
   if (icont .gt. -3) then
      allocate ( nbph(nr,nz))
@@ -242,10 +245,10 @@ function FIDF()
 !     func(i) = I_func(y(i), Z_hat, y_c)
 !  end do
 
-  call qag (I_func, 0, 1, 0.0, 0.001, 6, int, abserr, neval, ierr)
+  !call qag (I_func, 0, 1, 0.0, 0.001, 6, int, abserr, neval, ierr)
 
 
-  fidf = int * (1+y_c)**Z_hat
+  fidf = (1+y_c)**Z_hat
 end function FIDF
   
 

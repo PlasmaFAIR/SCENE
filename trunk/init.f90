@@ -148,6 +148,17 @@ end subroutine init
       nchi0=30
       chi0val=0.
       lamges=2.
+
+
+
+      !NB
+      sig_r =0.2
+      E_b = 100
+      sig_z = 0.2
+      I_0 = 1e6
+      R_t = 1.
+      Z_beam = 0.1
+      A_beam = 2
  end subroutine default
 !
 !**********************************************************************
