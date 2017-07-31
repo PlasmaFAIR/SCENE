@@ -27,5 +27,5 @@ def curplot(device):
     plt.legend(loc=2)
     plt.grid()
     plt.savefig('currents.png')
-    plt.show()
+    plt.close()
 

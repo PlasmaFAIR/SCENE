@@ -1,2112 +1,2112 @@
-  normalised flux of chosen surface:  0.974556800723263     
-  beta:  6.709130966560989E-004  B0=   4.12458080367470     
-  zeff:   3.44257538618973     
+  normalised flux of chosen surface:  0.974555824115673     
+  beta:  6.708777757724197E-004  B0=   4.12458080367470     
+  zeff:   3.44256844376580     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   1.23034964309559     
-  temp:   1043.78728605487     
-  tprim:  -31.0995090909009     
-  fprim:  -38.9369168127348     
+  dens:   1.23025084439168     
+  temp:   1043.81898793032     
+  tprim:  -31.0984676987000     
+  fprim:  -38.9353958117848     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  9.842797144764756E-002
-  temp:   1043.78728605487     
-  tprim:  -31.0995090909009     
-  fprim:  -38.9369168127348     
+  dens:  9.842006755133424E-002
+  temp:   1043.81898793032     
+  tprim:  -31.0984676987000     
+  fprim:  -38.9353958117848     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  8.073771667733517E-006
-  temp:   76193.7380338801     
-  tprim:  -39.1473031649249     
-  fprim:  -69.2496239253761     
+  dens:  8.073362329794930E-006
+  temp:   76196.6510381995     
+  tprim:  -39.1457891982128     
+  fprim:  -69.2479494517281     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.214357871897447     
-  temp:   325.020282947433     
-  tprim:  -39.2828747730337     
-  fprim:  -33.0730430445791     
+  dens:  0.214339431198143     
+  temp:   325.032752024070     
+  tprim:  -39.2814532088034     
+  fprim:  -33.0713623674422     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   2.71336896491890     
-  temp:   962.550619016219     
-  tprim:  -30.4812119618767     
-  fprim:  -36.1575986905581     
+  dens:   2.71314371340786     
+  temp:   962.579272354681     
+  tprim:  -30.4802099883354     
+  fprim:  -36.1560103807069     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.949822719883511     
-  beta:  2.078096372421573E-003  B0=   4.12458080367470     
-  zeff:   3.22299040196409     
+  normalised flux of chosen surface:  0.949820804866733     
+  beta:  2.077975816794000E-003  B0=   4.12458080367470     
+  zeff:   3.22297128031852     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   2.39415798631901     
-  temp:   1804.08924044063     
-  tprim:  -15.8844034475348     
-  fprim:  -19.2077251879721     
+  dens:   2.39396275660432     
+  temp:   1804.14411849960     
+  tprim:  -15.8837178969839     
+  fprim:  -19.2069366295679     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.191532638905521     
-  temp:   1804.08924044063     
-  tprim:  -15.8844034475348     
-  fprim:  -19.2077251879721     
+  dens:  0.191517020528346     
+  temp:   1804.14411849960     
+  tprim:  -15.8837178969839     
+  fprim:  -19.2069366295679     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  3.002541514558849E-005
-  temp:   149424.463245442     
-  tprim:  -19.6316037759189     
-  fprim:  -41.2161115958890     
+  dens:  3.002423211880445E-005
+  temp:   149430.080831010     
+  tprim:  -19.6308321745205     
+  fprim:  -41.2147796619752     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.347541040078155     
-  temp:   648.950264782953     
-  tprim:  -20.6530240568319     
-  fprim:  -10.8234769570516     
+  dens:  0.347507120481608     
+  temp:   648.975931384051     
+  tprim:  -20.6522750489990     
+  fprim:  -10.8226066450264     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   4.86252955542927     
-  temp:   1649.83548712774     
-  tprim:  -15.7039622873301     
-  fprim:  -15.6124975844116     
+  dens:   4.86209956901490     
+  temp:   1649.88510289445     
+  tprim:  -15.7032903840314     
+  fprim:  -15.6117069483830     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.924387358900491     
-  beta:  3.836302701173043E-003  B0=   4.12458080367470     
-  zeff:   2.96894214901349     
+  normalised flux of chosen surface:  0.924384475758778     
+  beta:  3.836053541233315E-003  B0=   4.12458080367470     
+  zeff:   2.96891447493213     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   3.52589997196142     
-  temp:   2468.31183620465     
-  tprim:  -9.53338586835053     
-  fprim:  -12.1478498073663     
+  dens:   3.52560625309675     
+  temp:   2468.37967964256     
+  tprim:  -9.53288942177236     
+  fprim:  -12.1473074731351     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.282071997756914     
-  temp:   2468.31183620465     
-  tprim:  -9.53338586835053     
-  fprim:  -12.1478498073663     
+  dens:  0.282048500247740     
+  temp:   2468.37967964256     
+  tprim:  -9.53288942177236     
+  fprim:  -12.1473074731351     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  7.190218212443575E-005
-  temp:   223058.341254886     
-  tprim:  -12.7832582135883     
-  fprim:  -28.9577772780221     
+  dens:  7.189967695980131E-005
+  temp:   223066.562265023     
+  tprim:  -12.7827379015740     
+  fprim:  -28.9568216577339     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.411795467108338     
-  temp:   996.719646100505     
-  tprim:  -13.9666235628949     
-  fprim:  -3.73903131310821     
+  dens:  0.411751180725212     
+  temp:   996.759781837207     
+  tprim:  -13.9661128125915     
+  fprim:  -3.73857484373611     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   6.56096057448952     
-  temp:   2250.48731164023     
-  tprim:  -9.45774136252042     
-  fprim:  -8.98156608088367     
+  dens:   6.56035413729742     
+  temp:   2250.54867719508     
+  tprim:  -9.45725150311294     
+  fprim:  -8.98110395738658     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.898375595867599     
-  beta:  5.674424181785104E-003  B0=   4.12458080367470     
-  zeff:   2.74126483125934     
+  normalised flux of chosen surface:  0.898371727450524     
+  beta:  5.674022123685203E-003  B0=   4.12458080367470     
+  zeff:   2.74123456776831     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   4.58837368958651     
-  temp:   3016.26069907463     
-  tprim:  -6.22698790076175     
-  fprim:  -8.44540879739231     
+  dens:   4.58798066478288     
+  temp:   3016.33335533954     
+  tprim:  -6.22663371540744     
+  fprim:  -8.44499117770906     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.367069895166921     
-  temp:   3016.26069907463     
-  tprim:  -6.22698790076175     
-  fprim:  -8.44540879739231     
+  dens:  0.367038453182631     
+  temp:   3016.33335533954     
+  tprim:  -6.22663371540744     
+  fprim:  -8.44499117770906     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  1.392230605654070E-004
-  temp:   295818.094665894     
-  tprim:  -9.25716122836935     
-  fprim:  -22.4615955446842     
+  dens:  1.392186833946433E-004
+  temp:   295828.688041405     
+  tprim:  -9.25676632812948     
+  fprim:  -22.4608692730595     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.436466487076240     
-  temp:   1364.32799219472     
-  tprim:  -10.4990956887555     
-  fprim:  -1.16543609582900     
+  dens:  0.436416810446755     
+  temp:   1364.38340431329     
+  tprim:  -10.4987069805932     
+  fprim:  -1.16521531297100     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   7.94159084849892     
-  temp:   2746.26732126677     
-  tprim:  -6.19031500207245     
-  fprim:  -6.04527483466826     
+  dens:   7.94083687119546     
+  temp:   2746.33308428762     
+  tprim:  -6.18996450356018     
+  fprim:  -6.04496745893969     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.871825878203219     
-  beta:  7.476653170027445E-003  B0=   4.12458080367470     
-  zeff:   2.55885022277898     
+  normalised flux of chosen surface:  0.871820991780852     
+  beta:  7.476091008165178E-003  B0=   4.12458080367470     
+  zeff:   2.55882106748339     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   5.55640024017106     
-  temp:   3465.50311932884     
-  tprim:  -4.41908839338890     
-  fprim:  -6.14249141758455     
+  dens:   5.55590954325649     
+  temp:   3465.57795056538     
+  tprim:  -4.41884921649537     
+  fprim:  -6.14215105021638     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.444512019213684     
-  temp:   3465.50311932884     
-  tprim:  -4.41908839338890     
-  fprim:  -6.14249141758455     
+  dens:  0.444472763460520     
+  temp:   3465.57795056538     
+  tprim:  -4.41884921649537     
+  fprim:  -6.14215105021638     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  2.388295239449893E-004
-  temp:   366706.872394543     
-  tprim:  -7.08429986562788     
-  fprim:  -18.4942461739111     
+  dens:  2.388228462184371E-004
+  temp:   366719.566574735     
+  tprim:  -7.08397864659750     
+  fprim:  -18.4936656876308     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.443586909752419     
-  temp:   1748.84502467019     
-  tprim:  -8.36254871502045     
-  fprim: -0.209504924604052     
+  dens:  0.443534877213689     
+  temp:   1748.91648774181     
+  tprim:  -8.36223355250945     
+  fprim: -0.209401455348238     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   9.10742339616083     
-  temp:   3153.05832405877     
-  tprim:  -4.40012523120289     
-  fprim:  -4.40930407687283     
+  dens:   9.10654197915211     
+  temp:   3153.12611646030     
+  tprim:  -4.39988827281157     
+  fprim:  -4.40906855117712     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.844794170294103     
-  beta:  9.210938454040196E-003  B0=   4.12458080367470     
-  zeff:   2.41874188938626     
+  normalised flux of chosen surface:  0.844788269568543     
+  beta:  9.210216996371624E-003  B0=   4.12458080367470     
+  zeff:   2.41871549202439     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   6.41435203932734     
-  temp:   3848.80401522345     
-  tprim:  -3.44893598794469     
-  fprim:  -4.57843121511657     
+  dens:   6.41376634168582     
+  temp:   3848.88234220835     
+  tprim:  -3.44878737332761     
+  fprim:  -4.57814842580501     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.513148163146188     
-  temp:   3848.80401522345     
-  tprim:  -3.44893598794469     
-  fprim:  -4.57843121511656     
+  dens:  0.513101307334865     
+  temp:   3848.88234220835     
+  tprim:  -3.44878737332761     
+  fprim:  -4.57814842580501     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  3.790010449562224E-004
-  temp:   434763.376966664     
-  tprim:  -5.59981562631931     
-  fprim:  -15.8412328681449     
+  dens:  3.789916244202636E-004
+  temp:   434777.742731836     
+  tprim:  -5.59954460273096     
+  fprim:  -15.8407547865950     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.443530378946433     
-  temp:   2147.26554990385     
-  tprim:  -6.91116839843474     
-  fprim:  0.163515531362718     
+  dens:  0.443477471188498     
+  temp:   2147.35311745752     
+  tprim:  -6.91090468176511     
+  fprim:  0.163566501089739     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   10.1025886413882     
-  temp:   3500.47411450973     
-  tprim:  -3.43885972228116     
-  fprim:  -3.33017219508639     
+  dens:   10.1015917667354     
+  temp:   3500.54514451635     
+  tprim:  -3.43871247314913     
+  fprim:  -3.32997626705510     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.817634580558673     
-  beta:  1.087025270170141E-002  B0=   4.12458080367470     
-  zeff:   2.31279693132042     
+  normalised flux of chosen surface:  0.817627809374944     
+  beta:  1.086937249214434E-002  B0=   4.12458080367470     
+  zeff:   2.31277397455442     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   7.14969119425830     
-  temp:   4195.42549575090     
-  tprim:  -2.95964137979252     
-  fprim:  -3.47521113179627     
+  dens:   7.14901344005169     
+  temp:   4195.50957290486     
+  tprim:  -2.95955890568751     
+  fprim:  -3.47497906137054     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.571975295540664     
-  temp:   4195.42549575090     
-  tprim:  -2.95964137979252     
-  fprim:  -3.47521113179627     
+  dens:  0.571921075204135     
+  temp:   4195.50957290486     
+  tprim:  -2.95955890568751     
+  fprim:  -3.47497906137054     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  5.673642177205000E-004
-  temp:   498492.994259484     
-  tprim:  -4.52681254791357     
-  fprim:  -13.9706116145688     
+  dens:  5.673507522528543E-004
+  temp:   498508.273852306     
+  tprim:  -4.52658234359343     
+  fprim:  -13.9702153665988     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.440454532982247     
-  temp:   2552.47936344882     
-  tprim:  -5.87292538820868     
-  fprim:  0.330061194122169     
+  dens:  0.440401432827259     
+  temp:   2552.58086712611     
+  tprim:  -5.87270416122431     
+  fprim:  0.330090890639326     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   10.9375037116686     
-  temp:   3814.94678692208     
-  tprim:  -2.95420577283556     
-  fprim:  -2.55686746705208     
+  dens:   10.9363988889280     
+  temp:   3815.02309880462     
+  tprim:  -2.95412412854742     
+  fprim:  -2.55670233291470     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.790240459634709     
-  beta:  1.249409701314291E-002  B0=   4.12458080367470     
-  zeff:   2.23103046891404     
+  normalised flux of chosen surface:  0.790232732469344     
+  beta:  1.249307304252907E-002  B0=   4.12458080367470     
+  zeff:   2.23101018203715     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   7.77316903919498     
-  temp:   4533.56920900899     
-  tprim:  -2.73083543366382     
-  fprim:  -2.67118252400169     
+  dens:   7.77240971563462     
+  temp:   4533.66487494311     
+  tprim:  -2.73079454461147     
+  fprim:  -2.67098941530215     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.621853523135598     
-  temp:   4533.56920900899     
-  tprim:  -2.73083543366382     
-  fprim:  -2.67118252400169     
+  dens:  0.621792777250770     
+  temp:   4533.66487494311     
+  tprim:  -2.73079454461147     
+  fprim:  -2.67098941530214     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  8.154640952426236E-004
-  temp:   557755.314456647     
-  tprim:  -3.70999714530426     
-  fprim:  -12.5793796357269     
+  dens:  8.154468660858320E-004
+  temp:   557771.303846754     
+  tprim:  -3.70979511068938     
+  fprim:  -12.5790391877473     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.435871523244736     
-  temp:   2964.71397497181     
-  tprim:  -5.09366498022126     
-  fprim:  0.427260571612436     
+  dens:  0.435818510763880     
+  temp:   2964.83066501028     
+  tprim:  -5.09347385672223     
+  fprim:  0.427283542628152     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   11.6337361531251     
-  temp:   4121.96634261342     
-  tprim:  -2.72789761257385     
-  fprim:  -1.97605079622256     
+  dens:   11.6325372284516     
+  temp:   4122.05322946814     
+  tprim:  -2.72785723212048     
+  fprim:  -1.97590896090712     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.762665442371170     
-  beta:  1.411411945882855E-002  B0=   4.12458080367470     
-  zeff:   2.16643813649643     
+  normalised flux of chosen surface:  0.762656805160781     
+  beta:  1.411295793424297E-002  B0=   4.12458080367470     
+  zeff:   2.16642006627190     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   8.29572294738184     
-  temp:   4880.82415848754     
-  tprim:  -2.63765316738724     
-  fprim:  -2.07797869120510     
+  dens:   8.29489024260689     
+  temp:   4880.93535417576     
+  tprim:  -2.63763679191518     
+  fprim:  -2.07781980454617     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.663657835790547     
-  temp:   4880.82415848754     
-  tprim:  -2.63765316738724     
-  fprim:  -2.07797869120510     
+  dens:  0.663591219408551     
+  temp:   4880.93535417576     
+  tprim:  -2.63763679191518     
+  fprim:  -2.07781980454617     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  1.135967775144610E-003
-  temp:   612187.090695461     
-  tprim:  -3.06892636275345     
-  fprim:  -11.5077103854895     
+  dens:  1.135946263917593E-003
+  temp:   612203.317659169     
+  tprim:  -3.06874794508032     
+  fprim:  -11.5074143514582     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.430310941959892     
-  temp:   3382.44095804340     
-  tprim:  -4.49235251435667     
-  fprim:  0.502039867384245     
+  dens:  0.430258160584091     
+  temp:   3382.57220159173     
+  tprim:  -4.49218674757743     
+  fprim:  0.502061819002226     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   12.2071762062726     
-  temp:   4437.42580477909     
-  tprim:  -2.63606886631098     
-  fprim:  -1.53404965778575     
+  dens:   12.2058935374564     
+  temp:   4437.52683818069     
+  tprim:  -2.63605279728115     
+  fprim:  -1.53392945473507     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.735046651385351     
-  beta:  1.575328309239588E-002  B0=   4.12458080367470     
-  zeff:   2.11405394581958     
+  normalised flux of chosen surface:  0.735037151340403     
+  beta:  1.575198876820397E-002  B0=   4.12458080367470     
+  zeff:   2.11403756727898     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   8.73006122897412     
-  temp:   5247.07450300979     
-  tprim:  -2.60868836734382     
-  fprim:  -1.63953343625417     
+  dens:   8.72916421879502     
+  temp:   5247.20454096552     
+  tprim:  -2.60868427768897     
+  fprim:  -1.63940423658865     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.698404898317930     
-  temp:   5247.07450300979     
-  tprim:  -2.60868836734382     
-  fprim:  -1.63953343625417     
+  dens:  0.698333137503602     
+  temp:   5247.20454096552     
+  tprim:  -2.60868427768897     
+  fprim:  -1.63940423658865     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  1.542168309896965E-003
-  temp:   661471.530610559     
-  tprim:  -2.55647341340230     
-  fprim:  -10.6612773713103     
+  dens:  1.542142018441151E-003
+  temp:   661487.595211354     
+  tprim:  -2.55631526483331     
+  fprim:  -10.6610170598191     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.423981808255680     
-  temp:   3803.42177593196     
-  tprim:  -4.02057842518298     
-  fprim:  0.570570967695990     
+  dens:  0.423929343560962     
+  temp:   3803.56705036695     
+  tprim:  -4.02043427534236     
+  fprim:  0.570594273326164     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   12.6738462117639     
-  temp:   4770.24850872775     
-  tprim:  -2.60783533099832     
-  fprim:  -1.19811745399791     
+  dens:   12.6724908392049     
+  temp:   4770.36669087700     
+  tprim:  -2.60783142317233     
+  fprim:  -1.19801712808499     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.707583491614018     
-  beta:  1.742441485037263E-002  B0=   4.12458080367470     
-  zeff:   2.07036926031368     
+  normalised flux of chosen surface:  0.707573348218883     
+  beta:  1.742298039982692E-002  B0=   4.12458080367470     
+  zeff:   2.07035431808583     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   9.08973923577007     
-  temp:   5636.31562892641     
-  tprim:  -2.60470244687501     
-  fprim:  -1.31678829344787     
+  dens:   9.08878510222387     
+  temp:   5636.46454532547     
+  tprim:  -2.60470271041735     
+  fprim:  -1.31668608732307     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.727179138861606     
-  temp:   5636.31562892641     
-  tprim:  -2.60470244687501     
-  fprim:  -1.31678829344787     
+  dens:  0.727102808177910     
+  temp:   5636.46454532547     
+  tprim:  -2.60470271041735     
+  fprim:  -1.31668608732307     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  2.046887435918368E-003
-  temp:   705426.585914487     
-  tprim:  -2.14258433266254     
-  fprim:  -9.98037384975406     
+  dens:  2.046852442278794E-003
+  temp:   705441.916678727     
+  tprim:  -2.14244614086788     
+  fprim:  -9.98014629310750     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.417003034368412     
-  temp:   4224.91224347375     
-  tprim:  -3.64677702119921     
-  fprim:  0.638280808738492     
+  dens:  0.416950993820968     
+  temp:   4225.06852617834     
+  tprim:  -3.64665342459626     
+  fprim:  0.638306068656359     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   13.0502094945756     
-  temp:   5124.02789590778     
-  tprim:  -2.60424219092227     
-  fprim: -0.944675361372878     
+  dens:   13.0487903863901     
+  temp:   5124.16325329620     
+  tprim:  -2.60424255947039     
+  fprim: -0.944594135429242     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.680179595227384     
-  beta:  1.915204710421343E-002  B0=   4.12458080367470     
-  zeff:   2.03247990930669     
+  normalised flux of chosen surface:  0.680168688027468     
+  beta:  1.915048256889425E-002  B0=   4.12458080367470     
+  zeff:   2.03246569370341     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   9.39145550482365     
-  temp:   6053.43446585691     
-  tprim:  -2.60573003346265     
-  fprim:  -1.07835785806756     
+  dens:   9.39045472509304     
+  temp:   6053.60651428357     
+  tprim:  -2.60572999474298     
+  fprim:  -1.07827659757728     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.751316440385892     
-  temp:   6053.43446585691     
-  tprim:  -2.60573003346265     
-  fprim:  -1.07835785806756     
+  dens:  0.751236378007443     
+  temp:   6053.60651428357     
+  tprim:  -2.60572999474298     
+  fprim:  -1.07827659757728     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  2.669508281785550E-003
-  temp:   744501.305500695     
-  tprim:  -1.80278403281318     
-  fprim:  -9.41874770343120     
+  dens:  2.669466640870800E-003
+  temp:   744515.944517427     
+  tprim:  -1.80266114549158     
+  fprim:  -9.41854347411623     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.409385363130684     
-  temp:   4649.05216777435     
-  tprim:  -3.34548502719321     
-  fprim:  0.707678630252165     
+  dens:  0.409333763833133     
+  temp:   4649.22181145918     
+  tprim:  -3.34537703428281     
+  fprim:  0.707706780339688     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   13.3557395809431     
-  temp:   5503.18277841111     
-  tprim:  -2.60548172961605     
-  fprim: -0.753214224338899     
+  dens:   13.3542689973885     
+  temp:   5503.33917288940     
+  tprim:  -2.60548175194181     
+  fprim: -0.753148231374658     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.652963243634917     
-  beta:  2.094200433277951E-002  B0=   4.12458080367470     
-  zeff:   1.99863703045306     
+  normalised flux of chosen surface:  0.652951739388136     
+  beta:  2.094030028168648E-002  B0=   4.12458080367470     
+  zeff:   1.99862332293730     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   9.64701948973322     
-  temp:   6498.15016067196     
-  tprim:  -2.60268405504643     
-  fprim: -0.903502935685539     
+  dens:   9.64597828392255     
+  temp:   6498.34473057167     
+  tprim:  -2.60268129271775     
+  fprim: -0.903439768759701     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.771761559178658     
-  temp:   6498.15016067196     
-  tprim:  -2.60268405504643     
-  fprim: -0.903502935685538     
+  dens:  0.771678262713803     
+  temp:   6498.34473057167     
+  tprim:  -2.60268129271775     
+  fprim: -0.903439768759701     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  3.426962807011094E-003
-  temp:   778874.848577422     
-  tprim:  -1.52250760407165     
-  fprim:  -8.94920069007959     
+  dens:  3.426910110557387E-003
+  temp:   778888.490441755     
+  tprim:  -1.52239951540954     
+  fprim:  -8.94901778608473     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.401186539543190     
-  temp:   5074.76153106053     
-  tprim:  -3.10101289735679     
-  fprim:  0.779508205242767     
+  dens:  0.401135472659210     
+  temp:   5074.94257275014     
+  tprim:  -3.10091931268999     
+  fprim:  0.779539290325348     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   13.6045157709637     
-  temp:   5907.44438688450     
-  tprim:  -2.60254968170758     
-  fprim: -0.609772240142716     
+  dens:   13.6030014655265     
+  temp:   5907.62126053278     
+  tprim:  -2.60254695427495     
+  fprim: -0.609719837399725     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.625979381570708     
-  beta:  2.280107269908902E-002  B0=   4.12458080367470     
-  zeff:   1.96751436585123     
+  normalised flux of chosen surface:  0.625967277440627     
+  beta:  2.279922893691693E-002  B0=   4.12458080367470     
+  zeff:   1.96750079905464     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   9.86724125423595     
-  temp:   6970.06837134540     
-  tprim:  -2.59221978648197     
-  fprim: -0.776027614731279     
+  dens:   9.86616640464197     
+  temp:   6970.28707130789     
+  tprim:  -2.59221326170443     
+  fprim: -0.775978892524558     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.789379300338876     
-  temp:   6970.06837134540     
-  tprim:  -2.59221978648197     
-  fprim: -0.776027614731280     
+  dens:  0.789293312371357     
+  temp:   6970.28707130789     
+  tprim:  -2.59221326170443     
+  fprim: -0.775978892524558     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  4.339035293193173E-003
-  temp:   808924.115927375     
-  tprim:  -1.29000496032675     
-  fprim:  -8.55093622067682     
+  dens:  4.338970949019954E-003
+  temp:   808936.746413520     
+  tprim:  -1.28990950094098     
+  fprim:  -8.55077033873096     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.392443174397097     
-  temp:   5502.33472549772     
-  tprim:  -2.90084480651159     
-  fprim:  0.854326509418486     
+  dens:  0.392392681597503     
+  temp:   5502.52792526018     
+  tprim:  -2.90076305240705     
+  fprim:  0.854360976781833     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   13.8093369718827     
-  temp:   6336.44629055130     
-  tprim:  -2.59214673702303     
-  fprim: -0.502918421347817     
+  dens:   13.8077870608677     
+  temp:   6336.64510374010     
+  tprim:  -2.59214023222106     
+  fprim: -0.502877098998043     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.599432715113602     
-  beta:  2.472101799214024E-002  B0=   4.12458080367470     
-  zeff:   1.93835998179049     
+  normalised flux of chosen surface:  0.599420317103410     
+  beta:  2.471901177829776E-002  B0=   4.12458080367470     
+  zeff:   1.93834659745558     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   10.0597259823641     
-  temp:   7464.92342788113     
-  tprim:  -2.57400886104336     
-  fprim: -0.684316717300812     
+  dens:   10.0586210228672     
+  temp:   7465.16165623315     
+  tprim:  -2.57399858094833     
+  fprim: -0.684280343090398     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.804778078589127     
-  temp:   7464.92342788113     
-  tprim:  -2.57400886104336     
-  fprim: -0.684316717300812     
+  dens:  0.804689681829379     
+  temp:   7465.16165623315     
+  tprim:  -2.57399858094833     
+  fprim: -0.684280343090398     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  5.419671482194849E-003
-  temp:   834908.399687986     
-  tprim:  -1.09739709637194     
-  fprim:  -8.21081208781570     
+  dens:  5.419581879063382E-003
+  temp:   834919.758717735     
+  tprim:  -1.09731450388168     
+  fprim:  -8.21066354438565     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.383250896994816     
-  temp:   5929.46721605656     
-  tprim:  -2.73642080112630     
-  fprim:  0.932095165113753     
+  dens:  0.383201121205621     
+  temp:   5929.66838101403     
+  tprim:  -2.73635046635087     
+  fprim:  0.932132555866810     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   13.9796268644756     
-  temp:   6786.30608235560     
-  tprim:  -2.57396876627101     
-  fprim: -0.424269321637636     
+  dens:   13.9780462775179     
+  temp:   6786.52265059641     
+  tprim:  -2.57395849740786     
+  fprim: -0.424237727757893     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.573135441629238     
-  beta:  2.671922382259494E-002  B0=   4.12458080367470     
-  zeff:   1.91028156276907     
+  normalised flux of chosen surface:  0.573122549520629     
+  beta:  2.671706637868936E-002  B0=   4.12458080367470     
+  zeff:   1.91026791369409     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   10.2330449258519     
-  temp:   7985.18077100573     
-  tprim:  -2.54877088221244     
-  fprim: -0.618440259673830     
+  dens:   10.2319156993109     
+  temp:   7985.44315990029     
+  tprim:  -2.54875691116740     
+  fprim: -0.618413012171586     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.818643594068149     
-  temp:   7985.18077100573     
-  tprim:  -2.54877088221244     
-  fprim: -0.618440259673830     
+  dens:  0.818553255944869     
+  temp:   7985.44315990029     
+  tprim:  -2.54875691116740     
+  fprim: -0.618413012171586     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  6.699159484369449E-003
-  temp:   857480.853113647     
-  tprim: -0.935901857136784     
-  fprim:  -7.91455931142599     
+  dens:  6.699050319673173E-003
+  temp:   857491.198921668     
+  tprim: -0.935829017901434     
+  fprim:  -7.91442271133612     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.373573199215971     
-  temp:   6360.05813990315     
-  tprim:  -2.59893145191179     
-  fprim:   1.01389169408958     
+  dens:  0.373524114413925     
+  temp:   6360.27123917021     
+  tprim:  -2.59886938603727     
+  fprim:   1.01393307780736     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.1251696282527     
-  temp:   7259.26237297646     
-  tprim:  -2.54874874929321     
-  fprim: -0.366335882570478     
+  dens:   14.1235649983235     
+  temp:   7259.50090649820     
+  tprim:  -2.54873478469289     
+  fprim: -0.366311570767372     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.547175979580906     
-  beta:  2.879187201560995E-002  B0=   4.12458080367470     
-  zeff:   1.88290616415972     
+  normalised flux of chosen surface:  0.547162842370040     
+  beta:  2.878954015924659E-002  B0=   4.12458080367470     
+  zeff:   1.88289233909449     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   10.3920202158804     
-  temp:   8528.06344125132     
-  tprim:  -2.51783188816592     
-  fprim: -0.571918928619219     
+  dens:   10.3908686713111     
+  temp:   8528.34553017952     
+  tprim:  -2.51781490414441     
+  fprim: -0.571899242968078     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.831361617270434     
-  temp:   8528.06344125132     
-  tprim:  -2.51783188816592     
-  fprim: -0.571918928619219     
+  dens:  0.831269493704888     
+  temp:   8528.34553017952     
+  tprim:  -2.51781490414441     
+  fprim: -0.571899242968078     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  8.198915927109992E-003
-  temp:   876984.145104990     
-  tprim: -0.800435973425732     
-  fprim:  -7.65456561004441     
+  dens:  8.198770224915103E-003
+  temp:   876993.366712863     
+  tprim: -0.800372781395867     
+  fprim:  -7.65444120363266     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.363466899151380     
-  temp:   6793.47807287420     
-  tprim:  -2.48313658765505     
-  fprim:   1.10003723206741     
+  dens:  0.363418640635232     
+  temp:   6793.69968743713     
+  tprim:  -2.48308231978453     
+  fprim:   1.10008232639102     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.2519426771838     
-  temp:   7752.78918727218     
-  tprim:  -2.51781957241399     
-  fprim: -0.324228886774090     
+  dens:   14.2503170429821     
+  temp:   7753.04563063841     
+  tprim:  -2.51780259204377     
+  fprim: -0.324210764481032     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.521758867207371     
-  beta:  3.092275540377564E-002  B0=   4.12458080367470     
-  zeff:   1.85612910273499     
+  normalised flux of chosen surface:  0.521745772746541     
+  beta:  3.092022090055674E-002  B0=   4.12458080367470     
+  zeff:   1.85611527464442     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   10.5396400108125     
-  temp:   9087.70207028756     
-  tprim:  -2.48281362761462     
-  fprim: -0.539914313068667     
+  dens:   10.5384674346917     
+  temp:   9087.99752519927     
+  tprim:  -2.48279456088067     
+  fprim: -0.539900689286108     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.843171200864996     
-  temp:   9087.70207028756     
-  tprim:  -2.48281362761462     
-  fprim: -0.539914313068667     
+  dens:  0.843077394775333     
+  temp:   9087.99752519927     
+  tprim:  -2.48279456088067     
+  fprim: -0.539900689286108     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  9.930425320804008E-003
-  temp:   893689.060671615     
-  tprim: -0.687259495003577     
-  fprim:  -7.42589238918088     
+  dens:  9.930215864831960E-003
+  temp:   893697.102961893     
+  tprim: -0.687205625854271     
+  fprim:  -7.42578043001609     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.353044281960493     
-  temp:   7226.85733989414     
-  tprim:  -2.38526905805206     
-  fprim:   1.19041516842644     
+  dens:  0.352997006122993     
+  temp:   7227.08306350113     
+  tprim:  -2.38522206894306     
+  fprim:   1.19046342675056     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.3641089549470     
-  temp:   8261.54988746985     
-  tprim:  -2.48280668617764     
-  fprim: -0.294264812283531     
+  dens:   14.3624646927100     
+  temp:   8261.81848217622     
+  tprim:  -2.48278762149258     
+  fprim: -0.294251795048411     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.496899829352564     
-  beta:  3.310847872614069E-002  B0=   4.12458080367470     
-  zeff:   1.82976014583920     
+  normalised flux of chosen surface:  0.496886492263320     
+  beta:  3.310576146536765E-002  B0=   4.12458080367470     
+  zeff:   1.82974592327387     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   10.6790213503373     
-  temp:   9661.79056948931     
-  tprim:  -2.44501880320314     
-  fprim: -0.518483115386139     
+  dens:   10.6778316145246     
+  temp:   9662.10563879126     
+  tprim:  -2.44499774422248     
+  fprim: -0.518473792684089     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.854321708026984     
-  temp:   9661.79056948931     
-  tprim:  -2.44501880320314     
-  fprim: -0.518483115386139     
+  dens:  0.854226529161968     
+  temp:   9662.10563879126     
+  tprim:  -2.44499774422248     
+  fprim: -0.518473792684089     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  1.191315676499660E-002
-  temp:   907990.102833586     
-  tprim: -0.592392127779902     
-  fprim:  -7.22304234031324     
+  dens:  1.191289472339589E-002
+  temp:   907997.276412685     
+  tprim: -0.592345002953033     
+  fprim:  -7.22293844367356     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.342350049339358     
-  temp:   7660.19736600183     
-  tprim:  -2.30161710841661     
-  fprim:   1.28550607928282     
+  dens:  0.342303672554692     
+  temp:   7660.43251156481     
+  tprim:  -2.30157501823667     
+  fprim:   1.28555905778389     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.4655913759574     
-  temp:   8783.44752383019     
-  tprim:  -2.44501483846035     
-  fprim: -0.273361452780948     
+  dens:   14.4639324976235     
+  temp:   8783.73395005452     
+  tprim:  -2.44499378067000     
+  fprim: -0.273352124824978     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.472400681654337     
-  beta:  3.536484177720881E-002  B0=   4.12458080367470     
-  zeff:   1.80346054947059     
+  normalised flux of chosen surface:  0.472387123595117     
+  beta:  3.536193465231930E-002  B0=   4.12458080367470     
+  zeff:   1.80344589013138     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   10.8135633041809     
-  temp:   10253.2662716427     
-  tprim:  -2.40517779909558     
-  fprim: -0.504640318019560     
+  dens:   10.8123577889413     
+  temp:   10253.6006298495     
+  tprim:  -2.40515517487813     
+  fprim: -0.504634317958284     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.865085064334471     
-  temp:   10253.2662716427     
-  tprim:  -2.40517779909558     
-  fprim: -0.504640318019560     
+  dens:  0.864988623115308     
+  temp:   10253.6006298495     
+  tprim:  -2.40515517487813     
+  fprim: -0.504634317958284     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  1.418706129010501E-002
-  temp:   920334.397341547     
-  tprim: -0.511981921328428     
-  fprim:  -7.04022656218270     
+  dens:  1.418673671171031E-002
+  temp:   920340.785590225     
+  tprim: -0.511940662271170     
+  fprim:  -7.04012962053048     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.331330464524666     
-  temp:   8097.17289869617     
-  tprim:  -2.22871985099193     
-  fprim:   1.38674255805378     
+  dens:  0.331285031688284     
+  temp:   8097.41757351477     
+  tprim:  -2.22868180207182     
+  fprim:   1.38680086664487     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.5600903425780     
-  temp:   9321.15210659204     
-  tprim:  -2.40517551425590     
-  fprim: -0.259133937756130     
+  dens:   14.5584186987251     
+  temp:   9321.45606834048     
+  tprim:  -2.40515289073469     
+  fprim: -0.259127552278978     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.448272650338262     
-  beta:  3.768987839271725E-002  B0=   4.12458080367470     
-  zeff:   1.77716453550043     
+  normalised flux of chosen surface:  0.448258929216896     
+  beta:  3.768677055764156E-002  B0=   4.12458080367470     
+  zeff:   1.77714945740591     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   10.9448418611113     
-  temp:   10860.5415685262     
-  tprim:  -2.36411712699643     
-  fprim: -0.496384949615013     
+  dens:   10.9436213718022     
+  temp:   10860.8938703891     
+  tprim:  -2.36409337643215     
+  fprim: -0.496381513284549     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.875587348888905     
-  temp:   10860.5415685262     
-  tprim:  -2.36411712699643     
-  fprim: -0.496384949615013     
+  dens:  0.875489709744176     
+  temp:   10860.8938703891     
+  tprim:  -2.36409337643215     
+  fprim: -0.496381513284548     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  1.677971156149726E-002
-  temp:   930987.789874376     
-  tprim: -0.443688558164037     
-  fprim:  -6.87441852275895     
+  dens:  1.677930875620069E-002
+  temp:   930993.457426132     
+  tprim: -0.443652501340427     
+  fprim:  -6.87432787290742     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.320015660584820     
-  temp:   8537.78431432114     
-  tprim:  -2.16453505034527     
-  fprim:   1.49493372875328     
+  dens:  0.319971231894710     
+  temp:   8538.03788695645     
+  tprim:  -2.16450043382974     
+  fprim:   1.49499790649607     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.6496699455210     
-  temp:   9873.22019442889     
-  tprim:  -2.36411579805757     
-  fprim: -0.249998794854764     
+  dens:   14.6479868001712     
+  temp:   9873.54046868869     
+  tprim:  -2.36409204790242     
+  fprim: -0.249994774714953     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.424726640318440     
-  beta:  4.006054454839929E-002  B0=   4.12458080367470     
-  zeff:   1.75106758328584     
+  normalised flux of chosen surface:  0.424713552264504     
+  beta:  4.005715057961401E-002  B0=   4.12458080367470     
+  zeff:   1.75105295044132     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   11.0729012243114     
-  temp:   11476.6870710459     
-  tprim:  -2.32285541722427     
-  fprim: -0.492239043674400     
+  dens:   11.0716623749245     
+  temp:   11477.0359849128     
+  tprim:  -2.32283224227401     
+  fprim: -0.492237627645916     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.885832097944912     
-  temp:   11476.6870710459     
-  tprim:  -2.32285541722427     
-  fprim: -0.492239043674400     
+  dens:  0.885732989993961     
+  temp:   11477.0359849128     
+  tprim:  -2.32283224227401     
+  fprim: -0.492237627645916     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  1.969270578252749E-002
-  temp:   940111.317514099     
-  tprim: -0.386031366051438     
-  fprim:  -6.72441313375588     
+  dens:  1.969210869027865E-002
+  temp:   940116.067160489     
+  tprim: -0.386001554302070     
+  fprim:  -6.72433270867838     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.308535079541079     
-  temp:   8978.11975489062     
-  tprim:  -2.10791175423845     
-  fprim:   1.60998311906441     
+  dens:  0.308492072169836     
+  temp:   8978.36744906584     
+  tprim:  -2.10788173501218     
+  fprim:   1.61004995194567     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.7351613090128     
-  temp:   10433.3522490979     
-  tprim:  -2.32285463338793     
-  fprim: -0.244790177984094     
+  dens:   14.7334650053120     
+  temp:   10433.6694434264     
+  tprim:  -2.32283145866745     
+  fprim: -0.244788156552147     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.401864754016521     
-  beta:  4.246149802106642E-002  B0=   4.12458080367470     
-  zeff:   1.72528454701759     
+  normalised flux of chosen surface:  0.401851595970538     
+  beta:  4.245788424353326E-002  B0=   4.12458080367470     
+  zeff:   1.72526957781378     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   11.1980065153416     
-  temp:   12097.0018159395     
-  tprim:  -2.28209376684506     
-  fprim: -0.491015795899917     
+  dens:   11.1967538746677     
+  temp:   12097.3650670129     
+  tprim:  -2.28207017763320     
+  fprim: -0.491015748156966     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.895840521227326     
-  temp:   12097.0018159395     
-  tprim:  -2.28209376684506     
-  fprim: -0.491015795899917     
+  dens:  0.895740309973413     
+  temp:   12097.3650670129     
+  tprim:  -2.28207017763320     
+  fprim: -0.491015748156966     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  2.292918503677755E-002
-  temp:   947905.682674254     
-  tprim: -0.337404856477217     
-  fprim:  -6.58852175640713     
+  dens:  2.292845960739212E-002
+  temp:   947909.890832165     
+  tprim: -0.337378766300902     
+  fprim:  -6.58844608363843     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.296976515929246     
-  temp:   9415.89111203214     
-  tprim:  -2.05766021801849     
-  fprim:   1.73214701590544     
+  dens:  0.296934608952391     
+  temp:   9416.14604701865     
+  tprim:  -2.05763248339872     
+  fprim:   1.73222061962708     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.8174050234452     
-  temp:   10997.2746100132     
-  tprim:  -2.28209329695263     
-  fprim: -0.242541708401307     
+  dens:   14.8156990675436     
+  temp:   10997.6048382007     
+  tprim:  -2.28206970787901     
+  fprim: -0.242541103675777     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.379374423536063     
-  beta:  4.492162592303885E-002  B0=   4.12458080367470     
-  zeff:   1.69947705540611     
+  normalised flux of chosen surface:  0.379361239252910     
+  beta:  4.491778178531438E-002  B0=   4.12458080367470     
+  zeff:   1.69946179612425     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   11.3224214483652     
-  temp:   12728.3056711597     
-  tprim:  -2.24165550989946     
-  fprim: -0.491846273563088     
+  dens:   11.3211551601683     
+  temp:   12728.6818549757     
+  tprim:  -2.24163176052665     
+  fprim: -0.491847246583592     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.905793715869215     
-  temp:   12728.3056711597     
-  tprim:  -2.24165550989946     
-  fprim: -0.491846273563088     
+  dens:  0.905692412813466     
+  temp:   12728.6818549757     
+  tprim:  -2.24163176052665     
+  fprim: -0.491847246583592     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  2.655356100568525E-002
-  temp:   954668.252980189     
-  tprim: -0.295715782001009     
-  fprim:  -6.46311137008068     
+  dens:  2.655268159624314E-002
+  temp:   954671.974905055     
+  tprim: -0.295692972390935     
+  fprim:  -6.46304007143549     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.285213008259836     
-  temp:   9856.75185751787     
-  tprim:  -2.01203191782037     
-  fprim:   1.86410713993259     
+  dens:  0.285172252138481     
+  temp:   9857.01333132518     
+  tprim:  -2.01200615517796     
+  fprim:   1.86418830984939     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.8983940516740     
-  temp:   11571.1871216555     
-  tprim:  -2.24165522560311     
-  fprim: -0.242519088003889     
+  dens:   14.8966788618186     
+  temp:   11571.5291069038     
+  tprim:  -2.24163147631395     
+  fprim: -0.242519630322659     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.357259534556585     
-  beta:  4.743840530398245E-002  B0=   4.12458080367470     
-  zeff:   1.67366677578924     
+  normalised flux of chosen surface:  0.357246367589330     
+  beta:  4.743431994833440E-002  B0=   4.12458080367470     
+  zeff:   1.67365128093794     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   11.4465124976435     
-  temp:   13369.3095856997     
-  tprim:  -2.20182385801432     
-  fprim: -0.494136230741542     
+  dens:   11.4452325789029     
+  temp:   13369.6971834680     
+  tprim:  -2.20180016598801     
+  fprim: -0.494137948717682     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.915720999811483     
-  temp:   13369.3095856997     
-  tprim:  -2.20182385801432     
-  fprim: -0.494136230741542     
+  dens:  0.915618606312229     
+  temp:   13369.6971834680     
+  tprim:  -2.20180016598801     
+  fprim: -0.494137948717682     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  3.059380828180128E-002
-  temp:   960543.086386915     
-  tprim: -0.259908494618209     
-  fprim:  -6.34690498362211     
+  dens:  3.059274483363967E-002
+  temp:   960546.373443489     
+  tprim: -0.259888573653020     
+  fprim:  -6.34683774147236     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.273268642512922     
-  temp:   10300.4293055383     
-  tprim:  -1.97027180363020     
-  fprim:   2.00726903812629     
+  dens:  0.273229086972109     
+  temp:   10300.6965263059     
+  tprim:  -1.97024776073484     
+  fprim:   2.00735869380040     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   14.9787539689076     
-  temp:   12153.9179001865     
-  tprim:  -2.20182368440622     
-  fprim: -0.244234485197657     
+  dens:   14.9770298030272     
+  temp:   12154.2702617689     
+  tprim:  -2.20179999243084     
+  fprim: -0.244235958221391     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.335858696805359     
-  beta:  4.996878916376678E-002  B0=   4.12458080367470     
-  zeff:   1.64828397130594     
+  normalised flux of chosen surface:  0.335846248577201     
+  beta:  4.996437604274807E-002  B0=   4.12458080367470     
+  zeff:   1.64826909228646     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   11.5685848471333     
-  temp:   14008.5968343657     
-  tprim:  -2.16341002639353     
-  fprim: -0.497381783841960     
+  dens:   11.5672876377612     
+  temp:   14008.9740977240     
+  tprim:  -2.16338775162334     
+  fprim: -0.497383909188813     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.925486787770663     
-  temp:   14008.5968343657     
-  tprim:  -2.16341002639353     
-  fprim: -0.497381783841960     
+  dens:  0.925383011020894     
+  temp:   14008.9740977240     
+  tprim:  -2.16338775162334     
+  fprim: -0.497383909188813     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  3.500453875333459E-002
-  temp:   965580.175764164     
-  tprim: -0.229542216098419     
-  fprim:  -6.24045917475574     
+  dens:  3.500311593145598E-002
+  temp:   965582.934711579     
+  tprim: -0.229525675313093     
+  fprim:  -6.24039885947886     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.261356198036699     
-  temp:   10739.6368097013     
-  tprim:  -1.93235438415561     
-  fprim:   2.16075925300106     
+  dens:  0.261318244527971     
+  temp:   10739.8951467706     
+  tprim:  -1.93233297109069     
+  fprim:   2.16085332258592     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.0577046884015     
-  temp:   12735.0880931525     
-  tprim:  -2.16340991858569     
-  fprim: -0.247259846989162     
+  dens:   15.0559693588337     
+  temp:   12735.4310598265     
+  tprim:  -2.16338764384534     
+  fprim: -0.247261954519324     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.314877860644937     
-  beta:  5.254261805965395E-002  B0=   4.12458080367470     
-  zeff:   1.62302080214221     
+  normalised flux of chosen surface:  0.314865463896104     
+  beta:  5.253794940594719E-002  B0=   4.12458080367470     
+  zeff:   1.62300576679898     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   11.6904064772535     
-  temp:   14653.3441867572     
-  tprim:  -2.12602517110598     
-  fprim: -0.501278562295197     
+  dens:   11.6890958731657     
+  temp:   14653.7303904593     
+  tprim:  -2.12600318685846     
+  fprim: -0.501281030652524     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.935232518180278     
-  temp:   14653.3441867572     
-  tprim:  -2.12602517110598     
-  fprim: -0.501278562295197     
+  dens:  0.935127669853257     
+  temp:   14653.7303904593     
+  tprim:  -2.12600318685846     
+  fprim: -0.501281030652524     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  3.985941994913245E-002
-  temp:   969969.555302435     
-  tprim: -0.203364520772275     
-  fprim:  -6.14127198673556     
+  dens:  3.985773797923512E-002
+  temp:   969972.000568689     
+  tprim: -0.203350018049734     
+  fprim:  -6.14121479588453     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.249341968949900     
-  temp:   11179.8368119626     
-  tprim:  -1.89722407113686     
-  fprim:   2.32818050166309     
+  dens:  0.249305270405632     
+  temp:   11180.0997568228     
+  tprim:  -1.89720385544377     
+  fprim:   2.32828499006425     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.1366421672117     
-  temp:   13321.2220286412     
-  tprim:  -2.12602510347554     
-  fprim: -0.251328567454981     
+  dens:   15.1348983112645     
+  temp:   13321.5731229058     
+  tprim:  -2.12600311924663     
+  fprim: -0.251331262290550     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.294256295709859     
-  beta:  5.516468085545838E-002  B0=   4.12458080367470     
-  zeff:   1.59783800182887     
+  normalised flux of chosen surface:  0.294243981851033     
+  beta:  5.515974698833184E-002  B0=   4.12458080367470     
+  zeff:   1.59782286306975     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   11.8123965555424     
-  temp:   15304.3157469481     
-  tprim:  -2.08965997787263     
-  fprim: -0.505596910123353     
+  dens:   11.8110724125372     
+  temp:   15304.7095572357     
+  tprim:  -2.08963839427136     
+  fprim: -0.505599600191457     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.944991724443392     
-  temp:   15304.3157469481     
-  tprim:  -2.08965997787263     
-  fprim: -0.505596910123353     
+  dens:  0.944885793002978     
+  temp:   15304.7095572357     
+  tprim:  -2.08963839427136     
+  fprim: -0.505599600191457     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  4.519721648040616E-002
-  temp:   973813.389122427     
-  tprim: -0.180688676272692     
-  fprim:  -6.04830569557351     
+  dens:  4.519523452447326E-002
+  temp:   973815.555758935     
+  tprim: -0.180675966842891     
+  fprim:  -6.04825143935384     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.237211731799092     
-  temp:   11621.9373716017     
-  tprim:  -1.86440129788571     
-  fprim:   2.51223923322903     
+  dens:  0.237176326802535     
+  temp:   11622.2041894353     
+  tprim:  -1.86438215842615     
+  fprim:   2.51235565236605     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.2160448281845     
-  temp:   13913.0143423248     
-  tprim:  -2.08965993507299     
-  fprim: -0.256243884930664     
+  dens:   15.2142924284073     
+  temp:   13913.3723516705     
+  tprim:  -2.08963835148340     
+  fprim: -0.256247067638862     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.274215525230356     
-  beta:  5.780299036782767E-002  B0=   4.12458080367470     
-  zeff:   1.57304531398539     
+  normalised flux of chosen surface:  0.274204459458855     
+  beta:  5.779763253495870E-002  B0=   4.12458080367470     
+  zeff:   1.57303154065080     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   11.9332291733729     
-  temp:   15953.2537173234     
-  tprim:  -2.05476494785928     
-  fprim: -0.510107725287584     
+  dens:   11.9318845514942     
+  temp:   15953.6164578125     
+  tprim:  -2.05474581450367     
+  fprim: -0.510110278830065     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.954658333869828     
-  temp:   15953.2537173234     
-  tprim:  -2.05476494785928     
-  fprim: -0.510107725287584     
+  dens:  0.954550764119538     
+  temp:   15953.6164578125     
+  tprim:  -2.05474581450367     
+  fprim: -0.510110278830065     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  5.097707260568377E-002
-  temp:   977151.520214327     
-  tprim: -0.161214120453244     
-  fprim:  -5.96187478869591     
+  dens:  5.097440364819950E-002
+  temp:   977153.263359096     
+  tprim: -0.161204009867734     
+  fprim:  -5.96182806957018     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.225119372276822     
-  temp:   12060.6835618467     
-  tprim:  -1.83391809867849     
-  fprim:   2.71335507771318     
+  dens:  0.225085976964162     
+  temp:   12060.9283193492     
+  tprim:  -1.83390162015873     
+  fprim:   2.71347298152637     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.2952162199848     
-  temp:   14502.9579428532     
-  tprim:  -2.05476492040218     
-  fprim: -0.261784770505727     
+  dens:   15.2934507488147     
+  temp:   14503.2877069301     
+  tprim:  -2.05474578705329     
+  fprim: -0.261788022408785     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.254856188380889     
-  beta:  6.043823756497135E-002  B0=   4.12458080367470     
-  zeff:   1.54881355543321     
+  normalised flux of chosen surface:  0.254845218141320     
+  beta:  6.043260403793964E-002  B0=   4.12458080367470     
+  zeff:   1.54879974894048     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.0521849910943     
-  temp:   16595.2953791550     
-  tprim:  -2.02153623935254     
-  fprim: -0.514649754395237     
+  dens:   12.0508269786222     
+  temp:   16595.6634110333     
+  tprim:  -2.02151755307600     
+  fprim: -0.514652362716248     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.964174799287543     
-  temp:   16595.2953791550     
-  tprim:  -2.02153623935254     
-  fprim: -0.514649754395237     
+  dens:  0.964066158289776     
+  temp:   16595.6634110333     
+  tprim:  -2.02151755307600     
+  fprim: -0.514652362716248     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  5.716907904662680E-002
-  temp:   980044.557154257     
-  tprim: -0.144528093090451     
-  fprim:  -5.88174479453357     
+  dens:  5.716600309061691E-002
+  temp:   980046.110975895     
+  tprim: -0.144519184651976     
+  fprim:  -5.88170027361184     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.213155508847859     
-  temp:   12493.1293068034     
-  tprim:  -1.80563943383948     
-  fprim:   2.93277219255963     
+  dens:  0.213123430540948     
+  temp:   12493.3767757947     
+  tprim:  -1.80562370969705     
+  fprim:   2.93290448479880     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.3738058008498     
-  temp:   15086.6321750836     
-  tprim:  -2.02153622145790     
-  fprim: -0.267778019194315     
+  dens:   15.3720318846287     
+  temp:   15086.9667495158     
+  tprim:  -2.02151753518570     
+  fprim: -0.267781582879050     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.235829439853915     
-  beta:  6.311345680922854E-002  B0=   4.12458080367470     
-  zeff:   1.52474555962352     
+  normalised flux of chosen surface:  0.235818596977484     
+  beta:  6.310753793509800E-002  B0=   4.12458080367470     
+  zeff:   1.52473177601026     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.1713077507065     
-  temp:   17240.7506241242     
-  tprim:  -1.98938395716149     
-  fprim: -0.519208603411564     
+  dens:   12.1699361196189     
+  temp:   17241.1225205379     
+  tprim:  -1.98936578437751     
+  fprim: -0.519211215322660     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.973704620056517     
-  temp:   17240.7506241242     
-  tprim:  -1.98938395716149     
-  fprim: -0.519208603411564     
+  dens:  0.973594889569514     
+  temp:   17241.1225205379     
+  tprim:  -1.98936578437751     
+  fprim: -0.519211215322660     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  6.389225784750199E-002
-  temp:   982604.271311046     
-  tprim: -0.129939589497196     
-  fprim:  -5.80595901317352     
+  dens:  6.388871979497861E-002
+  temp:   982605.655679997     
+  tprim: -0.129931749414267     
+  fprim:  -5.80591662062421     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.201128029771154     
-  temp:   12926.4794147520     
-  tprim:  -1.77884245625785     
-  fprim:   3.17768429260477     
+  dens:  0.201097302583682     
+  temp:   12926.7287390527     
+  tprim:  -1.77882744680524     
+  fprim:   3.17783330367164     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.4532696851414     
-  temp:   15673.4096666283     
-  tprim:  -1.98938394540522     
-  fprim: -0.274229518523613     
+  dens:   15.4514871538500     
+  temp:   15673.7477542753     
+  tprim:  -1.98936577262405     
+  fprim: -0.274233345971731     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.217139626952714     
-  beta:  6.582584993705108E-002  B0=   4.12458080367470     
-  zeff:   1.50087828755004     
+  normalised flux of chosen surface:  0.217128944448941     
+  beta:  6.581963576868330E-002  B0=   4.12458080367470     
+  zeff:   1.50086458550878     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.2905096135744     
-  temp:   17888.6409766528     
-  tprim:  -1.95832309496876     
-  fprim: -0.523716162602758     
+  dens:   12.2891241176387     
+  temp:   17889.0152055670     
+  tprim:  -1.95830549475503     
+  fprim: -0.523718737476025     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.983240769085956     
-  temp:   17888.6409766528     
-  tprim:  -1.95832309496876     
-  fprim: -0.523716162602757     
+  dens:  0.983129929411095     
+  temp:   17889.0152055670     
+  tprim:  -1.95830549475503     
+  fprim: -0.523718737476025     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  7.116745746741933E-002
-  temp:   984873.685498354     
-  tprim: -0.117168258459015     
-  fprim:  -5.73416777857986     
+  dens:  7.116339571212826E-002
+  temp:   984874.918180384     
+  tprim: -0.117161368086878     
+  fprim:  -5.73412746020139     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.189055170291154     
-  temp:   13360.2640543401     
-  tprim:  -1.75338372635911     
-  fprim:   3.45288270950703     
+  dens:  0.189025828138383     
+  temp:   13360.5143004653     
+  tprim:  -1.75336940365582     
+  fprim:   3.45305127899729     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.5336570884281     
-  temp:   16262.4008935845     
-  tprim:  -1.95832308718265     
-  fprim: -0.281072060657593     
+  dens:   15.5318657367154     
+  temp:   16262.7411016871     
+  tprim:  -1.95830548697075     
+  fprim: -0.281076109574899     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.199302339424131     
-  beta:  6.849483238988791E-002  B0=   4.12458080367470     
-  zeff:   1.47790905504080     
+  normalised flux of chosen surface:  0.199292829410096     
+  beta:  6.848817199918268E-002  B0=   4.12458080367470     
+  zeff:   1.47789676245104     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.4063362139482     
-  temp:   18519.7268852658     
-  tprim:  -1.92918525508353     
-  fprim: -0.528000323117204     
+  dens:   12.4049305491025     
+  temp:   18520.0666606561     
+  tprim:  -1.92916985527455     
+  fprim: -0.528002596071562     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.992506897115858     
-  temp:   18519.7268852658     
-  tprim:  -1.92918525508353     
-  fprim: -0.528000323117204     
+  dens:  0.992394443928198     
+  temp:   18520.0666606561     
+  tprim:  -1.92916985527455     
+  fprim: -0.528002596071562     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  7.878508687216894E-002
-  temp:   986836.505972930     
-  tprim: -0.106268494302983     
-  fprim:  -5.66793198441273     
+  dens:  7.878001107440169E-002
+  temp:   986837.503259278     
+  tprim: -0.106262994933862     
+  fprim:  -5.66789723762198     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.177295443876972     
-  temp:   13781.8057192177     
-  tprim:  -1.72981027753710     
-  fprim:   3.75508446073472     
+  dens:  0.177268135102693     
+  temp:   13782.0324381414     
+  tprim:  -1.72979788661220     
+  fprim:   3.75525748301482     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.6126928451861     
-  temp:   16836.1153542280     
-  tprim:  -1.92918524982596     
-  fprim: -0.288046292141365     
+  dens:   15.6108882697238     
+  temp:   16836.4242409457     
+  tprim:  -1.92916985001807     
+  fprim: -0.288050123157104     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.181823153696748     
-  beta:  7.118844210622417E-002  B0=   4.12458080367470     
-  zeff:   1.45523779852333     
+  normalised flux of chosen surface:  0.181813770962690     
+  beta:  7.118148580018423E-002  B0=   4.12458080367470     
+  zeff:   1.45522558852011     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.5218195544145     
-  temp:   19150.1613162453     
-  tprim:  -1.90112841798574     
-  fprim: -0.532148246286837     
+  dens:   12.5204004509101     
+  temp:   19150.5029143606     
+  tprim:  -1.90111349132876     
+  fprim: -0.532150454606967     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.00174556435316     
-  temp:   19150.1613162453     
-  tprim:  -1.90112841798574     
-  fprim: -0.532148246286837     
+  dens:   1.00163203607281     
+  temp:   19150.5029143606     
+  tprim:  -1.90111349132876     
+  fprim: -0.532150454606967     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  8.694207888445334E-002
-  temp:   988586.949126474     
-  tprim: -9.668358933371646E-002
-  fprim:  -5.60504477498576     
+  dens:  8.693636355183187E-002
+  temp:   988587.845907261     
+  tprim: -9.667871549432244E-002
+  fprim:  -5.60501153120653     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.165547855341771     
-  temp:   14202.0696327041     
-  tprim:  -1.70733773460628     
-  fprim:   4.09797363647529     
+  dens:  0.165521902614488     
+  temp:   14202.2971437296     
+  tprim:  -1.70732582930921     
+  fprim:   4.09817213644508     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.6924819729403     
-  temp:   17409.2375630168     
-  tprim:  -1.90112841440550     
-  fprim: -0.295286789186462     
+  dens:   15.6906686658463     
+  temp:   17409.5481067574     
+  tprim:  -1.90111348774925     
+  fprim: -0.295290782181284     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.164683891336262     
-  beta:  7.390693894870938E-002  B0=   4.12458080367470     
-  zeff:   1.43286789824539     
+  normalised flux of chosen surface:  0.164674677393115     
+  beta:  7.389967629750616E-002  B0=   4.12458080367470     
+  zeff:   1.43285583834855     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.6369828383236     
-  temp:   19779.8314009360     
-  tprim:  -1.87410515074583     
-  fprim: -0.536142164360213     
+  dens:   12.6355500133418     
+  temp:   19780.1729586903     
+  tprim:  -1.87409075465818     
+  fprim: -0.536144288206966     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.01095862706589     
-  temp:   19779.8314009360     
-  tprim:  -1.87410515074583     
-  fprim: -0.536142164360213     
+  dens:   1.01084400106735     
+  temp:   19780.1729586903     
+  tprim:  -1.87409075465818     
+  fprim: -0.536144288206966     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  9.565932043840257E-002
-  temp:   990153.516782698     
-  tprim: -8.823353490836869E-002
-  fprim:  -5.54520080277399     
+  dens:  9.565288882094143E-002
+  temp:   990154.321737170     
+  tprim: -8.822922774178642E-002
+  fprim:  -5.54516909615093     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.153814508487503     
-  temp:   14621.0955843465     
-  tprim:  -1.68585890718679     
-  fprim:   4.49084539300566     
+  dens:  0.153789944835206     
+  temp:   14621.3227007871     
+  tprim:  -1.68584750127085     
+  fprim:   4.49107427796298     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.7731057842572     
-  temp:   17981.6649119078     
-  tprim:  -1.87410514828820     
-  fprim: -0.302769264854617     
+  dens:   15.7712834621297     
+  temp:   17981.9754189569     
+  tprim:  -1.87409075220105     
+  fprim: -0.302773388589226     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.148395662259066     
-  beta:  7.656334090020006E-002  B0=   4.12458080367470     
-  zeff:   1.41149689142099     
+  normalised flux of chosen surface:  0.148387818013578     
+  beta:  7.655557827932008E-002  B0=   4.12458080367470     
+  zeff:   1.41148657568357     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.7482092109627     
-  temp:   20388.7362047895     
-  tprim:  -1.84887832407199     
-  fprim: -0.539852528593490     
+  dens:   12.7467547850900     
+  temp:   20389.0319049426     
+  tprim:  -1.84886628257363     
+  fprim: -0.539854293121305     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.01985673687702     
-  temp:   20388.7362047895     
-  tprim:  -1.84887832407199     
-  fprim: -0.539852528593490     
+  dens:   1.01974038280720     
+  temp:   20389.0319049426     
+  tprim:  -1.84886628257363     
+  fprim: -0.539854293121304     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.104654269748583     
-  temp:   991518.076229992     
-  tprim: -8.098907015856269E-002
-  fprim:  -5.48990112588982     
+  dens:  0.104646393150984     
+  temp:   991518.706126894     
+  tprim: -8.098575379685180E-002
+  fprim:  -5.48987484933225     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.142468103526735     
-  temp:   15025.6999776261     
-  tprim:  -1.66592168782756     
-  fprim:   4.93048776853222     
+  dens:  0.142445736828466     
+  temp:   15025.8963326745     
+  tprim:  -1.66591219287311     
+  fprim:   4.93071786498529     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.8520398453743     
-  temp:   18535.2147330295     
-  tprim:  -1.84887832235231     
-  fprim: -0.310228666943512     
+  dens:   15.8502027579772     
+  temp:   18535.4835513502     
+  tprim:  -1.84886628085424     
+  fprim: -0.310232341104599     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.132594185330436     
-  beta:  7.921013418333879E-002  B0=   4.12458080367470     
-  zeff:   1.39067560776406     
+  normalised flux of chosen surface:  0.132586633080722     
+  beta:  7.920204341607855E-002  B0=   4.12458080367470     
+  zeff:   1.39066563779904     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.8577804543950     
-  temp:   20989.1801768871     
-  tprim:  -1.82483263291040     
-  fprim: -0.543359683890719     
+  dens:   12.8563118416028     
+  temp:   20989.4694422895     
+  tprim:  -1.82482124134056     
+  fprim: -0.543361336709462     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.02862243635160     
-  temp:   20989.1801768871     
-  tprim:  -1.82483263291040     
-  fprim: -0.543359683890719     
+  dens:   1.02850494732823     
+  temp:   20989.4694422895     
+  tprim:  -1.82482124134056     
+  fprim: -0.543361336709462     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.114090972297160     
-  temp:   992737.045918554     
-  tprim: -7.462440438487565E-002
-  fprim:  -5.43763830467753     
+  dens:  0.114082157560298     
+  temp:   992737.605396722     
+  tprim: -7.462150881394541E-002
+  fprim:  -5.43761364024985     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.131279358177512     
-  temp:   15424.1742080127     
-  tprim:  -1.64699482321452     
-  fprim:   5.43664503183722     
+  dens:  0.131258435255469     
+  temp:   15424.3660625250     
+  tprim:  -1.64698587095712     
+  fprim:   5.43690925330922     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   15.9308834207576     
-  temp:   19081.0728890848     
-  tprim:  -1.82483263169361     
-  fprim: -0.317790204917837     
+  dens:   15.9290366629127     
+  temp:   19081.3358576323     
+  tprim:  -1.82482124012396     
+  fprim: -0.317793895848338     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.117174690968534     
-  beta:  8.186102714932242E-002  B0=   4.12458080367470     
-  zeff:   1.37028780199973     
+  normalised flux of chosen surface:  0.117167431193144     
+  beta:  8.185260518657571E-002  B0=   4.12458080367470     
+  zeff:   1.37027818909753     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   12.9662938261840     
-  temp:   21584.3127801264     
-  tprim:  -1.80177565374967     
-  fprim: -0.546684939059043     
+  dens:   12.9648110716372     
+  temp:   21584.5951144428     
+  tprim:  -1.80176489299145     
+  fprim: -0.546686480844365     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.03730350609472     
-  temp:   21584.3127801264     
-  tprim:  -1.80177565374967     
-  fprim: -0.546684939059043     
+  dens:   1.03718488573097     
+  temp:   21584.5951144428     
+  tprim:  -1.80176489299145     
+  fprim: -0.546686480844365     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.124021711332569     
-  temp:   993836.126022465     
-  tprim: -6.898623740019189E-002
-  fprim:  -5.38788536112310     
+  dens:  0.124011887324524     
+  temp:   993836.623751034     
+  tprim: -6.898370794095837E-002
+  fprim:  -5.38786221676963     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.120189585143249     
-  temp:   15818.6855357306     
-  tprim:  -1.62889678858789     
-  fprim:   6.02949618345215     
+  dens:  0.120170103534490     
+  temp:   15818.8725990287     
+  tprim:  -1.62888835100175     
+  fprim:   6.02980298429311     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.0100817718981     
-  temp:   19622.1025281093     
-  tprim:  -1.80177565288107     
-  fprim: -0.325480387226676     
+  dens:   16.0082252389551     
+  temp:   19622.3591956696     
+  tprim:  -1.80176489212298     
+  fprim: -0.325484081022192     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  0.102844272599130     
-  beta:  8.438663286630868E-002  B0=   4.12458080367470     
-  zeff:   1.35129097114435     
+  normalised flux of chosen surface:  0.102838527245000     
+  beta:  8.437767262604698E-002  B0=   4.12458080367470     
+  zeff:   1.35128334712793     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.0685557766610     
-  temp:   22145.5289369176     
-  tprim:  -1.78070828097292     
-  fprim: -0.549682946628036     
+  dens:   13.0670507346791     
+  temp:   22145.7555040140     
+  tprim:  -1.78069990433443     
+  fprim: -0.549684130070771     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.04548446213288     
-  temp:   22145.5289369176     
-  tprim:  -1.78070828097292     
-  fprim: -0.549682946628036     
+  dens:   1.04536405877433     
+  temp:   22145.7555040140     
+  tprim:  -1.78069990433443     
+  fprim: -0.549684130070771     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.133933355595092     
-  temp:   994784.563323448     
-  tprim: -6.420922795699965E-002
-  fprim:  -5.34269711664459     
+  dens:  0.133921618959193     
+  temp:   994784.930299037     
+  tprim: -6.420739699131016E-002
+  fprim:  -5.34267919641020     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  0.109731815038409     
-  temp:   16190.3601359413     
-  tprim:  -1.61238919035044     
-  fprim:   6.69661300900964     
+  dens:  0.109714609873365     
+  temp:   16190.5101197293     
+  tprim:  -1.61238263052266     
+  fprim:   6.69690767936211     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.0857823023474     
-  temp:   20132.2990340867     
-  tprim:  -1.78070828033767     
-  fprim: -0.332907272485880     
+  dens:   16.0839097493863     
+  temp:   20132.5050041743     
+  tprim:  -1.78069990369925     
+  fprim: -0.332910304792467     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  8.897358935689048E-002
-  beta:  8.688958437579365E-002  B0=   4.12458080367470     
-  zeff:   1.33287030029874     
+  normalised flux of chosen surface:  8.896789914457466E-002
+  beta:  8.688034201013414E-002  B0=   4.12458080367470     
+  zeff:   1.33286273837844     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.1688357557307     
-  temp:   22696.1602587988     
-  tprim:  -1.76064743042658     
-  fprim: -0.552495594105833     
+  dens:   13.1673189766182     
+  temp:   22696.3876399321     
+  tprim:  -1.76063926738556     
+  fprim: -0.552496729469329     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.05350686045845     
-  temp:   22696.1602587988     
-  tprim:  -1.76064743042658     
-  fprim: -0.552495594105833     
+  dens:   1.05338551812945     
+  temp:   22696.3876399321     
+  tprim:  -1.76063926738556     
+  fprim: -0.552496729469329     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.144192787799199     
-  temp:   995641.276514341     
-  tprim: -5.997472267581107E-002
-  fprim:  -5.29987915774622     
+  dens:  0.144180074520418     
+  temp:   995641.616291098     
+  tprim: -5.997305977645341E-002
+  fprim:  -5.29986177286404     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  9.947128386798264E-002
-  temp:   16554.7278366959     
-  tprim:  -1.59668466142472     
-  fprim:   7.48576170578527     
+  dens:  9.945527759153774E-002
+  temp:   16554.8782446396     
+  tprim:  -1.59667827256726     
+  fprim:   7.48612087105168     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.1610627554539     
-  temp:   20632.8729629258     
-  tprim:  -1.76064742995710     
-  fprim: -0.340357459851986     
+  dens:   16.1591818274671     
+  temp:   20633.0796730468     
+  tprim:  -1.76063926691614     
+  fprim: -0.340360569692916     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  7.572982704250573E-002
-  beta:  8.933440410222854E-002  B0=   4.12458080367470     
-  zeff:   1.31526218258809     
+  normalised flux of chosen surface:  7.572581358339960E-002
+  beta:  8.932458288452472E-002  B0=   4.12458080367470     
+  zeff:   1.31525684461263     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.2657767869696     
-  temp:   23228.6909852750     
-  tprim:  -1.74179560173700     
-  fprim: -0.555096249145179     
+  dens:   13.2642366926905     
+  temp:   23228.8533686560     
+  tprim:  -1.74178993338274     
+  fprim: -0.555097024458178     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.06126214295757     
-  temp:   23228.6909852750     
-  tprim:  -1.74179560173700     
-  fprim: -0.555096249145178     
+  dens:   1.06113893541524     
+  temp:   23228.8533686560     
+  tprim:  -1.74178993338274     
+  fprim: -0.555097024458178     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.154636211420608     
-  temp:   996407.573542359     
-  tprim: -5.626051604282694E-002
-  fprim:  -5.25980626794074     
+  dens:  0.154621178434402     
+  temp:   996407.798528339     
+  tprim: -5.625943658285823E-002
+  fprim:  -5.25979424069079     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  8.954804128304701E-002
-  temp:   16906.8673389469     
-  tprim:  -1.58193093246679     
-  fprim:   8.41927653694684     
+  dens:  8.953442018607173E-002
+  temp:   16906.9746810933     
+  tprim:  -1.58192649620324     
+  fprim:   8.41959249602029     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.2348617434243     
-  temp:   21116.9918050717     
-  tprim:  -1.74179560138512     
-  fprim: -0.347716105392740     
+  dens:   16.2329634415062     
+  temp:   21117.1394263272     
+  tprim:  -1.74178993303089     
+  fprim: -0.347718372246903     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  6.355427468956201E-002
-  beta:  9.163064260737624E-002  B0=   4.12458080367470     
-  zeff:   1.29906590969429     
+  normalised flux of chosen surface:  6.355012258731009E-002
+  beta:  9.162059164987700E-002  B0=   4.12458080367470     
+  zeff:   1.29906038603548     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.3559278579256     
-  temp:   23724.0982647017     
-  tprim:  -1.72472343423988     
-  fprim: -0.557412113390787     
+  dens:   13.3543784537005     
+  temp:   23724.2681587034     
+  tprim:  -1.72471765445278     
+  fprim: -0.557412890726255     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.06847422863404     
-  temp:   23724.0982647017     
-  tprim:  -1.72472343423988     
-  fprim: -0.557412113390787     
+  dens:   1.06835027629604     
+  temp:   23724.2681587034     
+  tprim:  -1.72471765445278     
+  fprim: -0.557412890726255     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.164826853203550     
-  temp:   997070.968974655     
-  tprim: -5.310793543097995E-002
-  fprim:  -5.22363644801481     
+  dens:  0.164810924966735     
+  temp:   997071.188836237     
+  tprim: -5.310690102252795E-002
+  fprim:  -5.22362422028976     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  8.031656146706627E-002
-  temp:   17234.2594068501     
-  tprim:  -1.56856750046310     
-  fprim:   9.49320837206040     
+  dens:  8.030389272819574E-002
+  temp:   17234.3716512458     
+  tprim:  -1.56856297527315     
+  fprim:   9.49361875047319     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.3044293904032     
-  temp:   21567.3620590207     
-  tprim:  -1.72472343396982     
-  fprim: -0.354697290195504     
+  dens:   16.3025242125952     
+  temp:   21567.5165081132     
+  tprim:  -1.72471765418276     
+  fprim: -0.354699706767231     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  5.181265552181042E-002
-  beta:  9.389024630793243E-002  B0=   4.12458080367470     
-  zeff:   1.28344708502768     
+  normalised flux of chosen surface:  5.180845099786835E-002
+  beta:  9.387995405845728E-002  B0=   4.12458080367470     
+  zeff:   1.28344149306780     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.4437997282839     
-  temp:   24207.1216751098     
-  tprim:  -1.70849327934472     
-  fprim: -0.559576148074330     
+  dens:   13.4422406452508     
+  temp:   24207.2955649003     
+  tprim:  -1.70848750840905     
+  fprim: -0.559576910694021     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.07550397826271     
-  temp:   24207.1216751098     
-  tprim:  -1.70849327934472     
-  fprim: -0.559576148074330     
+  dens:   1.07537925162006     
+  temp:   24207.2955649003     
+  tprim:  -1.70848750840905     
+  fprim: -0.559576910694021     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.175217421537476     
-  temp:   997676.191217896     
-  tprim: -5.028845346412496E-002
-  fprim:  -5.18934259536422     
+  dens:  0.175200511909267     
+  temp:   997676.402163541     
+  tprim: -5.028748083993174E-002
+  fprim:  -5.18933041601283     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  7.131584412637489E-002
-  temp:   17553.2998783010     
-  tprim:  -1.55585631447367     
-  fprim:   10.8063578560368     
+  dens:  7.130416592918960E-002
+  temp:   17553.4147057928     
+  tprim:  -1.55585179309855     
+  fprim:   10.8068899990681     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.3731375926426     
-  temp:   22006.4742502433     
-  tprim:  -1.70849327913543     
-  fprim: -0.361630240030793     
+  dens:   16.3712251678846     
+  temp:   22006.6323318710     
+  tprim:  -1.70848750819977     
+  fprim: -0.361632758448175     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  4.138708425470083E-002
-  beta:  9.593465430662401E-002  B0=   4.12458080367470     
-  zeff:   1.26958516440053     
+  normalised flux of chosen surface:  4.138428382356923E-002
+  beta:  9.592385701148251E-002  B0=   4.12458080367470     
+  zeff:   1.26958144222655     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.5225907650914     
-  temp:   24640.3319438234     
-  tprim:  -1.69427310304018     
-  fprim: -0.561439930779135     
+  dens:   13.5210119917676     
+  temp:   24640.4488548331     
+  tprim:  -1.69426930732638     
+  fprim: -0.561440424080269     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.08180726120731     
-  temp:   24640.3319438234     
-  tprim:  -1.69427310304018     
-  fprim: -0.561439930779135     
+  dens:   1.08168095934141     
+  temp:   24640.4488548331     
+  tprim:  -1.69426930732638     
+  fprim: -0.561440424080268     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.184929154471993     
-  temp:   998187.118221208     
-  tprim: -4.795458980777317E-002
-  fprim:  -5.15935978361089     
+  dens:  0.184909944756920     
+  temp:   998187.252270437     
+  tprim: -4.795398340210975E-002
+  fprim:  -5.15935178768594     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  6.324335092866155E-002
-  temp:   17839.3097794989     
-  tprim:  -1.54471065578143     
-  fprim:   12.3005362077251     
+  dens:  6.323368951615806E-002
+  temp:   17839.3869498733     
+  tprim:  -1.54470767941204     
+  fprim:   12.3009907431906     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.4355237020220     
-  temp:   22400.3017672145     
-  tprim:  -1.69427310287321     
-  fprim: -0.367954890715495     
+  dens:   16.4335959370612     
+  temp:   22400.4080499506     
+  tprim:  -1.69426930715942     
+  fprim: -0.367956611236170     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  3.156751305979665E-002
-  beta:  9.789370414004454E-002  B0=   4.12458080367470     
-  zeff:   1.25653939653964     
+  normalised flux of chosen surface:  3.156446272288404E-002
+  beta:  9.788273467452668E-002  B0=   4.12458080367470     
+  zeff:   1.25653534607635     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.5974624314845     
-  temp:   25052.0724599348     
-  tprim:  -1.68104242338007     
-  fprim: -0.563145370174201     
+  dens:   13.5958768951607     
+  temp:   25052.2009207663     
+  tprim:  -1.68103833785251     
+  fprim: -0.563145892386614     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.08779699451876     
-  temp:   25052.0724599348     
-  tprim:  -1.68104242338007     
-  fprim: -0.563145370174200     
+  dens:   1.08767015161286     
+  temp:   25052.2009207663     
+  tprim:  -1.68103833785251     
+  fprim: -0.563145892386614     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.194512895308847     
-  temp:   998647.056381346     
-  tprim: -4.589323415643365E-002
-  fprim:  -5.13150971306794     
+  dens:  0.194492924319478     
+  temp:   998647.196180839     
+  tprim: -4.589261362350770E-002
+  fprim:  -5.13150111943378     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  5.557092770556774E-002
-  temp:   18111.0414765391     
-  tprim:  -1.53433100730699     
-  fprim:   14.1215911299986     
+  dens:  5.556195892103569E-002
+  temp:   18111.1262404253     
+  tprim:  -1.53432780052876     
+  fprim:   14.1222375462272     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.4955077773732     
-  temp:   22774.6113272839     
-  tprim:  -1.68104242324507     
-  fprim: -0.374060252314842     
+  dens:   16.4935748005516     
+  temp:   22774.7281098580     
+  tprim:  -1.68103833771752     
+  fprim: -0.374062171545571     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  2.311266905014604E-002
-  beta:  9.960703005570133E-002  B0=   4.12458080367470     
-  zeff:   1.24531838893358     
+  normalised flux of chosen surface:  2.311081240938849E-002
+  beta:  9.959562318932054E-002  B0=   4.12458080367470     
+  zeff:   1.24531592627582     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.6624413914535     
-  temp:   25409.4664630016     
-  tprim:  -1.66977624787603     
-  fprim: -0.564574751151385     
+  dens:   13.6608391313314     
+  temp:   25409.5452368491     
+  tprim:  -1.66977378659159     
+  fprim: -0.564575061062319     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.09299531131628     
-  temp:   25409.4664630016     
-  tprim:  -1.66977624787603     
-  fprim: -0.564574751151385     
+  dens:   1.09286713050651     
+  temp:   25409.5452368491     
+  tprim:  -1.66977378659159     
+  fprim: -0.564575061062319     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.203117425203794     
-  temp:   999027.491437442     
-  tprim: -4.421879315902441E-002
-  fprim:  -5.10782534631333     
+  dens:  0.203095317785939     
+  temp:   999027.573455685     
+  tprim: -4.421843529800389E-002
+  fprim:  -5.10782017483408     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  4.891120404928566E-002
-  temp:   18346.8307635697     
-  tprim:  -1.52548382802305     
-  fprim:   16.1642075849579     
+  dens:  4.890394902631163E-002
+  temp:   18346.8827268887     
+  tprim:  -1.52548189424463     
+  fprim:   16.1647189922468     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.5481340887893     
-  temp:   23099.5149664124     
-  tprim:  -1.66977624776357     
-  fprim: -0.379434687885225     
+  dens:   16.5461877220742     
+  temp:   23099.5865790011     
+  tprim:  -1.66977378647913     
+  fprim: -0.379435880188246     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  1.561353723976465E-002
-  beta:  0.101147621841551       B0=   4.12458080367470     
-  zeff:   1.23537732276838     
+  normalised flux of chosen surface:  1.561199513962599E-002
+  beta:  0.101135972574945       B0=   4.12458080367470     
+  zeff:   1.23537527978550     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.7204722489493     
-  temp:   25728.6848051672     
-  tprim:  -1.65988021674244     
-  fprim: -0.565812266458815     
+  dens:   13.7188607732305     
+  temp:   25728.7506629647     
+  tprim:  -1.65987819105177     
+  fprim: -0.565812518007435     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.09763777991594     
-  temp:   25728.6848051672     
-  tprim:  -1.65988021674244     
-  fprim: -0.565812266458815     
+  dens:   1.09750886185844     
+  temp:   25728.7506629647     
+  tprim:  -1.65987819105177     
+  fprim: -0.565812518007435     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.211032142512094     
-  temp:   999353.495738366     
-  tprim: -4.280748344117248E-002
-  fprim:  -5.08704136699370     
+  dens:  0.211008827878139     
+  temp:   999353.561708898     
+  tprim: -4.280720013896343E-002
+  fprim:  -5.08703711430145     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  4.296285032690970E-002
-  temp:   18557.3780152031     
-  tprim:  -1.51770506436775     
-  fprim:   18.5229518442495     
+  dens:  4.295653978113229E-002
+  temp:   18557.4214479057     
+  tprim:  -1.51770347130120     
+  fprim:   18.5235057626899     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.5955891957668     
-  temp:   23389.7134592726     
-  tprim:  -1.65988021664677     
-  fprim: -0.384294338459918     
+  dens:   16.5936353913904     
+  temp:   23389.7733299975     
+  tprim:  -1.65987819095611     
+  fprim: -0.384295346851319     
   vnewk: waiting for formula
-  normalised flux of chosen surface:  9.851626361866149E-003
-  beta:  0.102344907442136       B0=   4.12458080367470     
-  zeff:   1.22774792351395     
+  normalised flux of chosen surface:  9.851081300548209E-003
+  beta:  0.102332911506920       B0=   4.12458080367470     
+  zeff:   1.22774720218822     
   nspec:           5
   Ion species no.           1
   Z:           1
   mass:  4.181500132125847E-027
-  dens:   13.7653132270370     
-  temp:   25975.3714541421     
-  tprim:  -1.65233800009155     
-  fprim: -0.566743744347469     
+  dens:   13.7636887271052     
+  temp:   25975.3948482303     
+  tprim:  -1.65233728912942     
+  fprim: -0.566743831667025     
   vnewk: waiting for formula
   Ion species no.           2
   Z:           2
   mass:  6.690400211401355E-027
-  dens:   1.10122505816296     
-  temp:   25975.3714541421     
-  tprim:  -1.65233800009155     
-  fprim: -0.566743744347468     
+  dens:   1.10109509816841     
+  temp:   25975.3948482303     
+  tprim:  -1.65233728912942     
+  fprim: -0.566743831667025     
   vnewk: waiting for formula
   Ion species no.           3
   Z:           2
   mass:  6.690400211401355E-027
-  dens:  0.217299345054350     
-  temp:   999597.008426123     
-  tprim: -4.176827635209433E-002
-  fprim:  -5.07121188690571     
+  dens:  0.217274234138806     
+  temp:   999597.031183194     
+  tprim: -4.176817985369841E-002
+  fprim:  -5.07121039515648     
   vnewk: waiting for formula
   Ion species no.           4
   Z:           6
   mass:  2.007120063420406E-026
-  dens:  3.836606106179932E-002
-  temp:   18720.0513718182     
-  tprim:  -1.51177131198733     
-  fprim:   20.8459836620885     
+  dens:  3.836108560176342E-002
+  temp:   18720.0667972950     
+  tprim:  -1.51177075242274     
+  fprim:   20.8462303289742     
   vnewk: waiting for formula
   Electron species
   Z:  -1.000000    
   mass:  9.109399999999999E-031
-  dens:   16.6325583998424     
-  temp:   23613.9740492378     
-  tprim:  -1.65233800000705     
-  fprim: -0.388088361499939     
+  dens:   16.6305939053302     
+  temp:   23613.9953165907     
+  tprim:  -1.65233728904492     
+  fprim: -0.388088722900049     
   vnewk: waiting for formula

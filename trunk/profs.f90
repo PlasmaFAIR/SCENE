@@ -241,7 +241,18 @@
 !        press=umax*bpol*scl*ptem/ppow
         press=umax*scl*pfac*bpol*ptem/pscl
         return
-      else
+     end if
+
+     if (ipswtch.eq.15) then
+        !Use Lao's et al method for p'
+        !ptem
+        
+        
+
+
+     else
+        
+           
         if (ip.eq.0) then
 ! return pressure
           te=tempe(psi,0)
@@ -285,7 +296,9 @@
         end if
 !        scl=s*bpol*umax/p0
         press=pt
-      end if
+     end if
+
+     
 
   end function press
 !
@@ -356,7 +369,7 @@
 
        if (ipswtch.eq.1) then
           if (imp.eq.0) then
-             pressi=press(psi,id,ip)
+             pressi=press(psi,ip)
           else
              if (ip.eq.0) then
                 ptem=pa+(1.-pa)*xps**ppow
@@ -750,7 +763,7 @@
           cc=g1-aa*x1**2-bb*x1
           ffp=g0*(aa*psin**2+bb*psin+cc)
           if (id.eq.1) then
-            fprof=ffp
+             fprof=ffp
             return
           else if (id.lt.4) then
             fsq=0.
@@ -834,7 +847,42 @@
           ffpp=-(g0/umax)*fpow*xps**(fpow-1.)
           fprof=ffpp
           return
-        end if
+       end if
+
+       !Test function from Lao et al 
+       if (ipswtch.eq.15) then
+          
+          ffp = g0 * ( af1*psin**1 + af2*psin**2 + &
+               af3*psin**3 - (af1+af2+af3)*psin**4)
+          if (id.eq.1) then
+             fprof=ffp
+             return
+          end if
+
+          fsq = umax*g0* (af1/2.*psin**2 + af2/3.* &
+               psin**3 + af3/4.*psin**4 - (af1+af2+af3) &
+               /5. *psin**5)
+
+          fsq = fsq + const
+          f = sqrt(fsq)
+          if (id.eq.2) then
+             fprof=f
+             return
+          end if
+          if (id.eq.3) then
+             fprof = ffp/f
+             return
+          end if
+
+          ffpp = g0/umax * (af1 + 2*af2*psin + 3*af3*psin**2 - &
+               4*(af1+af2+af3)*psin**3)
+
+          fprof=ffpp
+          return
+       end if
+
+
+       
 	ffp=g0*((1.+xps)**fpow-1.)
 	if (id.eq.1) then
 	  fprof=ffp
@@ -896,7 +944,8 @@
         if ((rat.gt.1.).or.(rat.lt.0.)) then
           write(6,*)' rat=',rat,' xps=',xps,' ij=',ij
           write(6,*)' psiold(ij)=',psiold(ij),' psiold(ij-1)=',psiold(ij-1)
-        end if
+       end if
+
         ffp=gst(ij-1)+rat*(gst(ij)-gst(ij-1))
         ffp=scl*ffp
 !!$        if (xps.gt.0.999) then
@@ -904,7 +953,8 @@
 !!$          write(6,*)' gst(ij)=',gst(ij)
 !!$        end if
         if (id.eq.1) then
-          fprof=ffp
+           fprof=ffp
+
           return
         end if
         if (id.eq.4) then

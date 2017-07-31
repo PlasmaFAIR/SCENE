@@ -72,6 +72,7 @@
         stop
       end if
       jpass=0
+
       do i=1,nr+1
         if (r(i-jpass).lt.r0) then
           umid(i)=u(i,nsym)
@@ -441,7 +442,7 @@
       end if
 !  approx psi as a quadratic in eps for a first guess...
       u1=umax*(1.-eps/tokeps)**2
-!  find the value of eps this corresponds to
+      !  find the value of eps this corresponds to
       call argen(u1,eps1,0)
       diff1=(eps1-eps)/tokeps
       if (diff1.gt.0.) then

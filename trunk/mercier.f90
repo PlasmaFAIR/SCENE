@@ -49,7 +49,7 @@
 ! Mercier interchange parameter
       dm=(pd/(fsi*qd**2))*(fsi*qd*av1-fsi*pd*av1**2+       &
          av2*(fsi*pd*av3+2.*av4-fsi*av5))
-      write(6,*)' psi=',psi/psiv(1),' Dm=',dm
+      !write(6,*)' psi=',psi/psiv(1),' Dm=',dm
 ! GGJ H-function
       hfun=pd*(av1-av2/bsqav(nf))/qd
 ! resistive interchange parameter, DR
@@ -74,7 +74,7 @@
       write(82,*)' Lp/psi0=',mu0*pp/(pd*umax),' bpol2=',bpol2,' Lq/psi0=',sfac(nf)/(qp(nf)*umax)
       bdel=-av2*2.*pi*rnorm(nf)*mu0*bsj(nf)*sqrt(bsqav(nf))/    &
             (4.*fsi*qd*av6*pi**2)
-        write(6,*)' f90 boot/old boot=',neoterm(nf)/bdel
+        !write(6,*)' f90 boot/old boot=',neoterm(nf)/bdel
       end do
 !      call tstplt2(ncon,sfac,neoterm,hegterm)
       return

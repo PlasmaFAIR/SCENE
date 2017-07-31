@@ -55,14 +55,13 @@ def fourier_test():
     plt.ylabel('Z (m)')
     plt.plot(thdim,bdy[:,1])
     plt.title('Fourier components fit in Z')
-    plt.show()
     plt.savefig('fourier_z.png')
-
+    plt.close()
 
     plt.plot(theta, rtmp)
     plt.plot(thdim, bdy[:,0])
     plt.xlabel('Poloidal angle (rad)')
     plt.ylabel('R (m)')
     plt.title('Fourier components fit in R')
-    plt.show()
     plt.savefig('fourier_r.png')
+    plt.close()

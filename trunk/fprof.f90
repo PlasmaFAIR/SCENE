@@ -21,7 +21,7 @@
 !  use input profile parameterisation
 	g0=-mu0*scl*r0*r0*(1.-bpol)
 ! if ipswtch=-1 then use mesh profile for ffprime 
-        if (ipswtch.eq.-1) then
+ if (ipswtch.eq.-1) then
           psin=psi/umax
           dpsi=1./nterp
           im=psin/dpsi
@@ -122,7 +122,39 @@
           ffpp=-(g0/umax)*fpow*xps**(fpow-1.)
           fprof=ffpp
           return
-        end if
+       end if
+
+       !Test function from Lao et al 
+       if (ipswtch.eq.6) then
+          
+          ffp = g0 * ( af1*psin**1 + af2*psin**2 + &
+               af3*psin**3 - (af1+af2+af3)**4
+          if (id.eq.1) then
+             fprof=ffp
+             return
+          end if
+
+          fsq = umax*g0* (af1/2.*psin**2 + af2/3.* &
+               psin**3 + af3/4.*psin**4 - (af1+af2+af3) &
+               /5. *psin**5
+
+          fsq = fsq + const
+          f = sqrt(fsq)
+          if (id.eq.2) then
+             fprof=f
+             return
+          end if
+          if (id.eq.3) then
+             fprof = ffp/f
+             return
+          end if
+
+          ffpp = g0/umax * (af1 + 2*af2*psin + 3*af3*psin**2 - &
+               4*(af1+af2+af3)*psin**3
+
+          fprof=ffpp
+       end if
+       
 	ffp=g0*((1.+xps)**fpow-1.)
 	if (id.eq.1) then
 	  fprof=ffp
@@ -146,7 +178,9 @@
         end if
         ffpp=-(g0/umax)*fpow*(1.+xps)**(fpow-1.)
         fprof=ffpp
-      else
+!********************************************************************8
+        
+     else
 !---------------------------------------------------------------
 !  use discrete form of ff'
 	ij=1

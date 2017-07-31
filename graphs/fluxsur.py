@@ -6,6 +6,9 @@ def flxplot(device):
 
     filename=device+'_fluxsur.dat'
 
+    bdy_dat='bdy.txt'
+
+    bdy=np.loadtxt(bdy_dat, skiprows=1)
     fluxsur = np.loadtxt(filename)
 
 
@@ -16,7 +19,6 @@ def flxplot(device):
 
     fluxsur = np.reshape(fluxsur, (ncon,  npts, 2 ) )
 
-    print(fluxsur[1, 0:9, :])
 
     for i in range(int(ncon)):
 
@@ -24,11 +26,14 @@ def flxplot(device):
 
 
 
+    plt.plot(bdy[:,0], bdy[:,1], 'k', linewidth=4.0)
     ax = plt.gca()
     ax.set_aspect('equal')
     plt.xlabel('R (m)')
     plt.ylabel('Z (m)')
     plt.title(' Flux surfaces of ')
-
-    plt.savefig('flxsur.png')
     plt.show()
+    plt.savefig('flxsur.png')
+    plt.close()
+
+    print('Flux Surface plot saved')

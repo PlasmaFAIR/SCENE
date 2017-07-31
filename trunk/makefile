@@ -9,7 +9,7 @@ torcur.f90 extj.f90 output.f90 ffdgen.f90 usrcal.f90 elite_data.f90 \
 baleq.f90 test_profs.f90 helena.f90 bandat.f90 setnt.f90 \
 chease_dat.f90 gfile.f90 flxorb.f90 lynton.f90 fastbs.f90 caxe_out.f90 \
 bandit.f90 mercier.f90 gs2.f90 astradat.f90 tokameq.f90 \
-getdata.f90
+getdata.f90 geqdsk.f90
 OBJS= \
 param.o balpar.o balloon.o \
 coldat.o scene.o init.o equil.o profs.o flxsur.o \
@@ -17,15 +17,18 @@ flxav.o hirsig.o hirsh.o splines.o signeo.o \
 torcur.o extj.o output.o ffdgen.o usrcal.o elite_data.o \
 baleq.o test_profs.o helena.o bandat.o setnt.o chease_dat.o \
 gfile.o flxorb.o lynton.o fastbs.o caxe_out.o bandit.o  \
-mercier.o gs2.o astradat.o tokameq.o getdata.o
+mercier.o gs2.o astradat.o tokameq.o getdata.o geqdsk.o
 #
 INPUT=	
 LIBRARIES =  \
- -L/hwdisks/sfw64/gcc-4.7.2/lib/ \
+ -L/hwdisks/sfw64/gcc-4.8.3/lib/ \
  -L/usr/lib/libg2c.so.0 \
- toms790.a \
- liblapack.a \
- BLAS.a
+ -L/hwdisks/home/bbp501/SCENEv2/lib/ \
+ -ltoms790 \
+ -llapack \
+ -lBLAS \
+ -lsurfit \
+ -lgcvfull
 
 #        -lghost -lgrid_xghost -L/usr/lib/libg2c.so.0 \
 # /hwdisks/sfw/nag/ifort/fllux21dcl/lib/libnag_nag.a -lpthread  \
@@ -40,13 +43,13 @@ LIBRARIES =  \
 
  # /fuslwf/home/kthcmr/GS2D/gs2dlib.a
             
-DEBUG     = #  -g -check_bounds
+DEBUG     = #-heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
 DOUBLE    = #-r8 -d8 #-qautodbl=dblpad
 LIN       = # -YEXT_NAMES=LCS -B108
-COMPILE   = ifort -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE)
+COMPILE   = ifort -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)
 LOAD      = ifort $(SPECIAL) -o $(CMD) $(LIBS)
 .SUFFIXES:
 

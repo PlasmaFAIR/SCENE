@@ -28,8 +28,8 @@ def plots(device):
     plt.xlabel('R (m)')
     plt.ylabel(r'Density $(m^{-3})$')
     plt.savefig('densities.png')
-    plt.show()
-
+    plt.close()
+    
     plt.plot(R, B_t, label=r'$B_\phi$')
     plt.plot(R, B_p, label=r'$B_\theta$')
     plt.plot(R, B, label='$B$')
@@ -38,15 +38,14 @@ def plots(device):
     plt.title('Magnetic fields')
     plt.legend(loc=1)
     plt.savefig('magfield.png')
-    plt.show()
-
+    plt.close()
 
     plt.plot(R, q)
     plt.title('Safety Factor')
     plt.xlabel('R (m) ')
     plt.ylabel('Safety factor')
     plt.savefig('Safety factor.png')
-    plt.show()
+    plt.close()
 
 
     fig, ax1 = plt.subplots()
@@ -63,6 +62,6 @@ def plots(device):
     plt.title('Electron Pressure and Temp')
 
     plt.savefig('Electron temp and press.png')
-    plt.show()
+    plt.close()
 
 

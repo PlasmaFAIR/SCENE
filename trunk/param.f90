@@ -164,7 +164,7 @@ module param
    double precision, dimension(:), allocatable:: r,z
 !  The array containing the normalised flux calculated in the equbm
 !  NOTE**** u=psi_a-psi is max on axis, and zero at the edge
-  double precision, dimension(:,:), allocatable:: u  ! (psi-edge-psi)
+  double precision, dimension(:,:), allocatable:: u  ! (psi-edge - psi)
 !
 ! These arrays indicate points inside the plasma (when they are =1)
   integer, dimension(:,:), allocatable :: ixout  ! =1 if mesh point in plasma

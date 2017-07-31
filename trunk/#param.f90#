@@ -15,7 +15,7 @@ module param
    integer ibdry
 ! plasma shape parameters: Geometric centre, inverse aspec ratio, 
 !                          elongation,triangularity, quadracity separatrix
-  double precision rcen,tokeps,elon,tri,quad,kval
+  double precision rcen,tokeps, elon,tri,quad,kval
 !     kval=0 gives D, kval=1 gives separatrix (DND)
 !
 !  r(theta,psi) for boundary: R=r*cos(th), Z=r*sin(th) defined boundary on 
@@ -164,7 +164,7 @@ module param
    double precision, dimension(:), allocatable:: r,z
 !  The array containing the normalised flux calculated in the equbm
 !  NOTE**** u=psi_a-psi is max on axis, and zero at the edge
-  double precision, dimension(:,:), allocatable:: u  ! (psi-edge-psi)
+  double precision, dimension(:,:), allocatable:: u  ! (psi-edge - psi)
 !
 ! These arrays indicate points inside the plasma (when they are =1)
   integer, dimension(:,:), allocatable :: ixout  ! =1 if mesh point in plasma

@@ -21,7 +21,7 @@ FNSF-A=2.0                     job title
 'fpo4'  1.         initial ff' profile (increase to peak near edge)
 'af3 '  0.          coefficients used in ffp and J profile
 'af4 '  0.
-'ipsw'   0        switch for profiles forms
+'ipsw'  0        switch for profiles forms
 'ppow'  1.       p_e profile (if IMP=0)
 'p0  '  1.         (usually=1) extra pressure to help get beta up 
 'pa  '  0.01         mu0* edge pressure (SI units) (if IMP=0)
@@ -69,7 +69,7 @@ FNSF-A=2.0                     job title
 'npas'  10       max number of equil. iterations
 'erit'  0.00001     error used for G-S eqn solution
 'erfd'  0.001       error between input and output currents
-'icon'  +1           -1 (+1) to use old (restart new) eqbm. in ist iter.
+'icon'  -1           -1 (+1) to use old (restart new) eqbm. in ist iter.
 'fini'  +1         Indicates end of data file (must be at end of file)
 3                  Number of impurity ions (list below, with He ash first)
 2 4.    Z, M/Mp  

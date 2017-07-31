@@ -134,7 +134,7 @@
 !   end do
    write(6,*)' doing ssplies'
    do k=1,nsurf
-     write(6,*)' k=',k
+!     write(6,*)' k=',k
      psi=ps(k)
 !     call zsplint(psiv,fofpsi,y2,fpint,ncon,psi,yy,yp,fsq)
 !     temvar(k)=sqrt(2.*fsq)
