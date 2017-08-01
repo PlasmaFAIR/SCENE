@@ -31,6 +31,8 @@ subroutine nbicur()
   double precision :: rrange, zrange, beam_int
   double precision, dimension(nr,nz) :: h, n_f
 
+  !See no. of cells in beam path
+  integer :: count
 
 
   rrange = 4.*sig_r
@@ -42,7 +44,7 @@ subroutine nbicur()
   delps = 0.
   h=0.
   n_f=0.
-  
+  count=0
   ! Calculate shafranov shift and elongation for each flux surface 
  do con = 1, ncon
 
@@ -56,10 +58,12 @@ subroutine nbicur()
 
   !Calculate dpsi/drho and dvol/drho for each flux surface
   call dpsidrho(dpdrs)
-  print*, dpdrs
+  
   call dVdrho(volps)
+
   write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
+
   write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
   if (icont .gt. -3) then
@@ -87,6 +91,7 @@ subroutine nbicur()
               ! if its within beam height and greater than min R reached by nb
               if (abs(zz - Z_beam) .le. zrange .and. rr .ge. (R_t-rrange) ) then
                  ik = 0
+                 count = count+1
                  !write(nw,*) '2'
                  do k=1,ncon
                     if (psi .ge. psiv(k)) exit
@@ -128,6 +133,7 @@ subroutine nbicur()
                  
                  n_f(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) * (I_0/ (eq* vol)) / (sqrt(pi)*sig_z)  
 
+                 if (n_f(i,j) .ne.0) write(nw,*) n_f(i,j), rr, zz
                  
 
               end if
@@ -141,7 +147,7 @@ subroutine nbicur()
      
   end if
            
-  write(nw,*) n_f
+  write(nw,*) 'No. of cells in beam = ', count
   write(nw,*) 'exiting loop'
 
   !te = tempe(psi,0)

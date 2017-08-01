@@ -1347,9 +1347,9 @@
 
      integer :: i,j
      double precision :: rmin, rmax,zmax
-     double precision :: psi, elong
+     double precision :: psi, elong, rat
 
-     double precision :: elong_l, elong_u, psi_l, psi_u
+     double precision :: elong_l, elong_u, psi_l, psi_u, elongp
 
      rmin = 1.e6
      rmax = 0.
@@ -1376,8 +1376,18 @@
      !Elongation
      if (id .eq. 0) then
         elong = 2.* zmax/(rmax - rmin)
+        
+        if (con.eq.ncon) then
+           !linear extrapolate to innermost flux surface
+     
+           elong_u = elong(con-1,0)
+           elongp = elong(con,1)
+
+           elong = elong_u + elongp*(psiv(con) - psiv(con-1))
 
 
+        end if
+        
      !Derivative
      else if (id .eq. 1) then
 
@@ -1389,16 +1399,35 @@
 
            psi_u = psiv(con+1)
            psi_l = psiv(con)
+           elong = (elong_u - elong_l)/(psi_u - psi_l)
 
-        ! backwards difference if last contour
-        else if (con .eq. ncon) then
+        ! backwards difference if second last contour
+        else if (con .eq. ncon-1) then
 
            elong_u = elong(con, 0)
            elong_l = elong(con-1,0)
 
            psi_u = psiv(con)
            psi_l = psiv(con-1)
+           elong = (elong_u - elong_l)/(psi_u - psi_l)
 
+
+           
+        !Extrapolate second to last derivate to get last flux surface   
+        else if (con .eq. ncon) then
+
+           !Notice using first derivative
+           elong_u = elong(con-1, 1)
+           elong_l = elong(con-2,1)
+
+           psi_u = psiv(con-1)
+           psi_l = psiv(con-2)
+
+           !linear extrapolation
+           rat = (elong_u - elong_l)/(psi_u - psi_l)
+
+           elong = elong(con-1,1) + rat*(psiv(con)-psiv(con-1))
+           
         !centred difference
         else
                      
@@ -1407,9 +1436,10 @@
 
            psi_l = psiv(con-1)
            psi_u = psiv(con+1)
+           elong = (elong_u - elong_l)/(psi_u - psi_l)
         end if
         
-        elong = (elong_u - elong_l)/(psi_u - psi_l)
+
      end if
 
    end function elong
@@ -1426,14 +1456,20 @@
      implicit none
 
      integer :: id, con
-     double precision :: shift
+     double precision :: shift, rat
      double precision :: shift_l, shift_u, psi_u,psi_l
 
      if (id .eq. 0) then 
 
-        shift = (sum(rpts(con, :))/max(1, size(rpts(con,:)))) - r0
+        !Average r value
+        !shift = (sum(rpts(con, :))/max(1, size(rpts(con,:)))) - r0
+        shift = (maxval(rpts(con,:)) + minval(rpts(con,:)))/2 - rcen
 
-     
+        !If last fluxsurface, extrapolate
+        if (con .eq. ncon) then
+           shift = shift(con-1,0) + shift(con,1)*(psiv(con) -psiv(con-1))
+        end if
+        
      else if (id .eq. 1) then
 
         !forward difference for first point
@@ -1444,16 +1480,30 @@
 
            psi_l = psiv(con)
            psi_u = psiv(con+1)
+           shift = (shift_u - shift_l)/(psi_u - psi_l)
 
         !backward different for the last point
-        else if (con .eq. ncon) then
+        else if (con .eq. ncon-1) then
 
            shift_l =  shift(con-1,0)
            shift_u =  shift(con,0)
 
            psi_l = psiv(con-1)
            psi_u = psiv(con)
+           shift = (shift_u - shift_l)/(psi_u - psi_l)
 
+        !Use same derivative as before (linear extrap)
+        else if (con .eq. ncon) then
+
+           shift_l =  shift(con-2,1)
+           shift_u =  shift(con-1,1)
+
+           psi_l = psiv(con-2)
+           psi_u = psiv(con-1)
+
+           rat = (shift_u-shift_l)/(psi_u -psi_l)
+
+           shift = shift_u + rat*(psiv(con)-psiv(con-1))
         ! centred difference
         else
 
@@ -1462,10 +1512,10 @@
 
            psi_l = psiv(con-1)
            psi_u = psiv(con+1)
-
+           shift = (shift_u - shift_l)/(psi_u - psi_l)
+        
         end if
 
-        shift = (shift_u - shift_l)/(psi_u - psi_l)
      end if
 
    end function shift
@@ -1537,10 +1587,10 @@
         end do
 
         
-        write(nw,*) 'Area of flux surface ', i, flxarea
+
         !area time 2pi * R  (R = r0 + shift)
         flxvol(i) = flxarea * 2. * pi * (shift(i,0) + r0)
-
+       ! write(nw,*) 'vol of flux surface ', i, flxvol(i)
         
      end do
 
@@ -1554,7 +1604,7 @@
 
            psi_l = psiv(k)
            psi_u = psiv(k+1)
-
+        
         else if (k .eq. ncon) then
 
            flxvol_l = flxvol(k-1)
@@ -1562,35 +1612,37 @@
 
            psi_l = psiv(k-1)
            psi_u = psiv(k)
-
+       
         else
 
            flxvol_l = flxvol(k-1)
            flxvol_u = flxvol(k+1)
 
-           psi_l = flxvol(k-1)
-           psi_u = flxvol(k+1)
-
+           psi_l = psiv(k-1)
+           psi_u = psiv(k+1)
         end if
 
 
         voldiff(k) = (flxvol_u - flxvol_l)/(psi_u - psi_l)
+     
      end do
 
    end subroutine dVdrho
    
    
    subroutine lam(lambdas)
-
+     !From 'Neutral beam heating applications and development'
+     !M M Menon, Oak ridge national labs
+     ! E_beam must be in keV
      use param
      implicit none
 
      double precision, dimension(ncon) :: lambdas
 
-     double precision :: psi, ne, dense
+     double precision :: psi, ne, dense, rat
      integer :: i
      
-     do i=1,ncon
+     do i=2,ncon
         psi = psiv(i)
 
         ne = dense(psi,0)
@@ -1599,6 +1651,9 @@
 
      end do
 
+     rat = (lambdas(2) - lambdas(3))/(psiv(2) - psiv(3))
+
+     lambdas(1) = lambdas(2) + rat*(psiv(1) - psiv(2))
 
    end subroutine lam
 
