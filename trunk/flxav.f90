@@ -506,9 +506,9 @@
 !!$        ppan(k)=1.03*press(x2,1)
 !!$        pppan(k)=1.03*press(x2,2)
 !        if (k.ge.90)   then
-        write(6,*)' k=',k,' psin=',psiv(k)/umax,' numerical shear=',fq(k),' analytic=',qp(k),' q=',sfac(k)
-        write(6,*)' k=',k,' shat=',psiv(k)*fq(k)/sfac(k),' s_hat=',psiv(k)*qp(k)/sfac(k),             &
-        ' press=',press(psiv(k),0),' pp=',press(psiv(k),1)
+        !write(6,*)' k=',k,' psin=',psiv(k)/umax,' numerical shear=',fq(k),' analytic=',qp(k),' q=',sfac(k)
+        !write(6,*)' k=',k,' shat=',psiv(k)*fq(k)/sfac(k),' s_hat=',psiv(k)*qp(k)/sfac(k),             &
+        !' press=',press(psiv(k),0),' pp=',press(psiv(k),1)
 !        end if
 !        write(6,*)' q=',sfac(k),' psin=',psiv(k)/umax,' qp-norm=',qp(k)*umax
         do i=1,npts

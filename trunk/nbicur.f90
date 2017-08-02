@@ -7,34 +7,34 @@ subroutine nbicur()
   implicit none
 
   double precision :: rin, zin
-  double precision :: tau_s, v_beam, xi_b
+  double precision :: tau_s, v_beam, xi_b, coolog
   double precision :: fid, fidf, nfd
   double precision ::  sig_eff
-  double precision :: J_f, J_nb
+  !double precision :: J_f, J_nb
   double precision :: rho
   double precision :: zeff, zni
   integer :: l, i, j
   double precision :: psi,te, ne
   double precision :: tempe, densi, dense
-  double precision :: v_c
+  double precision :: v_c, y_c, Z_hat, I_func, E_c
 
-  integer :: con, rb, zb
+  integer :: con, rb, zb, Z_b
 
   double precision, dimension(ncon) :: kaps, kapps, dels, delps, volps, lambdas
   double precision :: shift, elong
   double precision, dimension(ncon) :: dpdrs 
 
-  double precision :: rr, zz
-  integer :: k, ik
+  double precision :: rr, zz, Ru
+  integer :: k, ik,err
   double precision :: rat, del, delp, kap, kapp, dpdr, volp, lambda, D0,D1, beam_atten
 
   double precision :: rrange, zrange, beam_int
-  double precision, dimension(nr,nz) :: h, n_f
+  double precision, dimension(nr,nz) :: h, n_f, h_tot, j_f, J_nb
 
   !See no. of cells in beam path
   integer :: count
 
-
+  sig_z = sig_r
   rrange = 4.*sig_r
   zrange = 4.*sig_z
   write(nw,*) 'Calculating Neutral beam current'
@@ -43,8 +43,18 @@ subroutine nbicur()
   dels = 0.
   delps = 0.
   h=0.
+  h_tot=0.
   n_f=0.
   count=0
+
+  Z_b = 1
+ 
+  !V beam (E_b in keV so change to J)
+  v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
+
+
+
+  
   ! Calculate shafranov shift and elongation for each flux surface 
  do con = 1, ncon
 
@@ -63,10 +73,10 @@ subroutine nbicur()
 
   write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
-
+ 
   write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
-  if (icont .gt. -3) then
+!  if (icont .gt. -3) then
      allocate ( nbph(nr,nz))
 
      !
@@ -83,13 +93,37 @@ subroutine nbicur()
               rr = r(i)
               zz = z(j)
               psi = umax - u(i,j)
-              ne = dense(psi,0)
-              !write(nw,*) '1'
-              !write(nw,*) zz, Z_beam, sig_z, rr, R_t, sig_r
 
-              !!!!!! CHECK LIMITS WHEN DONE !!!!!
+
+              !Values for current contribution
+              !taken from NEUTRAL-BEAM-HEATING APPLICATIONS AND DEVELOPMENT
+              !Menon M., Oak ridge national lab
+              ne = dense(psi,0)
+              te = tempe(psi,0)
+              coolog=log(sqrt(ne*1.0d-6)/te)
+              coolog=24.-coolog
+              tau_s = 6.27e8 * A_beam*te**1.5/(Z_b*ne*1.0d-6*coolog)
+
+              E_c = 1.2 * Z_b**(4./3.)  * 2*mp * te /((2.5*mp)**(2./3.) * me**(1./3.))
+              v_c = sqrt(2.*E_c*eq/(2.*mp))
+              y_c = v_c/v_beam
+
+              zeff=zm
+              if (imp.eq.1) then
+                 if (ne.gt.0.) then
+                    zeff=0.
+                    do l=1,nimp+1
+                       zni=densi(psi,l,0)
+                       zeff=zeff+(zni*iz(l)**2)/ne
+                    end do
+                 end if
+              end if
+              Z_hat = 4.*zeff/(5.*A_beam)
+              
+              !Ru = 
               ! if its within beam height and greater than min R reached by nb
-              if (abs(zz - Z_beam) .le. zrange .and. rr .ge. (R_t-rrange) ) then
+              if (abs(zz - Z_beam) .le. zrange .and. rr .ge. (R_t-rrange)) then
+                 !if (
                  ik = 0
                  count = count+1
                  !write(nw,*) '2'
@@ -120,20 +154,43 @@ subroutine nbicur()
                  delp = delp * dpdr
                  volp = volp * dpdr
                  
-                 rho = sqrt( (rr - (r0 + del))**2 + (zz/kap)**2)
+                 rho = sqrt( (rr - (rcen + del))**2 + (zz/kap)**2)
 
-                 !call R_pm(rho, del, kap, zz, R_p, R_m)
-              !   write(nw,*) 'Finshed Lin interp'
+                 
              !    write(nw,*) rho, volp, kap, kapp, del, delp
-
 
                  call dep(rho, volp, kap, kapp, del, delp, rr, zz, lambda, h(i,j))
 
-            !     write(nw,*) 'Dep is ', h(i,j)
-                 
-                 n_f(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) * (I_0/ (eq* vol)) / (sqrt(pi)*sig_z)  
 
-                 if (n_f(i,j) .ne.0) write(nw,*) n_f(i,j), rr, zz
+                 h_tot(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) &
+                      / (sqrt(pi)*sig_z * (1-exp(-(rrange/sig_r)**2)) )  
+
+                 !!!!!Need to look at negative deposition values
+                 !if(h_tot(i,j).lt.0) write(nw,*) h_tot(i,j), rr,zz
+                 
+                 
+                 !!!! NEED This later for n_f
+                 !n_f(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) * (I_0/ (eq* vol)) / (sqrt(pi)*sig_z)
+
+                 n_f(i,j) = h_tot(i,j)*I_0/(eq*vol)
+
+                 xi_b = R_t/(rho+rcen)
+
+                 J_f(i,j) = eq * Z_b * n_f(i,j) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
+
+                 if (j.eq.nsym) then
+                    print*, 'J_F', J_f(i,j)
+                    print*, 'tau_s ', tau_s
+                    print*, 'xi_b ', xi_b
+                    print*, 'v_c ', v_c
+                    print*, 'y_c ', y_c
+                    print*, 'E_c ', E_c
+                    print*, 'I_func ', I_func(y_c, Z_hat)
+                    print*, 'Z_hat ', Z_hat
+                    print*, ' '
+                 end if
+                 
+                 !if (n_f(i,j) .ne.0) write(nw,*) n_f(i,j), rr, zz
                  
 
               end if
@@ -145,15 +202,14 @@ subroutine nbicur()
         end do
      end do
      
-  end if
-           
+!  end if
   write(nw,*) 'No. of cells in beam = ', count
   write(nw,*) 'exiting loop'
 
   !te = tempe(psi,0)
 !!! Look at E_b units
-  v_beam = (2.*E_b/(2.*mp))**0.5
 
+ ! write(nw,*) J_f(:,nsym)
 
   !zeff...
 !  zeff=zm
@@ -231,69 +287,43 @@ end subroutine beam_prof
 
 
 
-
-
-! fast ion distribution function
-function FIDF()
-
-  use param
-  implicit none
-
-  double precision, dimension(1000) :: y, func, d
-  
-  double precision :: abserr
-  double precision   :: int, fidf, I_func
-  integer            :: err, size, i, n
-  integer :: ierr, neval
-
-!  do i=1,1000
-!     y(i) = 1.*i/1000
-!     func(i) = I_func(y(i), Z_hat, y_c)
-!  end do
-
-  !call qag (I_func, 0, 1, 0.0, 0.001, 6, int, abserr, neval, ierr)
-
-
-  fidf = (1+y_c)**Z_hat
-end function FIDF
-  
-
-
 !Ion distribution function
-function I_func(y) 
+function I_func(y_c, Z_hat) 
 
   use param
   implicit none
   
-  double precision, intent(in) :: y
-  double precision :: I_func
+  double precision, intent(in) :: y_c, Z_hat
+  double precision :: I_func, y
+  integer :: i,simfac
 
-  I_func = (y**3 / (y**3 + y_c**3)) ** (Z_hat + 1)
+  I_func = 0.
 
+  
+
+  do i= 0,1000
+
+     y = 1.*i/1000
+
+     if (i.eq.0 .or. i.eq.1000) then
+        simfac=1
+     else if (mod(i,2) .eq. 0) then
+        simfac=2
+     else
+        simfac=4
+     end if
+     
+     
+     I_func =  I_func + simfac* (y**3 / (y**3 + y_c**3)) ** (Z_hat/3. + 1)
+
+  end do
+
+  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.) 
 end function I_func
-
-
-subroutine R_pm(rho, del, kap,zz, R_p, R_m)
-
-  use param
-  implicit none
-
-  double precision :: rho, del, kap, R_p, R_m, zz
-  double precision :: root
-
-  root = sqrt(rho*rho - (zz*zz)/(kap*kap))
-  
-  R_p = r0 + del + root
-
-
-  R_m = r0 + del - root
-
-end subroutine R_pm
-
 
      
 subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
-
+!Deposition profile due to beamlet section independant of tangency radius
   use param
   implicit none
 
@@ -302,13 +332,12 @@ subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
   double precision :: D0, D1
 
   
-  h  = 2*rho*vol/(volp*lam) * rr/sqrt(rr**2 - R_t**2)
+  h  = 2*rho*vol/(volp*lam) * rr
 
-  h = h * ( (1+(kapp* Z_beam**2/(rho*kap**3)))/sqrt(rho**2 - (Z_beam**2/kap**2)) + delp/rho)
+  h = h * ( (1+(kapp* Z_beam**2/(rho*kap**3)))/sqrt(rho**2 - (zz**2/kap**2)) + delp/rho)
 
 
-     
-  !h = h * (exp(-D0) +  gam_d * exp(-D0+ 2*D1) )
+
 
 
 end subroutine dep
@@ -318,24 +347,30 @@ end subroutine dep
 
   
 
-  function beam_atten(R_index,Z_index, id)
+function beam_atten(R_index,Z_index, R_tan, id)
 
-    ! calculates beam attentuation for a given radius
+    ! calculates beam attentuation for a given radius and tangency radius
+
+    
     use param
     implicit none
 
     double precision :: D,rr, beam_atten
 
-    double precision :: psi, dense, inv_lam, Ru
+    double precision :: psi, dense, inv_lam, Ru, R_tan
     integer :: i,id, R_index, Z_index, sim_fac
 
-    !!!!! NOT CORRECT Ru !!!!!
-    Ru = 2.
+    
+      
+
     D = 0.
 
+    !!! NEED to fix simpsons 1/3 for even number of terms
     ! Beam line on the first half of the injection
     if (id .eq. 0) then 
        do i = R_index, nr
+
+          Ru = rcen + (amin**2-z(Z_index)**2/elon**2)**0.5
 
           if (r(i) .gt. Ru) exit
 
@@ -355,7 +390,7 @@ end subroutine dep
           
           
 
-          D = D + sim_fac *(rr * inv_lam/sqrt(rr**2 - R_t**2))
+          D = D + sim_fac *(rr * inv_lam/sqrt(rr**2 - R_tan**2))
        end do
 
 
@@ -366,7 +401,7 @@ end subroutine dep
 
           rr = r(i)
 
-          if (rr .lt. R_t) exit
+          if (rr .lt. R_tan) exit
           
           psi = umax - u(i,Z_index)
 
@@ -381,16 +416,15 @@ end subroutine dep
           end if
           
              
-          D = D + sim_fac*(rr * inv_lam/sqrt(rr**2 - R_t**2))
+          D = D + sim_fac*(rr * inv_lam/sqrt(rr**2 - R_tan**2))
       
        end do
 
     end if
     
-       
 
     beam_atten = D*dr/3.
-
+    !write(nw,*) beam_atten,  rr, z(Z_index)
   end function beam_atten
 
 
@@ -399,14 +433,16 @@ end subroutine dep
   function beam_int (R_index, Z_index)
 
     ! Calculates the integral of the beam attenuation and power distribution
-    ! using the trapezoid method. Assumes gaussian profile
+    ! using the trapezoid method. Assumes gaussian profile and accounts for
+    ! varying tangency radii for different parts of the gaussian
 
     
     use param
     implicit none
 
     integer :: R_index, Z_index, r_in
-    double precision :: C, beam_int, range, x, beam_atten
+    double precision :: C, beam_int, range, x, beam_atten, R_tan
+    double precision :: D0, D1
 
          
     integer :: i, nit, gam_d, sim_fac
@@ -424,9 +460,9 @@ end subroutine dep
     do i = -nit, nit
 
        r_in = R_index + i
-
-       ! Beam can't hit below R_t-range
-       if (r(r_in) .lt. (R_t - range) ) cycle
+       R_tan = R_t + i*dr
+       ! Beam can't hit below R_tan
+       if (r(r_in) .lt. (R_tan) ) cycle
 
        ! How far into the gaussian the beam goes
        x = r(R_index) - R_t + range
@@ -437,9 +473,9 @@ end subroutine dep
 
        ! If the beam goes through the flux surface twice
        gam_d = 1
-       if (r(i) .lt. R_t) then
-          gam_d = 0
-       end if
+!       if (r(i) .lt. R_t) then
+!          gam_d = 0
+!       end if
 
 
        ! Simpsons 1/3 factor for integration
@@ -452,18 +488,18 @@ end subroutine dep
        end if
        
        
-
+       D0 = beam_atten(r_in, Z_index, R_tan,0)
+       D1 = beam_atten(r_in,Z_index,R_tan,1)
        
-       !Integration 
-       beam_int = beam_int + sim_fac*(exp(- ((i*dr/sig_r)**2)) * (beam_atten(r_in, Z_index,0) &
-            +gam_d*(beam_atten(i, Z_index, 1))) ) 
-
-
+       !Integration for the beam shape
+       beam_int = beam_int + sim_fac/sqrt(r(r_in)**2 - R_tan**2)*(exp(- ((i*dr/sig_r)**2)) * &
+            (exp(-D0) + gam_d*(exp(-D0 - 2*D1)) ) )   
 
     end do
 
     beam_int = beam_int * dr * C /3.
 
+   
   end function beam_int
   
           

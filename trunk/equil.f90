@@ -10,7 +10,7 @@ subroutine equil(niter)
   double precision x,y,f,rm1,sf,dpsi
   double precision ur,ul,fd,fdd,rpeak,rl,upeak,upr
   double precision slst,r0lst,erres,bp,z0,press
-  double precision px,py,pf,rat
+  double precision px,py,pf,rat, Rmin
   double precision, dimension(:), allocatable:: psiold1,gst1
   double precision, dimension(:), allocatable:: r_old,z_old
   double precision, dimension(:,:), allocatable:: u1,grads
@@ -325,6 +325,19 @@ subroutine equil(niter)
            ! calculate the value of poloidal field at centre of each mesh point
            call valbth
 
+           
+           do i=1,nr
+              if (ixout(i,nsym).eq.0) cycle
+              Rmin = r(i)
+              exit
+           end do
+           do i=nr,1,-1
+              if(ixout(i,nsym).eq.0) cycle
+              Rmax = r(i)
+              exit
+           end do
+
+           amin = (Rmax - Rmin)/2.
 
 end subroutine equil
          !

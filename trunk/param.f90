@@ -15,7 +15,7 @@ module param
    integer ibdry
 ! plasma shape parameters: Geometric centre, inverse aspec ratio, 
 !                          elongation,triangularity, quadracity separatrix
-  double precision rcen,tokeps, elon,tri,quad,kval
+  double precision rcen,tokeps, elon,tri,quad,kval, amin
 !     kval=0 gives D, kval=1 gives separatrix (DND)
 !
 !  r(theta,psi) for boundary: R=r*cos(th), Z=r*sin(th) defined boundary on 
@@ -266,7 +266,7 @@ module param
 ! Beam paramters: width in r and z, tangency radius and beam energy
  double precision:: sig_r, sig_z, R_t,E_b,Z_beam
  double precision :: A_beam, I_0
- double precision :: Z_hat, y_c
+
  
 !
 !---------------------------------------------------------------
