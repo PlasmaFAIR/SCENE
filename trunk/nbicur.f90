@@ -28,7 +28,7 @@ subroutine nbicur()
   integer :: k, ik,err
   double precision :: rat, del, delp, kap, kapp, dpdr, volp, lambda, D0,D1, beam_atten
 
-  double precision :: rrange, zrange, beam_int
+  double precision :: rrange, zrange, beam_int, elec_return
   double precision, dimension(nr,nz) :: h, n_f, h_tot, j_f, J_nb
 
   !See no. of cells in beam path
@@ -118,6 +118,7 @@ subroutine nbicur()
                     end do
                  end if
               end if
+              
               Z_hat = 4.*zeff/(5.*A_beam)
               
               !Ru = 
@@ -158,10 +159,12 @@ subroutine nbicur()
 
                  
              !    write(nw,*) rho, volp, kap, kapp, del, delp
-
+                 
+                 ! Deposition for pencil beam
                  call dep(rho, volp, kap, kapp, del, delp, rr, zz, lambda, h(i,j))
 
-
+                 
+                 !Account for beam shape
                  h_tot(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) &
                       / (sqrt(pi)*sig_z * (1-exp(-(rrange/sig_r)**2)) )  
 
@@ -178,15 +181,19 @@ subroutine nbicur()
 
                  J_f(i,j) = eq * Z_b * n_f(i,j) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
 
-                 if (j.eq.nsym) then
-                    print*, 'J_F', J_f(i,j)
+                 nbph(i,j) = elec_return(J_f(i,j), zeff, Z_b,u(i,j))
+                 
+                 if (j.eq.nsym .and. rr.ge.0.8) then
+                    
+                    print*, 'NB', nbph(i,j)
+                    print*, 'Beam atten', beam_int(i,j)
                     print*, 'tau_s ', tau_s
                     print*, 'xi_b ', xi_b
                     print*, 'v_c ', v_c
                     print*, 'y_c ', y_c
                     print*, 'E_c ', E_c
                     print*, 'I_func ', I_func(y_c, Z_hat)
-                    print*, 'Z_hat ', Z_hat
+
                     print*, ' '
                  end if
                  
@@ -206,33 +213,7 @@ subroutine nbicur()
   write(nw,*) 'No. of cells in beam = ', count
   write(nw,*) 'exiting loop'
 
-  !te = tempe(psi,0)
-!!! Look at E_b units
 
- ! write(nw,*) J_f(:,nsym)
-
-  !zeff...
-!  zeff=zm
-!  if (imp.eq.1) then
-!     if (ne.gt.0.) then
-!        zeff=0.
-!        do l=1,nimp+1
-!           zni=densi(psi,l,0)
-!           zeff=zeff+(zni*iz(l)**2)/ne
-!        end do
-!     else
-!        zni=densi(psi,1,0)
-!        if (zni.gt.0.) then
-!           write(nw,*)'error***problem in nbicur, ne=0'
-!           write(nw,*)'cannot evaluate zeff'
-!           write(nw,*)'psi=',psi,' ne=',ne,' ni=',zni,' umax=',umax
-!           stop
-!        else
-!           !  zero density so no current-> can arbitrarily set zeff=zm
-!           zeff=zm
-!        end if
-!     end if
-!  end if
 
 !  write(nw,*) 'calculated zeff'
  
@@ -243,19 +224,6 @@ subroutine nbicur()
 
 !  y_c = v_c/v_beam
 
-
-  !fid = FIDF()
-!  fid  = 0
-!  nfd = 0
-  !
-!  rho = ( (rin - r0) **2 + (zin - Z_beam)**2) ** 0.5
-
-!  xi_b = R_t / (r0 + rho)
-
-!  tau_s = 0.
-
-
-!  J_f = eq * Z_beam * tau_s *xi_b * v_beam * fid * nfd 
 
   write(nw,*) 'Completed nb contribution'
   
@@ -503,6 +471,29 @@ function beam_atten(R_index,Z_index, R_tan, id)
   end function beam_int
   
           
+  function elec_return(J_f, zeff, Z_b,uval)
+    !Calculates the current after the electron return
+    ! current is accounted for
     
+    use param
+    implicit none
+
+    double precision :: J_f, zeff, epsi, elec_return, uval
+    double precision :: G, sqrt, J_nb
+    integer :: Z_b
+
+    call argen(uval, epsi,0)
+ 
+    G = ( 1.55+(0.85/zeff) ) * sqrt(epsi)  - ( 0.2 + (1.55/zeff) )*epsi
+
+ 
+    J_nb = (1 - ( Z_b/zeff * (1 - G) ) )
+
+
+    J_nb = J_nb *J_f
 
     
+    elec_return = J_nb
+
+  end function elec_return
+  

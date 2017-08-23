@@ -32,7 +32,7 @@ def flxplot(device):
     plt.xlabel('R (m)')
     plt.ylabel('Z (m)')
     plt.title(' Flux surfaces of ')
-    plt.show()
+    #plt.show()
     plt.savefig('flxsur.png')
     plt.close()
 

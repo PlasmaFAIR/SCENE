@@ -156,7 +156,7 @@ end subroutine init
       E_b = 100
       sig_z = 0.08
       I_0 = 65
-      R_t = .6
+      R_t = 0.5
       Z_beam = 0.0
       A_beam = 1
  end subroutine default

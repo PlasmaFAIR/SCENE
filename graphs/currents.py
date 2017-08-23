@@ -13,6 +13,7 @@ def curplot(device):
     bs = currents[:,3]
     di = currents[:,4]
     ps = currents[:,5]
+    nb = currents[:,6]
 
 
     plt.plot(R, tot, label='Total Current')
@@ -20,12 +21,22 @@ def curplot(device):
     plt.plot(R, bs, label='Bootstrap')
     plt.plot(R, di, label='Diamagnetic')
     plt.plot(R, ps, label='Pfirsch-Schluter')
-
+    plt.plot(R, nb, label='Neutral Beam Current')
+    
 
     plt.xlabel('R (m)')
     plt.ylabel('Current (kA m^(-2))')
     plt.legend(loc=2)
     plt.grid()
+
     plt.savefig('currents.png')
     plt.close()
 
+
+    plt.plot(R, nb, label='Neutral Beam Current')
+
+    plt.xlabel('R (m)')
+    plt.ylabel('Current (kA m^(-2))')
+    plt.title('Neutral beam current')
+    plt.show()
+    
