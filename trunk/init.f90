@@ -153,9 +153,10 @@ end subroutine init
 
       !NB
       sig_r =0.08
-      E_b = 100
+      E_b = 150
       sig_z = 0.08
-      I_0 = 65
+      P_beam = 40
+      I_0 = P_beam*1000./E_b
       R_t = 0.5
       Z_beam = 0.0
       A_beam = 1
