@@ -906,7 +906,7 @@
         end if
         ffpp=-(g0/umax)*fpow*(1.+xps)**(fpow-1.)
         fprof=ffpp
-      else
+     else
 !---------------------------------------------------------------
 !  use discrete form of ff'
 	ij=1
@@ -981,7 +981,7 @@
           bb=(g1-g2)/(x1-x2)-aa*(x1+x2)
           fprof=scl*(2.*aa*psi+bb)
           return
-        end if
+       end if
 !  integrate up to calculate f
         ffpint=0.
         if (ij.gt.2) then
@@ -991,12 +991,14 @@
           end do
 	end if
 	if (ij.ne.1) then
-	  ds=psiv(ij)-psiv(ij-1)
+          ds=psiv(ij)-psiv(ij-1)
 	  fup=ffpint+0.5*(gst(ij)+gst(ij-1))*ds
-	  ffpint=ffpint+rat*(fup-ffpint)
+   ffpint=ffpint+rat*(fup-ffpint)
+  
 	  fsq=2.*scl*ffpint+const
 	  if (fsq.lt.0.) then
-	    write(nw,*)'input error1*** f**2<0 in fprof'
+      write(nw,*)'input error1*** f**2<0 in fprof'
+      write(nw,*) fsq,2.*scl*ffpint, const
 	    stop
 	  end if
 	  f=sqrt(fsq)
@@ -1014,8 +1016,8 @@
 	else
 	  fprof=ffp/f 
           return
-	end if
-      end if
+       end if
+    end if
   end function fprof
 !
 !**********************************************************************
@@ -1630,7 +1632,7 @@
    end subroutine dVdrho
    
    
-   subroutine lam(lambdas)
+   subroutine lam(lambdas, beam)
      !From 'Neutral beam heating applications and development'
      !M M Menon, Oak ridge national labs
      ! E_beam must be in keV
@@ -1640,14 +1642,14 @@
      double precision, dimension(ncon) :: lambdas
 
      double precision :: psi, ne, dense, rat
-     integer :: i
+     integer :: i, beam
      
      do i=2,ncon
         psi = psiv(i)
 
         ne = dense(psi,0)
 
-        lambdas(i) = 2.8e17 * E_b/ne
+        lambdas(i) = 2.8e17 * E_b(beam)/ne
 
      end do
 

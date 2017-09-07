@@ -225,7 +225,10 @@ module param
   double precision, dimension(:), allocatable:: sighhb
 !  bootstrap current <J.B>/sqrt<B^2>: thermal in bsj and alpha in ajdotb
   double precision, dimension(:), allocatable:: bsj,ajdotb
-!
+  !
+
+  ! neutral beam current
+  double precision, dimension(:), allocatable:: J_nb
 !  psiold is a normalised flux variable on which the current guess at
 !  the ff' profile is evoluated (stored in gst)
  double precision, dimension(:), allocatable:: psiold,gst
@@ -255,7 +258,7 @@ module param
   double precision, dimension(:,:), allocatable:: nbph
 !
 !  And the total current to go with these....
- double precision totbs,totps,totdi,totex,totex2,totgs,spiti,alfbs
+ double precision totbs,totps,totdi,totex,totex2,totgs,spiti,alfbs,totnb
 ! Loop voltage (total, Spitzer and nc  without b/strap)
  double precision vloop,vspit,vnobs
 !
@@ -264,9 +267,9 @@ module param
 ! 
 !   Neutral Beam parameters
 ! Beam paramters: width in r and z, tangency radius and beam energy
- double precision:: sig_r, sig_z, R_t,E_b,Z_beam
- double precision :: A_beam, P_beam, I_0
-
+ double precision:: sig_r, sig_z, A_beam,Z_beam
+ double precision, dimension(2) :: E_b, P_beam, I_0, R_t
+! double precision :: E_b, P_beam, I_0, R_t
  
 !
 !---------------------------------------------------------------

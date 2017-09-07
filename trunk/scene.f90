@@ -50,26 +50,35 @@
 ! Calculate alpha-particle bootstrap current
       call fastbs
       write(6,*)' done flxav'
+
+      call nbicur2()
+ 
 !  Calculate currents (and read in externally applied current
 !  profile if itot=0)
-       call torcur(icur)
+      call torcur(icur)
+
+      do i=1,nr
+         print*, i, nbph(i,nsym)
+      end do
+
 !  Calculate total current contributions....
       call xarea(bsph,totbs)
       call xarea(absph,alfbs)
       call xarea(psph,totps)
       call xarea(diph,totdi)
       call xarea(exph,totex)
+      call xarea(nbph,totnb)
       call xarea(exph2,totex2)
       call xarea(gradj,totgs)
       if (itot.eq.0) then
 !  First calculate scaling factor on external current to give
 !  required total current (this will be the loop voltage in the
 !  case of a neoclassical ohmic profile)
-        vloop=(totgs-totbs-totps-totdi-totex2)/totex
+        vloop=(totgs-totbs-totps-totdi-totex2-totnb)/totex
         if (abs(neo).eq.1) then
-          vnobs=(totgs-totps-totdi-totex2)/totex
+          vnobs=(totgs-totps-totdi-totex2-totnb)/totex
           call xarea(spit,spiti)
-          vspit=(totgs-totps-totdi-totex2)/spiti
+          vspit=(totgs-totps-totdi-totex2-totnb)/spiti
         end if
 !  Label exph as total driven current...
         do i=1,nr
@@ -128,7 +137,7 @@
       if (ipswtch.eq.3) call setnt
       write(6,*)' done setnt'
 !  Plot out some useful figs
-      call nbicur2()
+      !call nbicur2()
       if (igr.eq.0) call getdata
 !  Plot stability plots if igr set to 3
 !      if (igr.eq.3) call stab

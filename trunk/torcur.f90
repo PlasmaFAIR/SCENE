@@ -10,12 +10,12 @@
       integer i,j,k,ik,icur,jcur
       double precision rr,zz,psi,bth,pd,fsi,ffd,fd,bphi,bsq,bmod
       double precision alintp,press,fprof,bp
-      double precision rat,bsmean,bstrap,eps,bra,absj
+      double precision rat,bsmean,bstrap,eps,bra,absj,neubeam
       double precision extapp,extapp2,spitc,extapp3
 !
       if (icont.gt.-3) then
         allocate( bsph(nr,nz),psph(nr,nz),diph(nr,nz),exph(nr,nz),   &
-                exph2(nr,nz),gradj(nr,nz),spit(nr,nz),absph(nr,nz) )
+                exph2(nr,nz),gradj(nr,nz),spit(nr,nz),absph(nr,nz),nbph(nr,nz))
       end if
 !
       do i=1,nr
@@ -28,6 +28,7 @@
             exph(i,j)=0.
             gradj(i,j)=0.
             exph2(i,j)=0.
+            nbph(i,j)=0.
           else
 !  calculate currents inside plasma...
             rr=r(i)
@@ -61,7 +62,8 @@
 	      write(nw,*)'error***cannot interpolate a psi value'
 	      write(nw,*)'problem in torcur'
 	      stop
-	    end if
+    end if
+            neubeam=J_nb(ik)+rat*(J_nb(ik+1)-J_nb(ik))
 	    bsmean=bsqav(ik)+rat*(bsqav(ik+1)-bsqav(ik))
 	    bstrap=bsj(ik)+rat*(bsj(ik+1)-bsj(ik))
 	    absj=ajdotb(ik)+rat*(ajdotb(ik+1)-ajdotb(ik))
@@ -74,7 +76,10 @@
 !   pfirsch-schluter...
 	    psph(i,j)=-fsi*fsi*pd*bra/(rr*bsq)
 !   diamagnetic...
-	    diph(i,j)=-rr*bth*bth*pd/bsq
+     diph(i,j)=-rr*bth*bth*pd/bsq
+
+     !neutral beam current
+     nbph(i,j)=neubeam*bmod
 !   grad--shafranov current (should converge to total j, as specified)
 !  (note, if itot=1 total specified current = gradj -> no convergence
 !  required).
@@ -94,7 +99,7 @@
 	      if (abs(neo).eq.1) spit(i,j)=spitc*fsi/rr
 	    else
 !  total current profile given in gradj
-	      exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)
+	      exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)-nbph(i,j)
               exph2(i,j)=0.
 	    end if
 	  end if

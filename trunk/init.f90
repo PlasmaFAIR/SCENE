@@ -153,11 +153,11 @@ end subroutine init
 
       !NB
       sig_r =0.08
-      E_b = 150
+      E_b = (/200,150/)
       sig_z = 0.08
-      P_beam = 40
+      P_beam = (/10,40/)
       I_0 = P_beam*1000./E_b
-      R_t = 0.5
+      R_t = (/0.8,1.1/)
       Z_beam = 0.0
       A_beam = 1
  end subroutine default
@@ -553,7 +553,7 @@ end subroutine init
       pscl=abs(press(psiax,1)/(scl*bpol*pfac))
       write(6,*)' pscl=',pscl
 !  Allocate arrays for ff' iteration
-      allocate( psiold(ncon),gst(ncon))
+      allocate( psiold(ncon),gst(ncon), J_nb(ncon) )
 !!$!  Run some checks on input parameters
 !!$      if (tpoe.lt.1.) then
 !!$        write(6,*)'INPUT ERROR****, must set tpoe>1'
