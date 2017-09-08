@@ -70,6 +70,7 @@
       call xarea(nbph,totnb)
       call xarea(exph2,totex2)
       call xarea(gradj,totgs)
+      call getdata
       if (itot.eq.0) then
 !  First calculate scaling factor on external current to give
 !  required total current (this will be the loop voltage in the

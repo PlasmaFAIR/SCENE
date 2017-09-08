@@ -175,21 +175,21 @@ subroutine nbicur2()
      depsum = 0.
 !!! Need to see what happens at i=ncon (core)
      do i=2,ncon-1
-        dpsi = (psiv(i-1) + psiv(i+1))/2.
-        !print*, i, dep(i), dpsi, volps(i)
+        dpsi = (psiv(i-1) - psiv(i+1))/2.
+        
         depsum = depsum + dep(i)*volps(i)*dpsi
+        print*, 'Dep sum', dep(i), volps(i), dpsi, depsum
 
      end do
 
-     !print*, 'depsum is ', depsum
+     print*, 'Vol is ',vol
+     print*, 'depsum is ', depsum
      shine = 1 - depsum/vol
-
+     print*, 'shinethrough is ',beam, shine
      dep = dep/(1.-shine)
      J_nbeam = J_nbeam/(1.-shine)
 
-     !do i=1,ncon
-     !   print*, (ncon-i)*1./ncon, dep(i), dep(i)/rhos(i)
-     !end do
+    
 
      !print*, 'Beam number ',beam
      !do i=1,ncon
@@ -319,7 +319,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam)
      !Limits for R integration
      Rl = R_t(beam) - sqrt(r_beam**2 - zxi**2)
      Ru = min(rpm, R_t(beam) + sqrt(r_beam**2 - zxi**2))
-
+     !print*, 'Rl, Ru', Rl, Ru
 
      !R integration
      rsum = 0.
@@ -328,10 +328,12 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam)
 
         !Gaussian terms for R
         rti = cos( (2*j - 1) * pi / (2*6) )
-        rxi = (Ru-Rl)/(2.*rti)  + (Ru+Rl)/2
+        rxi = (Ru-Rl)*rti/2  + (Ru+Rl)/2
+
+        !print*, i,j, rti,rxi
 
         !Checks to see if R+- is within integral
-        if (rpm .lt. rxi ) cycle
+        !if (rpm .lt. rxi ) cycle
 
         !Calc attenuation and checks for double pass
         D0 = attenuation(rpm,rxi,0,beam)
@@ -370,7 +372,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam)
   end do
 
   zsum = zsum * wi * 2 *Zu/2.
-  !print*, rho, vol, volp, lambda
+  !print*, rho, zsum
   
   dep2 = 2 * rho * vol * zsum / (volp*lambda)
 
