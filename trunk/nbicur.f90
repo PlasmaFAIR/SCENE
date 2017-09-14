@@ -15,7 +15,7 @@ subroutine nbicur2()
   double precision :: zeff, zni
   integer :: l, i, j
   double precision :: psi,te, ne, dpsi, shine, depsum
-  double precision :: tempe, densi, dense
+  double precision :: tempe, densi, dense, avte
   double precision :: v_c, y_c, Z_hat, I_func, E_c
 
   integer :: con, rb, zb, Z_b
@@ -81,8 +81,9 @@ subroutine nbicur2()
 
   J_nb= 0.
   J_nbeam = 0.
-
-  do beam=1,2
+  avte = 0.
+  
+  do beam=1,1
      v_beam = sqrt(2.*E_b(beam)*1000*eq/(2.*mp))
      call lam(lambdas, beam)
      ! Calculate shafranov shift and elongation for each flux surface 
@@ -106,8 +107,20 @@ subroutine nbicur2()
 
         depp =  dep2(con, volp, lambda, kap, kapp, del, delp, 1, beam)
 
+        
+        xi_b = R_t(beam)/(rho+rcen)
+
+        !Pitch angle is different for inner and outer sections
+        depp = depp * xi_b
+        
         if ( rho**2 .ge. (Z_beam/kap)**2) then
            depm =  dep2(con, volp, lambda, kap, kapp, del, delp, -1, beam)
+
+
+           !Inner pitch angle
+           xi_b = R_t(beam)/(rcen- rho)
+
+           depm = depm * xi_b
         else
            depm = 0.
         end if
@@ -140,21 +153,31 @@ subroutine nbicur2()
 
         Z_hat = 4.*zeff/(5.*A_beam)
 
+    
         E_c = 1.2 * Z_b**(4./3.)  * 2*mp * te /((2.5*mp)**(2./3.) * me**(1./3.))
         v_c = sqrt(2.*E_c*eq/(2.*mp))
         y_c = v_c/v_beam
 
         n_f(con) = I_0(beam)/eq * dep(con) / vol
 
-        xi_b = R_t(beam)/(rho+rcen)
 
 
-        J_f(con) = eq * Z_b * n_f(con) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
+        J_f(con) = eq * Z_b * n_f(con) * tau_s  * v_beam * I_func(y_c, Z_hat)
 
         uval = umax - psi
 
         J_nbeam(con) = elec_return(J_f(con), zeff, Z_b, uval) * bdl(con) / bsqav(con)
 
+        write(nw,*) con, scl*pfac*bpol/pscl, dense(psi,0)*1e-14*pi*amin/cur
+
+
+
+        !if (con .ge. 10 .and. beam .eq.1) then
+        !   print*, 'Flux surface ', con
+        !   print*, J_nbeam(con), dep(con)
+        !end if
+        
+        
 !!!!! Not sure if this is correct !!!!!!!!
         !J_nbeam(con) = J_nbeam(con)/rho
 
@@ -166,8 +189,11 @@ subroutine nbicur2()
         !print*, con , J_nb(con)/rho, J_nb(con)
 
 
+        avte = avte + tempe(psi,0)
+
      end do
 
+     print*, 'Average temperature', avte/(ncon-1)
      J_tot = 0.
 
 
@@ -178,8 +204,8 @@ subroutine nbicur2()
         dpsi = (psiv(i-1) - psiv(i+1))/2.
         
         depsum = depsum + dep(i)*volps(i)*dpsi
-        print*, 'Dep sum', dep(i), volps(i), dpsi, depsum
-
+        !print*, 'Dep sum', dep(i), volps(i), dpsi, depsum
+        !print*, 'Dep is ', i, dep(i), J_nbeam(i)
      end do
 
      print*, 'Vol is ',vol
@@ -347,6 +373,11 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam)
         !Total atten
         expterm = exp(-D0) + dpass*exp(-(D0+2*D1))
 
+        !if(con .eq. 25) then
+        !   print*, con, expterm
+        !end if
+        
+
         !R terms in h(p)
         rterm = rpm/sqrt(rpm*2 - rxi**2) * expterm
 
@@ -375,7 +406,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam)
   !print*, rho, zsum
   
   dep2 = 2 * rho * vol * zsum / (volp*lambda)
-
+  !if (beam .eq. 1)  print*, con, dep2, zsum
   !if (con .eq. 49 .or. con .eq. 12) then
   !   print*, 'Volp ',volp,rho, zsum, lambda, con
   !end if
@@ -463,7 +494,7 @@ function attenuation(rpm, rb, id, beam)
      dr_nb = (rpm-rb)/100
 
      !stop atten go to inf
-     do i= 1,100
+     do i= 0,100
         
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
@@ -523,6 +554,18 @@ function attenuation(rpm, rb, id, beam)
 end function attenuation
 
 
+function atten2(rpm, rb, id, beam)
+
+  use param
+  implicit none
+
+  double precision :: rpm, rb, psi, ne, atten2
+  integer :: id, i, con, simfac, beam
+
+  atten2 =0.
+  
+
+end function atten2
 
 
 

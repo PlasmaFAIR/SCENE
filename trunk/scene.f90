@@ -57,9 +57,9 @@
 !  profile if itot=0)
       call torcur(icur)
 
-      do i=1,nr
-         print*, i, nbph(i,nsym)
-      end do
+      !do i=1,nr
+      !   print*, i, nbph(i,nsym)
+      !end do
 
 !  Calculate total current contributions....
       call xarea(bsph,totbs)

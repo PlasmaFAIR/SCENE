@@ -281,7 +281,9 @@ subroutine equil(niter)
               erres=abs((slst-scl)/(slst+scl))+abs((r0-r0lst)/(r0+r0lst))  &
                    +abs((cur-curtot)/(cur+curtot))
               ! test convergence of equilibrium
-              write(6,135)errit,erres
+
+              if (mod(n0,10) .eq.0) write(6,135)errit,erres
+              
               if (erres.lt.errit) goto 130
            end if
            ! store old values of s and r0 before iterating equilibrium
@@ -978,13 +980,15 @@ end subroutine equil
 !!$      end if
       if(curtot.gt.(0.0))scl = scl*cur/curtot
       if (ip.eq.0) then
-      if (ipr.eq.0) then
+         if (ipr.eq.0) then
+            if ( mod(n0,10) .eq. 0) then
       write(nw,30)n0,cur,curtot,scl,residl,r0
 30    format(' it=',i3,' curr req=',e12.4,' cur got=',e12.4,     &
         ' eig s=',e12.4,' resid=',e12.4,' r0=',f8.4)
 !      write(6,*)' bpol=',bpol,' betnow=',betnow
       end if
-!
+      !
+      end if 
       end if
       if (ipr.eq.0) then
       if(curtot.le.0.0)write(nw,40)

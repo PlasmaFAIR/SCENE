@@ -514,7 +514,7 @@
        write(6,*)'ERROR*** need to code up higher derivatives of ion density'
           stop
         end if
-      end if
+     end if
       xps=1.-psi/umax
       ntpow=znpow(id)
       nz0=zn0(id)
