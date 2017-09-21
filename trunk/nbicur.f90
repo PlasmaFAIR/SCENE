@@ -15,8 +15,8 @@ subroutine nbicur2()
   double precision :: zeff, zni
   integer :: l, i, j
   double precision :: psi,te, ne, dpsi, shine, depsum
-  double precision :: tempe, densi, dense, avte
-  double precision :: v_c, y_c, Z_hat, I_func, E_c
+  double precision :: tempe, densi, dense, avte, avne
+  double precision :: v_c, y_c, Z_hat, I_func, E_c, I_0
 
   integer :: con, rb, zb, Z_b
 
@@ -28,7 +28,7 @@ subroutine nbicur2()
 
   double precision :: depp, depm, dep2
 
-  integer :: k, ik,err, beam
+  integer :: k, ik,err, beam, ecomp
   double precision :: rat, del, delp, kap, kapp, dpdr, volp, lambda
 
   double precision :: rrange, zrange, beam_int, elec_return, uval
@@ -81,152 +81,159 @@ subroutine nbicur2()
 
   J_nb= 0.
   J_nbeam = 0.
-  avte = 0.
-  
+
+
   do beam=1,1
-     v_beam = sqrt(2.*E_b(beam)*1000*eq/(2.*mp))
-     call lam(lambdas, beam)
-     ! Calculate shafranov shift and elongation for each flux surface 
-     do con = 2, ncon
 
-        psi = psiv(con)
-        rr = maxval(rpts(con,:))
-
-        if (rr .lt. R_t(beam)) cycle
-        lambda = lambdas(con)
-        volp = volps(con)
-        dpdr = dpdrs(con)
-
-        kap = elong(con,0)
-        kapp = elong(con,1) * dpdr
-        del = shift(con,0)
-        delp = shift(con,1) * dpdr
-
-        rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
-        rhos(con) = rho
-
-        depp =  dep2(con, volp, lambda, kap, kapp, del, delp, 1, beam)
-
+     do ecomp = 1,3
         
-        xi_b = R_t(beam)/(rho+rcen)
+        v_beam = sqrt(2.*E_b(beam)*1000*eq/(2.*mp * ecomp))
+        call lam(lambdas, beam, ecomp)
+        ! Calculate shafranov shift and elongation for each flux surface 
+        do con = 2, ncon
 
-        !Pitch angle is different for inner and outer sections
-        depp = depp * xi_b
-        
-        if ( rho**2 .ge. (Z_beam/kap)**2) then
-           depm =  dep2(con, volp, lambda, kap, kapp, del, delp, -1, beam)
+           psi = psiv(con)
+           rr = maxval(rpts(con,:))
 
+           if (rr .lt. R_t(beam)) cycle
+           lambda = lambdas(con)
+           volp = volps(con)
+           dpdr = dpdrs(con)
 
-           !Inner pitch angle
-           xi_b = R_t(beam)/(rcen- rho)
+           kap = elong(con,0)
+           kapp = elong(con,1) * dpdr
+           del = shift(con,0)
+           delp = shift(con,1) * dpdr
 
-           depm = depm * xi_b
-        else
-           depm = 0.
-        end if
+           rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
+           rhos(con) = rho
 
-        dep(con) = depp + depm
-
-
-        !write(nw,*) 'dep found', con, depp, depm
-
-
-        ne = dense(psi,0)
-        te = tempe(psi,0)
-
-        coolog=log(sqrt(ne*1.0d-6)/te)
-        coolog=24.-coolog
-        tau_s = 6.27e8 * A_beam*te**1.5/(Z_b*ne*1.0d-6*coolog)
+           depp =  dep2(con, volp, lambda, kap, kapp, del, delp, 1, beam, ecomp)
 
 
+           xi_b = R_t(beam)/(rho+rcen)
 
-        zeff=zm
-        if (imp.eq.1) then
-           if (ne.gt.0.) then
-              zeff=0.
-              do l=1,nimp+1
-                 zni=densi(psi,l,0)
-                 zeff=zeff+(zni*iz(l)**2)/ne
-              end do
+           !Pitch angle is different for inner and outer sections
+           depp = depp * xi_b
+
+           if ( rho**2 .ge. (Z_beam/kap)**2) then
+              depm =  dep2(con, volp, lambda, kap, kapp, del, delp, -1, beam, ecomp)
+
+
+              !Inner pitch angle
+              xi_b = R_t(beam)/(rcen- rho)
+
+              depm = depm * xi_b
+           else
+              depm = 0.
            end if
-        end if
 
-        Z_hat = 4.*zeff/(5.*A_beam)
-
-    
-        E_c = 1.2 * Z_b**(4./3.)  * 2*mp * te /((2.5*mp)**(2./3.) * me**(1./3.))
-        v_c = sqrt(2.*E_c*eq/(2.*mp))
-        y_c = v_c/v_beam
-
-        n_f(con) = I_0(beam)/eq * dep(con) / vol
+           dep(con) = depp + depm
 
 
+           !write(nw,*) 'dep found', con, depp, depm
 
-        J_f(con) = eq * Z_b * n_f(con) * tau_s  * v_beam * I_func(y_c, Z_hat)
 
-        uval = umax - psi
+           ne = dense(psi,0)
+           te = tempe(psi,0)
 
-        J_nbeam(con) = elec_return(J_f(con), zeff, Z_b, uval) * bdl(con) / bsqav(con)
-
-        write(nw,*) con, scl*pfac*bpol/pscl, dense(psi,0)*1e-14*pi*amin/cur
+           coolog=log(sqrt(ne*1.0d-6)/te)
+           coolog=24.-coolog
+           tau_s = 6.27e8 * A_beam*te**1.5/(Z_b*ne*1.0d-6*coolog)
 
 
 
-        !if (con .ge. 10 .and. beam .eq.1) then
-        !   print*, 'Flux surface ', con
-        !   print*, J_nbeam(con), dep(con)
-        !end if
-        
-        
+           zeff=zm
+           if (imp.eq.1) then
+              if (ne.gt.0.) then
+                 zeff=0.
+                 do l=1,nimp+1
+                    zni=densi(psi,l,0)
+                    zeff=zeff+(zni*iz(l)**2)/ne
+                 end do
+              end if
+           end if
+
+           Z_hat = 4.*zeff/(5.*A_beam)
+
+
+           E_c = 1.2 * Z_b**(4./3.)  * 2*mp * te /((2.5*mp)**(2./3.) * me**(1./3.))
+           v_c = sqrt(2.*E_c*eq/(2.*mp))
+           y_c = v_c/v_beam
+
+           I_0 = P_beam(beam)*P_frac(ecomp) * 1000 /(E_b(beam)/ecomp)
+           
+           n_f(con) = I_0/eq * dep(con) / vol
+
+
+
+           J_f(con) = eq * Z_b * n_f(con) * tau_s  * v_beam * I_func(y_c, Z_hat)
+
+           uval = umax - psi
+
+           J_nbeam(con) = elec_return(J_f(con), zeff, Z_b, uval) * bdl(con) / bsqav(con)
+
+           write(nw,*) con, beam, ecomp
+           print*, dep(con), n_f(con)
+
+           !dense(psi,0)*1e-14*pi*amin/cur
+
+
+
+           !if (con .ge. 10 .and. beam .eq.1) then
+           !   print*, 'Flux surface ', con
+           !   print*, J_nbeam(con), dep(con)
+           !end if
 !!!!! Not sure if this is correct !!!!!!!!
-        !J_nbeam(con) = J_nbeam(con)/rho
+           !J_nbeam(con) = J_nbeam(con)/rho
 
 
-        !if(con.eq.49 .or. con .eq. 12) then
-        !   print*, 'Dep and N_f ',dep(con), n_f(con)
-        !end if
+           !if(con.eq.49 .or. con .eq. 12) then
+           !   print*, 'Dep and N_f ',dep(con), n_f(con)
+           !end if
 
-        !print*, con , J_nb(con)/rho, J_nb(con)
+           !print*, con , J_nb(con)/rho, J_nb(con)
 
 
-        avte = avte + tempe(psi,0)
-
-     end do
-
-     print*, 'Average temperature', avte/(ncon-1)
-     J_tot = 0.
+  
+        end do
 
 
 
-     depsum = 0.
+
+        J_tot = 0.
+
+
+
+        depsum = 0.
 !!! Need to see what happens at i=ncon (core)
-     do i=2,ncon-1
-        dpsi = (psiv(i-1) - psiv(i+1))/2.
-        
-        depsum = depsum + dep(i)*volps(i)*dpsi
-        !print*, 'Dep sum', dep(i), volps(i), dpsi, depsum
-        !print*, 'Dep is ', i, dep(i), J_nbeam(i)
+        do i=2,ncon-1
+           dpsi = (psiv(i-1) - psiv(i+1))/2.
+
+           depsum = depsum + dep(i)*volps(i)*dpsi
+           !print*, 'Dep sum', dep(i), volps(i), dpsi, depsum
+           !print*, 'Dep is ', i, dep(i), J_nbeam(i)
+        end do
+
+        print*, 'Vol is ',vol
+        print*, 'depsum is ', depsum
+        shine = 1 - depsum/vol
+        print*, 'shinethrough is ',beam,ecomp, shine
+        dep = dep/(1.-shine)
+        J_nbeam = J_nbeam/(1.-shine)
+
+
+
+        !print*, 'Beam number ',beam
+        !do i=1,ncon
+        !   print*, i, J_f(i), J_nbeam(i)
+        !end do
+        !print*, ' '
+
+        J_nb = J_nb + J_nbeam
+
+
      end do
-
-     print*, 'Vol is ',vol
-     print*, 'depsum is ', depsum
-     shine = 1 - depsum/vol
-     print*, 'shinethrough is ',beam, shine
-     dep = dep/(1.-shine)
-     J_nbeam = J_nbeam/(1.-shine)
-
-    
-
-     !print*, 'Beam number ',beam
-     !do i=1,ncon
-     !   print*, i, J_f(i), J_nbeam(i)
-     !end do
-     !print*, ' '
-     
-     J_nb = J_nb + J_nbeam
-
-
-
 
   end do
 
@@ -262,12 +269,32 @@ subroutine nbicur2()
 
 
 
-
-
   !  end if
   write(nw,*) 'exiting loop2'
   write(nw,*) 'Completed nb2 contribution'
 
+  avte =0.
+  avne =0.
+  count = 0
+  do i=1,nr
+     do j=1,nz
+        if (ixout(i,j) .gt. 0) then
+           count = count +1
+           psi = umax - u(i,j)
+           avte = avte + tempe(psi,0)
+           avne = avne + dense(psi,0)
+
+        end if
+     end do
+  end do
+
+  avte = avte/count
+  avne = avne/count
+
+  print*, 'Average Temp', avte
+  print*, 'Average Density',avne
+           
+  
 end subroutine nbicur2
 
 
@@ -278,7 +305,7 @@ end subroutine nbicur2
 
 
 
-function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam)
+function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
   !calculates deposition profile from beams module
   !performs two integrals, over R for a fixed Z, and then integrates that
   !for all Z in the beam path
@@ -287,7 +314,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam)
   implicit none
 
   double precision :: volp, lambda, kap, kapp, del, delp, dep2
-  integer :: con, id, sgn, beam
+  integer :: con, id, sgn, beam, ecomp
 
   double precision :: rr, rho, Zu, Rl, Ru, r_beam, rpm
 
@@ -362,12 +389,12 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam)
         !if (rpm .lt. rxi ) cycle
 
         !Calc attenuation and checks for double pass
-        D0 = attenuation(rpm,rxi,0,beam)
+        D0 = attenuation(rpm,rxi,0,beam, ecomp)
         dpass = 0
         if (rxi .ge. R_t(beam)) then
            dpass = 1
 
-           D1 = attenuation(rpm,rxi,1,beam)
+           D1 = attenuation(rpm,rxi,1,beam,ecomp)
         end if
         
         !Total atten
@@ -417,13 +444,13 @@ end function dep2
   
 
 
-function attenuation(rpm, rb, id, beam)
+function attenuation(rpm, rb, id, beam, ecomp)
 
   use param
   implicit none
 
   double precision :: rpm, rb, psi, ne, attenuation
-  integer :: id, i, con, simfac, beam
+  integer :: id, i, con, simfac, beam, ecomp
 
   double precision :: Ru, D, dense, invlam
 
@@ -479,7 +506,7 @@ function attenuation(rpm, rb, id, beam)
            end do
         end if
 
-        invlam = dense(psi,0)/(2.8e17*E_b(beam))
+        invlam = dense(psi,0)/(2.8e17*E_b(beam)/ecomp)
 
 
 
@@ -533,7 +560,7 @@ function attenuation(rpm, rb, id, beam)
            end do
         end if
 
-        invlam = dense(psi,0)/(2.8e17*E_b(beam))
+        invlam = dense(psi,0)/(2.8e17*E_b(beam)/ecomp)
     
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
 

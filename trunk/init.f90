@@ -156,7 +156,8 @@ end subroutine init
       E_b = (/200,150/)
       sig_z = 0.08
       P_beam = (/10,40/)
-      I_0 = P_beam*1000./E_b
+      !I_0 = P_beam*1000./E_b
+      P_frac = (/0.70,0.20,0.10/)
       R_t = (/0.8,1.1/)
       Z_beam = 0.0
       A_beam = 1

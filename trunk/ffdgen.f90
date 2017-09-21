@@ -50,7 +50,7 @@
         gold=ffd
         bav=bsqav(k)
 !  match flux surface averages (same for both par/tor currents)...
-        gtst=-mu0*(f*extapp+f*bsj(k)/sqrt(bav)+f*f*pd/bav)/scl
+        gtst=-mu0*(f*extapp+f*J_nb(k)+f*bsj(k)/sqrt(bav)+f*f*pd/bav)/scl
         if (k.eq.1) then
         write(6,*)'********* in ffdgen, k=1'
         write(6,*)' f=',f,' pd=',pd,' fd=',fd

@@ -1338,7 +1338,7 @@
 
 
 
-   recursive function elong(con, id)
+   recursive function elong(con, id) result(kap)
 
      ! Calculate elongation (or derivative with psi if id=1)
      
@@ -1349,9 +1349,9 @@
 
      integer :: i,j
      double precision :: rmin, rmax,zmax
-     double precision :: psi, elong, rat
+     double precision :: psi, rat, kap
 
-     double precision :: elong_l, elong_u, psi_l, psi_u, elongp
+     double precision :: elong_l, elong_u, psi_l, psi_u, elongp, elongf
 
      rmin = 1.e6
      rmax = 0.
@@ -1377,7 +1377,7 @@
         
      !Elongation
      if (id .eq. 0) then
-        elong = 2.* zmax/(rmax - rmin)
+        elongf = 2.* zmax/(rmax - rmin)
         
         if (con.eq.ncon) then
            !linear extrapolate to innermost flux surface
@@ -1385,7 +1385,7 @@
            elong_u = elong(con-1,0)
            elongp = elong(con,1)
 
-           elong = elong_u + elongp*(psiv(con) - psiv(con-1))
+           elongf = elong_u + elongp*(psiv(con) - psiv(con-1))
 
 
         end if
@@ -1401,7 +1401,7 @@
 
            psi_u = psiv(con+1)
            psi_l = psiv(con)
-           elong = (elong_u - elong_l)/(psi_u - psi_l)
+           elongf = (elong_u - elong_l)/(psi_u - psi_l)
 
         ! backwards difference if second last contour
         else if (con .eq. ncon-1) then
@@ -1411,7 +1411,7 @@
 
            psi_u = psiv(con)
            psi_l = psiv(con-1)
-           elong = (elong_u - elong_l)/(psi_u - psi_l)
+           elongf = (elong_u - elong_l)/(psi_u - psi_l)
 
 
            
@@ -1428,7 +1428,7 @@
            !linear extrapolation
            rat = (elong_u - elong_l)/(psi_u - psi_l)
 
-           elong = elong(con-1,1) + rat*(psiv(con)-psiv(con-1))
+           elongf = elong(con-1,1) + rat*(psiv(con)-psiv(con-1))
            
         !centred difference
         else
@@ -1438,19 +1438,20 @@
 
            psi_l = psiv(con-1)
            psi_u = psiv(con+1)
-           elong = (elong_u - elong_l)/(psi_u - psi_l)
+           elongf = (elong_u - elong_l)/(psi_u - psi_l)
         end if
         
 
      end if
 
+     kap = elongf
    end function elong
    
         
 
      
      
-   recursive function shift(con, id)
+   recursive function shift(con, id) result(del)
 
      !Calculates shift from r0 by looking at average r
      
@@ -1458,18 +1459,18 @@
      implicit none
 
      integer :: id, con
-     double precision :: shift, rat
+     double precision :: shiftf, rat, del
      double precision :: shift_l, shift_u, psi_u,psi_l
 
      if (id .eq. 0) then 
 
         !Average r value
         !shift = (sum(rpts(con, :))/max(1, size(rpts(con,:)))) - r0
-        shift = (maxval(rpts(con,:)) + minval(rpts(con,:)))/2 - rcen
+        shiftf = (maxval(rpts(con,:)) + minval(rpts(con,:)))/2 - rcen
 
         !If last fluxsurface, extrapolate
         if (con .eq. ncon) then
-           shift = shift(con-1,0) + shift(con,1)*(psiv(con) -psiv(con-1))
+           shiftf = shift(con-1,0) + shift(con,1)*(psiv(con) -psiv(con-1))
         end if
         
      else if (id .eq. 1) then
@@ -1482,7 +1483,7 @@
 
            psi_l = psiv(con)
            psi_u = psiv(con+1)
-           shift = (shift_u - shift_l)/(psi_u - psi_l)
+           shiftf = (shift_u - shift_l)/(psi_u - psi_l)
 
         !backward different for the last point
         else if (con .eq. ncon-1) then
@@ -1492,7 +1493,7 @@
 
            psi_l = psiv(con-1)
            psi_u = psiv(con)
-           shift = (shift_u - shift_l)/(psi_u - psi_l)
+           shiftf = (shift_u - shift_l)/(psi_u - psi_l)
 
         !Use same derivative as before (linear extrap)
         else if (con .eq. ncon) then
@@ -1505,7 +1506,7 @@
 
            rat = (shift_u-shift_l)/(psi_u -psi_l)
 
-           shift = shift_u + rat*(psiv(con)-psiv(con-1))
+           shiftf = shift_u + rat*(psiv(con)-psiv(con-1))
         ! centred difference
         else
 
@@ -1514,12 +1515,13 @@
 
            psi_l = psiv(con-1)
            psi_u = psiv(con+1)
-           shift = (shift_u - shift_l)/(psi_u - psi_l)
+           shiftf = (shift_u - shift_l)/(psi_u - psi_l)
         
         end if
 
      end if
 
+     del = shiftf
    end function shift
    
 
@@ -1632,7 +1634,7 @@
    end subroutine dVdrho
    
    
-   subroutine lam(lambdas, beam)
+   subroutine lam(lambdas, beam, ecomp)
      !From 'Neutral beam heating applications and development'
      !M M Menon, Oak ridge national labs
      ! E_beam must be in keV
@@ -1642,14 +1644,14 @@
      double precision, dimension(ncon) :: lambdas
 
      double precision :: psi, ne, dense, rat
-     integer :: i, beam
+     integer :: i, beam, ecomp
      
      do i=2,ncon
         psi = psiv(i)
 
         ne = dense(psi,0)
 
-        lambdas(i) = 2.8e17 * E_b(beam)/ne
+        lambdas(i) = 2.8e17 * E_b(beam)/(ecomp *ne)
 
      end do
 

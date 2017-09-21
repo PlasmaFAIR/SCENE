@@ -268,7 +268,8 @@ module param
 !   Neutral Beam parameters
 ! Beam paramters: width in r and z, tangency radius and beam energy
  double precision:: sig_r, sig_z, A_beam,Z_beam
- double precision, dimension(2) :: E_b, P_beam, I_0, R_t
+ double precision, dimension(2) :: E_b, P_beam, R_t
+ double precision, dimension(3) :: P_frac
 ! double precision :: E_b, P_beam, I_0, R_t
  
 !
