@@ -1,0 +1,108 @@
+          NBEAMS Neutral Beam Heating and Current Drive Module
+
+ABSTRACT
+
+The NBEAMS module contains routines for the calculation of neutral beam
+heating and current drive quantities in tokamak plasmas. It calculates
+the NB deposition profile, profiles of the NB heating power deposited to
+the background ions and electrons, various NB current drive quantities and, 
+optionally, several beam-target fusion quantities. 
+
+This module was developed originally by the author for the ITER systems code 
+"SuperCode" and it was used extensively during the ITER CDA and EDA designs.
+
+The calculation is approximate (it is based on the diffuse beam approximation 
+and it assumes a simplified flux surface geometry) but computationally fast.
+The module is intended to be used in simulations where a realistic NB heating
+profile is desired, but the full accuracy of more detailed (and computationally
+expensive) codes such as NFREYA is not necessary.
+
+CONTACT
+
+   John Mandrekas
+   Georgia Institute of Technology
+   Fusion Research Center
+   Atlanta, GA 30332-0225
+   (404) 894-7730
+   john.mandrekas@me.gatech.edu
+
+UNPACKING INSTRUCTIONS
+
+> gunzip nbeams.tar.gz
+> tar xvf nbeams.tar
+
+DOCUMENTATION
+
+A GTFR (Georgia Tech Fusion Research) report is included in PDF and
+postscript formats (nbeams.pdf and nbeams.ps) that explains the physical
+models included in the nbeams module. Extensive comments in the beginning 
+of the main routine (calcbeams.f) describe the input and output variables.
+
+CONTENTS
+
+The package should include the following files:
+
+   README           : This file
+   Makefile         : GNU Makefile for compiling the module
+   nbdriver.f       : Driver file to test the module. This file is not
+		      part of the package, but it is provided here in
+		      order to create the necessary background plasma
+		      and geometry required to test the module. The 
+		      user can substitute his/her own driver.
+   inbeams.dat      : Input file required by nbdriver
+   calcbeams.f      : Main routine (this is the routine that one would
+		      call from within a transport code)
+   hofr.f           : Routine that calculates the NB deposition profile
+   fastions.f       : Routine that calculates various fast ion quantities
+   beams_mfp.f	    : Routine that calculates the mean free path of beam
+		      neutrals in the background plasma
+   sigfit.f         : Routine that calculates the beam stopping cross section
+   sig_olson.f      : Routine that calculates the beam stopping cross section 
+		      for species not included in the sigfit routine
+   coulomb.f        : Routine that calculates Coulomb logarithms
+   eisplit.f        : Routine that calculates the fraction of power deposited
+		      to electrons and ions during the slowing down of a 
+		      fast ion.
+   erf.f            : Function to calculate the error function
+   beamconsts.f     : Blockdata routine initializing constants in COMMON
+   qsimp.f          : Routine to calculate integrals using Simpson's rule
+   getrho.f         : Routine that finds the value of rho for a given R
+   hunt.f           : Routine to perform searches (needed by getrho)
+   frate.f          : Function to calculate reaction rates needed in the 
+		      beam-target fusion calculations
+   rinteg.f
+   sinteg.f         : These three routines perform integrations along the
+   zinteg.f	      R, Z and s directions of the beamline.
+   gausswts.f       : Routine that calculates Gaussian weights for the 
+		      R, Z and s integrations.
+   ssum.f           : Auxiliary routine to sum the elements of a single
+		      precision vector. Should not be used in platforms that
+		      provide their own optimized version.
+   nbparams.inc     : Common blocks internal to the module. The nbparams.inc
+   nbplasma.inc       common block includes parameter statements for the 
+		      dimensioning of several arrays.
+   nbplasma.inc
+   nbconsts.inc
+   BeamsLoc.inc
+
+EXTERNAL LIBRARIES
+
+The module requires to be linked with the widely available BLAS library. If
+this is a problem, the user can supply his/her own version of the SCOPY 
+routine which copies one vector into another.
+
+Some routines (erf.f, hunt.f and qsimp.f) have been adapted from the book
+"Numerical Recipes".
+
+INSTALLATION
+
+No installation is required. This is a standard f77 code, and the executable
+(xbeams) is created by simply typing "gmake" at the prompt (The GNU make is
+reqiuired). The provided Makefile works on SUN/SunOS, SUN/Solaris, NERSC CRAYs 
+and HP platforms, and can be modified to work on other systems.
+
+The input file inbeams.dat contains a sample namelist input required by the
+nbdriver program.
+
+First NTCC Release:
+September 7, 2000.

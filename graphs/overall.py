@@ -28,6 +28,7 @@ def plots(device):
     plt.xlabel('R (m)')
     plt.ylabel(r'Density $(m^{-3})$')
     plt.savefig('densities.png')
+    plt.show()
     plt.close()
     
     plt.plot(R, B_t, label=r'$B_\phi$')

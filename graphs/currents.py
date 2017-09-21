@@ -30,6 +30,7 @@ def curplot(device):
     plt.grid()
 
     plt.savefig('currents.png')
+    plt.show()
     plt.close()
 
 

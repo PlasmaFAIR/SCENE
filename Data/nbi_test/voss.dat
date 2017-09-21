@@ -29,7 +29,7 @@ voss    job title
 'ni0 '  1.00 (usually 1) centr ion dens. (if IMP=1)
 'nia '  0.00 edge main ion density fraction (if IMP=0)
 'nped'  0.70 pedestal main ion density fraction (if IMP=0)
-'nedg'  5.00 pedestal density gradient (if IMP=0)
+'nedg'  10.00 pedestal density gradient (if IMP=0)
 'tpo1'  3.00 used to flatten core temperature
 'ate '  1.90 used to flatten core temperature
 'tpoe'  2.50 Te profile
@@ -43,7 +43,7 @@ voss    job title
 'tidg' 10.00 pedestal ion temp gradient
 'cur '  6.50 total toroidal currents (MA)
 'paux' 50.00 auxillary heating power in MW: for taue
-'bpol'  0.50 approx start for poloidal beta
+'bpol'  0.30 approx start for poloidal beta
 'dil '  1.00 ion dilution factor (used for fusion calc if imp=0
 'rodi' 10.50 rod current in MA
 'zm  '  1.00 charge of main species
@@ -66,7 +66,7 @@ voss    job title
 'npas'    10 max no. of equil iterations
 'erit' 0.000010 error used in G-S solver
 'erfd' 0.001000 error between input and output sources
-'icon'    -2 -1 (+1) to use old (restart new) eqbm in 1st iter (-2 for FIESTA)
+'icon'    1 -1 (+1) to use old (restart new) eqbm in 1st iter (-2 for FIESTA)
 'fini'     1 Indicates end of file
     3 Number of impurity ions (list below)
     2 4.00  Z/Mp

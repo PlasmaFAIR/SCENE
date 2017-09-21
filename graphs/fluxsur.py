@@ -17,7 +17,7 @@ def flxplot(device):
     fluxsur = np.delete(fluxsur, 0,axis=0)
 
 
-    fluxsur = np.reshape(fluxsur, (ncon,  npts, 2 ) )
+    fluxsur = np.reshape(fluxsur, (int(ncon),  int(npts), 2 ) )
 
 
     for i in range(int(ncon)):
