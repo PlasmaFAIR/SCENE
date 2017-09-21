@@ -51,7 +51,7 @@ program scene
   call fastbs
   write(6,*)' done flxav'
 
-  !call nbicur2()
+  call nbicur2()
 
   !  Calculate currents (and read in externally applied current
   !  profile if itot=0)
