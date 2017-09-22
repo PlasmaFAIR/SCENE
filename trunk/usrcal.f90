@@ -106,7 +106,7 @@
 !      call flxorb
       call helena
 
-      call geqdsk
+      !call geqdsk
 !!$      call lynton
 !!$      write(6,*)' done lynton'
 !!$!      call fastbs

@@ -28,7 +28,7 @@ def plots(device):
     plt.xlabel('R (m)')
     plt.ylabel(r'Density $(m^{-3})$')
     plt.savefig('densities.png')
-    plt.close()
+    plt.clf()
     
     plt.plot(R, B_t, label=r'$B_\phi$')
     plt.plot(R, B_p, label=r'$B_\theta$')
@@ -38,14 +38,14 @@ def plots(device):
     plt.title('Magnetic fields')
     plt.legend(loc=1)
     plt.savefig('magfield.png')
-    plt.close()
+    plt.clf()
 
     plt.plot(R, q)
     plt.title('Safety Factor')
     plt.xlabel('R (m) ')
     plt.ylabel('Safety factor')
     plt.savefig('Safety factor.png')
-    plt.close()
+    plt.clf()
 
 
     fig, ax1 = plt.subplots()
