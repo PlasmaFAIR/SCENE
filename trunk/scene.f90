@@ -51,8 +51,10 @@ program scene
   call fastbs
   write(6,*)' done flxav'
 
-  call nbicur2()
-
+  j_nb = 0.
+  if (nbi.eq.1) call nbicur()
+  
+  print*, 'done nbicur'
   !  Calculate currents (and read in externally applied current
   !  profile if itot=0)
   call torcur(icur)
@@ -68,21 +70,26 @@ program scene
   call xarea(diph,totdi)
   call xarea(exph,totex)
   call xarea(nbph,totnb)
+  print*, 'Total NB ',totnb
   call xarea(exph2,totex2)
   call xarea(gradj,totgs)
-  call getdata
+
   if (itot.eq.0) then
      !  First calculate scaling factor on external current to give
      !  required total current (this will be the loop voltage in the
      !  case of a neoclassical ohmic profile)
-     vloop=(totgs-totbs-totps-totdi-totex2-totnb)/totex
+     !vloop=(totgs-totbs-totps-totdi-totex2-totnb)/(totex)
+     vloop=(totgs-totbs-totps-totdi-totex2)/(totex)
+
      print*, ' '
      print*, 'Vloop = ', vloop
      print*, ' '
      if (abs(neo).eq.1) then
-        vnobs=(totgs-totps-totdi-totex2-totnb)/totex
+
+        !vnobs=(totgs-totps-totdi-totex2-totnb)/(totex)
+        vnobs=(totgs-totps-totdi-totex2)/(totex)
         call xarea(spit,spiti)
-        vspit=(totgs-totps-totdi-totex2-totnb)/spiti
+        vspit=(totgs-totps-totdi-totex2)/spiti
      end if
      !  Label exph as total driven current...
      do i=1,nr
@@ -91,6 +98,9 @@ program scene
         end do
      end do
      totex=totex*vloop+totex2
+     call getdata
+     print*, totgs, totbs, totps, totdi, totex2, totnb, totex
+     
      !  calculate error in ff'
      call ffdgen(1,icur,errcur)
      write(6,*)' done ffdgen'

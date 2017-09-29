@@ -338,7 +338,6 @@ subroutine equil(niter)
               Rmax = r(i)
               exit
            end do
-
            amin = (Rmax - Rmin)/2.
 
 end subroutine equil

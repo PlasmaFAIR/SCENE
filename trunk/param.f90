@@ -270,6 +270,9 @@ module param
  double precision:: sig_r, sig_z, A_beam,Z_beam
  double precision, dimension(2) :: E_b, P_beam, R_t
  double precision, dimension(3) :: P_frac
+
+ ! Flag for NBI
+ integer :: nbi 
 ! double precision :: E_b, P_beam, I_0, R_t
  
 !

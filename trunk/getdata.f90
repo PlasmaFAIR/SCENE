@@ -9,7 +9,7 @@ subroutine getdata
   double precision :: rr, zz, rat
   double precision :: fprof, tempe, tempi, psi,psi_n, bp, B_tor, B_pol, B_tot
   double precision :: press, densi, dense, safety, ffp, pp
-  double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi
+  double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2
   character(8) :: date
   character(10) :: time
   double precision :: flux_r, flux_z
@@ -116,7 +116,7 @@ subroutine getdata
       stop
    end if
 
-   write(nh,*) 'R(m), J_tot (kA m^-2), J_ext, J_bs, J_di, J_ps, J_nbi'
+   write(nh,*) 'R(m), J_tot (kA m^-2), J_ext, J_ext2, J_bs, J_di, J_ps, J_nbi'
    
    do i=1,nr
       if (ixout(i,nsym) .le. 0) cycle
@@ -124,6 +124,7 @@ subroutine getdata
       !Different current values
       J_tot = sngl(gradj(i,nsym)/1000.)
       J_ext = sngl(exph(i,nsym)/1000.)
+      J_ext2 = sngl(exph2(i,nsym)/1000.)
       J_bs = sngl(bsph(i,nsym)/1000.)
       J_di = sngl(diph(i,nsym)/1000.)
       J_ps = sngl(psph(i,nsym)/1000.)
@@ -131,10 +132,10 @@ subroutine getdata
       rr = r(i)
 
 
-      write(nh,16) rr,J_tot,J_ext,J_bs,J_di,J_ps,J_nbi
+      write(nh,16) rr,J_tot,J_ext,J_bs,J_di,J_ps,J_nbi, J_ext2
 
    end do
-16 format(7e14.6)
+16 format(8e14.6)
 
 
    close(nh)

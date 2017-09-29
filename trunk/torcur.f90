@@ -17,7 +17,8 @@
         allocate( bsph(nr,nz),psph(nr,nz),diph(nr,nz),exph(nr,nz),   &
                 exph2(nr,nz),gradj(nr,nz),spit(nr,nz),absph(nr,nz),nbph(nr,nz))
       end if
-!
+      !
+      print*, 'starting torcur'
       do i=1,nr
         do j=1,nz
           if (ixout(i,j).le.0) then
@@ -79,7 +80,7 @@
      diph(i,j)=-rr*bth*bth*pd/bsq
 
      !neutral beam current
-     nbph(i,j)=neubeam*bmod
+     nbph(i,j)=neubeam*bphi
 !   grad--shafranov current (should converge to total j, as specified)
 !  (note, if itot=1 total specified current = gradj -> no convergence
 !  required).
@@ -90,6 +91,8 @@
               if (neo.lt.0) icur=-1
 !  external current profile calculated in extj, returned in extapp
 	      call extj(eps,psi,extapp,extapp2,icur)
+              extapp = extapp 
+       
 	      if (abs(neo).eq.1) then
 		jcur=-1
 		call extj(eps,psi,spitc,extapp3,jcur)
@@ -99,7 +102,7 @@
 	      if (abs(neo).eq.1) spit(i,j)=spitc*fsi/rr
 	    else
 !  total current profile given in gradj
-	      exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)-nbph(i,j)
+        exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)!-nbph(i,j)
               exph2(i,j)=0.
 	    end if
 	  end if

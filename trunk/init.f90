@@ -148,7 +148,7 @@ end subroutine init
       nchi0=30
       chi0val=0.
       lamges=2.
-
+      nbi = 0
 
 
       !NB
@@ -288,6 +288,7 @@ end subroutine init
       if(word.eq.'nci0')nchi0=ival
       if(word.eq.'chi0')chi0val=val
       if(word.eq.'lam ')lamges=val
+      if(word.eq.'nbi ')nbi=val
       if(word.eq.'fini')goto 70
       goto 60
  70   continue

@@ -290,7 +290,11 @@
       fsi=fprof(0.0d0,2)
       avbli(ncon)=0.
       rnorm(ncon)=2.*pi*r0*r0*sfac(ncon)/fsi
-!  some axis values we know analytically....
+      !  some axis values we know analytically....
+
+      !Added by Bhavin
+      bdl(ncon) = fsi/r0
+      
       bsqav(ncon)=(fsi/r0)**2
       rsqav(ncon)=r0**2
       rinv(ncon)=1./r0

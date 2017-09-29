@@ -32,7 +32,7 @@ subroutine nbicur2()
   double precision :: rat, del, delp, kap, kapp, dpdr, volp, lambda
 
   double precision :: rrange, zrange, beam_int, elec_return, uval
-  double precision, dimension(ncon) :: n_f, h_tot, j_f, dep, J_nbeam, rhos
+  double precision, dimension(ncon) :: n_f, h_tot, j_f, dep, J_nbeam, rhos, rnormnb
   double precision, dimension(nr) :: J_tot
 
 
@@ -67,7 +67,7 @@ subroutine nbicur2()
   !V beam (E_b in keV so change to J)
 
   !Calculate dpsi/drho and dvol/drho for each flux surface
-  call dpsidrho(dpdrs)
+  call dpsidrho(dpdrs, rnormnb)
 
   call dVdrho(volps)
 
@@ -663,4 +663,239 @@ function elec_return(J_f, zeff, Z_b,uval)
 end function elec_return
 
 
+
+subroutine nbicur()
+
+  use param
+  implicit none
+
+  double precision :: psi
+
+
+  integer :: con, l, im,i,j, count
+
+  integer :: nbeams, n, nion, maxiter, inbfus, iflag
+
+  real :: amb, zbeam, b0, volp
+  double precision :: rr, nesum, tesum, neav,teav
+  real :: zni, ne
+
+  ! input variables
+  real, dimension(:), allocatable :: ebeam, pbeam, rtang, bwidth, bheigh, bgaussR, bgaussZ, bzpos
+
+  integer, dimension(:), allocatable :: nbshape, nbptype
+  
+  real, dimension(:), allocatable :: aion, zion, ne20, tekev, tikev, zeff
+  real, dimension(:,:), allocatable :: ni20, pwrfrac
+
+  real, dimension(:), allocatable :: rnormnb, vprime, dvol, darea, kappa, dkappa, shafr, dshafr
+
+  real, dimension(:), allocatable :: dpdrs
+
+  double precision :: dense, tempe, tempi, densi, shift, elong
+  !Output variables
+
+  real, dimension(:,:,:), allocatable :: hofr, jnbie
+
+  real, dimension(:,:), allocatable :: shinethru, jnb
+
+  real, dimension(:), allocatable ::  jnbTot, pnbe, pnbi, beamDens, beamPress, beamFus, &
+       pNBLoss, pNBAbsorb, pbfuse, pbfusi, snBeamDD, snBeamDT, nbcur, etanb, &
+       gammanb
+
+  real :: pNBAbsorbTot, pNBLossTot, nbcurTot, etanbTot, beamBeta, beamFusTot, beamFusChTot, &
+       snDTTotal, snDDTotal
+
+  integer :: iflagnb
+
+  integer :: maxbeams, mxrho
+
+  maxbeams = 4
+  mxrho = 51
+
+    !J_nb = 0.
+  !Nbi input param: no. of beams, mass of beams, charge, beam-fusion flag 
+  nbeams = 2
+  amb = 2
+  zbeam = 1
+  inbfus = 1
+
+  vol = 0.
+  nesum =0.
+  tesum = 0.
+  count=0
+  do i=1,nr
+
+     rr = r(i)
+     do j=1,nz
+        if (ixout(i,j) .le. 0) cycle
+        psi = umax - u(i,j)
+        vol = vol+rr*dr*dz
+        count = count +1
+        nesum = nesum + dense(psi,0)
+        !print*, dense(psi,0) , tempe(psi,0)
+        tesum = tesum + tempe(psi,0)
+     end do
+  end do
+
+  !print*, 'Tesum ', tesum, 'nesum', nesum, count
+  neav = nesum/count
+  teav = tesum/count
+  
+  volp = sngl(vol*2*pi)
+  
+  allocate(ebeam(nbeams), pbeam(nbeams), rtang(nbeams), bwidth(nbeams), bheigh(nbeams), &
+       nbptype(nbeams), bgaussR(nbeams), bgaussZ(nbeams), bzpos(nbeams))
+  
+  allocate(pwrfrac(3, nbeams))
+
+  !Power fractions for energy components
+  do l=1,2
+     pwrfrac(:,l) = (/0.7,0.2,0.1/)
+  end do
+  
+
+  !Energy and Power of beams
+  ebeam = (/150.0,150.0/)
+  pbeam = (/10.0, 10.0/)
+
+  !Tangency radii, NB shape parameters
+
+  !Outer edge of beam must be in plasma
+  rtang = (/0.8,1.0/)
+  nbshape = (/0,1/)
+  bwidth = (/0.3,0.2/)
+  bheigh = (/0.5,0.5/)
+  nbptype = (/1,1/)
+
+  bgaussR = (/0.1,0.1/)
+  bgaussZ = (/0.1,0.1/)
+
+  bzpos = (/0.0, 0.3/)
+
+  !Iterations to find rho
+  maxiter = 2
+
+  
+ 
+
+  !Background plasma input quantities
+
+
+
+  allocate(aion(nion), zion(nion), ne20(ncon), tekev(ncon), tikev(ncon), zeff(ncon), &
+       dpdrs(ncon), rnormnb(ncon), dvol(ncon), darea(ncon), vprime(ncon), kappa(ncon), &
+       dkappa(ncon), shafr(ncon), dshafr(ncon) )
+  
+
+  !Ions parameters
+  nion = nimp+1
+  aion = zmas
+  zion = iz
+  !Toroidal magnetic field
+  b0 = sngl(mu0*rodi/(2.*pi*rcen))
+
+  dpdrs=0.
+  rnormnb=0.
+  
+  allocate( ni20(mxrho, nion))
+
+  call dpsidrho(dpdrs, rnormnb)
+
+ 
+  call dVdrho(dvol, darea, vprime)
+
+  do con=1,ncon
+
+     psi = psiv(con)
+
+
+     !Shafranov shift  and elongation + derivatives
+     !ncon-con+1 because array needs to start from axis
+     shafr(ncon-con+1) = sngl(shift(con,0)/amin)
+
+     dshafr(ncon-con+1) = sngl(shift(con,1)/amin) * dpdrs(con)
+
+     kappa(ncon-con+1) = sngl(elong(con,0))
+
+     dkappa(ncon-con+1) = sngl(elong(con,1)) * dpdrs(con)
+
+     !Electron and ion densities and temp
+     ne = sngl(dense(psi,0))
+     ne20(ncon-con+1) = ne*1.0e-20
+
+     do im=1,nion
+        
+        ni20(ncon-con+1,im) = sngl(densi(psi,im,0)*1.0e-20)
+        
+     end do
+     
+     tekev(ncon-con+1) = sngl(tempe(psi,0)*1.0e-3)
+
+     tikev(ncon-con+1) = sngl(tempi(psi,1,0)*1.0e-3)
+
+
+     !Effective Z
+     zeff(ncon-con+1)=sngl(zm)
+     if (imp.eq.1) then
+        if (ne.gt.0.) then
+           zeff(ncon-con+1)=0.
+           do l=1,nimp+1
+              zni=sngl(densi(psi,l,0))
+              zeff(ncon -con+1)=sngl(zeff(ncon-con+1))+(zni*iz(l)**2)/ne
+           end do
+          
+        end if
+     end if
+
+     !print*,  ne20(ncon-con+1), ni20(ncon-con+1,1)
+  end do
+
+
+  Print*, 'calling nbeams'
+
+!!!!! CHECK IF THIS IS VALID !!!!!!
+  !Set density to small value at edge other NaNs
+  ne20(50) = 0.01
+  ni20(50,1) = 0.01
+
+
+  
+  !Allocate arrays to outputs variables (need to do it for max no. of
+  !beams/rhos as is allocated in nbeams
+  allocate(hofr(mxrho, 3,maxbeams))
+
+  allocate(shinethru(3,maxbeams))
+
+  allocate(pNBLoss(maxbeams), pNBAbsorb(maxbeams), etanb(maxbeams), gammanb(maxbeams), nbcur(maxbeams))
+
+  allocate(jnbTot(mxrho), pnbe(mxrho),pnbi(mxrho),beamDens(mxrho),beamPress(mxrho), beamFus(mxrho), &
+       pbfuse(mxrho), pbfusi(mxrho), snBeamDD(mxrho), snBeamDT(mxrho))
+
+  ! Call beam calc
+  call calcBeams(nbeams, amb, zbeam, ebeam, pbeam, inbfus, &
+       rtang, nbshape, bwidth, bheigh, nbptype, bgaussR, bgaussZ, &
+       bzpos, pwrfrac, maxiter, nion, aion, zion, ne20, ni20, tekev, &
+       tikev, zeff, sngl(rcen), sngl(amin), b0, volp, ncon, rnormnb, vprime, dvol, darea,  &
+       kappa, dkappa, shafr, dshafr, hofr, shinethru, jnbTot, pnbe,  &
+       pnbi, beamDens, beamPress, beamFus, pbfuse, pbfusi, snBeamDD, &
+       snBeamDT, nbcur, etanb, gammanb, pNBAbsorb, pNBLoss, nbcurTot, &
+       etanbTot, beamBeta, pNBAbsorbTot, pNBLossTot, beamFusTot, &
+       beamFusChTot, snDTTotal, snDDTotal, iflagnb)
+
+  
+  ni20=0.0
+
+  !Set total current to J_nb
+  !Note need to reverse order of array again and use <B>/<B^2>
+  ! from appropriate flxsur
+  do i=1,ncon
+     !print*, jnbTot(i), bdl(ncon-i+1), bsqav(ncon-i+1)
+     J_nb(ncon-i+1) = dble(jnbTot(i))*bdl(ncon-i+1)/bsqav(ncon-i+1)
+     !print*, i, dshafr(i)
+  end do
+  
+
+  print*, 'Electron Average Temp ', teav, ' and density ', neav
+end subroutine nbicur
 
