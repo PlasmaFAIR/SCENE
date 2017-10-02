@@ -757,12 +757,12 @@ subroutine nbicur()
 
   !Energy and Power of beams
   ebeam = (/150.0,150.0/)
-  pbeam = (/10.0, 10.0/)
+  pbeam = (/20.0, 20.0/)
 
   !Tangency radii, NB shape parameters
 
   !Outer edge of beam must be in plasma
-  rtang = (/0.8,1.0/)
+  rtang = (/0.8,0.85/)
   nbshape = (/0,1/)
   bwidth = (/0.3,0.2/)
   bheigh = (/0.5,0.5/)
@@ -771,7 +771,7 @@ subroutine nbicur()
   bgaussR = (/0.1,0.1/)
   bgaussZ = (/0.1,0.1/)
 
-  bzpos = (/0.0, 0.3/)
+  bzpos = (/0.0, 0.0/)
 
   !Iterations to find rho
   maxiter = 2
@@ -891,8 +891,8 @@ subroutine nbicur()
   ! from appropriate flxsur
   do i=1,ncon
      !print*, jnbTot(i), bdl(ncon-i+1), bsqav(ncon-i+1)
-     J_nb(ncon-i+1) = dble(jnbTot(i))*bdl(ncon-i+1)/bsqav(ncon-i+1)
-     !print*, i, dshafr(i)
+     J_nb(ncon-i+1) = dble(jnbTot(i))/sqrt(bsqav(ncon-i+1))
+     print*, i, hofr(ncon-i+1,1,1)
   end do
   
 

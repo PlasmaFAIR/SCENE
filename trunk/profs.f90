@@ -1541,12 +1541,8 @@
 
      rho(ncon) = 0.
      rhomax = maxval(rho)
-     do i=1,ncon
-        
-        print*, rho(i)
-        !print*, rho(i)/rhomax, psiv(i)/umax
-     end do
-     print*, 'AMin and rhomax', amin, rhomax
+    
+
      !normalise rho
      
      rho = rho/rhomax
