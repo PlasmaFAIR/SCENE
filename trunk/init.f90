@@ -149,11 +149,11 @@ end subroutine init
       chi0val=0.
       lamges=2.
       nbi = 0
-
+      bmfus=0.
 
       !NB
       sig_r =0.08
-      E_b = (/200,150/)
+      E_b = (/150,150/)
       sig_z = 0.08
       P_beam = (/10,40/)
       !I_0 = P_beam*1000./E_b

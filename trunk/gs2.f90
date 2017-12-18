@@ -92,7 +92,7 @@
    end do
    write(ndsk,fmt='("amin (m)")')
    write(ndsk,fmt='(1p,8e16.8)') temvar
-   write(6,*)' written aminor'
+   !write(6,*)' written aminor'
 !   call spline1d(temvar,ps,nsurf,sfac,psiv,ncon,work)
    do k=1,nsurf
      ik=1
@@ -111,7 +111,7 @@
    end do
    write(ndsk,fmt='("q")')
    write(ndsk,fmt='(1p,8e16.8)') temvar
-   write(6,*)' written q'
+   !write(6,*)' written q'
    do k=1,ncon
       psi=psiv(k)
       fofpsi(k)=fprof(psi,1)
@@ -132,7 +132,7 @@
 !     psi=psiv(k)
 !     write(56,*)' psi=',psi,' fprof=',2.*fprof(psi,1),' fpdiff=',(fpint(k+1)-fpint(k-1))/(psiv(k+1)-psiv(k))
 !   end do
-   write(6,*)' doing ssplies'
+   !write(6,*)' doing ssplies'
    do k=1,nsurf
 !     write(6,*)' k=',k
      psi=ps(k)
@@ -160,21 +160,21 @@
    end do
    write(ndsk,fmt='("f =r B_phi (Tm)")')
    write(ndsk,fmt='(1p,8e16.8)') temvar
-   write(6,*)' written f'
+   !write(6,*)' written f'
    do k=1,nsurf
      psi=ps(k)
      temvar(k)=press(psi,0)
    end do
    write(ndsk,fmt='("p (Pa)")')
    write(ndsk,fmt='(1p,8e16.8)') temvar
-   write(6,*)' written p'
+   !write(6,*)' written p'
    do k=1,nsurf
      psi=ps(k)
      temvar(k)=press(psi,1)/(2.*pi)
    end do
    write(ndsk,fmt='("dp/dpsi (Pa/Wb)")')
    write(ndsk,fmt='(1p,8e16.8)') temvar
-   write(6,*)' written p-prime'
+   !write(6,*)' written p-prime'
    write(ndsk,fmt='("No of points on LCFS=",I6)') npts
    k=0
    do j=npts/2+1,1,-1
@@ -187,7 +187,7 @@
    end do
    write(ndsk,fmt='("r(j) (m) on LCFS")')
    write(ndsk,fmt='(1p,8e16.8)') polvar
-   write(6,*)' written rpts'
+   !write(6,*)' written rpts'
    k=0
    do j=npts/2+1,1,-1
      k=k+1
@@ -199,7 +199,7 @@
    end do
    write(ndsk,fmt='("z(j) (m) on LCFS")')
    write(ndsk,fmt='(1p,8e16.8)') polvar
-   write(6,*)' written zpts'
+   !write(6,*)' written zpts'
    nrg=nsurf
    nzg=nrg+1
    allocate(rg(nrg),zg(nzg),mshvar(nrg,nzg))
@@ -209,16 +209,16 @@
    do i=1,nrg
      rg(i)=r(1)+(i-1)*deltar
    end do
-   write(6,*)' writing rg'
+   !write(6,*)' writing rg'
    write(ndsk,fmt='(1p,8e16.8)') rg
-   WRITE(6,*)' WRITTEN RG'
+   !WRITE(6,*)' WRITTEN RG'
    deltaz=(z(nz)-z(1))/(nzg-1)
    do j=1,nzg
      zg(j)=z(1)+(j-1)*deltaz
    end do
    write(ndsk,fmt='("zgrid (m)")')
    write(ndsk,fmt='(1p,8e16.8)') zg
-   write(6,*)' written zg'
+   !write(6,*)' written zg'
 !--------------------Interpolate-----------------------------------
       npt=nr*nz
       allocate( xn(npt),yn(npt),fna(npt),grads(2,npt),triang(7*npt) )
@@ -265,7 +265,7 @@
         end do
       end do
       deallocate( xn,yn,fna,grads,triang )
-      write(6,*)' done interpolate'
+      !write(6,*)' done interpolate'
       call valbth2(rg,zg,mshvar,nrg,nzg)
 !---------------------------------------------------------------------
 !   do i=1,nr

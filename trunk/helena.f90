@@ -20,7 +20,7 @@
           if (zpts(1,i).gt.zup/2.) then
             rat=(zup/2.-zpts(1,i))/(zpts(1,i+1)-zpts(1,i))
             rhalf=rpts(1,i)+rat*(rpts(1,i+1)-rpts(1,i))
-            write(6,*)' rat=',rat,' rhalf=',rhalf,' rptsi=',rpts(1,i),' rptsi-1=',rpts(1,i-1)
+            !write(6,*)' rat=',rat,' rhalf=',rhalf,' rptsi=',rpts(1,i),' rptsi-1=',rpts(1,i-1)
           end if
         end if
       end do
@@ -31,7 +31,7 @@
       end if
       arg=rhalf/(tokeps*rcen)
       quadh=(2./sqrt(3.))*(acos(arg)-pi/6.-tri/2.)
-      write(6,*)' in helena'
+      !write(6,*)' in helena'
       psi=0.
       pp0=press(psi,1)
       ffp0=fprof(psi,1)
@@ -133,5 +133,5 @@
 !      call tstplt(ncon,xv,yv2)
 !
       write(nh,*)' '
-      write(6,*)' out helena'
+      !write(6,*)' out helena'
    end subroutine helena

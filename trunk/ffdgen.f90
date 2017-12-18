@@ -26,7 +26,7 @@
       double precision psi,eps
       double precision gmax,gold,errcur,gtst,err,errel,err1
       double precision fprof,press
-      double precision extapp,extapp2,bav
+      double precision extapp,extapp2,bavg
       double precision f,ffd,fd,pd,jedge,fval
       double precision fcen,bavcen,t3
 !
@@ -49,16 +49,23 @@
         fd=ffd/f
         pd=press(psi,1)
         gold=ffd
-        bav=bsqav(k)
+        bavg=bsqav(k)
 !  match flux surface averages (same for both par/tor currents)...
-        !gtst=-mu0*(f*extapp+f*J_nb(k)+f*bsj(k)/sqrt(bav)+f*f*pd/bav)/scl
-        gtst=-mu0*(f*extapp+f*bsj(k)/sqrt(bav)+f*f*pd/bav)/scl
+
+        !Flag on whether to include nb in ffdgen calc
+        if (nbi .eq. 2) then
+           gtst=-mu0*(f*extapp+f*J_nb(k)+f*bsj(k)/sqrt(bavg)+f*f*pd/bavg)/scl
+        else
+           gtst=-mu0*(f*extapp+f*bsj(k)/sqrt(bavg)+f*f*pd/bavg)/scl
+        end if
+        
+
         !print*, extapp, j_nb(k), bsj(k)/sqrt(bav), f*pd/bav
         if (k.eq.1) then
-        write(6,*)'********* in ffdgen, k=1'
-        write(6,*)' f=',f,' pd=',pd,' fd=',fd
-        write(6,*)' extapp=',extapp,' bsj=',bsj(1)/sqrt(bav)
-        write(6,*)' gtst*scl/f=',gtst*scl/f,' scl=',scl
+        !write(6,*)'********* in ffdgen, k=1'
+        !write(6,*)' f=',f,' pd=',pd,' fd=',fd
+        !write(6,*)' extapp=',extapp,' bsj=',bsj(1)/sqrt(bav)
+        !write(6,*)' gtst*scl/f=',gtst*scl/f,' scl=',scl
         end if
         if (k.gt.1) then
 !  calculate error in ff' relative to max(ff')
@@ -81,12 +88,12 @@
       pd=press(psi,1)
       fd=fprof(psi,1)/fval
       jedge=-(fval*pd/sqrt(bsqav(1))+fd*sqrt(bsqav(1))/mu0)
-      write(6,*)' New f-dash=',fprof(psi,1)/fprof(psi,2),' new pd=',pd
-      write(6,*)' New fval=',fval,' New scl=',scl
-      write(6,*)' ******* j.B=',jedge
-      write(6,*)' k=',kmax,' max relative error in g=',errel,' g=',gtst*scl
-      write(6,*)' ERROR in edge ffd=',err1
-      write(6,*)' g ror test=',errcur
+      !write(6,*)' New f-dash=',fprof(psi,1)/fprof(psi,2),' new pd=',pd
+      !write(6,*)' New fval=',fval,' New scl=',scl
+      !write(6,*)' ******* j.B=',jedge
+      !write(6,*)' k=',kmax,' max relative error in g=',errel,' g=',gtst*scl
+      !write(6,*)' ERROR in edge ffd=',err1
+      !write(6,*)' g ror test=',errcur
       if (i.eq.1) return
 !  g at magnetic axis
       fcen=fprof(0.0d0,2)

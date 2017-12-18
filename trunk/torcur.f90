@@ -101,10 +101,18 @@
               exph2(i,j)=extapp2*fsi/rr
 	      if (abs(neo).eq.1) spit(i,j)=spitc*fsi/rr
 	    else
-!  total current profile given in gradj
-        exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)!-nbph(i,j)
+        !  total current profile given in gradj
+
+        !Flag on whether to include nbi in ffdgen calc
+        if (nbi .eq. 2) then
+           exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)-nbph(i,j)
+
+        else
+           exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)-nbph(i,j)
+        end if
+        
               exph2(i,j)=0.
-	    end if
+           end if
 	  end if
         end do
       end do

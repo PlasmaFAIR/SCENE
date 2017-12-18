@@ -39,7 +39,7 @@
         nhebar=nhebar+0.5*(dhlo+dhup)*dr
         pdiam=pdiam+dr
  10   continue
-      write(6,*)' nHE/ne=',nhebar/nebar
+      !write(6,*)' nHE/ne=',nhebar/nebar
       nebar=1.0d-19*nebar/pdiam
 !  Confinement time relative to scaling laws
       arad=tokeps*rcen
@@ -51,19 +51,19 @@
       bvaxis=mu0*rodi/(2.*pi*rcen)
       risomas=2.5
 !  H factors for y1 and y2 scaling laws
-      write(6,*)' plasi=',plasi,' bvaxis=',bvaxis,' nebar=',nebar
-      write(6,*)' htpow=',htpow,' rcen=',rcen,' cirkap=',cirkap
-      write(6,*)' tokeps=',tokeps,' risisomas=',risomas
+      !write(6,*)' plasi=',plasi,' bvaxis=',bvaxis,' nebar=',nebar
+      !write(6,*)' htpow=',htpow,' rcen=',rcen,' cirkap=',cirkap
+      !write(6,*)' tokeps=',tokeps,' risisomas=',risomas
       hipb98y1=1./(0.0503*(plasi**0.91)*(bvaxis**0.15)*(nebar**0.44)*  &
       (htpow**(-0.65))*(rcen**2.05)*(cirkap**0.72)*(tokeps**0.57)      &
       *(risomas**0.13)*htpow*1.0d6/conft)
-      write(6,*)' tauipb=',conft/(htpow*1.0d6)/hipb98y1
+      !write(6,*)' tauipb=',conft/(htpow*1.0d6)/hipb98y1
       hipb98y2=1./(0.0562*(plasi**0.93)*(bvaxis**0.15)*(nebar**0.41)*  &
       (htpow**(-0.69))*(rcen**1.97)*(cirkap**0.78)*(tokeps**0.58)      &
       *(risomas**0.19)*htpow*1.0d6/conft)
 !  Energy and helium confinement times
       taue=conft/(htpow*1.0d6)
-      write(6,*)' taue=',taue,' hipb98y1=',hipb98y1
+      !write(6,*)' taue=',taue,' hipb98y1=',hipb98y1
       tauh=3.5*1.0d6*1.602d-19*confa/(pfus*taue)
 ! Density normalised to Greenwald
       gwden=plasi/(pi*arad*arad)
@@ -195,7 +195,7 @@
 
 
       if (fast.eq.1) then
-         write(6,*)' pimp3/palpha=',pimp3/palpha
+         !write(6,*)' pimp3/palpha=',pimp3/palpha
          allocate (pimp3v(ncon))
          pimp3v=0.
          do k=1,ncon 
@@ -261,9 +261,9 @@
 !!$
 !Fast beta calculation
       if (fast.eq.1) then
-         Write(6,*)'--------------------------------------------'
-         Write(6,*)'Calculating fast beta'
-         Write(6,*)'--------------------------------------------'
+         !Write(6,*)'--------------------------------------------'
+         !Write(6,*)'Calculating fast beta'
+         !Write(6,*)'--------------------------------------------'
 !         if (nimp.lt.2) then
 !            Write(6,*)'  Error calculating fast beta'
 !            Write(6,*)' Input fast alpha as second impurity, check number of impurities'

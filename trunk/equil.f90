@@ -55,6 +55,12 @@ subroutine equil(niter)
         u(i,j)=f
      end do
   end do
+
+  if (igr .ge. 1 .and. niter .eq. 1) then
+     !Display fourier of boundary
+     call system("ipython ~/SCENEv2/graphs/bdytest.py")
+
+  end if
   !  if ipass=0 uses input parameterisation of ff' (ie first run)
   !  if ipass=1 (set in ffdgen) uses mesh ff' calculated in ffdgen
   ipass=0
@@ -593,7 +599,8 @@ end subroutine equil
               r2=rdim(i)
               izr2=i
             end if
-          end do
+         end do
+         print*, 'R1 and R2', r1, r2
           rcen=(r1+r2)/2.
           write(6,*)' rcen=',rcen,' izmid-',izmid,' izr2=',izr2
 !          write(6,*)' zdim(1)=',zdim(1),' rdim(1)=',rdim(1)

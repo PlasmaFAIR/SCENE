@@ -7,11 +7,13 @@ program scene
   double precision errcur,bpold,bnold,bpnew
   !
 
+
   nbet=0
   ! Perform initialisations
   write(6,*) 'Starting SCENE'
-  call init
 
+  
+  call init
   ! Initialise error function array for use in bootstrap routine, hirsig
   ! In call bootstrap routine hirsig, don;'t forget you need to load up
   !  error function first...and don't call it errf!
@@ -30,6 +32,8 @@ program scene
   !        call filon
   !end if
 
+
+  
   !  initialise number of iterations
 5 niter=0
   ! Call SCENE equilibrium routines
@@ -41,6 +45,8 @@ program scene
   write(6,*) 'Printing poloidal/toroidal graphs'
   call equil(niter)
 
+
+    
   write(6,*)' done equil'
   ! Convert equilibrium to flux surface coordinates
   call flxsur
@@ -52,7 +58,9 @@ program scene
   write(6,*)' done flxav'
 
   j_nb = 0.
-  if (nbi.eq.1) call nbicur()
+
+  !Include NBI in current calc
+  if (nbi.ge.1) call nbicur()
   
   print*, 'done nbicur'
   !  Calculate currents (and read in externally applied current
@@ -70,24 +78,32 @@ program scene
   call xarea(diph,totdi)
   call xarea(exph,totex)
   call xarea(nbph,totnb)
-  print*, 'Total NB ',totnb
   call xarea(exph2,totex2)
   call xarea(gradj,totgs)
 
   if (itot.eq.0) then
      !  First calculate scaling factor on external current to give
      !  required total current (this will be the loop voltage in the
-     !  case of a neoclassical ohmic profile)
-     !vloop=(totgs-totbs-totps-totdi-totex2-totnb)/(totex)
-     vloop=(totgs-totbs-totps-totdi-totex2)/(totex)
+     ! case of a neoclassical ohmic profile)
+
+     ! Flag on whether to include NBI in FFDGEN calc
+     if (nbi .eq. 2) then
+        vloop=(totgs-totbs-totps-totdi-totex2-totnb)/(totex)
+     else
+        vloop=(totgs-totbs-totps-totdi-totex2)/(totex)
+     end if
 
      print*, ' '
      print*, 'Vloop = ', vloop
      print*, ' '
      if (abs(neo).eq.1) then
 
-        !vnobs=(totgs-totps-totdi-totex2-totnb)/(totex)
-        vnobs=(totgs-totps-totdi-totex2)/(totex)
+        if (nbi .eq. 2) then
+           vnobs=(totgs-totps-totdi-totex2-totnb)/(totex)
+        else
+           vnobs=(totgs-totps-totdi-totex2)/(totex)
+        end if
+        
         call xarea(spit,spiti)
         vspit=(totgs-totps-totdi-totex2)/spiti
      end if
@@ -99,7 +115,7 @@ program scene
      end do
      totex=totex*vloop+totex2
      call getdata
-     print*, totgs, totbs, totps, totdi, totex2, totnb, totex
+     !print*, totgs, totbs, totps, totdi, totex2, totnb, totex
      
      !  calculate error in ff'
      call ffdgen(1,icur,errcur)
@@ -110,9 +126,9 @@ program scene
            !  up-date ff'
            call ffdgen(0,icur,errcur)
            !  up-date n,T mesh if appropriate
-           write(6,*)' in setnt'
+           !write(6,*)' in setnt'
            if (igr.eq.5) call setnt
-           write(6,*)' out setnt'
+           !write(6,*)' out setnt'
            icont=-3
            goto 30
         else
@@ -150,9 +166,22 @@ program scene
   end if
   if (ipswtch.eq.3) call setnt
   write(6,*)' done setnt'
-  !  Plot out some useful figs
-  !call nbicur2()
-  if (igr.eq.0) call getdata
+
+  !Doesn't include NBI in current calc
+  !if (nbi.eq.1) call nbicur
+
+ !Write data to file
+  call getdata
+
+  
+  !  Plot out some useful figs 
+  if (igr.ge.0) then
+
+     !Call python plotting
+     call system("echo "//runname// " | ipython ~/SCENEv2/graphs/graphs.py")
+     
+  end if
+  
   !  Plot stability plots if igr set to 3
   !      if (igr.eq.3) call stab
   !      if (igr.eq.3) call epsplot
@@ -170,4 +199,6 @@ program scene
   !C Call user ouput interface
   !      CALL USRCAL(U,IXOUT)
   !      if (igr.gt.0) call grend
+
+  
 end program scene

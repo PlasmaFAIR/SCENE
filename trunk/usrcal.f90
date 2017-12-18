@@ -91,10 +91,10 @@
       icur=1
       call extj(tokeps,umax,extapp,extapp2,icur)
       rat=extapp*vloop*sqrt(bsqav(1))/bsj(1)
-      write(6,*)' Ratio of edge Ohmic to bootstrap current=',rat
-      write(6,*)' Ohmic edge current, J||/B=',extapp*vloop,extapp2
-      write(6,*)' Bootstrapc edge current, J||/B=',bsj(1)/sqrt(bsqav(1))
-      write(6,*)' sqrt(bsqav)=',sqrt(bsqav(1))
+      !write(6,*)' Ratio of edge Ohmic to bootstrap current=',rat
+      !write(6,*)' Ohmic edge current, J||/B=',extapp*vloop,extapp2
+      !write(6,*)' Bootstrapc edge current, J||/B=',bsj(1)/sqrt(bsqav(1))
+      !write(6,*)' sqrt(bsqav)=',sqrt(bsqav(1))
       call gs2
 !      call astradat
 !!$      call bandat

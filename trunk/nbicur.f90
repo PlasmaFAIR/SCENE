@@ -757,25 +757,34 @@ subroutine nbicur()
 
   !Energy and Power of beams
   ebeam = (/150.0,150.0/)
-  pbeam = (/20.0, 20.0/)
+  pbeam = (/55.0, 0.0/)
 
+  
   !Tangency radii, NB shape parameters
 
   !Outer edge of beam must be in plasma
-  rtang = (/0.8,0.85/)
+  rtang = (/0.7,1.1/)
   nbshape = (/0,1/)
-  bwidth = (/0.3,0.2/)
-  bheigh = (/0.5,0.5/)
+  bwidth = (/0.3,0.3/)
+  bheigh = (/0.3,0.3/)
   nbptype = (/1,1/)
 
   bgaussR = (/0.1,0.1/)
   bgaussZ = (/0.1,0.1/)
 
-  bzpos = (/0.0, 0.0/)
+  bzpos = (/0.00, 0.40/)
 
   !Iterations to find rho
   maxiter = 2
 
+  paux=0.
+  do l=1,nbeams
+     if (nbshape(l) .eq. 0) then
+        paux = paux + pbeam(l)
+     else
+        paux = paux + 2*pbeam(l)
+     end if
+  end do
   
  
 
@@ -789,11 +798,16 @@ subroutine nbicur()
   
 
   !Ions parameters
-  nion = nimp+1
-  aion = zmas
-  zion = iz
+  if ( nimp+2 .gt. 6) then
+     nion = 6
+  else
+     nion = nimp+1
+  end if
+  
+  !aion = zmas
+  !zion = iz
   !Toroidal magnetic field
-  b0 = sngl(mu0*rodi/(2.*pi*rcen))
+  b0 = sngl(mu0*rodi/(2.*pi*r0))
 
   dpdrs=0.
   rnormnb=0.
@@ -802,13 +816,13 @@ subroutine nbicur()
 
   call dpsidrho(dpdrs, rnormnb)
 
- 
+  
   call dVdrho(dvol, darea, vprime)
 
   do con=1,ncon
 
      psi = psiv(con)
-
+     
 
      !Shafranov shift  and elongation + derivatives
      !ncon-con+1 because array needs to start from axis
@@ -824,10 +838,24 @@ subroutine nbicur()
      ne = sngl(dense(psi,0))
      ne20(ncon-con+1) = ne*1.0e-20
 
-     do im=1,nion
-        
+     ni20(ncon-con+1,1) = sngl(densi(psi,1,0)*1.0e-20)/2.
+     aion(1) = 2.0
+     zion(1) = 1.0
+
+     ni20(ncon-con+1,nion) = sngl(densi(psi,1,0)*1.0e-20)/2.
+     aion(nion) = 3.0
+     zion(nion) = 1.0
+
+     
+     
+     !Split ions into half D and half T
+     do im=2,nion-1
+
+        !Half as D
         ni20(ncon-con+1,im) = sngl(densi(psi,im,0)*1.0e-20)
-        
+        aion(im) = zmas(im)
+        zion(im) = iz(im)
+
      end do
      
      tekev(ncon-con+1) = sngl(tempe(psi,0)*1.0e-3)
@@ -851,8 +879,15 @@ subroutine nbicur()
      !print*,  ne20(ncon-con+1), ni20(ncon-con+1,1)
   end do
 
+  !do i=1,ncon
+  !
+  !   rr = maxval(rpts(ncon-i+1,:)) - r0
+  !   
+  !   print*, rnormnb(i), vprime(i),  shafr(i), dshafr(i)
+  !end do
+  
 
-  Print*, 'calling nbeams'
+  !Print*, 'calling nbeams'
 
 !!!!! CHECK IF THIS IS VALID !!!!!!
   !Set density to small value at edge other NaNs
@@ -890,12 +925,24 @@ subroutine nbicur()
   !Note need to reverse order of array again and use <B>/<B^2>
   ! from appropriate flxsur
   do i=1,ncon
-     !print*, jnbTot(i), bdl(ncon-i+1), bsqav(ncon-i+1)
-     J_nb(ncon-i+1) = dble(jnbTot(i))/sqrt(bsqav(ncon-i+1))
-     print*, i, hofr(ncon-i+1,1,1)
-  end do
-  
 
-  print*, 'Electron Average Temp ', teav, ' and density ', neav
+     J_nb(ncon-i+1) = dble(jnbTot(i))*bav(ncon-i+1)/bsqav(ncon-i+1)
+
+  end do
+
+  print*, 'flag', iflag
+  print*, 'Total NB Current: ', nbcurTot
+
+  bmshine=0.
+  do i=1,nbeams
+     do j=1,3
+        bmshine= bmshine +pwrfrac(j,i)*shinethru(j,i)
+     end do
+  end do
+
+  bmshine = bmshine/nbeams
+  bmfus = dble(beamFusTot)
+
+  !print*, 'Electron Average Temp ', teav, q' and density ', neav
 end subroutine nbicur
 

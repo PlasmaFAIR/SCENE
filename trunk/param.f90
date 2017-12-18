@@ -211,8 +211,8 @@ module param
 ! There follows a list of flux-surface averaged variables:
 !  First we have q, q-prime and q-double-prime
   double precision, dimension(:), allocatable:: sfac,qp,qpp
-!  Then we have   <B^2> and V''
-  double precision, dimension(:), allocatable:: bsqav,vpp
+!  Then we have   <B^2> and V'', <B>
+  double precision, dimension(:), allocatable:: bsqav,vpp, bav
 !  And now: <R^2>, <R^{-1}>, <R^{-2}>, <R>, <1>
   double precision, dimension(:), allocatable:: rsqav,rinv,rsqinv,rav,rnorm
 !  <R^{-4}*B_p^{-2}>  <B>
@@ -271,6 +271,9 @@ module param
  double precision, dimension(2) :: E_b, P_beam, R_t
  double precision, dimension(3) :: P_frac
 
+ !beam fusion power (MW)
+ double precision :: bmfus, bmshine
+ 
  ! Flag for NBI
  integer :: nbi 
 ! double precision :: E_b, P_beam, I_0, R_t

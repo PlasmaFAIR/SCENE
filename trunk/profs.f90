@@ -1607,9 +1607,9 @@
         end do
         
         !area time 2pi * R  (R = r0 + shift)
-        flxvol(i) = flxarea(i) * 2. * pi * (shift(i,0) + r0)
+        flxvol(i) = flxarea(i) * 2. * pi * (shift(i,0) + rcen)
 
-        !Area/Vol of each flux surface
+        !Area/Vol of each flux surface from i-1 to i 
         if (i .eq.ncon) then
            areacon(i) = flxarea(i)
            volcon(i) = flxvol(i)
@@ -1619,7 +1619,8 @@
            volcon(i) = flxvol(i) - flxvol(i+1)
 
         end if
-    
+
+        
        ! write(nw,*) 'vol of flux surface ', i, flxvol(i)
 
      end do
@@ -1657,10 +1658,18 @@
      
      end do
 
-     vols = sngl(volcon(ncon:1:-1))
-     areas = sngl(areacon(ncon:1:-1))
+     !change vol/area to between i-1/2 to i+1/2
+     do i=2,ncon
 
-     volsp = sngl(voldiff(ncon:1:-1))
+        vols(ncon-i+1) = sngl(volcon(i)+volcon(i-1))/2.
+        areas(ncon-i+1) = sngl(areacon(i)+areacon(i-1))/2.
+        volsp(ncon-i+1) = sngl(voldiff(i)+voldiff(i-1))/2.
+
+     end do
+
+     volsp(ncon) = voldiff(1)
+     vols(ncon) = volcon(1)/2.
+     areas(ncon) = areas(1)/2.
      
    end subroutine dVdrho
    

@@ -173,7 +173,7 @@
       ! End of interpolation setup
 !      call e01saf(nopts,rgr,zgr,psival,triang,grads,ifail)
 !
-      print *,'reconstruct psi'
+      !print *,'reconstruct psi'
       do 200 i=1,mgx
          do 190 j=1,mgy
             ifail=1

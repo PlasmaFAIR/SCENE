@@ -28,7 +28,7 @@
          write(6,*) 'problem creating/opening ',runname(1:lrunname)//'.lynton'
          stop
       endif
-      write(6,*)' writing fast ptcle info for lynton'
+      !write(6,*)' writing fast ptcle info for lynton'
       write(nh,*)' psi_norm, vc, S*taus/(4*pi); f_alpha=(S*taus/(4*pi))/(v**3+vc**3)H(v0-v)'
 !  alpha mass (relative to proton mass)
       amass=4.

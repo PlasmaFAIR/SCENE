@@ -46,7 +46,7 @@
         allocate( sfac(ncon),bsqav(ncon),   &
                 rsqav(ncon),rinv(ncon),rsqinv(ncon),rav(ncon),rnorm(ncon),  &
                 avbli(ncon),qp(ncon),qpp(ncon),cnue(ncon),tnue(ncon), &
-                cnui(ncon),tnui(ncon),bdl(ncon),ftrap(ncon),ftrapd(ncon),  &
+                cnui(ncon),tnui(ncon),bdl(ncon),bav(ncon), ftrap(ncon),ftrapd(ncon),  &
                 bsj(ncon),sighhb(ncon),mu1(ncon),mu2(ncon),mu3(ncon),      &
                 nuee(ncon),nuei(ncon),vpp(ncon)  )
                 allocate(ajdotb(ncon),fastp(ncon))
@@ -213,7 +213,7 @@
             write(6,*)' mu0*p-prime=',mu0*press(psiv(k),1),' f-prime=',fprof(psiv(k),1)/fprof(psiv(k),2),' f=',fprof(psiv(k),2)
         call flxint(vpparr,k,ant)
         vpp(k)=ant
-        if (k.eq.5) write(6,*)' qp=',qp(k)
+        !if (k.eq.5) write(6,*)' qp=',qp(k)
         call flxint(d2nudpsi2,k,ant)
         qpp(k)=ant/(2.*pi)
         call flxint(rar,k,rnor)
@@ -282,6 +282,7 @@
 ! integral of B/Btheta dl around the flux surface...
         call flxint(bpsur,k,ant)
         bdl(k)=ant
+        bav(k)=ant/rnor
       end do
 !  some axis averages are undefined, and we set to zero...
 !      do k=2,ncon-1
@@ -294,7 +295,7 @@
 
       !Added by Bhavin
       bdl(ncon) = fsi/r0
-      
+      bav(ncon) = fsi/r0
       bsqav(ncon)=(fsi/r0)**2
       rsqav(ncon)=r0**2
       rinv(ncon)=1./r0
@@ -543,7 +544,7 @@
       fq(1)=0.
       fq(1)=(0.75*sfac(1)-sfac(2)+0.25*sfac(3))/  &
               (0.75*psiv(1)-psiv(2)+0.25*psiv(3))
-      write(6,*)' fqend=',fq(1)
+      !write(6,*)' fqend=',fq(1)
       do k=2,ncon-2
         fqd(k)=(fq(k+1)-fq(k-1))/(psiv(k+1)-psiv(k-1))
       end do
