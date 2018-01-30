@@ -1570,6 +1570,7 @@
    end subroutine dpsidrho
    
 
+   ! Volume of each flux surface
    subroutine dVdrho(vols, areas, volsp)
      
      use param
@@ -1659,6 +1660,7 @@
      end do
 
      !change vol/area to between i-1/2 to i+1/2
+
      do i=2,ncon
 
         vols(ncon-i+1) = sngl(volcon(i)+volcon(i-1))/2.

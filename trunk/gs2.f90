@@ -12,6 +12,7 @@
 !
       integer ndsk,k,nspec,l,kk,ik
       double precision dense,psi,zeff,zni19,ne19,fprof,press,tempi,tempe
+      double precision dshafr, shafr, rmaj, rmin, shift, epsil
       double precision densi,bp
       double precision zmag,rat,px,py,deltar,deltaz,pf,fsqedg,yp,fsq,yy
       double precision yp1,yp2
@@ -291,14 +292,29 @@
          write(6,*) 'problem creating/opening ',runname(1:lrunname)//'_2.gs2'
          stop
       endif
+
+
+      
 !
     do k=2,ncon-1
-      psi=psiv(k)
+       psi=psiv(k)
+       shafr = shift(k,0)
+       dshafr = shift(k,1)
+       rmaj = rcen + shafr
+       rmin = maxval(rpts(k,:)) - rmaj
+
+       epsil = rmin/rmaj
       write(ndsk,*)' normalised flux of chosen surface:',psi/umax
       ne19=dense(psi,0)*1.0d-19
       write(ndsk,*)' beta:',4.03d-3*ne19*                   &
-                   (tempi(psi,1,0)/1000.)*(2.*pi*rcen/(mu0*rodi))**2   &
-                  ,' B0=',(mu0*rodi)/(2.*pi*rcen)
+                   (tempi(psi,1,0)/10000.)*(2.*pi*rcen/(mu0*rodi))**2   &
+                   ,' B0=',(mu0*rodi)/(2.*pi*rcen)
+      write(ndsk,*)' eps:', epsil
+      write(ndsk,*)' pk:', 2*amin/(rcen*sfac(k))
+      write(ndsk,*)' epsl:', 2*amin/rcen
+      write(ndsk,*)' shift:',umax*dshafr/amin
+      write(ndsk,*)' shat:', umax*qp(k)/sfac(k)
+      write(ndsk,*)' beta_prime_input:',(umax/press(psi,0))*press(psi,1)*beta
       zeff=zm
       if (imp.eq.1) then
         if (ne19.gt.0.) then
@@ -316,20 +332,20 @@
       do i=1,nspec-1
         write(ndsk,*)' Ion species no.',i
         write(ndsk,*)' Z:',iz(i)
-        write(ndsk,*)' mass:',zmas(i)*mp
+        write(ndsk,*)' mass:',zmas(i)
         write(ndsk,*)' dens:',densi(psi,i,0)*1.0d-19
-        write(ndsk,*)' temp:',tempi(psi,i,0)
-        write(ndsk,*)' tprim:',(umax/tempi(psi,i,0))*tempi(psi,i,1)
-        write(ndsk,*)' fprim:',(umax/densi(psi,i,0))*densi(psi,i,1)
+        write(ndsk,*)' temp:',tempi(psi,i,0)/10000.
+        write(ndsk,*)' tprim:',-(umax/tempi(psi,i,0))*tempi(psi,i,1)
+        write(ndsk,*)' fprim:',-(umax/densi(psi,i,0))*densi(psi,i,1)
         write(ndsk,*)' vnewk: waiting for formula'
       end do
       write(ndsk,*)' Electron species'
       write(ndsk,*)' Z:',-1.
-      write(ndsk,*)' mass:',me
+      write(ndsk,*)' mass:',me/mp
       write(ndsk,*)' dens:',dense(psi,0)*1.0d-19
-      write(ndsk,*)' temp:',tempe(psi,0)
-      write(ndsk,*)' tprim:',(umax/tempe(psi,0))*tempe(psi,1)
-      write(ndsk,*)' fprim:',(umax/dense(psi,0))*dense(psi,1)
+      write(ndsk,*)' temp:',tempe(psi,0)/10000.
+      write(ndsk,*)' tprim:',-(umax/tempe(psi,0))*tempe(psi,1)
+      write(ndsk,*)' fprim:',-(umax/dense(psi,0))*dense(psi,1)
       write(ndsk,*)' vnewk: waiting for formula'
    end do
       close(ndsk)

@@ -8,7 +8,7 @@ subroutine getdata
 
   double precision :: rr, zz, rat
   double precision :: fprof, tempe, tempi, psi,psi_n, bp, B_tor, B_pol, B_tot
-  double precision :: press, densi, dense, safety, ffp, pp
+  double precision :: press, densi, dense, safety, ffp, pp, rho
   double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2
   character(8) :: date
   character(10) :: time
@@ -171,6 +171,11 @@ subroutine getdata
    close(nh)
 
    nh = nh+2
+
+
+
+   nh = nh + 2 
+   
 
    !J profile with psi values
    open(unit=nh, file=runname(1:lrunname)//'_currentprof.dat', &
@@ -353,7 +358,7 @@ subroutine popcon()
   write(nh,510) 'Tor. nb cur', sngl(totnb/1000000.), 'MA'
   write(nh,510) 'Tor. ps cur', sngl(totps/1000000.), 'MA'
   write(nh,510) 'Tor. dia cur', sngl(totdi/1000000.), 'MA'
-  write(nh,510) 'Tor. ext cur', sngl((totex)/1000000.), 'MA'
+  write(nh,510) 'Tor. ext cur', sngl((totex+totex2)/1000000.), 'MA'
 
   write(nh, *) ' '
   
@@ -381,6 +386,8 @@ subroutine popcon()
   write(nh,510) 'H_IPB98(y1)', sngl(hipb98y1), ' '
   write(nh,510) 'H_IPB98(y2)', sngl(hipb98y2), ' '
   write(nh,510) 'Tau_e', sngl(taue*1.0e3), 'ms'
+  write(nh,510) 'Tau_h', sngl(tauh), ' '
+  write(nh,510) 'Energy', sngl(conft/1.0e6), 'MJ'
 
 500 format(' ',A12, ' , ', E11.4 , ' , ', A5)
 510 format(' ',A12, ' , ', F11.4 ,' , ',A5)

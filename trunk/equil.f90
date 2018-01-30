@@ -36,6 +36,12 @@ subroutine equil(niter)
   else
      igo=0
      call bdry2(x,y,f,0)
+     
+     if (igr .ge. 1 .and. ibdry .eq. 2) then
+        !Display fourier of boundary
+        call system("ipython ~/SCENEv2/graphs/bdytest.py")
+        
+     end if
   end if
   ! ------------------------------------------------------------
   !           initialise ixout,idout arrays
@@ -56,11 +62,7 @@ subroutine equil(niter)
      end do
   end do
 
-  if (igr .ge. 1 .and. niter .eq. 1) then
-     !Display fourier of boundary
-     call system("ipython ~/SCENEv2/graphs/bdytest.py")
 
-  end if
   !  if ipass=0 uses input parameterisation of ff' (ie first run)
   !  if ipass=1 (set in ffdgen) uses mesh ff' calculated in ffdgen
   ipass=0
