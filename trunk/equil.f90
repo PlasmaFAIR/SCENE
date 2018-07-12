@@ -967,7 +967,6 @@ end subroutine equil
 	do 10 j=1,nz
 	  if(ixout(i,j).ne.1)goto 10
    cval=-rhs(u(i,j),r(i))/(r(i)*mu0)
-!   write(6,*) rhs(u(i,j), r(i))
 !   read(6,*) test
    curtot=curtot+dr*dz*cval
 

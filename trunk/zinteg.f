@@ -47,6 +47,7 @@ c/    Limiting case for rho -> 0.0:
             alongz(ie) = alongr(ie)*zterm
             avksi(ie)  = alongksi(ie)*zterm
          enddo
+	 
          return
       endif
 
@@ -60,12 +61,13 @@ c/    Integration limits in the z direction:
       eterm = delong/rhoi
       el2   = elongr**2
       el3   = elongr**3
-      print*, dshft, rhoi
+      
 c/    Start integration:      
 
       sumz1 = 0.0
       sumz2 = 0.0
       sumz3 = 0.0
+
       sumzksi1 = 0.0
       sumzksi2 = 0.0
       sumzksi3 = 0.0
@@ -79,19 +81,15 @@ c/    Start integration:
      .           Sqrt(rhoi**2 - zb2/el2) + sgn*dterm
          zterm = zterm1*Sqrt(1.0 - sz(iz)**2)
 
-    !     if (zterm1 .lt. 0) print*, (1.0 + eterm*zb2/el3)/
-    ! .        Sqrt(rhoi**2 - zb2/el2), dterm, sgn
-         
          sumz1 = sumz1 + alongr(1)*zterm
          sumz2 = sumz2 + alongr(2)*zterm
          sumz3 = sumz3 + alongr(3)*zterm
          sumzksi1 = sumzksi1 + alongksi(1)*zterm
          sumzksi2 = sumzksi2 + alongksi(2)*zterm
          sumzksi3 = sumzksi3 + alongksi(3)*zterm
-         
         
       enddo
-     
+      
       resltz = 0.5*zu*wz
       alongz(1) = resltz*sumz1
       alongz(2) = resltz*sumz2
@@ -99,6 +97,5 @@ c/    Start integration:
       avksi(1)  = resltz*sumzksi1
       avksi(2)  = resltz*sumzksi2
       avksi(3)  = resltz*sumzksi3
-      
       return
       end

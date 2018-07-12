@@ -676,7 +676,7 @@
                -npo1*(npo1-1.)*ane*xps**(npo1-2.))
           densi=scl*nidd*umax*pfac*bpol/pscl
         end if
-      end if
+     end if
       if (ipswtch.eq.7) then
         if (npo1.lt.2.) then
           write(6,*)' Error, must set npo1>/=2'
@@ -1191,117 +1191,117 @@
 !
 !**********************************************************************
 !
-   function tempi(psi,id,i)
-     !     ************************
-     !
-     !  Function defines the ion temperature profile as a function
-     !  of the flux.
-     !  I=0 gives the temperature and I=1 is the derivative w.r.t. Psi
-     !  ID labels the impurity species (if IMP=1) with ID=1 labeling the
-     !  main ion species and others in the order in which they appear
-     !  in the input data file (after FINI command)
-     !
-     use param
-     implicit none
-     !
-     integer i,id
-     double precision tempe
-     double precision tempi,psi,xps,tem
-     double precision t0,ta,tped,tpow,tedg,tn
-     !
-     xps=1.-psi/umax
-     if (xps.lt.0.) then
+      function tempi(psi,id,i)
+!     ************************
+!
+!  Function defines the ion temperature profile as a function
+!  of the flux.
+!  I=0 gives the temperature and I=1 is the derivative w.r.t. Psi
+!  ID labels the impurity species (if IMP=1) with ID=1 labeling the
+!  main ion species and others in the order in which they appear
+!  in the input data file (after FINI command)
+!
+      use param
+      implicit none
+!
+      integer i,id
+      double precision tempe
+      double precision tempi,psi,xps,tem
+      double precision t0,ta,tped,tpow,tedg,tn
+!
+      xps=1.-psi/umax
+      if (xps.lt.0.) then
         if (xps.gt.-1.0d-7) then
-           xps=0.
+          xps=0.
         else
-           write(6,*)' xps<0 in tempi, psi=',psi,' umax=',umax
-           stop
+          write(6,*)' xps<0 in tempi, psi=',psi,' umax=',umax
+          stop
         end if
-     end if
-     if (xps.gt.1.) then
+      end if
+      if (xps.gt.1.) then
         if (xps.lt.1.000001) then
-           xps=1.
+          xps=1.
         else
-           write(6,*)' xps>1 in tempi, psi=',psi,' umax=',umax
-           stop
+          write(6,*)' xps>1 in tempi, psi=',psi,' umax=',umax
+          stop
         end if
-     end if
-     ta=zta(id)
-     t0=zt0(id)
-     tpow=ztpow(id)
-     if ((ipswtch.eq.1)) then
+      end if
+      ta=zta(id)
+      t0=zt0(id)
+      tpow=ztpow(id)
+      if ((ipswtch.eq.1)) then
         if (i.eq.0) then
-           !  return ion temperature
-           tem=ta+(t0-ta)*xps**tpow
+!  return ion temperature
+          tem=ta+(t0-ta)*xps**tpow
         else if (i.eq.1) then
-           !  return the derivative
-           tem=-((t0-ta)*tpow/umax)*xps**(tpow-1.)
+!  return the derivative
+          tem=-((t0-ta)*tpow/umax)*xps**(tpow-1.)
         else
-           !  return the second derivative
-           tem=((t0-ta)*tpow*(tpow-1.)/umax**2)*xps**(tpow-2.)
+!  return the second derivative
+          tem=((t0-ta)*tpow*(tpow-1.)/umax**2)*xps**(tpow-2.)
         end if
         tempi=tem
         return
-     end if
-     tped=ztped(id)
-     tedg=ztedg(id)
-     if (ipswtch.eq.2) then
+      end if
+      tped=ztped(id)
+      tedg=ztedg(id)
+      if (ipswtch.eq.2) then
         if (tpow.le.1.) then
-           tn=0.
+          tn=0.
         else
-           tn=(t0-ta-(tped-ta)*(exp(tedg)-exp(-tedg))/ &
-                (exp(tedg)+exp(-tedg)))
+          tn=(t0-ta-(tped-ta)*(exp(tedg)-exp(-tedg))/ &
+                              (exp(tedg)+exp(-tedg)))
         end if
         if (i.eq.0) then
-           !  return ion temperature
-           tem=ta+(tped-ta)*(exp(tedg*xps)-exp(-tedg*xps))/ &
-                (exp(tedg*xps)+exp(-tedg*xps)) &
-                +tn*xps**tpow
+!  return ion temperature
+          tem=ta+(tped-ta)*(exp(tedg*xps)-exp(-tedg*xps))/ &
+                  (exp(tedg*xps)+exp(-tedg*xps)) &
+                  +tn*xps**tpow
         else if (i.eq.1) then
-           !  return the derivative
-           tem=-4.*(tedg/umax)*(tped-ta)/(exp(tedg*xps)+exp(-tedg*xps))**2 &
-                -(tpow/umax)*tn*xps**(tpow-1.)
+!  return the derivative
+          tem=-4.*(tedg/umax)*(tped-ta)/(exp(tedg*xps)+exp(-tedg*xps))**2 &
+                 -(tpow/umax)*tn*xps**(tpow-1.)
         else
-           !  return the second derivative
-           !  put a small regularizing factor in to stop divergences at x=0
-           tem=-8.*(tedg/umax)**2*(tped-ta)*  &
-                ((exp(tedg*xps)-exp(-tedg*xps))/ &
-                (exp(tedg*xps)+exp(-tedg*xps))**3) &
-                +(tn*tpow*(tpow-1.)/umax**2)*(xps+1.0d-10)**(tpow-2.)
+!  return the second derivative
+!  put a small regularizing factor in to stop divergences at x=0
+          tem=-8.*(tedg/umax)**2*(tped-ta)*  &
+                  ((exp(tedg*xps)-exp(-tedg*xps))/ &
+                  (exp(tedg*xps)+exp(-tedg*xps))**3) &
+                 +(tn*tpow*(tpow-1.)/umax**2)*(xps+1.0d-10)**(tpow-2.)
         end if
         tempi=tem
         return
-     end if
-     if ((ipswtch.eq.3).or.(ipswtch.eq.5).or.(ipswtch.eq.6).or.(ipswtch.eq.8)) then
-        !  Use scaled electron temperature profiles
+      end if
+      if ((ipswtch.eq.3).or.(ipswtch.eq.5).or.(ipswtch.eq.6).or.(ipswtch.eq.8)) then
+!  Use scaled electron temperature profiles
         tem=t0*tempe(psi,i)/te0
         tempi=tem
         return
-     end if
-     if (tpow.le.1.) then
+      end if
+      if (tpow.le.1.) then
         tn=0.
-     else
+      else
         tn=(t0-ta-(tped-ta)*(exp(tedg)-exp(-tedg))/ &
-             (exp(tedg)+exp(-tedg))) &
-             /(2**tpow-1.-tpow)
-     end if
-     if (i.eq.0) then
-        !  return ion temperature
+                              (exp(tedg)+exp(-tedg))) &
+            /(2**tpow-1.-tpow)
+      end if
+      if (i.eq.0) then
+!  return ion temperature
         tem=ta+(tped-ta)*(exp(tedg*xps)-exp(-tedg*xps))/ &
-             (exp(tedg*xps)+exp(-tedg*xps)) &
-             +tn*((1.+xps)**tpow-(1.+tpow*xps))
-     else if (i.eq.1) then
-        !  return the derivative
+                (exp(tedg*xps)+exp(-tedg*xps)) &
+                +tn*((1.+xps)**tpow-(1.+tpow*xps))
+      else if (i.eq.1) then
+!  return the derivative
         tem=-4.*(tedg/umax)*(tped-ta)/(exp(tedg*xps)+exp(-tedg*xps))**2 &
-             -(tpow/umax)*tn*((1.+xps)**(tpow-1.)-1.)
-     else
-        !  return the second derivative
+               -(tpow/umax)*tn*((1.+xps)**(tpow-1.)-1.)
+      else
+!  return the second derivative
         tem=-8.*(tedg/umax)**2*(tped-ta)*  &
-             ((exp(tedg*xps)-exp(-tedg*xps))/ &
-             (exp(tedg*xps)+exp(-tedg*xps))**3) &
-             +(tn*tpow*(tpow-1.)/umax**2)*(1.+xps)**(tpow-2.)
-     end if
-     tempi=tem
+                ((exp(tedg*xps)-exp(-tedg*xps))/ &
+                (exp(tedg*xps)+exp(-tedg*xps))**3) &
+               +(tn*tpow*(tpow-1.)/umax**2)*(1.+xps)**(tpow-2.)
+      end if
+      tempi=tem
 !!$      if (psi.lt.0.) then
 !!$	write(nw,*)'error***negative psi in tempi'
 !!$	write(nw,*)'psi=',psi
@@ -1331,8 +1331,8 @@
 !!$        end if
 !!$      end if
    end function tempi
-   !
-   !**********************************************************************
+!
+!**********************************************************************
 
 
 
@@ -1467,10 +1467,11 @@
         !Average r value
         !shift = (sum(rpts(con, :))/max(1, size(rpts(con,:)))) - r0
         shiftf = (maxval(rpts(con,:)) + minval(rpts(con,:)))/2 - rcen
-
+        
         !If last fluxsurface, extrapolate
         if (con .eq. ncon) then
-           shiftf = shift(con-1,0) + shift(con,1)*(psiv(con) -psiv(con-1))
+           shiftf = shift(con-1,0) + shift(con-1,1)*(psiv(con) -psiv(con-1))
+           
         end if
         
      else if (id .eq. 1) then
@@ -1521,7 +1522,7 @@
 
      end if
 
-     del = shiftf /amin
+     del = shiftf 
    end function shift
    
 
@@ -1531,14 +1532,17 @@
      implicit none
 
      integer :: i
-     double precision, dimension(ncon) :: rho,dpdr
-     double precision :: rhomax
+     double precision, dimension(ncon) :: rho,dpdr, testrho
+     double precision :: rhomax, shift
 
      real, dimension(ncon) :: rhos, dpdrs
      
-     rho = maxval(rpts, dim=2) - r0
+     rho =( maxval(rpts, dim=2) - minval(rpts,dim=2)) /2
+  
+
      rho(ncon) = 0.
      rhomax = maxval(rho)
+   
 
      !normalise rho
      
@@ -1567,6 +1571,7 @@
    end subroutine dpsidrho
    
 
+   ! Volume of each flux surface
    subroutine dVdrho(vols, areas, volsp)
      
      use param
@@ -1579,7 +1584,7 @@
      
      double precision :: flxvol_l, flxvol_u, psi_u, psi_l
 
-     double precision :: r_l, r_r, z_l, z_r, shift
+     double precision :: r_l, r_r, z_l, z_r, shift, elong
 
      real, dimension(ncon) :: vols, areas, volsp
 
@@ -1587,8 +1592,6 @@
      flxarea = 0.
      ! for each contour calculate area with trapeze rule
      do i= ncon,1,-1
-
-
 
         do j = 1, npts-1
 
@@ -1604,9 +1607,9 @@
         end do
         
         !area time 2pi * R  (R = r0 + shift)
-        flxvol(i) = flxarea(i) * 2. * pi * (shift(i,0) + r0)
+        flxvol(i) = flxarea(i) * 2. * pi * (shift(i,0) + rcen)
 
-        !Area/Vol of each flux surface
+        !Area/Vol of each flux surface from i-1 to i 
         if (i .eq.ncon) then
            areacon(i) = flxarea(i)
            volcon(i) = flxvol(i)
@@ -1616,11 +1619,12 @@
            volcon(i) = flxvol(i) - flxvol(i+1)
 
         end if
-    
+
        ! write(nw,*) 'vol of flux surface ', i, flxvol(i)
 
      end do
 
+     vol = sum(volcon) 
   
      ! Calculates gradient dV/drho
      do k =1,ncon
@@ -1651,14 +1655,24 @@
 
 
         voldiff(k) = (flxvol_u - flxvol_l)/(psi_u - psi_l)
-     
+
      end do
 
-     vols = sngl(volcon(ncon:1:-1))
-     areas = sngl(areacon(ncon:1:-1))
+     !change vol/area to between i-1/2 to i+1/2 and flips array
 
-     volsp = sngl(voldiff(ncon:1:-1))
+     do i=2,ncon
+        
+        vols(ncon-i+1) = sngl(volcon(i)+volcon(i-1))/2.
+        areas(ncon-i+1) = sngl(areacon(i)+areacon(i-1))/2.
+        volsp(ncon-i+1) = sngl(voldiff(i)+voldiff(i-1))/2.
+
+     end do  
+
      
+     volsp(ncon) = voldiff(1)
+     vols(ncon) = volcon(1)/2.
+     areas(ncon) = areas(1)/2.
+
    end subroutine dVdrho
    
    
@@ -1690,3 +1704,30 @@
    end subroutine lam
 
    
+   subroutine rhotor(phi)
+
+     use param
+     implicit none
+
+     integer :: con
+     double precision, dimension(ncon) :: phi
+
+     phi=0.0
+     do con=ncon,1,-1
+
+        if (con.eq.ncon) then
+           phi(con) = sfac(con)*psiv(con)
+        else
+           phi(con) = phi(con+1) + sfac(con)*(psiv(con)-psiv(con+1))
+
+
+        end if
+     end do
+     
+   end subroutine rhotor
+      
+        
+
+        
+
+        

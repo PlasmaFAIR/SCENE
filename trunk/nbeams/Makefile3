@@ -1,0 +1,129 @@
+# Multi-platform makefile for the Neutral Beam package nbeams
+# Requires the GNU make
+
+# Created by John Mandrekas, GIT, 08/10/00
+
+# Currently supports NERSC CRAYs, SunOS, Solaris and HP systems.
+# Set the value of SYS to the desired system. 
+# Currently available options:
+# SUN  : SunOS
+# SOL  : Solaris 2.x
+# CRAY : NERSC CRAYs
+# HP   : GA Hydra HP system
+
+SYS = SOL
+
+ifeq ($(SYS), SUN)
+	F = .f
+	O = .o
+	E = 
+	FF = f77
+	LD = f77
+	FFLAGS = -c -g
+	LDFLAGS = -lV77 -g
+	LIBS = -L/usr/local/lib -lblas_sun4
+endif
+ifeq ($(SYS), SOL)
+	F = .f
+	O = .o
+	E = 
+	FF = f77
+	LD = f77
+	FFLAGS = -c -dalign  -native -O4
+	LDFLAGS = -dalign -native -O4
+	LIBS = -xlic_lib=sunperf
+endif
+ifeq ($(SYS), HP)
+	F = .f
+	O = .o
+	E = 
+	FF = fort77
+	LD = fort77
+	FFLAGS = -c +O4 +DA1.1 +DS1.1 -K +U77
+	LDFLAGS = -L/opt/fortran/lib
+	LIBS = -lblas
+endif
+ifeq ($(SYS), CRAY)
+	F = .f
+	O = .o
+	E = 
+	FF = f90
+	LD = segldr
+	FFLAGS = -ev -c
+	LDFLAGS = 
+	LIBS =
+endif
+
+# Include the source files here:
+
+SOURCES=nbdriver.f beamconsts.f beams_mfp.f calcbeams.f coulomb.f \
+	eisplit.f erf.f fastions.f frate.f gausswts.f \
+	getrho.f hofr.f hunt.f qsimp.f sigfit.f sinteg.f \
+	rinteg.f zinteg.f ssum.f sig_olson.f
+
+OBJ = $(SOURCES:$F=$O)
+
+xbeams$E : $(OBJ)
+	$(LD) $(LDFLAGS) -o $@ $(OBJ) $(LIBS)
+
+%$O : %$F
+	$(FF) $(FFLAGS) $<
+
+# Include file dependencies:
+
+beamconsts.o : \
+	 nbconsts.inc \
+
+beams_mfp.o : \
+	 BeamsLoc.inc \
+	 nbparams.inc \
+	 nbplasma.inc \
+
+calcbeams.o : \
+	 BeamsLoc.inc \
+	 nbconsts.inc \
+	 nbparams.inc \
+	 nbplasma.inc \
+
+eisplit.o : \
+	 nbconsts.inc \
+	 nbparams.inc \
+	 nbplasma.inc \
+
+fastions.o : \
+	 BeamsLoc.inc \
+	 nbconsts.inc \
+	 nbparams.inc \
+	 nbplasma.inc \
+
+getrho.o : \
+	 BeamsLoc.inc \
+	 nbparams.inc \
+	 nbplasma.inc \
+
+hofr.o : \
+	 BeamsLoc.inc \
+	 nbconsts.inc \
+	 nbparams.inc \
+	 nbplasma.inc \
+
+nbdriver.o : \
+	 BeamsLoc.inc \
+	 nbconsts.inc \
+	 nbparams.inc \
+	 nbplasma.inc \
+
+sinteg.o : \
+	 BeamsLoc.inc \
+	 nbparams.inc \
+	 nbplasma.inc \
+
+zinteg.o : \
+	 BeamsLoc.inc \
+	 nbconsts.inc \
+	 nbparams.inc \
+
+#Clean up:
+
+clean:
+	rm -f xbeams$E $(OBJ)

@@ -6,11 +6,11 @@ subroutine geqdsk
   integer :: i, j, nh, na, con, ij
   double precision :: rmax, rmin, dimr, zmax, zmin, dimz
   double precision :: fprof, press, psi, rat, diff, sqrt
-  double precision :: Bv0, s
+  double precision :: Bv0, s, psibdy, dpsi, jtor
   integer :: ndat, nlim
   double precision, dimension(:), allocatable :: zbdy, rbdy, rlim, zlim, psii
   double precision, dimension(:), allocatable :: safety, f, ff, p ,pp
-  double precision, dimension(nr,nz) :: psi1
+  double precision, dimension(nr,nz) :: psirz, psi1
   character(8) :: date
   character(10) :: time
   
@@ -38,35 +38,33 @@ subroutine geqdsk
   dimz = zmax-zmin
 
   !Dimensions of R,Z grid
+  print*, dimr, dimz, rcen, rmin
   write(nh,2020) dimr, dimz, rcen, rmin, 0.
 
   Bv0 = mu0*rodi/(2.*pi*rcen)
-
+  psibdy=umax
   !Psi values and vac B field
-  write(nh,2020) r0, 0., 0., umax,  Bv0
+  write(nh,2020) r0, 0., 0., psibdy,  Bv0
   write(nh,2020) cur, 0.,0., r0, 0.
-  write(nh,2020) 0.,0.,umax,0., 0.
+  write(nh,2020) 0.,0.,psibdy,0., 0.
 
   !Gets Psi along midplane (sets Psi outside plasma
   !to be umax and then writes F along midplane
 
   allocate(psii(nr), f(nr), ff(nr), p(nr), pp(nr))
 
+  dpsi=umax/(nr-1)
+  
   do i=1,nr
-     psii(i) = umax - u(i,nsym)
-     if (ixout(i,nsym) .gt. 0) then
-        f(i) =  fprof(psii(i),2)
-        ff(i) = fprof(psii(i),0)
-        p(i) = press(psii(i),0)
-        pp(i) = press(psii(i),1)
-     else
-        f(i) = 0.
-        ff(i) = 0.
-        p(i) = 0.
-        pp(i) = 0.
-     end if
+     psii(i) = (i-1)*dpsi
+     print*, psii(i)
 
+     f(i) =  fprof(psii(i),2)
+     ff(i) = fprof(psii(i),1)
+     p(i) = press(psii(i),0)
+     pp(i) = press(psii(i),1)
   end do
+
 
   !Writes f
   write(nh,2020) ( f(i), i=1,nr)
@@ -87,7 +85,21 @@ subroutine geqdsk
   !Writes p'
   write(nh,2020) (pp(i), i=1,nr)
 
-  !call gcv()
+  jtor=0.0
+  call extrap2()
+  do i=1,nr
+     do j=1,nz
+        if (ixout(i,j) .ne. 0) then
+           psirz(i,j) = (umax-u(i,j))
+           !jtor = jtor + r(i)*press(psirz(i,j),1) + fprof(psirz(i,j),1)/(r(i)*mu0)
+        else
+           psirz(i,j) = umax*1.2
+        end if
+        
+     end do
+  end do
+  !print*, jtor*dr*dz
+
   
   !Extrapolates Psi to edge of grid
   call extrappsi(rmin, rmax, zmin, zmax,psi1)
@@ -98,23 +110,28 @@ subroutine geqdsk
   ij=0
   do i=1,nr
      do j=1,nz
-        ij=ij+1
-        if (ixout(i,j).eq.1) then
+       
+        if (ixout(i,j).ne.0) then
+            ij=ij+1
            diff = diff + ((umax - u(i,j)) - psi1(i,j))**2
-           psi1(i,j) = umax - u(i,j)
+           !psi1(i,j) = umax - u(i,j)
         end if
         
      end do
   end do
   write(6,*) 'Avg diff between Psi and fit is :',  sqrt(diff/ij)
-  write(nh,2020)  ((psi1(i,j), i=1,nr), j=1,nz)
+
+
+  print*, 'Writing psi values to eqdsk, only correct in the plasma'
+  write(nh,2020)  ((psirz(i,j), i=1,nr), j=1,nz)
   write(6,*) 'psi written to geqdsk'
+
   allocate(safety(nr))
   !Writes Safety factor (on R,Z grid)
   do i=1,nr
      psi = psii(i)
      con = 1
-
+     
      !ncon=1 is the outermost flux surface
      do j=1,ncon-1
 
@@ -131,35 +148,46 @@ subroutine geqdsk
      !Linearly interpolate q from flux surface grid to mesh grid
      safety(i) = sngl( sfac(con) + rat*(sfac(con+1) - sfac(con)))
 
-
+     print*, i,p(i),pp(i),f(i),ff(i), safety(i)
   end do
 
   write(nh,2020) (safety(i), i=1,nr)
   write(6,*) 'safety factor written to geqdsk'
 
   !Writes boundary points
-  na=30
 
-  open(unit=na,file='bdy.txt', &
-       status='unknown',iostat=ios)
-  if(ios.ne.0) then
-     write(6,*) 'problem opening bdy.txt for boundary R,Z'
-     stop
-  endif
-  read(na,*)ndat
-  nlim = 1
-  write(nh, 2022) ndat, nlim 
-
-  allocate(rbdy(ndat),zbdy(ndat))
+  nlim=2
+  if (ibdry .eq. 2) then
+     na=30
+     open(unit=na,file='bdy.txt', &
+          status='unknown',iostat=ios)
+     if(ios.ne.0) then
+        write(6,*) 'problem opening bdy.txt for boundary R,Z'
+        stop
+     endif
+     read(na,*)ndat
 
 
-  do i=1,ndat
-     read(na,*)rbdy(i),zbdy(i)
+     allocate(rbdy(ndat),zbdy(ndat))
 
 
-  end do
+     do i=1,ndat
+        read(na,*)rbdy(i),zbdy(i)
+
+
+     end do
+
+     close(na)
+  else
+
+     ndat=npts
+     allocate(rbdy(ndat),zbdy(ndat))
+     rbdy(:) = rpts(1,:)
+     zbdy(:) = zpts(1,:)
+
+  end if
   
-  close(na)
+  write(nh, 2022) ndat, nlim 
 
   write(nh,2020) (rbdy(i), zbdy(i), i=1,ndat)
 
@@ -168,12 +196,12 @@ subroutine geqdsk
 !!!!!!!!
   !Writes Limiter values
 
-  rlim = 1.
+  rlim = (/0.9*rmin,1.1*rmax/)
 
-  zlim = 0.
+  zlim = (/1.1*zmin,1.1*zmax/)
 
 
-  write(nh,2020) rlim, zlim
+  write(nh,2020) (rlim(i), zlim(i), i=1,nlim)
 
  ! write(nh,'(5e16.9)') ((umax-u(i,j), i=1,nr), j=1,nz)
 
@@ -186,89 +214,6 @@ subroutine geqdsk
   close(nh)
 
 end subroutine geqdsk
-
-
-subroutine gcv()
-  !Subroutines uses gcv for thin plate spline fitting of
-  !Psi data
-
-  use param
-  implicit none
-
-  integer :: i,j, ij
-  double precision :: dble
-  double precision, dimension(:), allocatable :: psi_in,y, adiag, dout, coef
-  double precision, dimension(:), allocatable :: svals, work
-  integer, dimension(4) :: iout
-  double precision, dimension(:,:), allocatable :: rz, cov,tbl,auxtbl
-  double precision, dimension(2) :: lamlim
-
-  integer, dimension(:), allocatable :: iwork
-  integer :: nobs,pts, m, ntbl, dim, info, lds, ncov,ncts,ldtbl,lwa,liwa, job
-!  double precision
-  !no. of points in the plasma/boundary
-  pts=0
-  
-  do i=1,nr
-     do j=1,nz
-        if(ixout(i,j).eq.1) pts = pts + 1
-     end do
-  end do
-
-  allocate(rz(pts,2), psi_in(pts))
-
-  
-  ij=0
-  do i=1,nr
-     do j=1,nz
-        if (ixout(i,j).eq.1) then
-           ij=ij+1
-           psi_in(ij) = umax - u(i,j)
-           rz(ij,1) = r(i)
-           rz(ij,2) = z(j)
-
-        end if
-     end do
-  end do  
-
-
-  !no. of ovbservations points
-  nobs=pts
-  lds = pts
-  dim=2
-  m = 2 !If you change m, make sure you change ncts
-  ncov = 0
-  ntbl = 80
-  ncts = 3 !choose(dim+m-1, dim)
-  ldtbl = ntbl
-  lwa = nobs*(2+ncts+nobs) + nobs
-  liwa = 2*nobs + nobs - ncts
-
-!   job	        integer with decimal expansion abdc
-!		if a is nonzero then predictive mse is computed
-!		   using adiag as true y
-!		if b is nonzero then user input limits on search
-!		   for lambda hat are used
-!		if c is nonzero then adiag will be calculated
-  !		if d is nonzero then there are replicates in the design
-  !                (no duplicate (r,z) )
-
-  job = 0000
-
-  
-  allocate(y(nobs), adiag(pts), dout(5), svals(pts), coef(pts+ncts))
-  allocate(auxtbl(3,3), tbl(ldtbl,3), work(lwa), iwork(liwa) )
-
-  adiag=0
-  lamlim = 0
-  y = psi_in
-  
-  
-  call dtpss(psi_in, pts,nobs,dim,m,cov,lds, ncov,y,ntbl,dout, iout, coef, &
-       tbl,ldtbl,auxtbl, work, lwa, iwork, liwa, job,  info)
-
-end subroutine gcv
-
 
 
 subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
@@ -296,7 +241,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   iopt=0
 
   !kr and kz choose order (3=cubic)
-  kr = 3
+  kr=3
   kz=3
 
   
@@ -310,16 +255,19 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   
   do i=1,nr
      do j=1,nz
-        if(ixout(i,j).eq.1) m = m + 1
+        if(ixout(i,j).ne.0) m = m + 1
      end do
   end do
 
  
  !smoothing factor
   sm = (m - sqrt(2.*m))/30000
+  sm=0.
   !No. of knots0
   nrest=int(kr+sqrt(m/2.))
   nzest=int(kz+sqrt(m/2.))
+!  nrest=nr
+!  nzest=nz
 
   !nrest=2*kr+2 !+2
   !nzest=2*kz+2 !+2
@@ -335,10 +283,10 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   bz = kz*uw +kr+1
   ww = max(uw,vw)
 
-  
   nr1 = nrest
   nz1 = nzest
-  nmax = max(nr1,nz1)
+  nmax = max(nr1,nz1)  
+
 
   if (br.le.bz) then
      b1 = br
@@ -350,7 +298,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   
   
-  lwrk1 =  uw*vw *(2+b1+b2) + 2*(uw+vw+km*(m+nest)+nest-kr-kz) +b2 + 1 
+  lwrk1 =  uw*vw *(2+b1+b2) + 2*(uw+vw+km*(m+nest)+nest-kr-kz) +b2 + 2 
   !lwrk1 = (7*uw*vw + 25*ww) * (ww+1) + 2 * (uw+vw+4*plas)+23*ww+56
  
   lwrk2 = uw*vw*(b2+1)+b2
@@ -369,11 +317,15 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   !tz(nmax-kz-1) = sngl(r(int(2*nr/3)))
   
   !tz(
+
+  !tr(kr+2:nr1-kr-1)=sngl(r(kr+2:nr-kr-1:2))
+  !print*, tr(kr+2:nr-kr-1)
+  !tz(kz+2:nz1-kz-1)=sngl(z(kz+2:nz-kz-1:2))
   ij=0
   do i=1,nr
      do j=1,nz
         
-        if (ixout(i,j).eq.1) then
+        if (ixout(i,j).ne.0) then
            ij=ij+1
            u_in(ij) = sngl(umax - u(i,j))
            r_in(ij) = sngl(r(i))
@@ -383,15 +335,29 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
      end do
   end do
 
-  call surfit(iopt, m, r_in, z_in, u_in, w_in, rl, ru, zl, zu, kr, kz, &
-       sm, nrest, nzest,nmax,ep, nr1,tr, nz1, tz, c, fp, wrk1,lwrk1,wrk2, &
-       lwrk2, iwrk, kwrk, ier)
+  print*, 2*kr+2, nr1,nrest
+  print*, 2*kz+2, nz1,nzest
+  print*, m, ep, nmax
 
+  !call surfit(iopt, m, r_in, z_in, u_in, w_in, rl, ru, zl, zu, kr, kz, &
+  !     sm, nrest, nzest,nmax,ep, nr1,tr, nz1, tz, c, fp, wrk1,lwrk1,wrk2, &
+  !     lwrk2, iwrk, kwrk, ier)
+
+  !print*, tr
   !write(6,*) nr1, tr(1:nr1)
   !write(6,*) nz1, tz(1:nz1)
   !write(6,*) c(1:nr1+nz1)
 
+  
+  !print*, 'Surfit ier:',ier
 
+  iopt=0
+  call surfit(iopt, m, r_in, z_in, u_in, w_in, rl, ru, zl, zu, kr, kz, &
+       sm, nrest, nzest,nmax,ep, nr1,tr, nz1, tz, c, fp, wrk1,lwrk1,wrk2, &
+       lwrk2, iwrk, kwrk, ier)
+
+  print*, 'Surfit round 2 ier:',ier
+   
   do i=1,nr
      r_o(i) = sngl(r(i))
   end do
@@ -429,6 +395,4 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   
 end subroutine extrappsi
-
-
 

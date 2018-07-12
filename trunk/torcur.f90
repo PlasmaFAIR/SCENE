@@ -108,7 +108,7 @@
            exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)-nbph(i,j)
 
         else
-           exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)-nbph(i,j)
+           exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)
         end if
         
               exph2(i,j)=0.

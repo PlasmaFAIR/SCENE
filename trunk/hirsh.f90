@@ -53,7 +53,7 @@
       dox=1.414*zb+zb*zb+x*(0.754+2.657*zb+2.*zb*zb)+x*x*    &
           (0.348+1.243*zb+zb*zb)
       rl310=rj0*x*(0.754+2.21*zb+zb*zb+x*(0.348+1.243*zb+zb*zb))  &
-          /dox
+           /dox
       rl320=-rj0*x*(0.884+2.074*zb)/dox
       alfi0=-1.172/(1.+0.462*x)
       if (nco.eq.1) then
@@ -87,4 +87,4 @@
       write(6,*)' psin=',psi/umax,' l31=',rl31/rj0,' lb=',bstrap*sqrt(bsq)/(rj0*a1e)
       write(6,*)' l310=',rl310,' l31=',rl31,' f1=',f1,' a13=',a13
       write(6,*)' b13=',b13,' c13=',c13,' zm=',zm,' tnue=',tnue(k),' cnue=',cnue(k)
-  end  subroutine hirsh
+    end  subroutine hirsh

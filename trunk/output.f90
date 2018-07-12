@@ -104,7 +104,9 @@
       btotv=0.
       vol=0.
       avel=0.
+      avio=0.
       avt=0.
+      avti=0.
       area=0.
       pfus=0.
       confa=0.
@@ -162,8 +164,9 @@
 	  btot=bphi*bphi+bth*bth
 	  bptot=bptot+bth*bth*rr*dr*dz
 	  btotv=btotv+btot*rr*dr*dz
-	  te=tempe(psi,0)
-	  avt=avt+te*rr*dr*dz
+          te=tempe(psi,0)
+          avt=avt+te*rr*dr*dz
+
 	  if (te.gt.1.d-10) then
             ti=tempi(psi,1,0)
             ne=dense(psi,0)
@@ -176,10 +179,12 @@
             dion=0.
             ti=0.
             arg=1.
-	  end if
+         end if
+          avti=avti+ti*rr*dr*dz
           pden=1.27d4*dion**2*exp(arg)
           pfus=pfus+2.*pi*pden*rr*dr*dz
 	  avel=avel+ne*rr*dr*dz
+          avio=avio+dion*rr*dr*dz
 	  if (imp.eq.1) then
 	    if (ne.gt.0.) then
 	      do 5 l=1,nimp+1
@@ -320,7 +325,9 @@
       bvacu=mu0*rodi/(2.*pi*rcen)
       betexp=2.*mu0*ptotv*100./(vol*bvacu*bvacu)
       avt=avt/vol
+      avti=avti/vol
       avel=avel/vol
+      avio=avio/vol
       if (imp.eq.0) then
 	zeffav=zm
       else

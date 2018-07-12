@@ -219,7 +219,12 @@ c/    Total HOFR and average pitch angle at flux zone -iflux- :
                      hofr(iflux,ie,ib) = cnorm*factr(ie)*
      .                    (hplus(ie) + hmnus(ie))
                      pitchangl(iflux,ie,ib) = (ksiplus(ie) +
-     .                 ksiminus(ie))/ (hplus(ie) + hmnus(ie))
+     .                    ksiminus(ie))/ (hplus(ie) + hmnus(ie))
+
+                     if (hplus(ie) .lt. 0) then
+                        print*, iflux, hplus(ie), hmnus(ie), factr(ie)
+                     end if
+                     
                   else
                      hofr(iflux,ie,ib) = 0.0
                      pitchangl(iflux,ie,ib) = 0.0
@@ -232,7 +237,7 @@ c/    Total HOFR and average pitch angle at flux zone -iflux- :
 
 c/    Set deposition profile at the edge = 0
 
-         print*, 'dep at edge'
+         
          do ie = 1, 3
             hofr(nrho,ie,ib) = 0.0
             pitchangl(nrho,ie,ib) = 0.0

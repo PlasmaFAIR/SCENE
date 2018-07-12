@@ -96,7 +96,7 @@ c/    ----------------------------------------------
       call gaussWts (nz, wz, sz)
       call gaussWts (nr, wr, sr)
       call gaussWts (ns, ws, ss)
-     
+
       elong0 = elong(1) 
       elonga = elong(nrho)
       nrhom1 = nrho - 1
@@ -117,7 +117,7 @@ c/    ----------------------------
          zpos  = bzpos(ib)
          ptype = nbptype(ib)
 
-
+         
          
 c/    Calculate beam stopping cross sections:
 c/    --------------------------------------
@@ -135,10 +135,12 @@ c/    Case for circular beam:
                fact2 = fact**2      
                cnorm = pi*gaussR**2*(1.0 - exp(-fact2))
                cnorm = 1.0/cnorm
+               
              endif
 c/    Case for rectangular beam:
 
-         else if (shape.eq.1) then
+          else if (shape.eq.1) then
+             
             if (ptype.eq.0) cnorm = 1.0/(height*width)
             if (ptype.eq.1) then
                prterm = 0.5*width/gaussR
@@ -147,6 +149,9 @@ c/    Case for rectangular beam:
                cnorm = pi*gaussR*gaussZ*erf(prterm)*(
      .              erf(pzterm1) + erf(pzterm2))
                cnorm = 1.0/cnorm
+               !print*, prterm, pzterm1, pzterm2
+               !print*, 'erf',erf(prterm), erf(pzterm1),erf(pzterm2)
+               !print*, cnorm
             endif
          endif
 
@@ -161,7 +166,7 @@ c/    ---------------------------------
             shft   = shift(iflux)*rminor
             dshft  = shift_rho(iflux)
             rtest2 = rmajor + shft + rhoi
-           
+ 
 c/    Check to see if there is intersection with this flux surface:
 
             if (rtest1.ge.rtest2) then
@@ -175,30 +180,33 @@ c/    Limit of rho/vprime at the center:
 
                if (rhoi.eq.0.0) then
                   rlimit = 4.0*pi2*elong0*(rmajor + rminor*shift(1))
+	
                   do ie = 1, 3
                      
                      factr(ie) = 2.0*volume*omfp(1,ie,ib)/rlimit
+		  
                   enddo
                else
+		!!!! CHECK THIS !!!!! added a rhoi for normalisation
                   do ie = 1, 3
                      factr(ie) = (2.0*rhoi*volume / vpr(iflux)) *
      .                    omfp(iflux,ie,ib)
-                     
+		  
+                    
                   enddo
                endif
-               !print*, omfp(iflux,ie,ib), factr(ie)
 
 c/    Calculate contributions from outside intersections:
 
                !print*, 'calling zinteg for outer intersections'
                sgn = 1.0
-               call zinteg
+               call zinteg  
                do ie = 1, 3
                   
                   hplus(ie) = alongz(ie)
                   ksiplus(ie) = avksi(ie)
                enddo
-               !print*, 'hplus and ksiplus ',hplus(:), ksiplus(:)
+               !if (ib.eq.2) print*, 'hplus ',hplus(:)
                
 c/    Calculate contributions from inside intersections:
 
@@ -209,8 +217,11 @@ c/    Calculate contributions from inside intersections:
                   hmnus(ie) = alongz(ie)
                   ksiminus(ie) = avksi(ie)
                enddo
-               !print*, 'hminus and ksiminus',ib,rhoi, hmnus(:), ksiminus(:)
+              !if (ib.eq.2) print*, 'hminus', hmnus(:)
 c/    Total HOFR and average pitch angle at flux zone -iflux- :
+
+               !if (ib.eq.2) print*, 'hplus hmnus',iflux, hplus(ie),
+     .         !  hmnus(ie)
                
                !print*, 'calc pitch angle'
                do ie = 1, 3
@@ -221,16 +232,19 @@ c/    Total HOFR and average pitch angle at flux zone -iflux- :
                      pitchangl(iflux,ie,ib) = (ksiplus(ie) +
      .                    ksiminus(ie))/ (hplus(ie) + hmnus(ie))
 
-                     if (hplus(ie) .lt. 0) then
-                        print*, iflux, hplus(ie), hmnus(ie), factr(ie)
-                     end if
+                     !if (ib.eq.2.and. ie.eq.1) then
+                     !   print*, iflux, hplus(ie),
+     .	!			 factr(ie), rhoi, hmnus(ie)
+                     !
+                     !end if
+		     !if (iflux.ne.1) hofr(iflux,ie,ib)=hofr(iflux,ie,ib)*rhoi
                      
                   else
                      hofr(iflux,ie,ib) = 0.0
                      pitchangl(iflux,ie,ib) = 0.0
                      
                   endif
-                  !print*, ib,ie,'HOFR = ',hofr(iflux,ie,ib)
+
                enddo
             endif
          enddo
@@ -243,8 +257,8 @@ c/    Set deposition profile at the edge = 0
             pitchangl(nrho,ie,ib) = 0.0
          enddo
       enddo
-      
-      print*, 'calc shinethru'
+      !print*, hofr(:,1,2)
+      !print*, 'calc shinethru'
 c/    Calculate beam shinethrough, and other quantities of interest:
 c/    -------------------------------------------------------------
       do ib = 1, nbeams
@@ -252,10 +266,12 @@ c/    -------------------------------------------------------------
             sumhofr = 0.0
             do i = 1, nrho
                sumhofr = sumhofr + hofr(i,ie,ib)*dv(i)
+c               if (ie.eq.1) print*, hofr(i,ie,ib), dv(i)
             enddo
             shinethru(ie,ib) = 1.0 - sumhofr/volume
          enddo
       enddo
+
 
 c/    Renormalize the deposition profile, so that its volume integral
 c/    divided by the total plasma volume is equal to one:
@@ -270,6 +286,11 @@ c/    ---------------------------------------------------
             if (shinethru(ie,ib).lt.0.0) shinethru(ie,ib) = 0.0
          enddo
       enddo
+
+C      do iflux=1,nrhom1
+c	print*, 'Normalised H(p)', iflux, hofr(iflux,1,2), shinethru(1,1)
+c      end do
+	
 
 c/    Calculate the total NB power loss (shinethrough or missed
 c/    the plasma, which is also part of shinethrough in this model).

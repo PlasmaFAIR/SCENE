@@ -46,6 +46,7 @@ c/    Coordinate transformation, u = rb/R:
       u2pu1 = u2 + u1
       u2mu1 = u2 - u1
 
+
 c/    Avoid very small integration intervals:
 
       stest = abs(u2mu1)
@@ -71,9 +72,7 @@ c/    Avoid very small integration intervals:
                ovlambda(ie) = omfp(jlo,ie,ibeam) +
      .         (omfp(jlo+1,ie,ibeam) - omfp(jlo,ie,ibeam))*
      .              (rhotest - rho(jlo))/(rho(jlo+1) - rho(jlo))
-               if (isnan(ovlambda(ie))) then
-                  print*, rho(jlo+1) - rho(jlo)
-               end if
+             
                
                 
             end if
@@ -82,7 +81,6 @@ c/    Avoid very small integration intervals:
          sums1 = sums1 + ovlambda(1)*sterm
          sums2 = sums2 + ovlambda(2)*sterm
          sums3 = sums3 + ovlambda(3)*sterm
-         !print*, ovlambda
       enddo
       
       alongs(1) = -0.5*rb*u2mu1*ws*sums1

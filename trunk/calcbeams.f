@@ -1,9 +1,11 @@
       subroutine calcBeams(nbeams, amb, zbeam, ebeam, pbeam, inbfus, 
      .   rtang, nbshape, bwidth, bheigh, nbptype, bgaussR, bgaussZ, 
      .   bzpos, pwrfrac, maxiter, nion, aion, zion, ne20, ni20, tekev, 
-     .   tikev, zeff, r0, a, b0, volp, n, rnorm, vprime, dvol, darea, 
+     .   tikev, zeff, r0, a, b0, volp, n, rnorm, vprime, dvol, darea,  
+     .   l31,
      .   kappa, dkappa, shafr, dshafr, hofr, shinethru, jnbTot, pnbe, 
-     .   pnbi, beamDens, beamPress, beamFus, pbfuse, pbfusi, snBeamDD, 
+     .   pnbi, beamDens, beamVel, beamPress, beamFus, jnbfast,
+     .   pbfuse, pbfusi, snBeamDD, 
      .   snBeamDT, nbcur, etanb, gammanb, pNBAbsorb, pNBLoss, nbcurTot, 
      .   etanbTot, beamBeta, pNBAbsorbTot, pNBLossTot, beamFusTot, 
      .   beamFusChTot, snDTTotal, snDDTotal, iflag)
@@ -232,10 +234,12 @@ c/    --------------------------------
      .     rnorm(mxrho), vprime(mxrho), dvol(mxrho), darea(mxrho),
      .     kappa(mxrho), dkappa(mxrho), shafr(mxrho), dshafr(mxrho), 
      .     hofr(mxrho,3,maxBeams), shinethru(3,maxBeams), jnbTot(mxrho),
-     .     pnbe(mxrho), pnbi(mxrho), beamDens(mxrho), beamPress(mxrho),
-     .     beamFus(mxrho), pbfuse(mxrho), pbfusi(mxrho),snBeamDD(mxrho),
+     .     pnbe(mxrho), pnbi(mxrho), beamDens(mxrho), beamVel(mxrho),
+     .     beamPress(mxrho), beamFus(mxrho), pbfuse(mxrho),
+     .     pbfusi(mxrho),snBeamDD(mxrho),  jnbfast(mxrho),
      .     snBeamDT(mxrho), nbcur(maxBeams), etanb(maxBeams), 
-     .     gammanb(maxBeams), pNBAbsorb(maxBeams), pNBLoss(maxBeams)
+     .     gammanb(maxBeams), pNBAbsorb(maxBeams), pNBLoss(maxBeams),
+     .     l31(mxrho)
 
 c/    Local Variable Declarations:
 c/    ---------------------------
@@ -264,7 +268,7 @@ c/    Other local variables:
 
       iflag = 0
 
-      print*, 'Beginning Nbeams'
+      !print*, 'Beginning Nbeams'
       
       
 c/    Check dimensions and return with error message if not right:
@@ -335,7 +339,7 @@ c/    The following part of the code is needed to separate the ion
 c/    species that are included in Boley's beam stopping cross section
 c/    routine from those that are not and will be treated using 
 c/    Olson's formulation:
-      
+
       do isp = 1, nions
 	 inonb = 0
 	 if(atw(isp).EQ.1.0.AND.znum(isp).EQ.1.) then
@@ -361,34 +365,37 @@ c/    Olson's formulation:
 	    nonbindx(inonb) = isp
          endif
       enddo
+
+c      do i=1,nrho
+c         print*, rho(i), shift_rho(i), elong_rho(i), dv(i)
+c      end do
       
 c/    Calculate fast ion deposition:
 c/    -----------------------------
-      print*, 'Calling hofr'
+      !print*, 'Calling hofr'
       call hofrho (nbeams, ebeam, pbeam, rtang, nbshape, bwidth, 
      .   bheigh, nbptype, bgaussR, bgaussZ, bzpos, hofr, shinethru,
      .   pNBAbsorb, pNBLoss, pNBAbsorbTot, pNBLossTot)
 
 
-      print*, 'calling fastIons'
+      !print*, 'calling fastIons'
 c/    Calculate fast ion related parameters:
 c/    -------------------------------------
       call fastIons (nbeams, amb, zbeam, ebeam, pbeam, inbfus,
-     .   hofr, shinethru, jnbie, jnb, jnbTot, beamDens, beamPress,
-     .   beamFus, beamDTFus, beamDDFus, beamFusDTHe4, beamFusDDHe3,
-     .   beamFusDDp, beamFusDDt, snBeamDT, snBeamDD)
+     .     hofr, shinethru, jnbie, jnb, jnbTot, beamDens, beamVel,
+     .     beamPress, jnbfast, l31,
+     .     beamFus, beamDTFus, beamDDFus, beamFusDTHe4, beamFusDDHe3,
+     .     beamFusDDp, beamFusDDt, snBeamDT, snBeamDD)
 
-      do i=1,nrho
-         !print*, i, jnbTot(i)
-      end do
-      
+ 
 c/    Calculate total beam heating power density (in MW/m^3):
 c/    (summed over all beams and energy components)
 c/    Recall that now hofr is normalized, so we must multiply
 c/    by 1.0 - shinethru(ie,ib):
 c     /
-      print*, 'Calc heating'
+      !print*, 'Calc heating'
       do i = 1, nrho
+	
          sumpnbi = 0.0
          sumpnbe = 0.0
          do ib = 1, nbeams
@@ -425,7 +432,7 @@ c/    efficiencies (summed over energy components);
          etanbTot = 1.0e-06*nbcurTot / pNBAbsorbTot
       endif
 
-      print*, 'Calc beam beta'
+      !print*, 'Calc beam beta'
 c/    Calculate the beam beta:
 c/    -----------------------
       beamBeta = sdot(nrhom1, beamPress, 1,dvol, 1)
@@ -451,6 +458,7 @@ c/    particle products of the beam-plasma interactions:
          call eiSplit (eDTHe4, massHe4, fDTHe4ion, fDTHe4elec)
          
          do i = 1, nrho
+            !print*, 'DD and DT Fusion', beamDDFus(i), beamDTFus(i)
             beamFusIon(i) = beamFusDDHe3(i) * fDDHe3ion(i) +
      .                      beamFusDDp(i) * fDDpion(i) +
      .                      beamFusDDt(i) * fDDtion(i) +
@@ -471,6 +479,9 @@ c/   Calculate totals of selected quantities:
          snDTTotal = sdot(nrhom1,snBeamDT,1,dvol,1)
          
       endif
-      print*, 'Finished nbeams'
+      !print*, 'Finished nbeams'
       return
-      end
+      end subroutine
+      
+      
+      

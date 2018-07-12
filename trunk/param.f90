@@ -291,6 +291,8 @@ module param
   double precision betai,betap,beta,betexp,betlim
 ! Volume averaged electron temperatrue and density
   double precision avt,avel
+! Volume averaged ion temperatrue and density
+  double precision avio, avti
 ! Line averaged electron density (in 10**19 m**-3), and normalised to Greenwald
   double precision nebar,negw
 ! Plasma volume, cross-sectional area and internal inductance

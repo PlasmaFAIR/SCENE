@@ -109,7 +109,7 @@ c/    Start integration along R:
       do ir = 1, nr
          rb = 0.5*(rumrl*sr(ir) + ruprl)
          ksibeam = rb/rflux
-         
+        
 c/    Check for double pass, and calculate integral along beam path
          
          rcut = rflux   
@@ -130,7 +130,7 @@ c/    Check for double pass, and calculate integral along beam path
      .           dblpass*exp(capd0(ie) + 2.0*capd1(ie))
             endif
          enddo
-         
+
 c/    Power distribution on the surface of the beam:
 c/    ---------------------------------------------
 c/       ptype = 0: uniform distribution
@@ -156,7 +156,7 @@ c/       ptype = 1: Gaussian or bi-Gaussian
 
          sumterm = rflux*pwrfact*Sqrt((1.0 - sr(ir)**2)/
      .        (rflux**2 - rb**2))
-         
+
          sumr1 = sumr1 + sumterm*dterm(1)
          sumr2 = sumr2 + sumterm*dterm(2)
          sumr3 = sumr3 + sumterm*dterm(3)

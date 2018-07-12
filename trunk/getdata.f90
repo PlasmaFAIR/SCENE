@@ -8,12 +8,16 @@ subroutine getdata
 
   double precision :: rr, zz, rat
   double precision :: fprof, tempe, tempi, psi,psi_n, bp, B_tor, B_pol, B_tot
-  double precision :: press, densi, dense, safety, ffp, pp, rho
-  double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2
+  double precision :: press, densi, dense, safety, ffp, fsi, pp, rho
+  double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2, jnb
   character(8) :: date
   character(10) :: time
-  double precision :: flux_r, flux_z
+  double precision :: flux_r, flux_z, te
 
+  double precision, dimension(ncon) :: rhoflux, Rflux
+  double precision :: rhomax, jtot
+
+  real, dimension(ncon) :: rhos, dpdrs
   
   integer :: nh, i, j, con, flag
 
@@ -187,18 +191,29 @@ subroutine getdata
 
    !Used to find magnetic axis
 
+
+   rhoflux =( maxval(rpts, dim=2) - minval(rpts,dim=2)) /2
+
+   Rflux = ( maxval(rpts, dim=2) + minval(rpts,dim=2)) /2
+
+   rhoflux(ncon) = 0.
+   Rflux(ncon) = r0
+   rhomax = maxval(rhoflux)
+   rhoflux = rhoflux/rhomax
    
-   do i=1,nr
-      if (ixout(i,nsym) .le. 0) cycle 
-      !Go to magnetic axis and then work outwards
-      if (r(i) .lt. r0) cycle
+   do con=ncon,1,-1
 
-      psi = umax - u(i,nsym)
-      psi_n = psi/umax
+      psi = psiv(con)
+      rr = sngl(Rflux(con))
 
+      fsi = sngl(fprof(psi,2))
       ffp = -sngl(fprof(psi,1))
       pp = -sngl(press(psi,1))
-      write(nh,18) psi_n, ffp, pp
+      jtot = +rr*pp + ffp/(mu0*rr)
+      jnb = J_nb(con)*fsi/rr
+
+      te = tempe(psi,0)
+      write(nh,18) rhoflux(con), epsv(con), jtot, jnb, te
 
 
    end do
@@ -233,11 +248,31 @@ subroutine getdata
 20 format(2e14.6)
    close(nh)
    
-      
-
-  ! write(6,*) 'locust ne data written'
+   ! write(6,*) 'locust ne data written'
 
 
+   
+  nh=nh+2
+   open(unit=nh, file='profile_ni.dat', &
+        status='unknown', iostat=ios)
+   if (ios .ne. 0) then
+      write(6,*) 'problem opening profile_ni.dat'
+      stop
+   end if
+
+   write(nh, *) ncon
+
+   do i=ncon,1,-1
+      write(nh, 20) psiv(i), densi(psiv(i),1,0)
+   end do
+
+   close(nh)
+
+   ! write(6,*) 'locust ni data written'
+
+
+
+   
       nh=nh+2
    open(unit=nh, file='profile_Te.dat', &
         status='unknown', iostat=ios)
@@ -277,6 +312,9 @@ subroutine getdata
 
  !  write(6,*) 'locust Ti data written'
 
+
+
+   
 
       
       nh=nh+2
@@ -339,10 +377,17 @@ subroutine popcon()
   write(nh,510) 'Cen e temp', sngl(te0/1000.), 'keV'
   write(nh,510) 'Cen i temp', sngl(ti0/1000.), 'keV'
   write(nh,510) 'Vol av. e temp', avt/1000.,'keV'
+  write(nh,510) 'Vol av. i temp', avti/1000.,'keV'
+
+  
   write(nh,500) 'Cen e den', sngl(dense(0.0,0)), 'm^-3'
+  write(nh,500) 'Cen i den', sngl(densi(0.0,1,0)), 'm^-3'
+  
   write(nh,500) 'Vol av e den', sngl(avel), 'm^-3'
   write(nh,500) 'Lin av e den', sngl(nebar*1.0d19), 'm^-3'
-
+  
+  write(nh,500) 'Vol av i den', sngl(avio*1.0d19), 'm^-3'
+  
   write(nh,*) ' '
   write(nh,510) 'Z', sngl(zm), ' '
   write(nh,510) 'Zeff', sngl(zeffav), ' '
@@ -387,6 +432,11 @@ subroutine popcon()
   write(nh,510) 'H_IPB98(y2)', sngl(hipb98y2), ' '
   write(nh,510) 'Tau_e', sngl(taue*1.0e3), 'ms'
   write(nh,510) 'Tau_h', sngl(tauh), ' '
+
+  write(nh,510) 'Area', sngl(area), 'm^2'
+  write(nh,510) 'Volume', sngl(vol), 'm^3'
+  write(nh,510) 'li(3)', sngl(rli3), ' '
+  write(nh,510) 'li(2)', sngl(rli2), ' ' 
   write(nh,510) 'Energy', sngl(conft/1.0e6), 'MJ'
 
 500 format(' ',A12, ' , ', E11.4 , ' , ', A5)

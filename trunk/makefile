@@ -9,7 +9,14 @@ torcur.f90 extj.f90 output.f90 ffdgen.f90 usrcal.f90 elite_data.f90 \
 baleq.f90 test_profs.f90 helena.f90 bandat.f90 setnt.f90 \
 chease_dat.f90 gfile.f90 flxorb.f90 lynton.f90 fastbs.f90 caxe_out.f90 \
 bandit.f90 mercier.f90 gs2.f90 astradat.f90 tokameq.f90 \
-getdata.f90 nbicur.f90 #geqdsk.f90
+getdata.f90  \
+beamconsts.f beams_mfp.f calcbeams.f coulomb.f \
+eisplit.f erf.f fastions.f frate.f gausswts.f \
+getrho.f hofr.f hunt.f qsimp.f sigfit.f sinteg.f \
+rinteg.f zinteg.f ssum.f sig_olson.fs/ \
+nbdriver.f nbeams/beamconsts.f nbeams/beams_mfp.f \
+nbicur.f90 geqdsk.f90
+
 OBJS= \
 param.o balpar.o balloon.o \
 coldat.o scene.o init.o equil.o profs.o flxsur.o \
@@ -17,16 +24,21 @@ flxav.o hirsig.o hirsh.o splines.o signeo.o \
 torcur.o extj.o output.o ffdgen.o usrcal.o elite_data.o \
 baleq.o test_profs.o helena.o bandat.o setnt.o chease_dat.o \
 gfile.o flxorb.o lynton.o fastbs.o caxe_out.o bandit.o  \
-mercier.o gs2.o astradat.o tokameq.o getdata.o nbicur.o #geqdsk.f90x
+mercier.o gs2.o astradat.o tokameq.o getdata.o  \
+beamconsts.o beams_mfp.o calcbeams.o coulomb.o \
+eisplit.o erf.o fastions.o frate.o gausswts.o \
+getrho.o hofr.o hunt.o qsimp.o sigfit.o sinteg.o \
+rinteg.o zinteg.o ssum.o sig_olson.o nbicur.o geqdsk.o
 #
 INPUT=	
 LIBRARIES =  \
  -L/opt/york/phys/pkg/Modules/modulefiles/libraries/ \
  -llapack \
- -L/usr/userfs/b/bbp501/SCENEv2/lib/ \
+ -L/home/userfs/b/bbp501/SCENEv2/lib/ \
  -ltoms790 \
- -lBLAS # \
-# -lsurfit \
+ -lBLAS \
+ -lnbeams  \
+ -lsurfit #\
 # -lgcvfull
 
 #        -lghost -lgrid_xghost -L/usr/lib/libg2c.so.0 \

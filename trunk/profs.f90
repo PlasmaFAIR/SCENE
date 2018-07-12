@@ -1532,16 +1532,17 @@
      implicit none
 
      integer :: i
-     double precision, dimension(ncon) :: rho,dpdr
-     double precision :: rhomax
+     double precision, dimension(ncon) :: rho,dpdr, testrho
+     double precision :: rhomax, shift
 
      real, dimension(ncon) :: rhos, dpdrs
      
      rho =( maxval(rpts, dim=2) - minval(rpts,dim=2)) /2
+  
 
      rho(ncon) = 0.
      rhomax = maxval(rho)
-    
+   
 
      !normalise rho
      
@@ -1583,7 +1584,7 @@
      
      double precision :: flxvol_l, flxvol_u, psi_u, psi_l
 
-     double precision :: r_l, r_r, z_l, z_r, shift
+     double precision :: r_l, r_r, z_l, z_r, shift, elong
 
      real, dimension(ncon) :: vols, areas, volsp
 
@@ -1591,8 +1592,6 @@
      flxarea = 0.
      ! for each contour calculate area with trapeze rule
      do i= ncon,1,-1
-
-
 
         do j = 1, npts-1
 
@@ -1621,11 +1620,11 @@
 
         end if
 
-        
        ! write(nw,*) 'vol of flux surface ', i, flxvol(i)
 
      end do
 
+     vol = sum(volcon) 
   
      ! Calculates gradient dV/drho
      do k =1,ncon
@@ -1656,23 +1655,24 @@
 
 
         voldiff(k) = (flxvol_u - flxvol_l)/(psi_u - psi_l)
-     
+
      end do
 
-     !change vol/area to between i-1/2 to i+1/2
+     !change vol/area to between i-1/2 to i+1/2 and flips array
 
      do i=2,ncon
-
+        
         vols(ncon-i+1) = sngl(volcon(i)+volcon(i-1))/2.
         areas(ncon-i+1) = sngl(areacon(i)+areacon(i-1))/2.
         volsp(ncon-i+1) = sngl(voldiff(i)+voldiff(i-1))/2.
 
-     end do
+     end do  
 
+     
      volsp(ncon) = voldiff(1)
      vols(ncon) = volcon(1)/2.
      areas(ncon) = areas(1)/2.
-     
+
    end subroutine dVdrho
    
    
@@ -1704,3 +1704,30 @@
    end subroutine lam
 
    
+   subroutine rhotor(phi)
+
+     use param
+     implicit none
+
+     integer :: con
+     double precision, dimension(ncon) :: phi
+
+     phi=0.0
+     do con=ncon,1,-1
+
+        if (con.eq.ncon) then
+           phi(con) = sfac(con)*psiv(con)
+        else
+           phi(con) = phi(con+1) + sfac(con)*(psiv(con)-psiv(con+1))
+
+
+        end if
+     end do
+     
+   end subroutine rhotor
+      
+        
+
+        
+
+        

@@ -1,4 +1,4 @@
-  subroutine init
+ subroutine init
 ! ***************
 
 !------------------------------------------------------------------
@@ -148,16 +148,16 @@ end subroutine init
       nchi0=30
       chi0val=0.
       lamges=2.
-
-
+      nbi = 0
+      bmfus=0.
 
       !NB
       sig_r =0.08
-      E_b = (/200,150/)
+      E_b = (/150,150/)
       sig_z = 0.08
       P_beam = (/10,40/)
-      I_0 = P_beam*1000./E_b
-      P_frac = (/70,20,10/)
+      !I_0 = P_beam*1000./E_b
+      P_frac = (/0.70,0.20,0.10/)
       R_t = (/0.8,1.1/)
       Z_beam = 0.0
       A_beam = 1
@@ -288,6 +288,7 @@ end subroutine init
       if(word.eq.'nci0')nchi0=ival
       if(word.eq.'chi0')chi0val=val
       if(word.eq.'lam ')lamges=val
+      if(word.eq.'nbi ')nbi=val
       if(word.eq.'fini')goto 70
       goto 60
  70   continue

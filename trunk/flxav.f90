@@ -405,7 +405,7 @@
 !!$          end if
           bstrap=0.
         else
-          fc=1.-ftrap(k)
+           fc=1.-ftrap(k)
           x=ftrap(k)/fc
           pt=press(psi,0)
           pd=press(psi,1)
