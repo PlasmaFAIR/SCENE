@@ -118,41 +118,41 @@
         fdbal(nchi/2+1,2)=1.
         hh=dchi/2.
         lam=lamges
-10      continue
-        jpass=jpass+1
-        do j=1,2
-!  First shoot out from zero to max chi...
-          do i=nchi/2+1,nchi-1
-            x=chi(i)
-            y=fbal(i,j)
-            yd=fdbal(i,j)
-            an=hh*balfun(x,i,y,yd)
-            x=chi(i)+hh
-            betn=hh*(yd+an/2.)
-            y=fbal(i,j)+betn
-            yd=fdbal(i,j)+an
-            bn=hh*balfun(x,i,y,yd)
-            yd=fdbal(i,j)+bn
-            cn=hh*balfun(x,i,y,yd)
-            deln=hh*(fdbal(i,j)+cn)
-            y=fbal(i,j)+deln
-            yd=fdbal(i,j)+2.*cn
-            ii=i+1
-            if (ii.ge.nchi) ii=nchi-1
-            x=chi(i+1)
-            dn=hh*balfun(x,ii,y,yd)
-            fbal(i+1,j)=fbal(i,j)+dchi*(fdbal(i,j)+(an+bn+cn)/3.)
-            fdbal(i+1,j)=fdbal(i,j)+(an+2.*bn+2.*cn+dn)/3.
+        do
+          jpass=jpass+1
+          do j=1,2
+            !  First shoot out from zero to max chi...
+            do i=nchi/2+1,nchi-1
+              x=chi(i)
+              y=fbal(i,j)
+              yd=fdbal(i,j)
+              an=hh*balfun(x,i,y,yd)
+              x=chi(i)+hh
+              betn=hh*(yd+an/2.)
+              y=fbal(i,j)+betn
+              yd=fdbal(i,j)+an
+              bn=hh*balfun(x,i,y,yd)
+              yd=fdbal(i,j)+bn
+              cn=hh*balfun(x,i,y,yd)
+              deln=hh*(fdbal(i,j)+cn)
+              y=fbal(i,j)+deln
+              yd=fdbal(i,j)+2.*cn
+              ii=i+1
+              if (ii.ge.nchi) ii=nchi-1
+              x=chi(i+1)
+              dn=hh*balfun(x,ii,y,yd)
+              fbal(i+1,j)=fbal(i,j)+dchi*(fdbal(i,j)+(an+bn+cn)/3.)
+              fdbal(i+1,j)=fdbal(i,j)+(an+2.*bn+2.*cn+dn)/3.
 !!$            write(61,*)' j=',j,' i+1=',i+1,' fdba=',fdbal(i+1,j)
+            end do
           end do
-        end do
-        cp=-fbal(nchi,1)/fbal(nchi,2)
-        do i=nchi/2+1,nchi
-          fbal(i,1)=fbal(i,1)+cp*fbal(i,2)
-          fdbal(i,1)=fdbal(i,1)+cp*fdbal(i,2)
-        end do
-        j=1
-!  and now back to min chi...
+          cp=-fbal(nchi,1)/fbal(nchi,2)
+          do i=nchi/2+1,nchi
+            fbal(i,1)=fbal(i,1)+cp*fbal(i,2)
+            fdbal(i,1)=fdbal(i,1)+cp*fdbal(i,2)
+          end do
+          j=1
+          !  and now back to min chi...
           do i=nchi/2+1,2,-1
             x=chi(i)
             y=fbal(i,j)
@@ -175,39 +175,31 @@
             fbal(i-1,j)=fbal(i,j)-dchi*(fdbal(i,j)+(an+bn+cn)/3.)
             fdbal(i-1,j)=fdbal(i,j)+(an+2.*bn+2.*cn+dn)/3.
           end do
-!        end do
-!        cm=-fbal(1,1)/fbal(1,2)
-!        do i=nchi/2+1,1,-1
-!          fbal(i,1)=fbal(i,1)+cm*fbal(i,2)
-!          fdbal(i,1)=fdbal(i,1)+cm*fdbal(i,2)
-!        end do
-!        difnew=cm-cp
-        difnew=fbal(1,1)
-!  Adjust lambda until cp=cm
-        if (jpass.eq.1) then
-!          write(6,*)' lam=',lam,' difnew=',difnew
-!          write(6,*)' cm=',cm,' cp=',cp
-          lamnew=0.999*lam
-          lamold=lam
-          difold=difnew
-          lam=lamnew
-          goto 10
-        else if (jpass.le.kpass) then
-          lamnew=(difnew*lamold-difold*lam)/(difnew-difold)
-!          lamnew=lamnew+0.011
-          write(6,*)' lam=',lam,' difnew=',difnew
-!          write(6,*)' cm=',cm,' cp=',cp
-          err=abs((lam-lamnew)/(lam+lamnew))
-          if (err.gt.1.0e-5) then
+          difnew=fbal(1,1)
+          !  Adjust lambda until cp=cm
+          if (jpass.eq.1) then
+            lamnew=0.999*lam
             lamold=lam
-            lam=lamnew
             difold=difnew
-            goto 10
+            lam=lamnew
+            cycle
+          else if (jpass.le.kpass) then
+            lamnew=(difnew*lamold-difold*lam)/(difnew-difold)
+            write(6,*)' lam=',lam,' difnew=',difnew
+            err=abs((lam-lamnew)/(lam+lamnew))
+            if (err.gt.1.0e-5) then
+              lamold=lam
+              lam=lamnew
+              difold=difnew
+              cycle
+            end if
+          else
+            !  lambda=0 flags that could not find eigenvalue
+            lam=0.
           end if
-        else
-!  lambda=0 flags that could not find eigenvalue
-          lam=0.
-        end if
+          exit
+        end do
+
         write(92,35)chi0val,psiv(nf)/umax,lam
         write(6,*)' Flux surface=',nf,' psi=',psiv(nf)/umax,' lmbda=',lam
         lamges=lam
