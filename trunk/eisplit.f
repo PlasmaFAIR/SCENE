@@ -5,7 +5,7 @@ c/    eiSplit
 c/
 c/ DESCRIPTION
 c/    This routine calculates the fraction of energy deposited to
-c/    plasma ions and electrons during the slowing down of a fast 
+c/    plasma ions and electrons during the slowing down of a fast
 c/    ion in a plasma, assuming classical, instantaneous slowing
 c/    down.
 c/
@@ -26,13 +26,13 @@ c///////////////////////////////////////////////////////////////////////
 
       subroutine eiSplit (fastEnergy, fastMass, fion, felec)
 
-  
+
       implicit none
-      
+
       include 'nbparams.inc'
       include 'nbconsts.inc'
       include 'nbplasma.inc'
-      
+
 
 c/    Local declarations:
 c/    ------------------
@@ -40,7 +40,7 @@ c/    ------------------
       real coulLoge, coulLogi, rterm, root3, sumbrack, term1, term2,
      .   twoThirds, ecrit, xcr, zbracket
       integer i, j
-      
+
       root3 = Sqrt(3.0)
       twoThirds = 2.0/3.0
       do i = 1, nrho
@@ -48,9 +48,9 @@ c/    ------------------
          rterm = Sqrt(elecTemp(i) * fastEnergy * fastMass /
      .      elecDensity(i))
          sumbrack = 0.0
-	 do j = 1, nions
+         do j = 1, nions
             coulLogi =  19.1 + Log((atw(j) / (fastMass+atw(j)))*rterm)
-            sumbrack = sumbrack + dni(i,j) * znum(j)**2 
+            sumbrack = sumbrack + dni(i,j) * znum(j)**2
      .         * coulLogi / atw(j)
          enddo
          zbracket = sumbrack / (coulLoge * elecDensity(i))

@@ -1,5 +1,5 @@
 c///////////////////////////////////////////////////////////////////////
-c/ 
+c/
 c/ NAME
 c/    hunt
 c/
@@ -68,7 +68,6 @@ c-----Begin final bisection phase:
       else
         jhi = jm
       endif
-      go to 3 
-      
-      end
+      go to 3
 
+      end

@@ -1,10 +1,10 @@
 c/////////////////////////////////////////////////////////////////////////
-c/    
+c/
 c/     NAME
 c/        frate
-c/    
+c/
 c/     DESCRIPTION
-c/    
+c/
 c/        This function calculates the integrand needed in the calculation
 c/    of the beam-plasma fusion reaction rates. The fusion cross sections
 c/    are taken from the recent work of H. Bosch, IPP I/252, 1990 and
@@ -28,7 +28,7 @@ c/
 c/////////////////////////////////////////////////////////////////////////
 
       real function frate(e)
-      
+
       implicit none
 
       real a1(6), a2(6), a3(6), a4(6), a5(6), bg(6)
@@ -111,6 +111,6 @@ c-----Calculate cross section and integrand:
       fresult = sigv*dfterm
 
       frate = fresult
-      
+
       return
       end

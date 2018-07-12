@@ -3,7 +3,7 @@
 c-----This subroutine returns as -s- the integral of the function -func-
 c-----from -a- to -b-. The variable -eps- determines the desired fractional
 c-----accuracy, and the maximum number of steps is 2**(jmax-1). Integration
-c-----is performed by Simpson's rule. The routine has been taken from the 
+c-----is performed by Simpson's rule. The routine has been taken from the
 c-----book "Numerical recipes" , by W. Press et al.
 c-----Adapted for the SuperCode, John Mandrekas, GIT, 11-15-91
 

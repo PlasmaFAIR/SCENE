@@ -2,7 +2,7 @@
 
 c/    This subroutine calculates the Coulomb logarithms due to
 c/    collisions between fast ions and plasma ions and electrons
-c/    Reference: 
+c/    Reference:
 c/    D.R. Mikkelsen, C.E. Singer, Nuclear Technol./Fusion 4, 237 (1983)
 
 c/    Input variables:
@@ -17,12 +17,12 @@ c/    isp    : isp=1 -> electron coulomb logarithm
 c/             isp=2 -> beam-plasma ion coulomb logarithm
 c/    Output :
 c/    clog   : coulomb logarithm
-c/    
+c/
 c/    07/07/98: Fixed bug in calculation of electron logarithm
-      
+
       implicit none
       integer isp
-      real ami, amf, clog, dne, efast, elim, te, te10, 
+      real ami, amf, clog, dne, efast, elim, te, te10,
      .	   zi, zf
       te10 = te/10.0
       elim = 100.*amf*(zf*zi)**2

@@ -6,14 +6,14 @@ c       Lawrence Livermore National Laboratory
 c       L-574
 c       Livermore, CA 94550
 c       (415) 423-7365
- 
+
 c     version of 3/11/92
- 
+
 c.....This subroutine computes the neutral beam stopping cross section,
 c     for a hydrogenic beam, as a function of beam energy, electron
 c     density, electron temperature, and impurity density.  Four
 c     impurities (He, C, O, Fe) are allowed.
- 
+
 c     The code employs a fit based on results of the author's beam
 c     penetration code.  The latter code contains the detailed atomic
 c     cross sections recommended at the IAEA Specialists' Meeting on
@@ -21,7 +21,7 @@ c     Required Atomic Data Base for Neutral Beam Penetration in Large
 c     Tokamaks (Vienna, 4/89).  The fit applies for beam energies from
 c     10 keV/amu to 10 MeV/amu and for all densities and electron
 c     temperatures of interest.
- 
+
 c     The fit is independent of the ion temperature and hence does not
 c     distinguish among hydrogen ion isotopes in the plasma.  (The actual
 c     cross sections were evaluated at Ti = 15 keV.)  The ion temperature
@@ -32,20 +32,20 @@ c     following table gives an idea of the variation with ion temperature
 c     at low beam energy, for injection into a pure H plasma with
 c     dene=1.e14 and Te=10 keV (energies in keV; cross sections in this
 c     table in units of 10**-16 cm**2):
- 
+
 c     ebeam  sig(Ti=1)  sig(Ti=15)  sig(Ti=30)  sig(fit)
 c       10     11.43       9.96        8.91      11.18
 c       30      6.06       5.12        4.71       5.35
 c       50      3.57       3.56        3.39       3.75
 c      100      2.09       2.11        2.09       2.28
- 
+
 c     The fit was evaluated with B(perpendicular component) = 5 T.
 c     Variations of the magnetic field have an insignificant effect on
 c     the stopping cross section.
- 
+
 c     Accuracy of fit: rms error about 2.5%
 c                      max error about 12%
- 
+
 c     Input parameters --
 c       ebeam: beam energy per amu (keV/amu) -- 10. .le. ebeam .le. 1.e4
 c       dene:  electron density (cm**-3) -- 1.e12 .le. dene .le. 1.e15
@@ -78,7 +78,7 @@ c     03/27/92, John Mandrekas, GIT
         iinit=1
         call initfit
       endif
- 
+
       xx(1) = alog(ebeam)
       xx(2) = alog(dene/1.e13)
       xx(3) = alog(te)
@@ -101,7 +101,7 @@ c     03/27/92, John Mandrekas, GIT
 
       return
       end
- 
+
       subroutine initfit
 c-----------------------------------------------------------------------
 c-----New version, with different fits valid from lower beam energies
@@ -114,7 +114,7 @@ c-----Modified for  use by the SuperCode, John Mandrekas, 03/27/92
       integer i, nth1, nth2, nth3, ntz1(mz), ntz2(mz), ntz3(mz)
       real A1(mt1,mt2,mt3), A2(mt1,mt2,mt3,mz)
       common/cfit/A1, nth1, nth2, nth3, A2, ntz1, ntz2, ntz3
- 
+
 c..   pure plasma
       nth1 = 3
       nth2 = 3
@@ -137,13 +137,13 @@ c..   pure plasma
       A1(3,2,2)=-1.67e-04
       A1(3,3,1)=-1.31e-04
       A1(3,3,2)=-2.28e-05
- 
+
       do i = 1, 4
          ntz1(i) = 4
          ntz2(i) = 2
          ntz3(i) = 2
       enddo
- 
+
 c..   He
       i=1
       A2(1,1,1,i)=-1.76e+00
@@ -162,7 +162,7 @@ c..   He
       A2(4,1,2,i)= 1.34e-03
       A2(4,2,1,i)=-2.82e-04
       A2(4,2,2,i)=-5.42e-05
- 
+
 c..   C
       i=2
       A2(1,1,1,i)=-1.89e-01
@@ -181,7 +181,7 @@ c..   C
       A2(4,1,2,i)=-4.21e-05
       A2(4,2,1,i)=-2.20e-04
       A2(4,2,2,i)= 8.32e-07
- 
+
 c..   O
       i=3
       A2(1,1,1,i)=-1.07e-01
@@ -200,7 +200,7 @@ c..   O
       A2(4,1,2,i)= 1.08e-05
       A2(4,2,1,i)=-1.65e-04
       A2(4,2,2,i)= 2.45e-06
- 
+
 c..   Fe
       i=4
       A2(1,1,1,i)= 5.46e-02
@@ -222,7 +222,7 @@ c..   Fe
 
       return
       end
- 
+
       real function poly3f(a,ndim1,ndim2,ndim3,
      .  x1,n1,x2,n2,x3,n3)
 

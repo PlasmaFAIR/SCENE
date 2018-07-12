@@ -1,7 +1,7 @@
-      subroutine fastIons (nbeams, amb, zbeam, ebeam, pbeam, inbfus, 
+      subroutine fastIons (nbeams, amb, zbeam, ebeam, pbeam, inbfus,
      .     hofr, shinethru, jnbie, jnb, jnbTot, beamDens, beamVel,
      .     beamPress, jnbfast, l31,
-     .     beamFus, beamDTFus, beamDDFus, beamFusDTHe4, beamFusDDHe3, 
+     .     beamFus, beamDTFus, beamDDFus, beamFusDTHe4, beamFusDDHe3,
      .     beamFusDDp, beamFusDDt, snBeamDT, snBeamDD)
 
 c///////////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ c/       Modified to handle beams with three energy components.
 c/       Changed definition of epsilon, to include shift.
 c/    01-08-92, John Mandrekas
 c/       Modified to calculate beam-target reaction rates and fast
-c/       beta. 
+c/       beta.
 c/    10-29-91, Original Release
 c/
 c/    References:
@@ -46,7 +46,7 @@ c/    D.R. Mikkelsen, C.E. Singer, Nuclear Technol./Fusion 4, 237 (1983)
 c/
 c/    Calculated quantities:
 c/    ---------------------
-c/    jnb(i,ie,ib) : neutral beam driven current density from the 
+c/    jnb(i,ie,ib) : neutral beam driven current density from the
 c/                   ie component of the ib beam at grid point i (A/m^2)
 c/    jnb(i,ib)    : neutral beam driven current density from all energy
 c/                   components of beam ib at i (A/m^2)
@@ -77,9 +77,9 @@ c/    beamVel(i)      : fast ion velocity (m/s)
 c/
 c///////////////////////////////////////////////////////////////////////
 
-     
+
       implicit none
-      
+
       include 'nbparams.inc'
       include 'BeamsLoc.inc'
       include 'nbplasma.inc'
@@ -88,19 +88,19 @@ c///////////////////////////////////////////////////////////////////////
       integer nbeams, inbfus
       real amb, zbeam
       real ebeam(maxBeams), pbeam(maxBeams)
-      real hofr(mxrho,3,maxBeams), jnbie(mxrho,3,maxBeams), 
+      real hofr(mxrho,3,maxBeams), jnbie(mxrho,3,maxBeams),
      .     jnb(mxrho,maxBeams), shinethru(3,maxBeams), jnbTot(mxrho),
      .     beamDens(mxrho), beamVel(mxrho), beamPress(mxrho),
      .     beamFus(mxrho), jnbfast(mxrho),
-     .     beamDDFus(mxrho), beamDTFus(mxrho), beamFusDTHe4(mxrho), 
-     .     beamFusDDHe3(mxrho), beamFusDDp(mxrho), beamFusDDt(mxrho), 
+     .     beamDDFus(mxrho), beamDTFus(mxrho), beamFusDTHe4(mxrho),
+     .     beamFusDDHe3(mxrho), beamFusDDp(mxrho), beamFusDDt(mxrho),
      .     snBeamDD(mxrho), snBeamDT(mxrho), l31(mxrho)
-     
+
 c/    Local variable declarations:
 c/    ---------------------------
-      real srcfast(mxrho,3,maxBeams), bmcur(3,maxBeams), 
+      real srcfast(mxrho,3,maxBeams), bmcur(3,maxBeams),
      .     vbeam(3,maxBeams)
-     
+
       real ami, bcoef, capke, cloge, clogi, comfact, dne20, energy,
      .     ecrit, eddn, eddp, edhe3, edtn, epsilon, factor,
      .     eddnhe3, eddpp, eddpt, edtnhe4,
@@ -119,10 +119,10 @@ c/    ---------------------------
 
       data nfrst/0/, jhy/0/, jdeut/0/, jtrit/0/, jhe3/0/, jhe4/0/,
      .     ibion/0/
-     
+
 c/    Fusion reaction energies in MeV:
 
-      data eddn/3.27/, eddp/4.03/, edhe3/18.3/, edtn/17.6/, 
+      data eddn/3.27/, eddp/4.03/, edhe3/18.3/, edtn/17.6/,
      .   eddnhe3/0.82/, eddpp/3.02/, eddpt/1.01/, edtnhe4/3.50/
 
 c/    Identify ion species for the fusion reactivity calculations:
@@ -131,10 +131,10 @@ c/    However, the beam species should also be a part of the plasma
 c/    ion population:
 
       if (nfrst.eq.0.and.inbfus.eq.1) then
-	 if (ideut.ne.0) jdeut = ideut
-	 if (itrit.ne.0) jtrit = itrit
-	 if (ihe3.ne.0) jhe3  = ihe3
-	 if (ihe4.ne.0) jhe4  = ihe4
+         if (ideut.ne.0) jdeut = ideut
+         if (itrit.ne.0) jtrit = itrit
+         if (ihe3.ne.0) jhe3  = ihe3
+         if (ihe4.ne.0) jhe4  = ihe4
          if (amb.eq.2.0.and.zbeam.eq.1.0) ibion = jdeut
          if (amb.eq.3.0.and.zbeam.eq.2.0) ibion = jhe3
          if (ibion.eq.0) then ! cancel fusion calculations
@@ -150,7 +150,7 @@ c/    Calculate the equivalent atomic current of each beamline in A:
 c/    (Recall that pbeam is in MW and ebeam in keV!):
 
       do  ib = 1, nbeams
-	 do ie = 1, 3
+         do ie = 1, 3
             bmcur(ie,ib) = 1.0e3*fbpwr(ie,ib)*float(ie)*
      .	       pbeam(ib)/ebeam(ib)
             vbeam(ie,ib) = 4.3770e5*Sqrt(ebeam(ib)/(float(ie)*amb))
@@ -163,63 +163,63 @@ c/    Initialize arrays to avoid problems with some compilers:
          snBeamDD(i) = 0.0
          snBeamDT(i) = 0.0
          jnbTot(i) = 0.0
-	 beamFus(i) = 0.0
-	 beamDDFus(i) = 0.0
-	 beamDTFus(i) = 0.0
-	 beamFusDTHe4(i) = 0.0
-	 beamFusDDHe3(i) = 0.0
-	 beamFusDDp(i) = 0.0
-	 beamFusDDt(i) = 0.0
-	 beamDens(i) = 0.0
+         beamFus(i) = 0.0
+         beamDDFus(i) = 0.0
+         beamDTFus(i) = 0.0
+         beamFusDTHe4(i) = 0.0
+         beamFusDDHe3(i) = 0.0
+         beamFusDDp(i) = 0.0
+         beamFusDDt(i) = 0.0
+         beamDens(i) = 0.0
          beamVel(i) = 0.0
-	 beamPress(i) = 0.0
+         beamPress(i) = 0.0
          jnbfast(i) = 0.0
-	 do ib = 1, nbeams
-	    jnb(i,ib) = 0.0
-	    do ie = 1, 3
-	       jnbie(i,ie,ib) = 0.0
-	       srcfast(i,ie,ib) = 0.0
-	       fNBion(i,ie,ib) = 0.0
-	       fNBelec(i,ie,ib) = 0.0
+         do ib = 1, nbeams
+            jnb(i,ib) = 0.0
+            do ie = 1, 3
+               jnbie(i,ie,ib) = 0.0
+               srcfast(i,ie,ib) = 0.0
+               fNBion(i,ie,ib) = 0.0
+               fNBelec(i,ie,ib) = 0.0
             enddo
          enddo
       enddo
 
       nrhom1 = nrho - 1
       do  i = nrhom1, 1,-1
-	 epsilon = rho(i)*rminor/(rmajor + rminor*shift(i))
+         epsilon = rho(i)*rminor/(rmajor + rminor*shift(i))
          dne20 = elecDensity(i)
-	 zte = elecTemp(i)
-	 zti = ionTemp(i)
+         zte = elecTemp(i)
+         zti = ionTemp(i)
          call coulomb (cloge,dne20,zte,0.0,amb,0.0,0.0,0.0,1)
          taus = 0.2*amb*zte**1.5/(cloge*dne20*zbeam**2)
 
 c/    Calculate trapped electron correction factor:
-         
+
 c         trapfact = l31(i)
          trapfact = (1.55 + 0.85/zef(i))*Sqrt(epsilon) -
      x              (0.20 + 1.55/zef(i))*epsilon
          factor  = 1.0 - (1.0 - trapfact)*zbeam/zef(i)
-c 	print*, rho(i), trapfact,  epsilon, zef(i)
-	 sumjnbib = 0.0
-	 sumsDDib = 0.0
-	 sumsDTib = 0.0
-	 sumFusib = 0.0
-	 sumDDFusib = 0.0
-	 sumDTFusib = 0.0
-	 sumFusDTHe4 = 0.0
-	 sumFusDDHe3 = 0.0
-	 sumFusDDp = 0.0
-	 sumFusDDt = 0.0
-	 sumdnbib = 0.0
+c       print*, rho(i), trapfact,  epsilon, zef(i)
+         sumjnbib = 0.0
+         sumsDDib = 0.0
+         sumsDTib = 0.0
+         sumFusib = 0.0
+         sumDDFusib = 0.0
+         sumDTFusib = 0.0
+         sumFusDTHe4 = 0.0
+         sumFusDDHe3 = 0.0
+         sumFusDDp = 0.0
+         sumFusDDt = 0.0
+         sumdnbib = 0.0
          sumdvbib = 0.0
-	 sumPreib = 0.0
+         sumPreib = 0.0
          sumjfast = 0.0
          do ib = 1, nbeams
-	    sumjnbie = 0.0
-	    do ie = 1, 3
-   
-	       if (fbpwr(ie,ib).ne.0.0) then
+            sumjnbie = 0.0
+            do ie = 1, 3
+
+               if (fbpwr(ie,ib).ne.0.0) then
                   energy = ebeam(ib)/float(ie)
                   sumbrack = 0.0
                   sumhat = 0.0
@@ -227,7 +227,7 @@ c 	print*, rho(i), trapfact,  epsilon, zef(i)
                      ami = atw(isp)
                      zz  = znum(isp)
                      call coulomb (clogi,dne20,zte,ami,amb,zz,zbeam,
-     .    	       energy,2)
+     .                 energy,2)
                      sumbrack = sumbrack + dni(i,isp)*zz**2*clogi/ami
                      sumhat = sumhat + dni(i,isp)*zz*zz*clogi/amb
                   enddo
@@ -238,37 +238,37 @@ c/    Critical energy for fast ion slowing down:
 
                   ecrit = 14.8*(zbr**(2./3.))*amb*zte
                   yc = Sqrt(ecrit/energy)
-         
+
                   call qsimp(fb, 0., 1., reslt)
                   capke = reslt*(1. + yc**3)**(zhat/3.)
                   tauf = taus*Log((1.0+(energy/ecrit)**1.5)/
      x                   (1.0+(zti/ecrit)**1.5))/3.0
 
-  
+
 c/    Calculate fast and net current densities (A/m2):
 
                   srcfast(i,ie,ib) = bmcur(ie,ib) *
      x                 (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)/volume
 
-                  
-                     
+
+
 c     !!!!!!!!!
 c     Extrapolate to core as rho=0 leads to drop in current
                   if (i .eq.1) then
                      rat = (srcfast(i+2,ie,ib) - srcfast(i+1,ie,ib) )/
      x                    (rho(i+2) - rho(i+1))
-                    
+
                      !srcfast(i,ie,ib) = srcfast(i+1,ie,ib) -
      x               !     rat*(rho(i+1) - rho(i) )
-                     
+
                   end if
-                  
- 
-                  
+
+
+
                   jfast = zbeam*srcfast(i,ie,ib)*taus*vbeam(ie,ib)*
      x                    capke*pitchangl(i,ie,ib)
-	          jnbie(i,ie,ib) = factor*jfast
-                   
+                  jnbie(i,ie,ib) = factor*jfast
+
                   if (ie.eq.1 .and. ib.eq.1) then
                      !print*, epsilon, jfast, factor
                      end if
@@ -279,10 +279,10 @@ c		     print*, ' '
 c                 end if
 
                   sumjfast = sumjfast + jfast
-                  sumjnbie = sumjnbie + jnbie(i,ie,ib) 
-                  
+                  sumjnbie = sumjnbie + jnbie(i,ie,ib)
+
                   if (inbfus.eq.1) then
-                  
+
 c/    Calculate rates of beam-plasma interactions:
 
                      rcoef = 1.36593e13*srcfast(i,ie,ib)*taus/
@@ -317,23 +317,23 @@ c/    Calculate rates of beam-plasma interactions:
                      endif
                      sumsDDib = sumsDDib + rrddn
                      sumsDTib = sumsDTib + rrdt
-		     sumDDFusib = sumDDFusib + 1.6022e-19 * 
+                     sumDDFusib = sumDDFusib + 1.6022e-19 *
      .                   (eddn*rrddn + eddp*rrddp)
-		     sumDTFusib = sumDTFusib + 1.6022e-19 * 
+                     sumDTFusib = sumDTFusib + 1.6022e-19 *
      .                   edtn*rrdt
                      sumFusib = sumFusib + 1.6022e-19*(
      .                      eddn*rrddn + eddp*rrddp + edhe3*rrdhe3 +
      .                      edtn*rrdt)
-		     sumFusDTHe4 = sumFusDTHe4 + 1.6022e-19*
+                     sumFusDTHe4 = sumFusDTHe4 + 1.6022e-19*
      .                  rrdt*edtnhe4
-		     sumFusDDHe3 = sumFusDDHe3 + 1.6022e-19*
+                     sumFusDDHe3 = sumFusDDHe3 + 1.6022e-19*
      .                  rrddn*eddnhe3
-		     sumFusDDp = sumFusDDp + 1.6022e-19*
+                     sumFusDDp = sumFusDDp + 1.6022e-19*
      .                  rrddp * eddpp
-		     sumFusDDt = sumFusDDt + 1.6022e-19*
+                     sumFusDDt = sumFusDDt + 1.6022e-19*
      .                  rrddp * eddpt
 
-        
+
                   endif
 
 c/    Calculate fast ion density (#/m^3):
@@ -343,7 +343,7 @@ c/    Calculate fast ion density (#/m^3):
 c     /    Calculate fast ion velocty (m/s) only fastest species
                   sumdvbib = sumdvbib + srcfast(i,ie,ib)*taus*
      .             vbeam(ie,ib)* capke/eCharge
-                  
+
 c/    Calculate fast ion pressure (in Pa):
 
                   xcr = Sqrt(energy/ecrit)
@@ -356,31 +356,31 @@ c/    Calculate fast ion pressure (in Pa):
 
 c/    Calculate power division between electrons and ions:
 
-		  fNBion(i,ie,ib) = 2.0*(term2 - term1) / (xcr**2)
-		  fNBelec(i,ie,ib) = 1.0 - fNBion(i,ie,ib)
+                  fNBion(i,ie,ib) = 2.0*(term2 - term1) / (xcr**2)
+                  fNBelec(i,ie,ib) = 1.0 - fNBion(i,ie,ib)
                endif
-	    enddo
+            enddo
 
-	    jnb(i,ib) = sumjnbie
-            
-	    sumjnbib = sumjnbib + sumjnbie
+            jnb(i,ib) = sumjnbie
+
+            sumjnbib = sumjnbib + sumjnbie
          enddo
 
-	 snBeamDD(i) = sumsDDib
-	 snBeamDT(i) = sumsDTib
-	 jnbTot(i) = sumjnbib
+         snBeamDD(i) = sumsDDib
+         snBeamDT(i) = sumsDTib
+         jnbTot(i) = sumjnbib
          jnbfast(i) = sumjfast
-         
-	 beamFus(i)  = sumFusib
-	 beamDTFus(i) = sumDTFusib
-	 beamDDFus(i) = sumDDFusib
-	 beamFusDTHe4(i) = sumFusDTHe4
-	 beamFusDDHe3(i) = sumFusDDHe3
-	 beamFusDDp(i) = sumFusDDp
-	 beamFusDDt(i) = sumFusDDt
-	 beamDens(i) = sumdnbib
+
+         beamFus(i)  = sumFusib
+         beamDTFus(i) = sumDTFusib
+         beamDDFus(i) = sumDDFusib
+         beamFusDTHe4(i) = sumFusDTHe4
+         beamFusDDHe3(i) = sumFusDDHe3
+         beamFusDDp(i) = sumFusDDp
+         beamFusDDt(i) = sumFusDDt
+         beamDens(i) = sumdnbib
          beamVel(i) = sumdvbib/sumdnbib
-	 beamPress(i) = sumPreib
+         beamPress(i) = sumPreib
       enddo
 
       return
@@ -408,10 +408,8 @@ c/////////////////////////////////////////////////////////////////////////
 
       real y, yc, zhat
       common/intg/yc,zhat
-      
+
       fb=(y**3 / (y**3 + yc**3))**(zhat / 3.0 + 1.0)
-      
+
       return
       end
-
-

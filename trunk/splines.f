@@ -1,7 +1,7 @@
       subroutine spline2d(fun,x,y,nx,ny,kx,coef)
 c-----------------------------------------------------------------------
 c     setup routine for bicubic spline of fun[x,y]
-c     output of this routine is nx*ny spline coefficients 
+c     output of this routine is nx*ny spline coefficients
 c     stored in coef(kx,ny)
 c-----------------------------------------------------------------------
       implicit none
@@ -199,8 +199,8 @@ c     it assumes that spline has already been called to evaluate y2a
 c     xa[1:n], ya[1:n], y2a[1:n]
 c     In Mathematica notation z[i]=zg+Integrate[y[x],{x,x[ng],x[i]}]
 c     where both zg and ng are input quantities,
-c     za is calculated here. 
-c     za can then be used in zsplint to determine z at a 
+c     za is calculated here.
+c     za can then be used in zsplint to determine z at a
 c     specific x
 c-----------------------------------------------------------------------
       implicit none
