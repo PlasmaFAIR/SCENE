@@ -1425,8 +1425,8 @@ end subroutine equil
 !     **********************************
 !
       implicit none
-      real*4 arr(*)
-      real*4 alo,aup
+      real arr(*)
+      real alo,aup
       integer lmax,l
 
 !

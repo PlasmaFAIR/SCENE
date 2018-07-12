@@ -7,8 +7,8 @@
       double precision press,fprof,bp,dense,tempe
       double precision psi,dx,dy,extapp,extapp2
       integer k,i,icur,jj
-      real*4 sx(ncon),sy(ncon)
-      real*4 sxmax,sxmin,symax,symin,sdx,sdy,sypos,sxpos
+      real sx(ncon),sy(ncon)
+      real sxmax,sxmin,symax,symin,sdx,sdy,sypos,sxpos
 !
 !  density
       call filnam('temp.grd')

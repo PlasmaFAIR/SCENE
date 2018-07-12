@@ -11,15 +11,15 @@
       character(len=35) string
       character(len=30) string2
       character(len=2) string1
-      real*4 xp(nr*nz),yp(nr*nz),clevls(50),ftr(4),ftz(4)
-      real*4 rdim(nr*nz),zdim(nr*nz)
-      real*4 rlo,rup,zlo,zup,ypos,zl,zu,rl,ru,zav
-      real*4 zr(nr),zz(nz),elong,spsi
-      real*4 sval,dum
-      real*4 xhalf,yhalf,xx,yx,dzsep,aa,bb
+      real xp(nr*nz),yp(nr*nz),clevls(50),ftr(4),ftz(4)
+      real rdim(nr*nz),zdim(nr*nz)
+      real rlo,rup,zlo,zup,ypos,zl,zu,rl,ru,zav
+      real zr(nr),zz(nz),elong,spsi
+      real sval,dum
+      real xhalf,yhalf,xx,yx,dzsep,aa,bb
       double precision psi,qaxis
       integer i,nc,itst,lmax,l,ipos,iq,nh,nreadpts,nk,k,ndmr
-      real*4, dimension(:), allocatable:: rbdr,zbdr
+      real, dimension(:), allocatable:: rbdr,zbdr
 !!$!
 !!$!  corners of ecrh footprint
 !!$      if (iso.eq.1) then
@@ -667,14 +667,14 @@
       double precision pdedg,ffdedg,extapp,extapp2
       double precision bth,bphi,bsq,paxis,baxis,bigs,dl
       integer ishot,ntdat
-      real*4 seplo,sepup,plo,pup,ffplo,ffpup,pplo,ppup
-      real*4 seps(ncon),sffp(ncon),sp(ncon),spp(ncon)
-      real*4 sxlo,sxup,sylo,syup,sy1lo,sy1up,sprup
-      real*4 sx(nr+5),sx1(nr+5),sy(nr+5),sy1(nr+5),sy2(nr+5),sy3(nr+5),spr(nr+5)
-      real*4 sxx(1000),syy(1000)
-      real*4 sxpos,sxposup,sypos
-      real*4 svar,szero,rlo,rup
-      real*4 dilo,diup,bslo,bsup,pslo,psup,tolo,toup
+      real seplo,sepup,plo,pup,ffplo,ffpup,pplo,ppup
+      real seps(ncon),sffp(ncon),sp(ncon),spp(ncon)
+      real sxlo,sxup,sylo,syup,sy1lo,sy1up,sprup
+      real sx(nr+5),sx1(nr+5),sy(nr+5),sy1(nr+5),sy2(nr+5),sy3(nr+5),spr(nr+5)
+      real sxx(1000),syy(1000)
+      real sxpos,sxposup,sypos
+      real svar,szero,rlo,rup
+      real dilo,diup,bslo,bsup,pslo,psup,tolo,toup
       double precision timsht
       double precision jedge,jaxis,pd,fd,fval
       double precision psilo,psiup,plod,pupd,flo,fup,rlod,rupd
@@ -684,10 +684,10 @@
       double precision rr1,rr2,ne1,te1,ne2,te2
       double precision tgot,ngot,psilst,qgot,rpos,zz
       integer jgot,nh
-      real*4 pltr(1000),pltt(1000),pltn(1000),pltter(1000),pltner(1000), &
+      real pltr(1000),pltt(1000),pltn(1000),pltter(1000),pltner(1000), &
            pltp(1000)
-      real*4 tmax,rnmax,te,ne,rmin,rmax,dum,jrat,pmax
-      real*4 alf95
+      real tmax,rnmax,te,ne,rmin,rmax,dum,jrat,pmax
+      real alf95
       integer isk,na
 !
 !

@@ -10,9 +10,9 @@
       double precision ne,ned,ni,nid,te,ti,ted,tid
       double precision omstre(ncon),omstri(ncon),omegaa(ncon)
       double precision psi,fsi
-      real*4 omin,omax,xmin,xmax,zero
-      real*4 yv,xv1,xv2,yv1,yv2
-      real*4 xp(ncon),yp1(ncon),yp2(ncon)
+      real omin,omax,xmin,xmax,zero
+      real yv,xv1,xv2,yv1,yv2
+      real xp(ncon),yp1(ncon),yp2(ncon)
 !
       zero=0.
       ihalf=npts/2+1
@@ -168,11 +168,11 @@
       double precision ne,ned,ni,nid,te,ti,ted,tid
       double precision omstre(ncon),omstri(ncon),omegaa(ncon)
       double precision psi,fsi
-      real*4 nmin,nmax,xmin,xmax,zero,tmin,tmax
-      real*4 yv,xv1,xv2,yv1,yv2
-      real*4 xp(ncon),yp1(ncon),yp2(ncon)
-      real*4 zr(nr),zz(nz),spsi,xc(npts),yc(npts)
-      real*4 zlo,zup,rlo,rup,elong
+      real nmin,nmax,xmin,xmax,zero,tmin,tmax
+      real yv,xv1,xv2,yv1,yv2
+      real xp(ncon),yp1(ncon),yp2(ncon)
+      real zr(nr),zz(nz),spsi,xc(npts),yc(npts)
+      real zlo,zup,rlo,rup,elong
 !
       call rotate(90.)
       call filnam('flxcon.grd')

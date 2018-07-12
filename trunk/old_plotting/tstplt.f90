@@ -5,8 +5,8 @@
       integer ncon,i
       double precision x(ncon),y(ncon)
       double precision dx,dy
-      real*4 sx(ncon),sy(ncon)
-      real*4 sxmax,sxmin,symax,symin,sdx,sdy
+      real sx(ncon),sy(ncon)
+      real sxmax,sxmin,symax,symin,sdx,sdy
 !
       sdx=sngl(dx)
       sdy=sngl(dy)
@@ -52,8 +52,8 @@
       implicit none
       integer ncon,i,imin,imax
       double precision x(ncon),y(ncon),y2(ncon)
-      real*4 sx(ncon),sy(ncon),sy2(ncon)
-      real*4 sxmax,sxmin,symax,symin
+      real sx(ncon),sy(ncon),sy2(ncon)
+      real sxmax,sxmin,symax,symin
 !
       imin=1
       imax=ncon
@@ -99,8 +99,8 @@
       implicit none
       integer ncon,i,imin,imax,ncon2
       double precision x(ncon),y(ncon),y2(ncon2),x2(ncon2)
-      real*4 sx(ncon),sy(ncon),sy2(ncon2),sx2(ncon2)
-      real*4 sxmax,sxmin,symax,symin
+      real sx(ncon),sy(ncon),sy2(ncon2),sx2(ncon2)
+      real sxmax,sxmin,symax,symin
 !
       imin=1
       imax=ncon
@@ -151,8 +151,8 @@
       implicit none
       integer ncon,i,imin,imax
       double precision x(ncon),y0(ncon),y1(ncon),y2(ncon),y3(ncon),y4(ncon),y5(ncon)
-      real*4 sx(ncon),sy0(ncon), sy1(ncon),sy2(ncon),sy3(ncon),sy4(ncon)
-      real*4 sxmax,sxmin,symax,symin
+      real sx(ncon),sy0(ncon), sy1(ncon),sy2(ncon),sy3(ncon),sy4(ncon)
+      real sxmax,sxmin,symax,symin
 !
       imin=1
       imax=ncon
