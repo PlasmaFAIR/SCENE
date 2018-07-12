@@ -249,8 +249,8 @@ subroutine nbicur()
         if (ne.gt.0.) then
            zeff(ncon-con+1)=0.
            do l=1,nimp+1
-              zni=sngl(densi(psi,l,0))
-              zeff(ncon-con+1)=sngl(zeff(ncon-con+1)+(zni*iz(l)**2)/ne)
+              zni=real(densi(psi,l,0))
+              zeff(ncon-con+1)=real(zeff(ncon-con+1)+(zni*iz(l)**2)/ne)
            end do
 
         end if
