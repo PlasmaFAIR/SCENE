@@ -104,40 +104,12 @@
                    (qp(nf)*(chi(k)-chi0)+yp(i))**2)/jac(i)
             eq2(k)=pd*(jac(i)*eqq(i)-(qp(nf)*(chi(k)-chi0)+yp(i))    &
                            *fsi*dbsqdchi(i)/bsq**2)
-!!$!            eq3(k)=pd*jac(i)*eqq(i)
-!!$            eq3(k)=eqq(i)
-!!$            eq4(k)=pd*(qp(nf)*(chi(k)-chi0)+yp(i))    &
-!!$                           *fsi*dbsqdchi(i)/bsq**2
-!!$            eq4(k)=pd    &
-!!$                           *fsi*dbsqdchi(i)/bsq**2
-!!$            eq3(k)=(1./(rr*bth)**2+((rr*bth)**2/bsq)*        &
-!!$                   (qp(nf)*(chi(k)-chi0)+yp(i))**2)/jac(i)
-!!$            eq4(k)=pd*(jac(i)*eqq(i)-(qp(nf)*(chi(k)-chi0)+yp(i))    &
-!!$                           *fsi*dbsqdchi(i)/bsq**2)
             eqd1(k)=2.*(qp(nf)*(chi(k)-chi0)+yp(i))*                    &
                     nup(nf,i)*(rr*bth)**2/(jac(i)*bsq)+dt1dchi(i)+     &
                          ((qp(nf)*(chi(k)-chi0)+yp(i))**2)*dt2dchi(i)
-!!$      s=1.
-!!$      alpha=0.9
-!!$             hfun=s*chi(k)-alpha*sin(chi(k))
-!!$             hdfun=s-alpha*cos(chi(k))
-!!$             eq1(k)=(1.+hfun**2)/(rr*bth)**2
-!!$             eq2(k)=(alpha/(rr*bth)**2)*(cos(chi(k))+hfun*sin(chi(k)))
-!            if (abs(chi(k)).lt.2.) write(6,*)' i=',i,' nup=',nup(nf,i),' num=',     &
-!              (yp(i+1)-yp(i-1))/(2.*dchi)+qp(nf)
-!              nuarr(k)=nup(nf,i)
-!            write(6,*)' chi=',chi(k),' eq1=',eq1(k),' eq2=',eq2(k),' eqd1=',eqd1(k)
             end if
           end do
         end do
-!!$        write(6,*)' pd=',pd,' qp=',qp(nf)
-!!$        do k=1,nchi
-!!$          im=k-1
-!!$          if (im.lt.1) im=nchi-1
-!!$          ip=k+1
-!!$          if (ip.gt.nchi) ip=2
-!!$          eqd1(k)=(eq1(ip)-eq1(im))/(2.*dchi)
-!!$        end do
 !  Do shooting to find eigenvalue, lambda....
 !  j=1 is even solution, j=2 is odd
         fbal(nchi/2+1,1)=1.
