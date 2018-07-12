@@ -52,7 +52,7 @@
           te_new(i)=pltt(jgot)+rat*(pltt(jgot+1)-pltt(jgot))
           ne_new(i)=pltn(jgot)+rat*(pltn(jgot+1)-pltn(jgot))
        else
-! find R-value of 
+! find R-value of
          rr1=rpts(i,1)
          rr2=rpts(i,npts/2+1)
          jgot=1

@@ -1,7 +1,7 @@
 subroutine nbicur()
 ! Calculates the neutral beam current contribution for each flux surface
 ! Follows method in nbeams program - diffuse beam model
-  
+
   use param
 
   implicit none
@@ -22,7 +22,7 @@ subroutine nbicur()
 
   double precision, dimension(ncon) :: kaps, kapps, dels, delps, volps, lambdas
   double precision :: shift, elong
-  double precision, dimension(ncon) :: dpdrs 
+  double precision, dimension(ncon) :: dpdrs
 
   double precision :: rr, zz, Ru
   integer :: k, ik,err
@@ -45,17 +45,17 @@ subroutine nbicur()
   h=0.
   h_tot=0.
   n_f=0.
-  count=0 
+  count=0
 
   Z_b = 1
- 
+
   !V beam (E_b in keV so change to J)
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
 
 
 
-  
-  ! Calculate shafranov shift and elongation for each flux surface 
+
+  ! Calculate shafranov shift and elongation for each flux surface
  do con = 1, ncon
 
      dels(con) = shift(con,0)
@@ -68,12 +68,12 @@ subroutine nbicur()
 
   !Calculate dpsi/drho and dvol/drho for each flux surface
   call dpsidrho(dpdrs)
-  
+
   call dVdrho(volps)
 
   write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
- 
+
   write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
 !  if (icont .gt. -3) then
@@ -118,10 +118,10 @@ subroutine nbicur()
                     end do
                  end if
               end if
-              
+
               Z_hat = 4.*zeff/(5.*A_beam)
-              
-              !Ru = 
+
+              !Ru =
               ! if its within beam height and greater than min R reached by nb
               if (abs(zz - Z_beam) .le. zrange .and. rr .ge. (R_t-rrange)) then
                  !if (
@@ -154,24 +154,24 @@ subroutine nbicur()
                  kapp = kapp * dpdr
                  delp = delp * dpdr
                  volp = volp * dpdr
-                 
+
                  rho = sqrt( (rr - (rcen + del))**2 + (zz/kap)**2)
 
-                 
+
              !    write(nw,*) rho, volp, kap, kapp, del, delp
-                 
+
                  ! Deposition for pencil beam
                  call dep(rho, volp, kap, kapp, del, delp, rr, zz, lambda, h(i,j))
 
-                 
+
                  !Account for beam shape
                  h_tot(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) &
-                      / (sqrt(pi)*sig_z * (1-exp(-(rrange/sig_r)**2)) )  
+                      / (sqrt(pi)*sig_z * (1-exp(-(rrange/sig_r)**2)) )
 
                  !!!!!Need to look at negative deposition values
                  !if(h_tot(i,j).lt.0) write(nw,*) h_tot(i,j), rr,zz
-                 
-                 
+
+
                  !!!! NEED This later for n_f
                  !n_f(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) * (I_0/ (eq* vol)) / (sqrt(pi)*sig_z)
 
@@ -182,9 +182,9 @@ subroutine nbicur()
                  J_f(i,j) = eq * Z_b * n_f(i,j) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
 
                  nbph(i,j) = elec_return(J_f(i,j), zeff, Z_b,u(i,j))
-                 
+
                  if (j.eq.nsym .and. rr.gt. 1.1) then
-                    
+
                     print*, 'NB', nbph(i,j)
                     print*, 'Beam atten', beam_int(i,j)
                     print*, 'tau_s ', tau_s
@@ -194,19 +194,19 @@ subroutine nbicur()
 
                     print*, ' '
                  end if
-                 
+
                  !if (n_f(i,j) .ne.0) write(nw,*) n_f(i,j), rr, zz
-                 
+
 
               end if
 
            end if
-        
-              
+
+
 
         end do
      end do
-     
+
 !  end if
   write(nw,*) 'No. of cells in beam = ', count
   write(nw,*) 'exiting loop'
@@ -214,7 +214,7 @@ subroutine nbicur()
 
 
 !  write(nw,*) 'calculated zeff'
- 
+
  ! Z_hat = 4.*zeff/(5.*A_beam)
 
   ! critcal velocity
@@ -224,7 +224,7 @@ subroutine nbicur()
 
 
   write(nw,*) 'Completed nb contribution'
-  
+
 end subroutine nbicur
 
 
@@ -234,7 +234,7 @@ end subroutine nbicur
 subroutine nbicur2()
 ! Calculates the neutral beam current contribution for each flux surface
 ! Follows method in nbeams program - diffuse beam model
-  
+
   use param
 
   implicit none
@@ -255,12 +255,12 @@ subroutine nbicur2()
 
   double precision, dimension(ncon) ::  volps, lambdas
   double precision :: shift, elong, kaps, kapps, dels, delps
-  double precision, dimension(ncon) :: dpdrs 
+  double precision, dimension(ncon) :: dpdrs
 
   double precision :: rr, zz, Ru
 
   double precision :: depp, depm, dep2
-  
+
   integer :: k, ik,err
   double precision :: rat, del, delp, kap, kapp, dpdr, volp, lambda
 
@@ -276,32 +276,32 @@ subroutine nbicur2()
 
   write(nw,*) 'Calculating Neutral beam current'
 
- 
+
 
   n_f=0.
-  count=0 
+  count=0
   dep = 0.
   Z_b = 1
- 
+
   !V beam (E_b in keV so change to J)
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
-  
+
  !Calculate dpsi/drho and dvol/drho for each flux surface
   call dpsidrho(dpdrs)
-  
+
   call dVdrho(volps)
 
   write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
 
-  
+
   write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
 !  if (icont .gt. -3) then
 
 
   J_nb(1) = 0
-  ! Calculate shafranov shift and elongation for each flux surface 
+  ! Calculate shafranov shift and elongation for each flux surface
   do con = 2, ncon
 
      psi = psiv(con)
@@ -311,12 +311,12 @@ subroutine nbicur2()
      lambda = lambdas(con)
      volp = volps(con)
      dpdr = dpdrs(con)
-     
+
      kap = elong(con,0)
      kapp = elong(con,1) * dpdr
      del = shift(con,0)
      delp = shift(con,1) * dpdr
-     
+
      rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
      depp =  dep2(con, volp, lambda, kap, kapp, del, delp, 1)
@@ -326,13 +326,13 @@ subroutine nbicur2()
      else
         depm = 0.
      end if
-     
+
      dep(con) = depp + depm
 
 
      !write(nw,*) 'dep found', con, depp, depm
-     
-     
+
+
      ne = dense(psi,0)
      te = tempe(psi,0)
 
@@ -340,8 +340,8 @@ subroutine nbicur2()
      coolog=24.-coolog
      tau_s = 6.27e8 * A_beam*te**1.5/(Z_b*ne*1.0d-6*coolog)
 
-     
-     
+
+
      zeff=zm
      if (imp.eq.1) then
         if (ne.gt.0.) then
@@ -359,16 +359,16 @@ subroutine nbicur2()
      v_c = sqrt(2.*E_c*eq/(2.*mp))
      y_c = v_c/v_beam
 
-     
+
      n_f(con) = I_0/eq * dep(con) / vol
 
      xi_b = R_t/(rho+rcen)
 
-   
+
      J_f(con) = eq * Z_b * n_f(con) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
-     
+
      uval = umax - psi
-  
+
      J_nb(con) = elec_return(J_f(con), zeff, Z_b, uval) * bdl(con) / bsqav(con)
 
   end do
@@ -376,7 +376,7 @@ subroutine nbicur2()
   J_tot = 0.
 
 
-  
+
   depsum = 0.
 !!! Need to see what happens at i=ncon (core)
   do i=2,ncon-1
@@ -404,25 +404,25 @@ subroutine nbicur2()
  !          exit
  !       end if
  !    end do
-     
-        
+
+
  !       rr = r(i)
  !       zz = z(nsym)
  !       bth = bp(rr,zz)
- 
+
  !       fsi = fprof(psi,2)
  !       bphi = fsi/rr
  !       B_tot = sqrt( bth*bth+bphi*bphi )
 
  !       J_tot(i) =  (J_nb(j) + rat*(J_nb(j-1) - J_nb(j)) ) * B_tot
 
-     
+
   !   end do
 
-  
-        
-     
-     
+
+
+
+
 !  end if
   write(nw,*) 'No. of cells in beam2 = ', count
   write(nw,*) 'exiting loop2'
@@ -442,7 +442,7 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   double precision :: rr, zz, dpdrs, volp, lambda, rho
   integer :: con
-  
+
   double precision :: del, delp, kap, kapp, shift, elong
 
   double precision :: psi, ne, te, dense, tempe
@@ -456,8 +456,8 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   double precision :: h, attenuation, D0, D1
 
-  
-  
+
+
   del = shift(con,0)
   delp = shift(con,1)
 
@@ -475,7 +475,7 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
 
-  
+
   E_c = 1.2 * Z_b**(4./3.)  * 2*mp * te /((2.5*mp)**(2./3.) * me**(1./3.))
   v_c = sqrt(2.*E_c*eq/(2.*mp))
   y_c = v_c/v_beam
@@ -510,16 +510,16 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
      gam_d = 1
 
      D1 = attenuation(rr,1)
-     
+
   else
      gam_d = 0
      D1 = 0.
   end if
 
-  
-  
+
+
   h = h *( exp(-D0) + gam_d*(exp(-(D0+2*D1)))  )
-     
+
 
 end subroutine deposition
 
@@ -555,16 +555,16 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
   rr = maxval(rpts(con,:))
   rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
-  
+
   r_beam = sig_r * 2
-  
+
   Zu = min(rho*kap, r_beam)
 
   wi = pi/6
   zterm = 0.
   zsum = 0.
 
-  
+
   !Z integration
   do i=1,6
 
@@ -587,10 +587,10 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
 
      !Terms in h(p) that involve Z
-     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho 
+     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho
 
      !Multiplied by sqrt(1-ti^2)
-     zterm = zterm * sqrt(1 - zti**2) 
+     zterm = zterm * sqrt(1 - zti**2)
 
 
      !Limits for R integration
@@ -618,7 +618,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
            D1 = attenuation(rpm,rxi,1)
         end if
-        
+
         !Total atten
         expterm = exp(-D0) + dpass*exp(-(D0+2*D1))
 
@@ -629,9 +629,9 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
         !Gaussian for beam shape
         gauss = exp( - (zxi**2 + (R_t - rxi)**2)/sig_r**2) / (pi*sig_r**2 * (1 - exp(-r_beam**2/sig_r**2)) )
 
-    
 
-        
+
+
         !R term
         rterm = rterm * wi * gauss * sqrt(1 - rti**2)
 
@@ -653,7 +653,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
 end function dep2
 
-  
+
 
 
 function attenuation(rpm, rb, id)
@@ -671,16 +671,16 @@ function attenuation(rpm, rb, id)
   D = 0.
 
 
-  
+
   if (id .eq. 0) then
-     
+
      Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
-     
+
 
      dr_nb = (Ru-rpm)/100
 
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -710,7 +710,7 @@ function attenuation(rpm, rb, id)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -724,18 +724,18 @@ function attenuation(rpm, rb, id)
 
 
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
-        
-           
+
+
      end do
 
   else if (id .eq. 1) then
 
-     
+
      dr_nb = (rpm-rb)/100
 
      !stop atten go to inf
      do i= 1,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -765,7 +765,7 @@ function attenuation(rpm, rb, id)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -774,21 +774,21 @@ function attenuation(rpm, rb, id)
         end if
 
         invlam = dense(psi,0)/(2.8e17*E_b)
-    
+
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
 
      end do
-     
+
 
      end if
-     
 
 
-   
-     
+
+
+
      attenuation = D*dr_nb/3.
-  
-       
+
+
 end function attenuation
 
 
@@ -796,18 +796,18 @@ end function attenuation
 
 
 !Ion distribution function
-function I_func(y_c, Z_hat) 
+function I_func(y_c, Z_hat)
 
   use param
   implicit none
-  
+
   double precision, intent(in) :: y_c, Z_hat
   double precision :: I_func, y
   integer :: i,simfac
 
   I_func = 0.
 
-  
+
 
   do i= 0,1000
 
@@ -820,16 +820,16 @@ function I_func(y_c, Z_hat)
      else
         simfac=4
      end if
-     
-     
+
+
      I_func =  I_func + simfac* (y**3 / (y**3 + y_c**3)) ** (Z_hat/3. + 1)
 
   end do
 
-  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.) 
+  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.)
 end function I_func
 
-     
+
 subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
 !Deposition profile due to beamlet section independant of tangency radius
   use param
@@ -839,7 +839,7 @@ subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
   double precision :: h
   double precision :: D0, D1
 
-  
+
   h  = 2*rho*vol/(volp*lam) * rr
 
   !Account for inner or outer part of flux surface
@@ -847,7 +847,7 @@ subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
      h = h * ( (1+(kapp* Z_beam**2/(rho*kap**3)))/sqrt(rho**2 - (zz**2/kap**2)) + delp/rho)
 
   else
-     
+
      h = h * ( (1+(kapp* Z_beam**2/(rho*kap**3)))/sqrt(rho**2 + (zz**2/kap**2)) + delp/rho)
   end if
 
@@ -858,13 +858,13 @@ end subroutine dep
 
 
 
-  
+
 
 function beam_atten(R_index,Z_index, R_tan, id)
 
     ! calculates beam attentuation for a given radius and tangency radius
 
-    
+
     use param
     implicit none
 
@@ -873,14 +873,14 @@ function beam_atten(R_index,Z_index, R_tan, id)
     double precision :: psi, dense, inv_lam, Ru, R_tan
     integer :: i,id, R_index, Z_index, sim_fac
 
-    
-      
+
+
 
     D = 0.
 
     !!! NEED to fix simpsons 1/3 for even number of terms
     ! Beam line on the first half of the injection
-    if (id .eq. 0) then 
+    if (id .eq. 0) then
        do i = R_index, nr
 
           Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
@@ -892,7 +892,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
           inv_lam = dense(psi,0)/(E_b*2.8e17)
 
-          ! Simpson's 1/3 rule 
+          ! Simpson's 1/3 rule
           if ( i .eq. R_index .or. i .eq. nr) then
              sim_fac = 1
           else if ( mod(i-R_index,2) .eq. 0) then
@@ -900,14 +900,14 @@ function beam_atten(R_index,Z_index, R_tan, id)
           else
              sim_fac = 4
           end if
-          
-          
+
+
 
           D = D + sim_fac *(rr * inv_lam/sqrt(rr**2 - R_tan**2))
        end do
 
 
-    ! Beam line on the second half of the injection   
+    ! Beam line on the second half of the injection
     else if (id .eq. 1) then
 
        do i = R_index,1, -1
@@ -915,7 +915,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
           rr = r(i)
 
           if (rr .lt. R_tan) exit
-          
+
           psi = umax - u(i,Z_index)
 
           inv_lam = dense(psi,0)/(E_b*2.8e17)
@@ -927,21 +927,21 @@ function beam_atten(R_index,Z_index, R_tan, id)
           else
              sim_fac = 4
           end if
-          
-             
+
+
           D = D + sim_fac*(rr * inv_lam/sqrt(rr**2 - R_tan**2))
-      
+
        end do
 
     end if
-    
+
 
     beam_atten = D*dr/3.
     !write(nw,*) beam_atten,  rr, z(Z_index)
   end function beam_atten
 
 
-  
+
 
   function beam_int (R_index, Z_index)
 
@@ -949,7 +949,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
     ! using the trapezoid method. Assumes gaussian profile and accounts for
     ! varying tangency radii for different parts of the gaussian
 
-    
+
     use param
     implicit none
 
@@ -957,10 +957,10 @@ function beam_atten(R_index,Z_index, R_tan, id)
     double precision :: C, beam_int, range, x, beam_atten, R_tan
     double precision :: D0, D1
 
-         
+
     integer :: i, nit, gam_d, sim_fac
 
-    
+
 !!! NORMALISATION ???!!!
 
     C = 1./ (sqrt(pi) * sig_r)
@@ -969,7 +969,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
     nit = int(range / dr)
 
 
-        
+
     do i = -nit, nit
 
        r_in = R_index + i
@@ -999,27 +999,27 @@ function beam_atten(R_index,Z_index, R_tan, id)
        else
           sim_fac = 4
        end if
-       
-       
+
+
        D0 = beam_atten(r_in, Z_index, R_tan,0)
        D1 = beam_atten(r_in,Z_index,R_tan,1)
-       
+
        !Integration for the beam shape
        beam_int = beam_int + sim_fac/sqrt(r(r_in)**2 - R_tan**2)*(exp(- ((i*dr/sig_r)**2)) * &
-            (exp(-D0) + gam_d*(exp(-D0 - 2*D1)) ) )   
+            (exp(-D0) + gam_d*(exp(-D0 - 2*D1)) ) )
 
     end do
 
     beam_int = beam_int * dr * C /3.
 
-   
+
   end function beam_int
-  
-          
+
+
   function elec_return(J_f, zeff, Z_b,uval)
     !Calculates the current after the electron return
     ! current is accounted for
-    
+
     use param
     implicit none
 
@@ -1028,21 +1028,21 @@ function beam_atten(R_index,Z_index, R_tan, id)
     integer :: Z_b
 
     call argen(uval, epsi,0)
-   
+
     G = ( 1.55+(0.85/zeff) ) * sqrt(epsi)  - ( 0.2 + (1.55/zeff) )*epsi
 
 
- 
+
     J_nb = (1 - ( Z_b/zeff * (1 - G) ) )
 
 
     J_nb = J_nb *J_f
 
-    
+
     elec_return = J_nb
 
   end function elec_return
-  
+
 
   kapps = 0.
   dels = 0.
@@ -1050,17 +1050,17 @@ function beam_atten(R_index,Z_index, R_tan, id)
   h=0.
   h_tot=0.
   n_f=0.
-  count=0 
+  count=0
 
   Z_b = 1
- 
+
   !V beam (E_b in keV so change to J)
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
 
 
 
-  
-  ! Calculate shafranov shift and elongation for each flux surface 
+
+  ! Calculate shafranov shift and elongation for each flux surface
  do con = 1, ncon
 
      dels(con) = shift(con,0)
@@ -1073,12 +1073,12 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
   !Calculate dpsi/drho and dvol/drho for each flux surface
   call dpsidrho(dpdrs)
-  
+
   call dVdrho(volps)
 
   write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
- 
+
   write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
 !  if (icont .gt. -3) then
@@ -1123,10 +1123,10 @@ function beam_atten(R_index,Z_index, R_tan, id)
                     end do
                  end if
               end if
-              
+
               Z_hat = 4.*zeff/(5.*A_beam)
-              
-              !Ru = 
+
+              !Ru =
               ! if its within beam height and greater than min R reached by nb
               if (abs(zz - Z_beam) .le. zrange .and. rr .ge. (R_t-rrange)) then
                  !if (
@@ -1159,24 +1159,24 @@ function beam_atten(R_index,Z_index, R_tan, id)
                  kapp = kapp * dpdr
                  delp = delp * dpdr
                  volp = volp * dpdr
-                 
+
                  rho = sqrt( (rr - (rcen + del))**2 + (zz/kap)**2)
 
-                 
+
              !    write(nw,*) rho, volp, kap, kapp, del, delp
-                 
+
                  ! Deposition for pencil beam
                  call dep(rho, volp, kap, kapp, del, delp, rr, zz, lambda, h(i,j))
 
-                 
+
                  !Account for beam shape
                  h_tot(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) &
-                      / (sqrt(pi)*sig_z * (1-exp(-(rrange/sig_r)**2)) )  
+                      / (sqrt(pi)*sig_z * (1-exp(-(rrange/sig_r)**2)) )
 
                  !!!!!Need to look at negative deposition values
                  !if(h_tot(i,j).lt.0) write(nw,*) h_tot(i,j), rr,zz
-                 
-                 
+
+
                  !!!! NEED This later for n_f
                  !n_f(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) * (I_0/ (eq* vol)) / (sqrt(pi)*sig_z)
 
@@ -1187,9 +1187,9 @@ function beam_atten(R_index,Z_index, R_tan, id)
                  J_f(i,j) = eq * Z_b * n_f(i,j) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
 
                  nbph(i,j) = elec_return(J_f(i,j), zeff, Z_b,u(i,j))
-                 
+
                  if (j.eq.nsym .and. rr.gt. 1.1) then
-                    
+
                     print*, 'NB', nbph(i,j)
                     print*, 'Beam atten', beam_int(i,j)
                     print*, 'tau_s ', tau_s
@@ -1199,19 +1199,19 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
                     print*, ' '
                  end if
-                 
+
                  !if (n_f(i,j) .ne.0) write(nw,*) n_f(i,j), rr, zz
-                 
+
 
               end if
 
            end if
-        
-              
+
+
 
         end do
      end do
-     
+
 !  end if
   write(nw,*) 'No. of cells in beam = ', count
   write(nw,*) 'exiting loop'
@@ -1219,7 +1219,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
 
 !  write(nw,*) 'calculated zeff'
- 
+
  ! Z_hat = 4.*zeff/(5.*A_beam)
 
   ! critcal velocity
@@ -1229,7 +1229,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
 
   write(nw,*) 'Completed nb contribution'
-  
+
 end subroutine nbicur
 
 
@@ -1239,7 +1239,7 @@ end subroutine nbicur
 subroutine nbicur2()
 ! Calculates the neutral beam current contribution for each flux surface
 ! Follows method in nbeams program - diffuse beam model
-  
+
   use param
 
   implicit none
@@ -1260,12 +1260,12 @@ subroutine nbicur2()
 
   double precision, dimension(ncon) ::  volps, lambdas
   double precision :: shift, elong, kaps, kapps, dels, delps
-  double precision, dimension(ncon) :: dpdrs 
+  double precision, dimension(ncon) :: dpdrs
 
   double precision :: rr, zz, Ru
 
   double precision :: depp, depm, dep2
-  
+
   integer :: k, ik,err
   double precision :: rat, del, delp, kap, kapp, dpdr, volp, lambda
 
@@ -1281,32 +1281,32 @@ subroutine nbicur2()
 
   write(nw,*) 'Calculating Neutral beam current'
 
- 
+
 
   n_f=0.
-  count=0 
+  count=0
   dep = 0.
   Z_b = 1
- 
+
   !V beam (E_b in keV so change to J)
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
-  
+
  !Calculate dpsi/drho and dvol/drho for each flux surface
   call dpsidrho(dpdrs)
-  
+
   call dVdrho(volps)
 
   write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
 
-  
+
   write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
 !  if (icont .gt. -3) then
 
 
   J_nb(1) = 0
-  ! Calculate shafranov shift and elongation for each flux surface 
+  ! Calculate shafranov shift and elongation for each flux surface
   do con = 2, ncon
 
      psi = psiv(con)
@@ -1316,12 +1316,12 @@ subroutine nbicur2()
      lambda = lambdas(con)
      volp = volps(con)
      dpdr = dpdrs(con)
-     
+
      kap = elong(con,0)
      kapp = elong(con,1) * dpdr
      del = shift(con,0)
      delp = shift(con,1) * dpdr
-     
+
      rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
      depp =  dep2(con, volp, lambda, kap, kapp, del, delp, 1)
@@ -1331,13 +1331,13 @@ subroutine nbicur2()
      else
         depm = 0.
      end if
-     
+
      dep(con) = depp + depm
 
 
      !write(nw,*) 'dep found', con, depp, depm
-     
-     
+
+
      ne = dense(psi,0)
      te = tempe(psi,0)
 
@@ -1345,8 +1345,8 @@ subroutine nbicur2()
      coolog=24.-coolog
      tau_s = 6.27e8 * A_beam*te**1.5/(Z_b*ne*1.0d-6*coolog)
 
-     
-     
+
+
      zeff=zm
      if (imp.eq.1) then
         if (ne.gt.0.) then
@@ -1364,16 +1364,16 @@ subroutine nbicur2()
      v_c = sqrt(2.*E_c*eq/(2.*mp))
      y_c = v_c/v_beam
 
-     
+
      n_f(con) = I_0/eq * dep(con) / vol
 
      xi_b = R_t/(rho+rcen)
 
-   
+
      J_f(con) = eq * Z_b * n_f(con) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
-     
+
      uval = umax - psi
-  
+
      J_nb(con) = elec_return(J_f(con), zeff, Z_b, uval) * bdl(con) / bsqav(con)
 
   end do
@@ -1381,7 +1381,7 @@ subroutine nbicur2()
   J_tot = 0.
 
 
-  
+
   depsum = 0.
 !!! Need to see what happens at i=ncon (core)
   do i=2,ncon-1
@@ -1409,25 +1409,25 @@ subroutine nbicur2()
  !          exit
  !       end if
  !    end do
-     
-        
+
+
  !       rr = r(i)
  !       zz = z(nsym)
  !       bth = bp(rr,zz)
- 
+
  !       fsi = fprof(psi,2)
  !       bphi = fsi/rr
  !       B_tot = sqrt( bth*bth+bphi*bphi )
 
  !       J_tot(i) =  (J_nb(j) + rat*(J_nb(j-1) - J_nb(j)) ) * B_tot
 
-     
+
   !   end do
 
-  
-        
-     
-     
+
+
+
+
 !  end if
   write(nw,*) 'No. of cells in beam2 = ', count
   write(nw,*) 'exiting loop2'
@@ -1447,7 +1447,7 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   double precision :: rr, zz, dpdrs, volp, lambda, rho
   integer :: con
-  
+
   double precision :: del, delp, kap, kapp, shift, elong
 
   double precision :: psi, ne, te, dense, tempe
@@ -1461,8 +1461,8 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   double precision :: h, attenuation, D0, D1
 
-  
-  
+
+
   del = shift(con,0)
   delp = shift(con,1)
 
@@ -1480,7 +1480,7 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
 
-  
+
   E_c = 1.2 * Z_b**(4./3.)  * 2*mp * te /((2.5*mp)**(2./3.) * me**(1./3.))
   v_c = sqrt(2.*E_c*eq/(2.*mp))
   y_c = v_c/v_beam
@@ -1515,16 +1515,16 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
      gam_d = 1
 
      D1 = attenuation(rr,1)
-     
+
   else
      gam_d = 0
      D1 = 0.
   end if
 
-  
-  
+
+
   h = h *( exp(-D0) + gam_d*(exp(-(D0+2*D1)))  )
-     
+
 
 end subroutine deposition
 
@@ -1560,16 +1560,16 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
   rr = maxval(rpts(con,:))
   rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
-  
+
   r_beam = sig_r * 2
-  
+
   Zu = min(rho*kap, r_beam)
 
   wi = pi/6
   zterm = 0.
   zsum = 0.
 
-  
+
   !Z integration
   do i=1,6
 
@@ -1592,10 +1592,10 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
 
      !Terms in h(p) that involve Z
-     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho 
+     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho
 
      !Multiplied by sqrt(1-ti^2)
-     zterm = zterm * sqrt(1 - zti**2) 
+     zterm = zterm * sqrt(1 - zti**2)
 
 
      !Limits for R integration
@@ -1623,7 +1623,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
            D1 = attenuation(rpm,rxi,1)
         end if
-        
+
         !Total atten
         expterm = exp(-D0) + dpass*exp(-(D0+2*D1))
 
@@ -1634,9 +1634,9 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
         !Gaussian for beam shape
         gauss = exp( - (zxi**2 + (R_t - rxi)**2)/sig_r**2) / (pi*sig_r**2 * (1 - exp(-r_beam**2/sig_r**2)) )
 
-    
 
-        
+
+
         !R term
         rterm = rterm * wi * gauss * sqrt(1 - rti**2)
 
@@ -1658,7 +1658,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
 end function dep2
 
-  
+
 
 
 function attenuation(rpm, rb, id)
@@ -1676,16 +1676,16 @@ function attenuation(rpm, rb, id)
   D = 0.
 
 
-  
+
   if (id .eq. 0) then
-     
+
      Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
-     
+
 
      dr_nb = (Ru-rpm)/100
 
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -1715,7 +1715,7 @@ function attenuation(rpm, rb, id)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -1729,18 +1729,18 @@ function attenuation(rpm, rb, id)
 
 
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
-        
-           
+
+
      end do
 
   else if (id .eq. 1) then
 
-     
+
      dr_nb = (rpm-rb)/100
 
      !stop atten go to inf
      do i= 1,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -1770,7 +1770,7 @@ function attenuation(rpm, rb, id)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -1779,21 +1779,21 @@ function attenuation(rpm, rb, id)
         end if
 
         invlam = dense(psi,0)/(2.8e17*E_b)
-    
+
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
 
      end do
-     
+
 
      end if
-     
 
 
-   
-     
+
+
+
      attenuation = D*dr_nb/3.
-  
-       
+
+
 end function attenuation
 
 
@@ -1801,18 +1801,18 @@ end function attenuation
 
 
 !Ion distribution function
-function I_func(y_c, Z_hat) 
+function I_func(y_c, Z_hat)
 
   use param
   implicit none
-  
+
   double precision, intent(in) :: y_c, Z_hat
   double precision :: I_func, y
   integer :: i,simfac
 
   I_func = 0.
 
-  
+
 
   do i= 0,1000
 
@@ -1825,16 +1825,16 @@ function I_func(y_c, Z_hat)
      else
         simfac=4
      end if
-     
-     
+
+
      I_func =  I_func + simfac* (y**3 / (y**3 + y_c**3)) ** (Z_hat/3. + 1)
 
   end do
 
-  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.) 
+  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.)
 end function I_func
 
-     
+
 subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
 !Deposition profile due to beamlet section independant of tangency radius
   use param
@@ -1844,7 +1844,7 @@ subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
   double precision :: h
   double precision :: D0, D1
 
-  
+
   h  = 2*rho*vol/(volp*lam) * rr
 
   !Account for inner or outer part of flux surface
@@ -1852,7 +1852,7 @@ subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
      h = h * ( (1+(kapp* Z_beam**2/(rho*kap**3)))/sqrt(rho**2 - (zz**2/kap**2)) + delp/rho)
 
   else
-     
+
      h = h * ( (1+(kapp* Z_beam**2/(rho*kap**3)))/sqrt(rho**2 + (zz**2/kap**2)) + delp/rho)
   end if
 
@@ -1863,13 +1863,13 @@ end subroutine dep
 
 
 
-  
+
 
 function beam_atten(R_index,Z_index, R_tan, id)
 
     ! calculates beam attentuation for a given radius and tangency radius
 
-    
+
     use param
     implicit none
 
@@ -1878,14 +1878,14 @@ function beam_atten(R_index,Z_index, R_tan, id)
     double precision :: psi, dense, inv_lam, Ru, R_tan
     integer :: i,id, R_index, Z_index, sim_fac
 
-    
-      
+
+
 
     D = 0.
 
     !!! NEED to fix simpsons 1/3 for even number of terms
     ! Beam line on the first half of the injection
-    if (id .eq. 0) then 
+    if (id .eq. 0) then
        do i = R_index, nr
 
           Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
@@ -1897,7 +1897,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
           inv_lam = dense(psi,0)/(E_b*2.8e17)
 
-          ! Simpson's 1/3 rule 
+          ! Simpson's 1/3 rule
           if ( i .eq. R_index .or. i .eq. nr) then
              sim_fac = 1
           else if ( mod(i-R_index,2) .eq. 0) then
@@ -1905,14 +1905,14 @@ function beam_atten(R_index,Z_index, R_tan, id)
           else
              sim_fac = 4
           end if
-          
-          
+
+
 
           D = D + sim_fac *(rr * inv_lam/sqrt(rr**2 - R_tan**2))
        end do
 
 
-    ! Beam line on the second half of the injection   
+    ! Beam line on the second half of the injection
     else if (id .eq. 1) then
 
        do i = R_index,1, -1
@@ -1920,7 +1920,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
           rr = r(i)
 
           if (rr .lt. R_tan) exit
-          
+
           psi = umax - u(i,Z_index)
 
           inv_lam = dense(psi,0)/(E_b*2.8e17)
@@ -1932,21 +1932,21 @@ function beam_atten(R_index,Z_index, R_tan, id)
           else
              sim_fac = 4
           end if
-          
-             
+
+
           D = D + sim_fac*(rr * inv_lam/sqrt(rr**2 - R_tan**2))
-      
+
        end do
 
     end if
-    
+
 
     beam_atten = D*dr/3.
     !write(nw,*) beam_atten,  rr, z(Z_index)
   end function beam_atten
 
 
-  
+
 
   function beam_int (R_index, Z_index)
 
@@ -1954,7 +1954,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
     ! using the trapezoid method. Assumes gaussian profile and accounts for
     ! varying tangency radii for different parts of the gaussian
 
-    
+
     use param
     implicit none
 
@@ -1962,10 +1962,10 @@ function beam_atten(R_index,Z_index, R_tan, id)
     double precision :: C, beam_int, range, x, beam_atten, R_tan
     double precision :: D0, D1
 
-         
+
     integer :: i, nit, gam_d, sim_fac
 
-    
+
 !!! NORMALISATION ???!!!
 
     C = 1./ (sqrt(pi) * sig_r)
@@ -1974,7 +1974,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
     nit = int(range / dr)
 
 
-        
+
     do i = -nit, nit
 
        r_in = R_index + i
@@ -2004,27 +2004,27 @@ function beam_atten(R_index,Z_index, R_tan, id)
        else
           sim_fac = 4
        end if
-       
-       
+
+
        D0 = beam_atten(r_in, Z_index, R_tan,0)
        D1 = beam_atten(r_in,Z_index,R_tan,1)
-       
+
        !Integration for the beam shape
        beam_int = beam_int + sim_fac/sqrt(r(r_in)**2 - R_tan**2)*(exp(- ((i*dr/sig_r)**2)) * &
-            (exp(-D0) + gam_d*(exp(-D0 - 2*D1)) ) )   
+            (exp(-D0) + gam_d*(exp(-D0 - 2*D1)) ) )
 
     end do
 
     beam_int = beam_int * dr * C /3.
 
-   
+
   end function beam_int
-  
-          
+
+
   function elec_return(J_f, zeff, Z_b,uval)
     !Calculates the current after the electron return
     ! current is accounted for
-    
+
     use param
     implicit none
 
@@ -2033,23 +2033,23 @@ function beam_atten(R_index,Z_index, R_tan, id)
     integer :: Z_b
 
     call argen(uval, epsi,0)
-   
+
     G = ( 1.55+(0.85/zeff) ) * sqrt(epsi)  - ( 0.2 + (1.55/zeff) )*epsi
 
 
- 
+
     J_nb = (1 - ( Z_b/zeff * (1 - G) ) )
 
 
     J_nb = J_nb *J_f
 
-    
+
     elec_return = J_nb
 
   end function elec_return
-  
-         
- 
+
+
+
 
   kapps = 0.
   dels = 0.
@@ -2057,17 +2057,17 @@ function beam_atten(R_index,Z_index, R_tan, id)
   h=0.
   h_tot=0.
   n_f=0.
-  count=0 
+  count=0
 
   Z_b = 1
- 
+
   !V beam (E_b in keV so change to J)
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
 
 
 
-  
-  ! Calculate shafranov shift and elongation for each flux surface 
+
+  ! Calculate shafranov shift and elongation for each flux surface
  do con = 1, ncon
 
      dels(con) = shift(con,0)
@@ -2080,12 +2080,12 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
   !Calculate dpsi/drho and dvol/drho for each flux surface
   call dpsidrho(dpdrs)
-  
+
   call dVdrho(volps)
 
   write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
- 
+
   write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
 !  if (icont .gt. -3) then
@@ -2130,10 +2130,10 @@ function beam_atten(R_index,Z_index, R_tan, id)
                     end do
                  end if
               end if
-              
+
               Z_hat = 4.*zeff/(5.*A_beam)
-              
-              !Ru = 
+
+              !Ru =
               ! if its within beam height and greater than min R reached by nb
               if (abs(zz - Z_beam) .le. zrange .and. rr .ge. (R_t-rrange)) then
                  !if (
@@ -2166,24 +2166,24 @@ function beam_atten(R_index,Z_index, R_tan, id)
                  kapp = kapp * dpdr
                  delp = delp * dpdr
                  volp = volp * dpdr
-                 
+
                  rho = sqrt( (rr - (rcen + del))**2 + (zz/kap)**2)
 
-                 
+
              !    write(nw,*) rho, volp, kap, kapp, del, delp
-                 
+
                  ! Deposition for pencil beam
                  call dep(rho, volp, kap, kapp, del, delp, rr, zz, lambda, h(i,j))
 
-                 
+
                  !Account for beam shape
                  h_tot(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) &
-                      / (sqrt(pi)*sig_z * (1-exp(-(rrange/sig_r)**2)) )  
+                      / (sqrt(pi)*sig_z * (1-exp(-(rrange/sig_r)**2)) )
 
                  !!!!!Need to look at negative deposition values
                  !if(h_tot(i,j).lt.0) write(nw,*) h_tot(i,j), rr,zz
-                 
-                 
+
+
                  !!!! NEED This later for n_f
                  !n_f(i,j) = beam_int(i,j) * h(i,j) * exp ( - ((zz - Z_beam)/sig_z)**2) * (I_0/ (eq* vol)) / (sqrt(pi)*sig_z)
 
@@ -2194,9 +2194,9 @@ function beam_atten(R_index,Z_index, R_tan, id)
                  J_f(i,j) = eq * Z_b * n_f(i,j) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
 
                  nbph(i,j) = elec_return(J_f(i,j), zeff, Z_b,u(i,j))
-                 
+
                  if (j.eq.nsym .and. rr.gt. 1.1) then
-                    
+
                     print*, 'NB', nbph(i,j)
                     print*, 'Beam atten', beam_int(i,j)
                     print*, 'tau_s ', tau_s
@@ -2206,19 +2206,19 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
                     print*, ' '
                  end if
-                 
+
                  !if (n_f(i,j) .ne.0) write(nw,*) n_f(i,j), rr, zz
-                 
+
 
               end if
 
            end if
-        
-              
+
+
 
         end do
      end do
-     
+
 !  end if
   write(nw,*) 'No. of cells in beam = ', count
   write(nw,*) 'exiting loop'
@@ -2226,7 +2226,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
 
 !  write(nw,*) 'calculated zeff'
- 
+
  ! Z_hat = 4.*zeff/(5.*A_beam)
 
   ! critcal velocity
@@ -2236,7 +2236,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
 
   write(nw,*) 'Completed nb contribution'
-  
+
 end subroutine nbicur
 
 
@@ -2246,7 +2246,7 @@ end subroutine nbicur
 subroutine nbicur2()
 ! Calculates the neutral beam current contribution for each flux surface
 ! Follows method in nbeams program - diffuse beam model
-  
+
   use param
 
   implicit none
@@ -2267,12 +2267,12 @@ subroutine nbicur2()
 
   double precision, dimension(ncon) ::  volps, lambdas
   double precision :: shift, elong, kaps, kapps, dels, delps
-  double precision, dimension(ncon) :: dpdrs 
+  double precision, dimension(ncon) :: dpdrs
 
   double precision :: rr, zz, Ru
 
   double precision :: depp, depm, dep2
-  
+
   integer :: k, ik,err
   double precision :: rat, del, delp, kap, kapp, dpdr, volp, lambda
 
@@ -2288,32 +2288,32 @@ subroutine nbicur2()
 
   write(nw,*) 'Calculating Neutral beam current'
 
- 
+
 
   n_f=0.
-  count=0 
+  count=0
   dep = 0.
   Z_b = 1
- 
+
   !V beam (E_b in keV so change to J)
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
-  
+
  !Calculate dpsi/drho and dvol/drho for each flux surface
   call dpsidrho(dpdrs)
-  
+
   call dVdrho(volps)
 
   write(nw,*) 'calculated dVdrho'
   call lam(lambdas)
 
-  
+
   write(nw,*) 'calculated lambdas'
     !write(nw,*) lambdas
 !  if (icont .gt. -3) then
 
 
   J_nb(1) = 0
-  ! Calculate shafranov shift and elongation for each flux surface 
+  ! Calculate shafranov shift and elongation for each flux surface
   do con = 2, ncon
 
      psi = psiv(con)
@@ -2323,12 +2323,12 @@ subroutine nbicur2()
      lambda = lambdas(con)
      volp = volps(con)
      dpdr = dpdrs(con)
-     
+
      kap = elong(con,0)
      kapp = elong(con,1) * dpdr
      del = shift(con,0)
      delp = shift(con,1) * dpdr
-     
+
      rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
      depp =  dep2(con, volp, lambda, kap, kapp, del, delp, 1)
@@ -2338,13 +2338,13 @@ subroutine nbicur2()
      else
         depm = 0.
      end if
-     
+
      dep(con) = depp + depm
 
 
      !write(nw,*) 'dep found', con, depp, depm
-     
-     
+
+
      ne = dense(psi,0)
      te = tempe(psi,0)
 
@@ -2352,8 +2352,8 @@ subroutine nbicur2()
      coolog=24.-coolog
      tau_s = 6.27e8 * A_beam*te**1.5/(Z_b*ne*1.0d-6*coolog)
 
-     
-     
+
+
      zeff=zm
      if (imp.eq.1) then
         if (ne.gt.0.) then
@@ -2371,16 +2371,16 @@ subroutine nbicur2()
      v_c = sqrt(2.*E_c*eq/(2.*mp))
      y_c = v_c/v_beam
 
-     
+
      n_f(con) = I_0/eq * dep(con) / vol
 
      xi_b = R_t/(rho+rcen)
 
-   
+
      J_f(con) = eq * Z_b * n_f(con) * tau_s * xi_b * v_beam * I_func(y_c, Z_hat)
-     
+
      uval = umax - psi
-  
+
      J_nb(con) = elec_return(J_f(con), zeff, Z_b, uval) * bdl(con) / bsqav(con)
 
   end do
@@ -2388,7 +2388,7 @@ subroutine nbicur2()
   J_tot = 0.
 
 
-  
+
   depsum = 0.
 !!! Need to see what happens at i=ncon (core)
   do i=2,ncon-1
@@ -2416,25 +2416,25 @@ subroutine nbicur2()
  !          exit
  !       end if
  !    end do
-     
-        
+
+
  !       rr = r(i)
  !       zz = z(nsym)
  !       bth = bp(rr,zz)
- 
+
  !       fsi = fprof(psi,2)
  !       bphi = fsi/rr
  !       B_tot = sqrt( bth*bth+bphi*bphi )
 
  !       J_tot(i) =  (J_nb(j) + rat*(J_nb(j-1) - J_nb(j)) ) * B_tot
 
-     
+
   !   end do
 
-  
-        
-     
-     
+
+
+
+
 !  end if
   write(nw,*) 'No. of cells in beam2 = ', count
   write(nw,*) 'exiting loop2'
@@ -2454,7 +2454,7 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   double precision :: rr, zz, dpdrs, volp, lambda, rho
   integer :: con
-  
+
   double precision :: del, delp, kap, kapp, shift, elong
 
   double precision :: psi, ne, te, dense, tempe
@@ -2468,8 +2468,8 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   double precision :: h, attenuation, D0, D1
 
-  
-  
+
+
   del = shift(con,0)
   delp = shift(con,1)
 
@@ -2487,7 +2487,7 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
 
   v_beam = sqrt(2.*E_b*1000*eq/(2.*mp))
 
-  
+
   E_c = 1.2 * Z_b**(4./3.)  * 2*mp * te /((2.5*mp)**(2./3.) * me**(1./3.))
   v_c = sqrt(2.*E_c*eq/(2.*mp))
   y_c = v_c/v_beam
@@ -2522,16 +2522,16 @@ subroutine deposition(rho, con, rr, zz, dpdrs, volp,lambda, h)
      gam_d = 1
 
      D1 = attenuation(rr,1)
-     
+
   else
      gam_d = 0
      D1 = 0.
   end if
 
-  
-  
+
+
   h = h *( exp(-D0) + gam_d*(exp(-(D0+2*D1)))  )
-     
+
 
 end subroutine deposition
 
@@ -2567,16 +2567,16 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
   rr = maxval(rpts(con,:))
   rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
-  
+
   r_beam = sig_r * 2
-  
+
   Zu = min(rho*kap, r_beam)
 
   wi = pi/6
   zterm = 0.
   zsum = 0.
 
-  
+
   !Z integration
   do i=1,6
 
@@ -2599,10 +2599,10 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
 
      !Terms in h(p) that involve Z
-     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho 
+     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho
 
      !Multiplied by sqrt(1-ti^2)
-     zterm = zterm * sqrt(1 - zti**2) 
+     zterm = zterm * sqrt(1 - zti**2)
 
 
      !Limits for R integration
@@ -2630,7 +2630,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
            D1 = attenuation(rpm,rxi,1)
         end if
-        
+
         !Total atten
         expterm = exp(-D0) + dpass*exp(-(D0+2*D1))
 
@@ -2641,9 +2641,9 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
         !Gaussian for beam shape
         gauss = exp( - (zxi**2 + (R_t - rxi)**2)/sig_r**2) / (pi*sig_r**2 * (1 - exp(-r_beam**2/sig_r**2)) )
 
-    
 
-        
+
+
         !R term
         rterm = rterm * wi * gauss * sqrt(1 - rti**2)
 
@@ -2665,7 +2665,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id)
 
 end function dep2
 
-  
+
 
 
 function attenuation(rpm, rb, id)
@@ -2683,16 +2683,16 @@ function attenuation(rpm, rb, id)
   D = 0.
 
 
-  
+
   if (id .eq. 0) then
-     
+
      Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
-     
+
 
      dr_nb = (Ru-rpm)/100
 
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -2722,7 +2722,7 @@ function attenuation(rpm, rb, id)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -2736,18 +2736,18 @@ function attenuation(rpm, rb, id)
 
 
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
-        
-           
+
+
      end do
 
   else if (id .eq. 1) then
 
-     
+
      dr_nb = (rpm-rb)/100
 
      !stop atten go to inf
      do i= 1,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -2777,7 +2777,7 @@ function attenuation(rpm, rb, id)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -2786,21 +2786,21 @@ function attenuation(rpm, rb, id)
         end if
 
         invlam = dense(psi,0)/(2.8e17*E_b)
-    
+
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
 
      end do
-     
+
 
      end if
-     
 
 
-   
-     
+
+
+
      attenuation = D*dr_nb/3.
-  
-       
+
+
 end function attenuation
 
 
@@ -2808,18 +2808,18 @@ end function attenuation
 
 
 !Ion distribution function
-function I_func(y_c, Z_hat) 
+function I_func(y_c, Z_hat)
 
   use param
   implicit none
-  
+
   double precision, intent(in) :: y_c, Z_hat
   double precision :: I_func, y
   integer :: i,simfac
 
   I_func = 0.
 
-  
+
 
   do i= 0,1000
 
@@ -2832,16 +2832,16 @@ function I_func(y_c, Z_hat)
      else
         simfac=4
      end if
-     
-     
+
+
      I_func =  I_func + simfac* (y**3 / (y**3 + y_c**3)) ** (Z_hat/3. + 1)
 
   end do
 
-  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.) 
+  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.)
 end function I_func
 
-     
+
 subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
 !Deposition profile due to beamlet section independant of tangency radius
   use param
@@ -2851,7 +2851,7 @@ subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
   double precision :: h
   double precision :: D0, D1
 
-  
+
   h  = 2*rho*vol/(volp*lam) * rr
 
   !Account for inner or outer part of flux surface
@@ -2859,7 +2859,7 @@ subroutine dep(rho, volp, kap, kapp, del, delp, rr, zz, lam, h)
      h = h * ( (1+(kapp* Z_beam**2/(rho*kap**3)))/sqrt(rho**2 - (zz**2/kap**2)) + delp/rho)
 
   else
-     
+
      h = h * ( (1+(kapp* Z_beam**2/(rho*kap**3)))/sqrt(rho**2 + (zz**2/kap**2)) + delp/rho)
   end if
 
@@ -2870,13 +2870,13 @@ end subroutine dep
 
 
 
-  
+
 
 function beam_atten(R_index,Z_index, R_tan, id)
 
     ! calculates beam attentuation for a given radius and tangency radius
 
-    
+
     use param
     implicit none
 
@@ -2885,14 +2885,14 @@ function beam_atten(R_index,Z_index, R_tan, id)
     double precision :: psi, dense, inv_lam, Ru, R_tan
     integer :: i,id, R_index, Z_index, sim_fac
 
-    
-      
+
+
 
     D = 0.
 
     !!! NEED to fix simpsons 1/3 for even number of terms
     ! Beam line on the first half of the injection
-    if (id .eq. 0) then 
+    if (id .eq. 0) then
        do i = R_index, nr
 
           Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
@@ -2904,7 +2904,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
 
           inv_lam = dense(psi,0)/(E_b*2.8e17)
 
-          ! Simpson's 1/3 rule 
+          ! Simpson's 1/3 rule
           if ( i .eq. R_index .or. i .eq. nr) then
              sim_fac = 1
           else if ( mod(i-R_index,2) .eq. 0) then
@@ -2912,14 +2912,14 @@ function beam_atten(R_index,Z_index, R_tan, id)
           else
              sim_fac = 4
           end if
-          
-          
+
+
 
           D = D + sim_fac *(rr * inv_lam/sqrt(rr**2 - R_tan**2))
        end do
 
 
-    ! Beam line on the second half of the injection   
+    ! Beam line on the second half of the injection
     else if (id .eq. 1) then
 
        do i = R_index,1, -1
@@ -2927,7 +2927,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
           rr = r(i)
 
           if (rr .lt. R_tan) exit
-          
+
           psi = umax - u(i,Z_index)
 
           inv_lam = dense(psi,0)/(E_b*2.8e17)
@@ -2939,21 +2939,21 @@ function beam_atten(R_index,Z_index, R_tan, id)
           else
              sim_fac = 4
           end if
-          
-             
+
+
           D = D + sim_fac*(rr * inv_lam/sqrt(rr**2 - R_tan**2))
-      
+
        end do
 
     end if
-    
+
 
     beam_atten = D*dr/3.
     !write(nw,*) beam_atten,  rr, z(Z_index)
   end function beam_atten
 
 
-  
+
 
   function beam_int (R_index, Z_index)
 
@@ -2961,7 +2961,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
     ! using the trapezoid method. Assumes gaussian profile and accounts for
     ! varying tangency radii for different parts of the gaussian
 
-    
+
     use param
     implicit none
 
@@ -2969,10 +2969,10 @@ function beam_atten(R_index,Z_index, R_tan, id)
     double precision :: C, beam_int, range, x, beam_atten, R_tan
     double precision :: D0, D1
 
-         
+
     integer :: i, nit, gam_d, sim_fac
 
-    
+
 !!! NORMALISATION ???!!!
 
     C = 1./ (sqrt(pi) * sig_r)
@@ -2981,7 +2981,7 @@ function beam_atten(R_index,Z_index, R_tan, id)
     nit = int(range / dr)
 
 
-        
+
     do i = -nit, nit
 
        r_in = R_index + i
@@ -3011,27 +3011,27 @@ function beam_atten(R_index,Z_index, R_tan, id)
        else
           sim_fac = 4
        end if
-       
-       
+
+
        D0 = beam_atten(r_in, Z_index, R_tan,0)
        D1 = beam_atten(r_in,Z_index,R_tan,1)
-       
+
        !Integration for the beam shape
        beam_int = beam_int + sim_fac/sqrt(r(r_in)**2 - R_tan**2)*(exp(- ((i*dr/sig_r)**2)) * &
-            (exp(-D0) + gam_d*(exp(-D0 - 2*D1)) ) )   
+            (exp(-D0) + gam_d*(exp(-D0 - 2*D1)) ) )
 
     end do
 
     beam_int = beam_int * dr * C /3.
 
-   
+
   end function beam_int
-  
-          
+
+
   function elec_return(J_f, zeff, Z_b,uval)
     !Calculates the current after the electron return
     ! current is accounted for
-    
+
     use param
     implicit none
 
@@ -3040,22 +3040,22 @@ function beam_atten(R_index,Z_index, R_tan, id)
     integer :: Z_b
 
     call argen(uval, epsi,0)
-   
+
     G = ( 1.55+(0.85/zeff) ) * sqrt(epsi)  - ( 0.2 + (1.55/zeff) )*epsi
 
 
- 
+
     J_nb = (1 - ( Z_b/zeff * (1 - G) ) )
 
 
     J_nb = J_nb *J_f
 
-    
+
     elec_return = J_nb
 
   end function elec_return
-  
-         
+
+
 subroutine nbicur2()
   ! Calculates the neutral beam current contribution for each flux surface
   ! Follows method in nbeams program - diffuse beam model
@@ -3080,7 +3080,7 @@ subroutine nbicur2()
 
   double precision, dimension(ncon) ::  volps, lambdas
   double precision :: shift, elong, kaps, kapps, dels, delps
-  double precision, dimension(ncon) :: dpdrs 
+  double precision, dimension(ncon) :: dpdrs
 
   double precision :: rr, zz, Ru, rhomax
 
@@ -3117,7 +3117,7 @@ subroutine nbicur2()
 
   !print*, vol
   n_f=0.
-  count=0 
+  count=0
   dep = 0.
   Z_b = 1
 
@@ -3144,10 +3144,10 @@ subroutine nbicur2()
   do beam=1,1
 
      do ecomp = 1,3
-        
+
         v_beam = sqrt(2.*E_b(beam)*1000*eq/(2.*mp * ecomp))
         call lam(lambdas, beam, ecomp)
-        ! Calculate shafranov shift and elongation for each flux surface 
+        ! Calculate shafranov shift and elongation for each flux surface
         do con = 2, ncon
 
            psi = psiv(con)
@@ -3220,7 +3220,7 @@ subroutine nbicur2()
            y_c = v_c/v_beam
 
            I_0 = P_beam(beam)*P_frac(ecomp) * 1000 /(E_b(beam)/ecomp)
-           
+
            n_f(con) = I_0/eq * dep(con) / vol
 
 
@@ -3253,7 +3253,7 @@ subroutine nbicur2()
            !print*, con , J_nb(con)/rho, J_nb(con)
 
 
-  
+
         end do
 
 
@@ -3351,8 +3351,8 @@ subroutine nbicur2()
 
   print*, 'Average Temp', avte
   print*, 'Average Density',avne
-           
-  
+
+
 end subroutine nbicur2
 
 
@@ -3389,16 +3389,16 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
   rr = maxval(rpts(con,:))
   rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
-  
+
   r_beam = sig_r * 2
-  
+
   Zu = min(rho*kap, r_beam)
 
   wi = pi/6
   zterm = 0.
   zsum = 0.
 
-  
+
   !Z integration
   do i=1,6
 
@@ -3421,10 +3421,10 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
 
      !Terms in h(p) that involve Z
-     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho 
+     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho
 
      !Multiplied by sqrt(1-ti^2)
-     zterm = zterm * sqrt(1 - zti**2) 
+     zterm = zterm * sqrt(1 - zti**2)
 
 
      !Limits for R integration
@@ -3454,14 +3454,14 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
            D1 = attenuation(rpm,rxi,1,beam,ecomp)
         end if
-        
+
         !Total atten
         expterm = exp(-D0) + dpass*exp(-(D0+2*D1))
 
         !if(con .eq. 25) then
         !   print*, con, expterm
         !end if
-        
+
 
         !R terms in h(p)
         rterm = rpm/sqrt(rpm*2 - rxi**2) * expterm
@@ -3470,7 +3470,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
         !Gaussian for beam shape
         gauss = exp( - (zxi**2 + (R_t(beam) - rxi)**2)/sig_r**2) / (pi*sig_r**2 * (1 - exp(-r_beam**2/sig_r**2)) )
 
-    
+
 
         !print*, D0, D1
         !R term
@@ -3489,17 +3489,17 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
   zsum = zsum * wi * 2 *Zu/2.
   !print*, rho, zsum
-  
+
   dep2 = 2 * rho * vol * zsum / (volp*lambda)
   !if (beam .eq. 1)  print*, con, dep2, zsum
   !if (con .eq. 49 .or. con .eq. 12) then
   !   print*, 'Volp ',volp,rho, zsum, lambda, con
   !end if
-  
+
 
 end function dep2
 
-  
+
 
 
 function attenuation(rpm, rb, id, beam, ecomp)
@@ -3517,16 +3517,16 @@ function attenuation(rpm, rb, id, beam, ecomp)
   D = 0.
 
 
-  
+
   if (id .eq. 0) then
-     
+
      Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
-     
+
 
      dr_nb = (Ru-rpm)/100
 
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -3556,7 +3556,7 @@ function attenuation(rpm, rb, id, beam, ecomp)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -3569,18 +3569,18 @@ function attenuation(rpm, rb, id, beam, ecomp)
 
 
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
-   
-           
+
+
      end do
 
   else if (id .eq. 1) then
 
-     
+
      dr_nb = (rpm-rb)/100
 
      !stop atten go to inf
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -3610,7 +3610,7 @@ function attenuation(rpm, rb, id, beam, ecomp)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -3619,23 +3619,23 @@ function attenuation(rpm, rb, id, beam, ecomp)
         end if
 
         invlam = dense(psi,0)/(2.8e17*E_b(beam)/ecomp)
-    
+
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
 
      end do
-     
+
 
      end if
-     
 
 
-   
-     
+
+
+
      attenuation = D*dr_nb/3.
      if (con .eq.1) then
         print*, 'atten ',attenuation
      end if
-       
+
 end function attenuation
 
 
@@ -3648,25 +3648,25 @@ function atten2(rpm, rb, id, beam)
   integer :: id, i, con, simfac, beam
 
   atten2 =0.
-  
+
 
 end function atten2
 
 
 
 !Ion distribution function
-function I_func(y_c, Z_hat) 
+function I_func(y_c, Z_hat)
 
   use param
   implicit none
-  
+
   double precision, intent(in) :: y_c, Z_hat
   double precision :: I_func, y
   integer :: i,simfac
 
   I_func = 0.
 
-  
+
 
   do i= 0,1000
 
@@ -3679,16 +3679,16 @@ function I_func(y_c, Z_hat)
      else
         simfac=4
      end if
-     
-     
+
+
      I_func =  I_func + simfac* (y**3 / (y**3 + y_c**3)) ** (Z_hat/3. + 1)
 
   end do
 
-  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.) 
+  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.)
 end function I_func
 
-     
+
 
 
 
@@ -3735,7 +3735,7 @@ subroutine nbicur2()
 
   double precision, dimension(ncon) ::  volps, lambdas
   double precision :: shift, elong, kaps, kapps, dels, delps
-  double precision, dimension(ncon) :: dpdrs 
+  double precision, dimension(ncon) :: dpdrs
 
   double precision :: rr, zz, Ru, rhomax
 
@@ -3772,7 +3772,7 @@ subroutine nbicur2()
 
   !print*, vol
   n_f=0.
-  count=0 
+  count=0
   dep = 0.
   Z_b = 1
 
@@ -3799,10 +3799,10 @@ subroutine nbicur2()
   do beam=1,1
 
      do ecomp = 1,3
-        
+
         v_beam = sqrt(2.*E_b(beam)*1000*eq/(2.*mp * ecomp))
         call lam(lambdas, beam, ecomp)
-        ! Calculate shafranov shift and elongation for each flux surface 
+        ! Calculate shafranov shift and elongation for each flux surface
         do con = 2, ncon
 
            psi = psiv(con)
@@ -3875,7 +3875,7 @@ subroutine nbicur2()
            y_c = v_c/v_beam
 
            I_0 = P_beam(beam)*P_frac(ecomp) * 1000 /(E_b(beam)/ecomp)
-           
+
            n_f(con) = I_0/eq * dep(con) / vol
 
 
@@ -3908,7 +3908,7 @@ subroutine nbicur2()
            !print*, con , J_nb(con)/rho, J_nb(con)
 
 
-  
+
         end do
 
 
@@ -4006,8 +4006,8 @@ subroutine nbicur2()
 
   print*, 'Average Temp', avte
   print*, 'Average Density',avne
-           
-  
+
+
 end subroutine nbicur2
 
 
@@ -4044,16 +4044,16 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
   rr = maxval(rpts(con,:))
   rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
-  
+
   r_beam = sig_r * 2
-  
+
   Zu = min(rho*kap, r_beam)
 
   wi = pi/6
   zterm = 0.
   zsum = 0.
 
-  
+
   !Z integration
   do i=1,6
 
@@ -4076,10 +4076,10 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
 
      !Terms in h(p) that involve Z
-     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho 
+     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho
 
      !Multiplied by sqrt(1-ti^2)
-     zterm = zterm * sqrt(1 - zti**2) 
+     zterm = zterm * sqrt(1 - zti**2)
 
 
      !Limits for R integration
@@ -4109,14 +4109,14 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
            D1 = attenuation(rpm,rxi,1,beam,ecomp)
         end if
-        
+
         !Total atten
         expterm = exp(-D0) + dpass*exp(-(D0+2*D1))
 
         !if(con .eq. 25) then
         !   print*, con, expterm
         !end if
-        
+
 
         !R terms in h(p)
         rterm = rpm/sqrt(rpm*2 - rxi**2) * expterm
@@ -4125,7 +4125,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
         !Gaussian for beam shape
         gauss = exp( - (zxi**2 + (R_t(beam) - rxi)**2)/sig_r**2) / (pi*sig_r**2 * (1 - exp(-r_beam**2/sig_r**2)) )
 
-    
+
 
         !print*, D0, D1
         !R term
@@ -4144,17 +4144,17 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
   zsum = zsum * wi * 2 *Zu/2.
   !print*, rho, zsum
-  
+
   dep2 = 2 * rho * vol * zsum / (volp*lambda)
   !if (beam .eq. 1)  print*, con, dep2, zsum
   !if (con .eq. 49 .or. con .eq. 12) then
   !   print*, 'Volp ',volp,rho, zsum, lambda, con
   !end if
-  
+
 
 end function dep2
 
-  
+
 
 
 function attenuation(rpm, rb, id, beam, ecomp)
@@ -4172,16 +4172,16 @@ function attenuation(rpm, rb, id, beam, ecomp)
   D = 0.
 
 
-  
+
   if (id .eq. 0) then
-     
+
      Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
-     
+
 
      dr_nb = (Ru-rpm)/100
 
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -4211,7 +4211,7 @@ function attenuation(rpm, rb, id, beam, ecomp)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -4224,18 +4224,18 @@ function attenuation(rpm, rb, id, beam, ecomp)
 
 
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
-   
-           
+
+
      end do
 
   else if (id .eq. 1) then
 
-     
+
      dr_nb = (rpm-rb)/100
 
      !stop atten go to inf
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -4265,7 +4265,7 @@ function attenuation(rpm, rb, id, beam, ecomp)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -4274,23 +4274,23 @@ function attenuation(rpm, rb, id, beam, ecomp)
         end if
 
         invlam = dense(psi,0)/(2.8e17*E_b(beam)/ecomp)
-    
+
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
 
      end do
-     
+
 
      end if
-     
 
 
-   
-     
+
+
+
      attenuation = D*dr_nb/3.
      if (con .eq.1) then
         print*, 'atten ',attenuation
      end if
-       
+
 end function attenuation
 
 
@@ -4303,25 +4303,25 @@ function atten2(rpm, rb, id, beam)
   integer :: id, i, con, simfac, beam
 
   atten2 =0.
-  
+
 
 end function atten2
 
 
 
 !Ion distribution function
-function I_func(y_c, Z_hat) 
+function I_func(y_c, Z_hat)
 
   use param
   implicit none
-  
+
   double precision, intent(in) :: y_c, Z_hat
   double precision :: I_func, y
   integer :: i,simfac
 
   I_func = 0.
 
-  
+
 
   do i= 0,1000
 
@@ -4334,16 +4334,16 @@ function I_func(y_c, Z_hat)
      else
         simfac=4
      end if
-     
-     
+
+
      I_func =  I_func + simfac* (y**3 / (y**3 + y_c**3)) ** (Z_hat/3. + 1)
 
   end do
 
-  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.) 
+  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.)
 end function I_func
 
-     
+
 
 
 
@@ -4390,7 +4390,7 @@ subroutine nbicur2()
 
   double precision, dimension(ncon) ::  volps, lambdas
   double precision :: shift, elong, kaps, kapps, dels, delps
-  double precision, dimension(ncon) :: dpdrs 
+  double precision, dimension(ncon) :: dpdrs
 
   double precision :: rr, zz, Ru, rhomax
 
@@ -4427,7 +4427,7 @@ subroutine nbicur2()
 
   !print*, vol
   n_f=0.
-  count=0 
+  count=0
   dep = 0.
   Z_b = 1
 
@@ -4454,10 +4454,10 @@ subroutine nbicur2()
   do beam=1,1
 
      do ecomp = 1,3
-        
+
         v_beam = sqrt(2.*E_b(beam)*1000*eq/(2.*mp * ecomp))
         call lam(lambdas, beam, ecomp)
-        ! Calculate shafranov shift and elongation for each flux surface 
+        ! Calculate shafranov shift and elongation for each flux surface
         do con = 2, ncon
 
            psi = psiv(con)
@@ -4530,7 +4530,7 @@ subroutine nbicur2()
            y_c = v_c/v_beam
 
            I_0 = P_beam(beam)*P_frac(ecomp) * 1000 /(E_b(beam)/ecomp)
-           
+
            n_f(con) = I_0/eq * dep(con) / vol
 
 
@@ -4563,7 +4563,7 @@ subroutine nbicur2()
            !print*, con , J_nb(con)/rho, J_nb(con)
 
 
-  
+
         end do
 
 
@@ -4661,8 +4661,8 @@ subroutine nbicur2()
 
   print*, 'Average Temp', avte
   print*, 'Average Density',avne
-           
-  
+
+
 end subroutine nbicur2
 
 
@@ -4699,16 +4699,16 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
   rr = maxval(rpts(con,:))
   rho = sqrt( (rr - (rcen + del))**2 + (Z_beam/kap)**2)
 
-  
+
   r_beam = sig_r * 2
-  
+
   Zu = min(rho*kap, r_beam)
 
   wi = pi/6
   zterm = 0.
   zsum = 0.
 
-  
+
   !Z integration
   do i=1,6
 
@@ -4731,10 +4731,10 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
 
      !Terms in h(p) that involve Z
-     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho 
+     zterm = (1 + kapp*zxi**2/(rho*kap**3))/sqrt(rho**2 - zxi**2/kap**2) + sgn*delp/rho
 
      !Multiplied by sqrt(1-ti^2)
-     zterm = zterm * sqrt(1 - zti**2) 
+     zterm = zterm * sqrt(1 - zti**2)
 
 
      !Limits for R integration
@@ -4764,14 +4764,14 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
            D1 = attenuation(rpm,rxi,1,beam,ecomp)
         end if
-        
+
         !Total atten
         expterm = exp(-D0) + dpass*exp(-(D0+2*D1))
 
         !if(con .eq. 25) then
         !   print*, con, expterm
         !end if
-        
+
 
         !R terms in h(p)
         rterm = rpm/sqrt(rpm*2 - rxi**2) * expterm
@@ -4780,7 +4780,7 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
         !Gaussian for beam shape
         gauss = exp( - (zxi**2 + (R_t(beam) - rxi)**2)/sig_r**2) / (pi*sig_r**2 * (1 - exp(-r_beam**2/sig_r**2)) )
 
-    
+
 
         !print*, D0, D1
         !R term
@@ -4799,17 +4799,17 @@ function dep2(con, volp, lambda, kap, kapp, del, delp, id,beam, ecomp)
 
   zsum = zsum * wi * 2 *Zu/2.
   !print*, rho, zsum
-  
+
   dep2 = 2 * rho * vol * zsum / (volp*lambda)
   !if (beam .eq. 1)  print*, con, dep2, zsum
   !if (con .eq. 49 .or. con .eq. 12) then
   !   print*, 'Volp ',volp,rho, zsum, lambda, con
   !end if
-  
+
 
 end function dep2
 
-  
+
 
 
 function attenuation(rpm, rb, id, beam, ecomp)
@@ -4827,16 +4827,16 @@ function attenuation(rpm, rb, id, beam, ecomp)
   D = 0.
 
 
-  
+
   if (id .eq. 0) then
-     
+
      Ru = rcen + (amin**2-Z_beam**2/elon**2)**0.5
-     
+
 
      dr_nb = (Ru-rpm)/100
 
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -4866,7 +4866,7 @@ function attenuation(rpm, rb, id, beam, ecomp)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -4879,18 +4879,18 @@ function attenuation(rpm, rb, id, beam, ecomp)
 
 
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
-   
-           
+
+
      end do
 
   else if (id .eq. 1) then
 
-     
+
      dr_nb = (rpm-rb)/100
 
      !stop atten go to inf
      do i= 0,100
-        
+
         if (i.eq.0 .or. i.eq.100) then
            simfac=1
         else if (mod(i,2) .eq. 0) then
@@ -4920,7 +4920,7 @@ function attenuation(rpm, rb, id, beam, ecomp)
               rmin = rpts(con,1)
 
               if (rmin .gt. r_int) cycle
-              
+
               rat = (r_int - rmin)/( rpts(con+1, int(npts/2)) - rmax)
               psi = psiv(con) + rat*(psiv(con+1) - psiv(con))
 
@@ -4929,23 +4929,23 @@ function attenuation(rpm, rb, id, beam, ecomp)
         end if
 
         invlam = dense(psi,0)/(2.8e17*E_b(beam)/ecomp)
-    
+
         D = D + simfac*(r_int *invlam/sqrt(r_int**2 - rb**2))
 
      end do
-     
+
 
      end if
-     
 
 
-   
-     
+
+
+
      attenuation = D*dr_nb/3.
      if (con .eq.1) then
         print*, 'atten ',attenuation
      end if
-       
+
 end function attenuation
 
 
@@ -4958,25 +4958,25 @@ function atten2(rpm, rb, id, beam)
   integer :: id, i, con, simfac, beam
 
   atten2 =0.
-  
+
 
 end function atten2
 
 
 
 !Ion distribution function
-function I_func(y_c, Z_hat) 
+function I_func(y_c, Z_hat)
 
   use param
   implicit none
-  
+
   double precision, intent(in) :: y_c, Z_hat
   double precision :: I_func, y
   integer :: i,simfac
 
   I_func = 0.
 
-  
+
 
   do i= 0,1000
 
@@ -4989,16 +4989,16 @@ function I_func(y_c, Z_hat)
      else
         simfac=4
      end if
-     
-     
+
+
      I_func =  I_func + simfac* (y**3 / (y**3 + y_c**3)) ** (Z_hat/3. + 1)
 
   end do
 
-  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.) 
+  I_func = I_func * 1./(1000 * 3) * (1+y_c)**(Z_hat/3.)
 end function I_func
 
-     
+
 
 
 
@@ -5021,9 +5021,9 @@ function elec_return(J_f, zeff, Z_b,uval)
 
 
   Jnb = (1 - ( Z_b/zeff * (1 - G) ) )
- 
-         
- 
+
+
+
  Jnb = Jnb *J_f
 
 

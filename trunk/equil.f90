@@ -36,11 +36,11 @@ subroutine equil(niter)
   else
      igo=0
      call bdry2(x,y,f,0)
-     
+
      if (igr .ge. 1 .and. ibdry .eq. 2) then
         !Display fourier of boundary
         call system("ipython ~/SCENEv2/graphs/bdytest.py")
-        
+
      end if
   end if
   ! ------------------------------------------------------------
@@ -77,7 +77,7 @@ subroutine equil(niter)
            !  read in stored equilibrium
            read(7)title,scl,r0,u
            rewind 7
- 
+
         end if
      else
         if (ipass.eq.0) then
@@ -199,7 +199,7 @@ subroutine equil(niter)
         end if
      end if
 
-  else 
+  else
      if (ipr.eq.0) write(nw,*)' new start'
      !  new start .....
      ! initialise u to be value of bdry scaled.
@@ -227,7 +227,7 @@ subroutine equil(niter)
         end do
      end do
   end if
-  
+
   !  calculate max. value of psi for the initial guess
   umax = -100.0
   do i=1,nr
@@ -260,7 +260,7 @@ subroutine equil(niter)
   end if
   do 120 n0=1,nouter
      call iter
-     
+
      !  re-calculate maximum psi
      umax=-100.0
      do 111 j=1,nz
@@ -291,7 +291,7 @@ subroutine equil(niter)
               ! test convergence of equilibrium
 
               if (mod(n0,10) .eq.0) write(6,135)errit,erres
-              
+
               if (erres.lt.errit) goto 130
            end if
            ! store old values of s and r0 before iterating equilibrium
@@ -335,7 +335,7 @@ subroutine equil(niter)
            ! calculate the value of poloidal field at centre of each mesh point
            call valbth
 
-           
+
            do i=1,nr
               if (ixout(i,nsym).eq.0) cycle
               Rmin = r(i)
@@ -815,7 +815,7 @@ end subroutine equil
           end do
 
           close(nh)
-         
+
 !          if (igo.eq.0) stop
           do i=1,nfm
             k=i-1
@@ -886,7 +886,7 @@ end subroutine equil
             write(6,*)' tokeps=',tokeps,' elon=',elon,' tri=',tri
             stop
           end if
-        else 
+        else
 !  Evaluate function
           th=atan2(y,x-rcen)
           rofth=0.
@@ -898,7 +898,7 @@ end subroutine equil
         end if
      end if
 
-                    
+
 
 !  ibdry not equal to 1 or 0=> use fourier description.
    end subroutine bdry2
@@ -964,8 +964,8 @@ end subroutine equil
       ptot=0.0
       vv=0.
       do i=1,nr
-	do 10 j=1,nz
-	  if(ixout(i,j).ne.1)goto 10
+    do 10 j=1,nz
+      if(ixout(i,j).ne.1)goto 10
    cval=-rhs(u(i,j),r(i))/(r(i)*mu0)
 !   read(6,*) test
    curtot=curtot+dr*dz*cval
@@ -995,7 +995,7 @@ end subroutine equil
 !      write(6,*)' bpol=',bpol,' betnow=',betnow
       end if
       !
-      end if 
+      end if
       end if
       if (ipr.eq.0) then
       if(curtot.le.0.0)write(nw,40)
@@ -1106,11 +1106,11 @@ end subroutine equil
       else
         call bdry2(r(iv),z(jv),fp,1)
       end if
-	 h=dr
-	 u(iv,jv)=0.0
-	 itots=0
-	 is=1
-	 js=1
+     h=dr
+     u(iv,jv)=0.0
+     itots=0
+     is=1
+     js=1
 !
 !  p is the pt at which psi is required, r is the pt just inside
 !  the plasma, and q is 1 mesh-pt further inside
@@ -1135,9 +1135,9 @@ end subroutine equil
 ! provided true bdry is not too close to any mesh pt then it is
 ! suitable for interp. etc take average of all such points.
         if(ixout(ivs,jvs).ne.1)go to 5
-	 ii=1
-	 ivsp=ivs+is
-	 jvsp=jvs+js
+     ii=1
+     ivsp=ivs+is
+     jvsp=jvs+js
          psip=0.0
          if (ibdry.eq.0) then
            call bdry(r(ivs),z(jvs),fr,1)
@@ -1147,12 +1147,12 @@ end subroutine equil
          afr=abs(fr)
          psib=0.0
 ! interpolate to get hb (dist of boundary from r)
-	 afp=abs(fp)
-	 hb=afr*h/(afr+afp)
-	 psiq=u(ivsp,jvsp)
-	 psip=((hb-h)*psiq+2.0*h*psib)/(h+hb)
+     afp=abs(fp)
+     hb=afr*h/(afr+afp)
+     psiq=u(ivsp,jvsp)
+     psip=((hb-h)*psiq+2.0*h*psib)/(h+hb)
     5   continue
-	 u(iv,jv)=u(iv,jv)+ii*psip
+     u(iv,jv)=u(iv,jv)+ii*psip
          itots=itots+ii
  10   continue
 !
@@ -1187,8 +1187,8 @@ end subroutine equil
           else
             call bdry2(r(i),z(j),f,1)
           end if
-	  if(f.gt.0.0)ixout(i,j)=1
-	  if(f.le.0.0)ixout(i,j)=0
+      if(f.gt.0.0)ixout(i,j)=1
+      if(f.le.0.0)ixout(i,j)=0
         end do
       end do
 !
@@ -1198,9 +1198,9 @@ end subroutine equil
         if(i.eq.1)im1=1
         ip1=i+1
         if (i.eq.nr) ip1=nr
-	do 30 j=1,nz
-	  idout(i,j)=1
-	  if (ixout(i,j).eq.1) go to 30
+    do 30 j=1,nz
+      idout(i,j)=1
+      if (ixout(i,j).eq.1) go to 30
           jm1=j-1
           if (j.eq.1) jm1=1
           jp1=j+1
@@ -1233,23 +1233,23 @@ end subroutine equil
 ! -----set up idout array of in/out cell-centres
 !       (in if none of the 4 neighs is 0)
       do i=1,nrp1
-	do 80 j=1,nzp1
-	  iprod=ixout(i,j)*ixout(i+1,j)*ixout(i,j+1)*ixout(i+1,j+1)
-	  idout(i,j)=0
-	  if(iprod.eq.0)go to 80
+    do 80 j=1,nzp1
+      iprod=ixout(i,j)*ixout(i+1,j)*ixout(i,j+1)*ixout(i+1,j+1)
+      idout(i,j)=0
+      if(iprod.eq.0)go to 80
 ! definitely need j at this enclosed cell centre..but are we
 ! ...at edge?
-	  isum=ixout(i,j)+ixout(i+1,j)+ixout(i,j+1)+ixout(i+1,j+1)
-	  idout(i,j)=1
-	  if(isum.ne.4)idout(i,j)=-1
-	  rb = (r(i)+r(i+1))/2.0
-	  zb = (z(j)+z(j+1))/2.0
+      isum=ixout(i,j)+ixout(i+1,j)+ixout(i,j+1)+ixout(i+1,j+1)
+      idout(i,j)=1
+      if(isum.ne.4)idout(i,j)=-1
+      rb = (r(i)+r(i+1))/2.0
+      zb = (z(j)+z(j+1))/2.0
           if (ibdry.eq.0) then
             call bdry(rb,zb,f,1)
           else
             call bdry2(rb,zb,f,1)
           end if
-	  if(f.gt.(0.0))idout(i,j) = 1
+      if(f.gt.(0.0))idout(i,j) = 1
  80     continue
       end do
       call iout(' idout  ')
@@ -1257,25 +1257,25 @@ end subroutine equil
       sumx=0.
       sumd=0.
       do i=1,nr
-	sumx=sumx+abs(ixout(i,1))
-	sumd=sumd+abs(idout(i,1))
+    sumx=sumx+abs(ixout(i,1))
+    sumd=sumd+abs(idout(i,1))
       end do
       do i=1,nr
-	sumx=sumx+abs(ixout(i,nz))
-	sumd=sumd+abs(idout(i,nz))
+    sumx=sumx+abs(ixout(i,nz))
+    sumd=sumd+abs(idout(i,nz))
       end do
       do i=1,nz
-	sumx=sumx+abs(ixout(1,i))
-	sumd=sumd+abs(idout(1,i))
+    sumx=sumx+abs(ixout(1,i))
+    sumd=sumd+abs(idout(1,i))
       end do
       do i=1,nz
-	sumx=sumx+abs(ixout(nr,i))
-	sumd=sumd+abs(idout(nr,i))
+    sumx=sumx+abs(ixout(nr,i))
+    sumd=sumd+abs(idout(nr,i))
       end do
       if ((sumx.ne.0).or.(sumd.ne.0)) then
-	write(nw,*)'fatal error***problem with mesh!'
-	write(nw,*)' plasma boundary not surrounded by zeros'
-	stop
+    write(nw,*)'fatal error***problem with mesh!'
+    write(nw,*)' plasma boundary not surrounded by zeros'
+    stop
       end if
 !
    end subroutine initze
@@ -1295,7 +1295,7 @@ end subroutine equil
       if (ipr.eq.0) write(nw,10)word
   10  format(a)
       do 30 j=1,nz
-	jy=nz+1-j
+    jy=nz+1-j
         if (word.eq.' ixout  ') then
           if (ipr.eq.0) write(nw,20)(ixout(i,jy),i=1,nr)
         else
@@ -1433,8 +1433,8 @@ end subroutine equil
       alo=arr(1)
       aup=arr(1)
       do 10 l=2,lmax
-	if (alo.gt.arr(l)) alo=arr(l)
-	if (aup.lt.arr(l)) aup=arr(l)
+    if (alo.gt.arr(l)) alo=arr(l)
+    if (aup.lt.arr(l)) aup=arr(l)
  10   continue
    end subroutine range
 !
@@ -1443,7 +1443,7 @@ end subroutine equil
       function rhs(uu,rv)
 !     *******************
 !
-        
+
       !  returns rhs of g-s equation
 !
       use param
@@ -1457,7 +1457,7 @@ end subroutine equil
 
       rjphi=rv*rv*pd+ffp/mu0
       rhs=-mu0*rjphi
-      
+
       return
   end function rhs
 !
@@ -1477,7 +1477,7 @@ end subroutine equil
       double precision rc,dudz,dudr,brn,bzn,btot,bn,bnn,brnn,bznn
       double precision brtot,bztot
 !
-      if (icont.gt.-3) then 
+      if (icont.gt.-3) then
         allocate( rcoord(nr), zcoord(nz), btheta(nr,nz),   &
                 brcoord(nr,nz),bzcoord(nr,nz))
       end if
@@ -1550,7 +1550,7 @@ end subroutine equil
             bztot = bztot + 2.0*bzn - bznn
             inum = inum + 1
  60       continue
-	  if(inum.eq.0)goto 70
+      if(inum.eq.0)goto 70
           btheta(i,j) = btot/(1.0*inum)
           brcoord(i,j) = brtot/(1.0*inum)
           bzcoord(i,j) = bztot/(1.0*inum)
@@ -1580,9 +1580,9 @@ end subroutine equil
 !
       xint=0.0
       do i=1,nr
-	do 10 j=1,nz
-	  if (ixout(i,j).le.0) goto 10
-	  xint=xint+arr(i,j)*dr*dz
+    do 10 j=1,nz
+      if (ixout(i,j).le.0) goto 10
+      xint=xint+arr(i,j)*dr*dz
  10     continue
       end do
    end subroutine xarea
@@ -1640,6 +1640,3 @@ end subroutine equil
  end subroutine valbth2
 !
 !*****************************************************************
-
-
-

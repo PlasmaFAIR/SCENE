@@ -1,4 +1,3 @@
-
       subroutine equil(niter)
 
 !----------------------------------------------------------------------
@@ -37,8 +36,8 @@
 !  generate initial guess for U:
       do i=1,nr
         do j=1,nz
-	  call bdry(r(i),z(j),f)
-	  u(i,j)=f
+      call bdry(r(i),z(j),f)
+      u(i,j)=f
         end do
       end do
 !  if ipass=0 uses input parameterisation of ff' (ie first run)
@@ -209,41 +208,41 @@
         goto 130
       end if
       do 120 n0=1,nouter
-	call iter
+    call iter
 !  re-calculate maximum psi
-	umax=-100.0
-	do 111 j=1,nz
-	do 110 i=1,nr
-	  if(u(i,j).ge.umax)iax=i
-	  if(u(i,j).ge.umax)jax=j
-	  if(u(i,j).ge.umax)umax=u(i,j)
+    umax=-100.0
+    do 111 j=1,nz
+    do 110 i=1,nr
+      if(u(i,j).ge.umax)iax=i
+      if(u(i,j).ge.umax)jax=j
+      if(u(i,j).ge.umax)umax=u(i,j)
  110    continue
  111    continue
 ! find rpeak by fitting quadratic
-	ur=u(iax+1,jax)
-	ul=u(iax-1,jax)
-	fd=(ur-ul)/(2.0*dr)
-	fdd=(ur-2*umax+ul)/(dr*dr)
-	rpeak=r(iax) - fd/fdd
-	r0=rpeak
-	rl=rpeak - r(iax)
-	upeak=umax + rl*fd + rl*rl/2.0 * fdd
-	upr=umax
+    ur=u(iax+1,jax)
+    ul=u(iax-1,jax)
+    fd=(ur-ul)/(2.0*dr)
+    fdd=(ur-2*umax+ul)/(dr*dr)
+    rpeak=r(iax) - fd/fdd
+    r0=rpeak
+    rl=rpeak - r(iax)
+    upeak=umax + rl*fd + rl*rl/2.0 * fdd
+    upr=umax
 ! umax labels max psi in plasma (i.e. value at magnetic axis)
-	umax=upeak
+    umax=upeak
 !  scale p'and ff' to obtain requested total current
-	call constr(n0,0)
-	if (n0.ne.1) then
+    call constr(n0,0)
+    if (n0.ne.1) then
 ! measure of convergence
-	  erres=abs((slst-scl)/(slst+scl))+abs((r0-r0lst)/(r0+r0lst))  &
+      erres=abs((slst-scl)/(slst+scl))+abs((r0-r0lst)/(r0+r0lst))  &
           +abs((cur-curtot)/(cur+curtot))
 ! test convergence of equilibrium
           write(6,135)errit,erres
-	  if (erres.lt.errit) goto 130
-	end if
+      if (erres.lt.errit) goto 130
+    end if
 ! store old values of s and r0 before iterating equilibrium
-	slst=scl
-	r0lst=r0
+    slst=scl
+    r0lst=r0
  120  continue
 !
 !*****************************************************************
@@ -308,11 +307,11 @@
       integer itots,iv,jv,is,js,k,isum,ii,ivs,jvs,ivsp,jvsp
 !
       call bdry(r(iv),z(jv),fp)
-	 h=dr
-	 u(iv,jv)=0.0
-	 itots=0
-	 is=1
-	 js=1
+     h=dr
+     u(iv,jv)=0.0
+     itots=0
+     is=1
+     js=1
 !
 !  p is the pt at which psi is required, r is the pt just inside
 !  the plasma, and q is 1 mesh-pt further inside
@@ -337,20 +336,20 @@
 ! provided true bdry is not too close to any mesh pt then it is
 ! suitable for interp. etc take average of all such points.
         if(ixout(ivs,jvs).ne.1)go to 5
-	 ii=1
-	 ivsp=ivs+is
-	 jvsp=jvs+js
+     ii=1
+     ivsp=ivs+is
+     jvsp=jvs+js
          psip=0.0
          call bdry(r(ivs),z(jvs),fr)
          afr=abs(fr)
          psib=0.0
 ! interpolate to get hb (dist of boundary from r)
-	 afp=abs(fp)
-	 hb=afr*h/(afr+afp)
-	 psiq=u(ivsp,jvsp)
-	 psip=((hb-h)*psiq+2.0*h*psib)/(h+hb)
+     afp=abs(fp)
+     hb=afr*h/(afr+afp)
+     psiq=u(ivsp,jvsp)
+     psip=((hb-h)*psiq+2.0*h*psib)/(h+hb)
     5   continue
-	 u(iv,jv)=u(iv,jv)+ii*psip
+     u(iv,jv)=u(iv,jv)+ii*psip
          itots=itots+ii
  10   continue
 !

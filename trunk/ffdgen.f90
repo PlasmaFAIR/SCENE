@@ -43,7 +43,7 @@
         eps=epsv(k)
         call extj(eps,psi,extapp,extapp2,icur)
         extapp=extapp*vloop+extapp2
-        
+
         f=fprof(psi,2)
         ffd=fprof(psi,1)
         fd=ffd/f
@@ -58,7 +58,7 @@
         else
            gtst=-mu0*(f*extapp+f*bsj(k)/sqrt(bavg)+f*f*pd/bavg)/scl
         end if
-        
+
 
         !print*, extapp, j_nb(k), bsj(k)/sqrt(bav), f*pd/bav
         if (k.eq.1) then

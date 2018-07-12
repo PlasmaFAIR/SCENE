@@ -457,38 +457,38 @@
 !	    write(nw,*)'error*** problem in flxav, ne=0'
 !	    write(nw,*)'cannot evaluate zeff'
 !	    stop
-	  end if
-	end if
-	coolog=log(sqrt(ne*1.0e-6)*bk/te)
-	coolog=24.-coolog
+          end if
+        end if
+        coolog=log(sqrt(ne*1.0e-6)*bk/te)
+        coolog=24.-coolog
 !  electron--electron collision time
 !	epsfac=(4.*pi*eps0/(eq))**2
-	epsfac=(4.*pi*eps0/(zeff*eq))**2
-	ratio=te/eq
-	pro=ne*eq
-	rt=sqrt(te)
-	botcol=sqrt(2.*pi)*pro*coolog
-	topcol=rt*epsfac*ratio
-	colte=(3./4.)*topcol/botcol
-	vthe=sqrt(2.*te)
+        epsfac=(4.*pi*eps0/(zeff*eq))**2
+        ratio=te/eq
+        pro=ne*eq
+        rt=sqrt(te)
+        botcol=sqrt(2.*pi)*pro*coolog
+        topcol=rt*epsfac*ratio
+        colte=(3./4.)*topcol/botcol
+        vthe=sqrt(2.*te)
 !  safety factor
-	qq=sfac(k)
+        qq=sfac(k)
 !  electron collisionality (hirshman, hawryluk, birge)
-	if (k.lt.ncon) then
-	  rnust=sqrt(2.)*r0*qq/(eps*colte*vthe*sqrt(eps))
-	  ft=ftrap(k)
-	else
+        if (k.lt.ncon) then
+          rnust=sqrt(2.)*r0*qq/(eps*colte*vthe*sqrt(eps))
+          ft=ftrap(k)
+        else
 ! set rnust is a dummy variable at the centre (ft=0)
-	  rnust=100.
-	  ft=0.
-	end if
+          rnust=100.
+          ft=0.
+        end if
 ! If Te=0, conductivity -> so neoclassical enhancement is irrelevant
 ! -> rnust is a dummy variable which we set to be large
         if (te.eq.0.) rnust=1.0d9
-	if (nco.eq.0) rnust=0.
+        if (nco.eq.0) rnust=0.
 !  neoclassical conductivity (hirshman, hawryluk, birge)
-	call signeo(rnust,ft,zeff,sigfac)
-	sighhb(k)=sigfac
+        call signeo(rnust,ft,zeff,sigfac)
+        sighhb(k)=sigfac
       end do
       do k=2,ncon-1
         x1=psiv(k-1)
@@ -575,7 +575,7 @@
 !!$       call tstplt(ncon,psiv,cnui)
 !!$       call tstplt(ncon,psiv,tnue)
 !!$       call tstplt(ncon,psiv,tnui)
- 
+
    end subroutine flxav
 !
 !*****************************************************************

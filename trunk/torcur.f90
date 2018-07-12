@@ -44,38 +44,38 @@
             bsq=bphi*bphi+bth*bth
             bmod=sqrt(bsq)
 !  extrapolate between flux surfaces:
-	    ik=0
-	    if (psi.gt.umax) then
-	      write(nw,*)'error***psi value greater than maximum'
-	      write(nw,*)'problem in torcur'
-	      stop
-	    end if
-	    do 5 k=1,ncon
-	      if (psi.ge.psiv(k)) goto 5
-	      ik=ik+1
+            ik=0
+            if (psi.gt.umax) then
+              write(nw,*)'error***psi value greater than maximum'
+              write(nw,*)'problem in torcur'
+              stop
+            end if
+            do 5 k=1,ncon
+              if (psi.ge.psiv(k)) goto 5
+              ik=ik+1
  5          continue
-	    if (ik.eq.0) then
-	      ik=1
-	      rat=0.
-	    else if (ik.lt.ncon) then
-	      rat=(psi-psiv(ik))/(psiv(ik+1)-psiv(ik))
-	    else
-	      write(nw,*)'error***cannot interpolate a psi value'
-	      write(nw,*)'problem in torcur'
-	      stop
+            if (ik.eq.0) then
+              ik=1
+              rat=0.
+            else if (ik.lt.ncon) then
+              rat=(psi-psiv(ik))/(psiv(ik+1)-psiv(ik))
+            else
+              write(nw,*)'error***cannot interpolate a psi value'
+              write(nw,*)'problem in torcur'
+              stop
     end if
             neubeam=J_nb(ik)+rat*(J_nb(ik+1)-J_nb(ik))
-	    bsmean=bsqav(ik)+rat*(bsqav(ik+1)-bsqav(ik))
-	    bstrap=bsj(ik)+rat*(bsj(ik+1)-bsj(ik))
-	    absj=ajdotb(ik)+rat*(ajdotb(ik+1)-ajdotb(ik))
-	    eps=epsv(ik)+rat*(epsv(ik+1)-epsv(ik))
+            bsmean=bsqav(ik)+rat*(bsqav(ik+1)-bsqav(ik))
+            bstrap=bsj(ik)+rat*(bsj(ik+1)-bsj(ik))
+            absj=ajdotb(ik)+rat*(ajdotb(ik+1)-ajdotb(ik))
+            eps=epsv(ik)+rat*(epsv(ik+1)-epsv(ik))
 !   bootstrap...
-	    bsph(i,j)=bstrap*bphi/sqrt(bsmean)
+            bsph(i,j)=bstrap*bphi/sqrt(bsmean)
 ! and alphs contribution
-	    absph(i,j)=absj*bphi/bsmean
-	    bra=1.-bsq/bsmean
+            absph(i,j)=absj*bphi/bsmean
+            bra=1.-bsq/bsmean
 !   pfirsch-schluter...
-	    psph(i,j)=-fsi*fsi*pd*bra/(rr*bsq)
+            psph(i,j)=-fsi*fsi*pd*bra/(rr*bsq)
 !   diamagnetic...
      diph(i,j)=-rr*bth*bth*pd/bsq
 
@@ -84,23 +84,23 @@
 !   grad--shafranov current (should converge to total j, as specified)
 !  (note, if itot=1 total specified current = gradj -> no convergence
 !  required).
-	    gradj(i,j)=-rr*pd-ffd/(rr*mu0)
+            gradj(i,j)=-rr*pd-ffd/(rr*mu0)
 !  externally applied current
-	    if (itot.eq.0) then
+            if (itot.eq.0) then
               icur=1
               if (neo.lt.0) icur=-1
 !  external current profile calculated in extj, returned in extapp
-	      call extj(eps,psi,extapp,extapp2,icur)
-              extapp = extapp 
-       
-	      if (abs(neo).eq.1) then
-		jcur=-1
-		call extj(eps,psi,spitc,extapp3,jcur)
-	      end if
-	      exph(i,j)=extapp*fsi/rr
+              call extj(eps,psi,extapp,extapp2,icur)
+              extapp = extapp
+
+              if (abs(neo).eq.1) then
+                jcur=-1
+                call extj(eps,psi,spitc,extapp3,jcur)
+              end if
+              exph(i,j)=extapp*fsi/rr
               exph2(i,j)=extapp2*fsi/rr
-	      if (abs(neo).eq.1) spit(i,j)=spitc*fsi/rr
-	    else
+              if (abs(neo).eq.1) spit(i,j)=spitc*fsi/rr
+            else
         !  total current profile given in gradj
 
         !Flag on whether to include nbi in ffdgen calc
@@ -110,10 +110,10 @@
         else
            exph(i,j)=gradj(i,j)-psph(i,j)-diph(i,j)-bsph(i,j)
         end if
-        
+
               exph2(i,j)=0.
            end if
-	  end if
+          end if
         end do
       end do
   end subroutine torcur

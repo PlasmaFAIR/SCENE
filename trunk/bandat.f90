@@ -32,7 +32,7 @@
 !  no bandit flux surfaces
       nban=ncon
       do k=1,nban
-	psiban(k)=k*dpsi
+    psiban(k)=k*dpsi
 !  store coords of bandit flux surfaces in rban,zban
         ik=1
         do 10 i=1,ncon
@@ -50,63 +50,63 @@
         end do
       end do
       do 30 k=1,nban
-	psi=psiban(k)
-	fsi=fprof(psi,2)
-	do i=1,npts
-	  rr=rban(i,k)
-	  zz=zban(i,k)
-	  btban(i,k)=fsi/rr
-	  bth=bp(rr,zz)
-	  bphi=fsi/rr
-	  bban(i,k)=sqrt(bth*bth+bphi*bphi)
+    psi=psiban(k)
+    fsi=fprof(psi,2)
+    do i=1,npts
+      rr=rban(i,k)
+      zz=zban(i,k)
+      btban(i,k)=fsi/rr
+      bth=bp(rr,zz)
+      bphi=fsi/rr
+      bban(i,k)=sqrt(bth*bth+bphi*bphi)
         end do
 !  distance along field line and circumference of flux surface
-	do i=1,npts
-	  if (i.eq.1) then
-	    sban(i,k)=0.
-	    circ(k)=0.
-	  else
-	    drl=rban(i,k)-rban(i-1,k)
-	    dzl=zban(i,k)-zban(i-1,k)
-	    dl=sqrt(drl**2+dzl**2)
-	    circ(k)=circ(k)+dl
-	    bmod=0.5*(bban(i,k)+bban(i-1,k))
-	    bt=0.5*(btban(i,k)+btban(i-1,k))
-	    bth=sqrt(bmod**2-bt**2)
-	    sban(i,k)=sban(i-1,k)+dl*bmod/bth
-	  end if
+    do i=1,npts
+      if (i.eq.1) then
+        sban(i,k)=0.
+        circ(k)=0.
+      else
+        drl=rban(i,k)-rban(i-1,k)
+        dzl=zban(i,k)-zban(i-1,k)
+        dl=sqrt(drl**2+dzl**2)
+        circ(k)=circ(k)+dl
+        bmod=0.5*(bban(i,k)+bban(i-1,k))
+        bt=0.5*(btban(i,k)+btban(i-1,k))
+        bth=sqrt(bmod**2-bt**2)
+        sban(i,k)=sban(i-1,k)+dl*bmod/bth
+      end if
         end do
 !  calculate areas and volumes between flux surfaces
-	psi1=psiban(k)
-	if (k.eq.1) then
-	  psi2=0.
-	else
-	  psi2=psiban(k-1)
-	end if
-	k1=1
-	k2=1
-	do 35 ik=1,ncon
-	  if (psi1.gt.psiv(ik)) goto 35
-	  k1=ik
+    psi1=psiban(k)
+    if (k.eq.1) then
+      psi2=0.
+    else
+      psi2=psiban(k-1)
+    end if
+    k1=1
+    k2=1
+    do 35 ik=1,ncon
+      if (psi1.gt.psiv(ik)) goto 35
+      k1=ik
  35     continue
-	do 36 ik=1,ncon
-	  if (psi2.gt.psiv(ik)) goto 36
-	  k2=ik
+    do 36 ik=1,ncon
+      if (psi2.gt.psiv(ik)) goto 36
+      k2=ik
  36     continue
-	if (k1.eq.ncon) k1=k1-1
-	if (k2.eq.ncon) k2=k2-1
-	rat=(psi1-psiv(k1))/(psiv(k1+1)-psiv(k1))
-	rn1=rnorm(k1)+rat*(rnorm(k1+1)-rnorm(k1))
-	ri1=rinv(k1)+rat*(rinv(k1+1)-rinv(k1))
-	qban(k)=sfac(k1)+rat*(sfac(k1+1)-sfac(k1))
-	rat=(psi2-psiv(k2))/(psiv(k2+1)-psiv(k2))
-	rn2=rnorm(k2)+rat*(rnorm(k2+1)-rnorm(k2))
-	ri2=rinv(k2)+rat*(rinv(k2+1)-rinv(k2))
-	dpsi=abs(psi2-psi1)
-	vint=0.5*(rn1+rn2)
-	aint=0.5*(ri2*rn2+ri1*rn1)
-	vban(k)=2.*pi*vint*dpsi
-	aban(k)=aint*dpsi
+    if (k1.eq.ncon) k1=k1-1
+    if (k2.eq.ncon) k2=k2-1
+    rat=(psi1-psiv(k1))/(psiv(k1+1)-psiv(k1))
+    rn1=rnorm(k1)+rat*(rnorm(k1+1)-rnorm(k1))
+    ri1=rinv(k1)+rat*(rinv(k1+1)-rinv(k1))
+    qban(k)=sfac(k1)+rat*(sfac(k1+1)-sfac(k1))
+    rat=(psi2-psiv(k2))/(psiv(k2+1)-psiv(k2))
+    rn2=rnorm(k2)+rat*(rnorm(k2+1)-rnorm(k2))
+    ri2=rinv(k2)+rat*(rinv(k2+1)-rinv(k2))
+    dpsi=abs(psi2-psi1)
+    vint=0.5*(rn1+rn2)
+    aint=0.5*(ri2*rn2+ri1*rn1)
+    vban(k)=2.*pi*vint*dpsi
+    aban(k)=aint*dpsi
  30   continue
       open(50,file='flxinf.dat')
       write(50,*)'no flux surfaces'
@@ -139,7 +139,7 @@
  1020 format(1p5e13.5)
  1030 format(i5)
  1040 format(8i5)
-      close(50) 
+      close(50)
 !!$      call pspace(0.05,0.95,0.05,0.95)
 !!$      zmin=z(1)
 !!$      zmax=z(nz)

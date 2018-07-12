@@ -118,11 +118,11 @@
       palpha=0.
       pimp3=0.
       do i=1,nr
-	do 10 j=1,nz
-	  if (ixout(i,j).le.0) goto 10
-	  rr=r(i)
-	  zz=z(j)
-	  uu=u(i,j)
+        do 10 j=1,nz
+          if (ixout(i,j).le.0) goto 10
+          rr=r(i)
+          zz=z(j)
+          uu=u(i,j)
           psi=umax-uu
           if (psi.le.0.) then
             k=ncon
@@ -148,9 +148,9 @@
           jtotal=jtotal+exph(i,j)*dr*dz
           if (psi.lt.psicut) jcore=jcore+exph(i,j)*dr*dz
 !  calculate pressure
-	  p=press(psi,0)
-	  ptota=ptota+p*dr*dz
-	  ptotv=ptotv+p*rr*dr*dz
+          p=press(psi,0)
+          ptota=ptota+p*dr*dz
+          ptotv=ptotv+p*rr*dr*dz
           pimp3=pimp3+bk*densi(psi,3,0)*tempi(psi,3,0)*rr*dr*dz
           if (imp.gt.0) then
 !   calculate helium density
@@ -159,23 +159,23 @@
             dalf=0.5*(1.-dil)*dense(psi,0)
           end if
           confa=confa+dalf*rr*dr*dz*2.*pi
-	  bth=bp(rr,zz)
-	  bphi=fprof(psi,2)/rr
-	  btot=bphi*bphi+bth*bth
-	  bptot=bptot+bth*bth*rr*dr*dz
-	  btotv=btotv+btot*rr*dr*dz
+          bth=bp(rr,zz)
+          bphi=fprof(psi,2)/rr
+          btot=bphi*bphi+bth*bth
+          bptot=bptot+bth*bth*rr*dr*dz
+          btotv=btotv+btot*rr*dr*dz
           te=tempe(psi,0)
           avt=avt+te*rr*dr*dz
 
-	  if (te.gt.1.d-10) then
+          if (te.gt.1.d-10) then
             ti=tempi(psi,1,0)
             ne=dense(psi,0)
             dion=1.0d-19*densi(psi,1,0)
 !   include inconsistent dilution factor if no impurities...
             if (imp.eq.0) dion=dil*ne*1.0d-19/zm
             arg=-0.476*(abs(log(1.45d-5*ti)))**2.25
- 	  else
-	    ne=0.
+          else
+            ne=0.
             dion=0.
             ti=0.
             arg=1.
@@ -183,17 +183,17 @@
           avti=avti+ti*rr*dr*dz
           pden=1.27d4*dion**2*exp(arg)
           pfus=pfus+2.*pi*pden*rr*dr*dz
-	  avel=avel+ne*rr*dr*dz
+          avel=avel+ne*rr*dr*dz
           avio=avio+dion*rr*dr*dz
-	  if (imp.eq.1) then
-	    if (ne.gt.0.) then
-	      do 5 l=1,nimp+1
-		zni=densi(psi,l,0)
-		zeffav=zeffav+(zni*rr*dr*dz*iz(l)**2)/ne
+          if (imp.eq.1) then
+            if (ne.gt.0.) then
+              do 5 l=1,nimp+1
+                zni=densi(psi,l,0)
+                zeffav=zeffav+(zni*rr*dr*dz*iz(l)**2)/ne
  5            continue
-	    end if
-	  end if
-	  vol=vol+rr*dr*dz
+            end if
+          end if
+          vol=vol+rr*dr*dz
           area=area+dr*dz
  10     continue
       end do
@@ -203,7 +203,7 @@
          !write(6,*)' pimp3/palpha=',pimp3/palpha
          allocate (pimp3v(ncon))
          pimp3v=0.
-         do k=1,ncon 
+         do k=1,ncon
             psi=psiv(k)
             pimp3v(k)=bk*densi(psi,3,0)*tempi(psi,3,0)
          end do
@@ -329,9 +329,9 @@
       avel=avel/vol
       avio=avio/vol
       if (imp.eq.0) then
-	zeffav=zm
+        zeffav=zm
       else
-	zeffav=zeffav/vol
+        zeffav=zeffav/vol
       end if
 !  internal inductance
       rli2=bptot*circumf(1)**2/(mu0*mu0*cur*cur*vol)

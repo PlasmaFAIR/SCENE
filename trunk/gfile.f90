@@ -103,7 +103,7 @@
           else if ((rat.lt.1.000000001).and.(rat.gt.1.0d0)) then
             rat=1.
           else
-          write(6,*)' rat outside range in gfil, rat=',rat 
+          write(6,*)' rat outside range in gfil, rat=',rat
           write(6,*)' psi=',psi,' psi(ij)=',psiv(ij),' psi(ij+1)=',psiv(ij+1)
           stop
           end if

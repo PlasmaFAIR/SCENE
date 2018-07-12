@@ -19,8 +19,8 @@
       psin=psi/umax
       if (ipass.eq.0) then
 !  use input profile parameterisation
-	g0=-mu0*scl*r0*r0*(1.-bpol)
-! if ipswtch=-1 then use mesh profile for ffprime 
+        g0=-mu0*scl*r0*r0*(1.-bpol)
+! if ipswtch=-1 then use mesh profile for ffprime
  if (ipswtch.eq.-1) then
           psin=psi/umax
           dpsi=1./nterp
@@ -71,7 +71,7 @@
            return
           end if
           fff=fpow+1.
-	  ff1=fpow1+1
+          ff1=fpow1+1
           ff2=fpow2+1.
           fsq=(2.*umax*g0)*((-1./fff)*xps**fff    &
                             +(af1/ff1)*psin**ff1+ &
@@ -98,12 +98,12 @@
         end if
 !************************************************************
         if (ipswtch.eq.5) then
-	  ffp=g0*xps**fpow
-	  if (id.eq.1) then
-	    fprof=ffp
-	    return
-	  end if
-	  fff=fpow+1
+          ffp=g0*xps**fpow
+          if (id.eq.1) then
+            fprof=ffp
+            return
+          end if
+          fff=fpow+1
           fsq=(2.*umax*g0/fff)*xps**fff
           fsq=fsq+const
           if (fsq.lt.0.) then
@@ -124,9 +124,9 @@
           return
        end if
 
-       !Test function from Lao et al 
+       !Test function from Lao et al
        if (ipswtch.eq.6) then
-          
+
           ffp = g0 * ( af1*psin**1 + af2*psin**2 + &
                af3*psin**3 - (af1+af2+af3)**4
           if (id.eq.1) then
@@ -154,13 +154,13 @@
 
           fprof=ffpp
        end if
-       
-	ffp=g0*((1.+xps)**fpow-1.)
-	if (id.eq.1) then
-	  fprof=ffp
-	  return
-	end if
-	fff=fpow+1
+
+        ffp=g0*((1.+xps)**fpow-1.)
+        if (id.eq.1) then
+          fprof=ffp
+          return
+        end if
+        fff=fpow+1
         fsq=-(2.*umax*g0/fff)*((1.+xps)**fff-fff*xps-1.)
         fsq=fsq+const
         if (fsq.lt.0.) then
@@ -179,11 +179,11 @@
         ffpp=-(g0/umax)*fpow*(1.+xps)**(fpow-1.)
         fprof=ffpp
 !********************************************************************8
-        
+
      else
 !---------------------------------------------------------------
 !  use discrete form of ff'
-	ij=1
+        ij=1
         xps=psi/umax
         if ((xps.gt.1).or.(xps.lt.0.)) then
           if (abs(xps).lt.1.0d-8) then
@@ -200,8 +200,8 @@
           ij=ncon
         else
           if (xps.lt.psiold(ncon/2)) ij=ncon/2
-	  do while (psiold(ij).ge.xps)
-	    ij=ij+1
+          do while (psiold(ij).ge.xps)
+            ij=ij+1
             if (ij.gt.ncon) then
               write(6,*)' error in calculating xps'
               write(6,*)' psiold(ncon)=',psiold(ncon),' xps=',xps
@@ -257,36 +257,36 @@
 !  integrate up to calculate f
         ffpint=0.
         if (ij.gt.2) then
-	  do j=1,ij-2
-	    ds=psiv(j+1)-psiv(j)
-	    ffpint=ffpint+0.5*(gst(j+1)+gst(j))*ds
+          do j=1,ij-2
+            ds=psiv(j+1)-psiv(j)
+            ffpint=ffpint+0.5*(gst(j+1)+gst(j))*ds
           end do
-	end if
-	if (ij.ne.1) then
-	  ds=psiv(ij)-psiv(ij-1)
-	  fup=ffpint+0.5*(gst(ij)+gst(ij-1))*ds
-	  ffpint=ffpint+rat*(fup-ffpint)
-	  fsq=2.*scl*ffpint+const
-	  if (fsq.lt.0.) then
-	    write(nw,*)'input error1*** f**2<0 in fprof'
-	    stop
-	  end if
-	  f=sqrt(fsq)
-	else
-	  fsq=const
-	  if (fsq.lt.0.) then
-	    write(nw,*)'input error2*** f**2<0 in fprof'
-	    stop
-	  end if
-	  f=sqrt(fsq)
-	end if
-	if (id.eq.2) then
-	  fprof=f
-	  return
-	else
-	  fprof=ffp/f 
+        end if
+        if (ij.ne.1) then
+          ds=psiv(ij)-psiv(ij-1)
+          fup=ffpint+0.5*(gst(ij)+gst(ij-1))*ds
+          ffpint=ffpint+rat*(fup-ffpint)
+          fsq=2.*scl*ffpint+const
+          if (fsq.lt.0.) then
+            write(nw,*)'input error1*** f**2<0 in fprof'
+            stop
+          end if
+          f=sqrt(fsq)
+        else
+          fsq=const
+          if (fsq.lt.0.) then
+            write(nw,*)'input error2*** f**2<0 in fprof'
+            stop
+          end if
+          f=sqrt(fsq)
+        end if
+        if (id.eq.2) then
+          fprof=f
           return
-	end if
+        else
+          fprof=ffp/f
+          return
+        end if
       end if
   end function fprof
 !

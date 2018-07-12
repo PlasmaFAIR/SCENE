@@ -74,7 +74,7 @@
         psi=psiv(i)
         write(48,909)psi/umax,press(psi,1),fprof(psi,3)
       end do
- 996  format(e18.8) 
+ 996  format(e18.8)
  998  format(i5)
  999  format(2e18.8)
  909  format(3e18.8)

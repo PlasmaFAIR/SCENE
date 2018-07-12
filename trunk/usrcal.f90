@@ -2,7 +2,7 @@
 !     *****************
 !
 !  This is the user interface with SCENE.  Call to user subroutines can be
-!  made from here.....the equilibrium is now converged to the required 
+!  made from here.....the equilibrium is now converged to the required
 !  accuracy.
 !
       use param
@@ -189,7 +189,7 @@
          scale=((fpow3/(fpow3+fpow4))**(fpow3))*((fpow4/(fpow4+fpow3))**fpow4)
         arr3(i)=af3*vloop*arr3(i)/scale
         eps=epsv(i)
-	call extj(eps,psi,extapp,extapp2,icur)
+        call extj(eps,psi,extapp,extapp2,icur)
         arr4(i)=extapp2
       end do
 !      call tstplt(ncon,psinorm,sfac,0.2d0,0.0d0)

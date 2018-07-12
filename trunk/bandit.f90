@@ -133,7 +133,7 @@
       write(51,*)' BZ'
       write(51,101) ((bz(i,j),i=1,nr),j=1,nz)
  101  format(8(1pe15.8))
-      close(51) 
+      close(51)
 !!$      call pspace(0.05,0.95,0.05,0.95)
 !!$      zmin=z(1)
 !!$      zmax=z(nz)
@@ -156,7 +156,7 @@
       subroutine curplt
 !     *****************
 !
-! Plots externally applied current within a flux surface as a function of 
+! Plots externally applied current within a flux surface as a function of
 ! r/a
 !
       use param
@@ -178,7 +178,7 @@
           icur=1
           if (neo.lt.0) icur=-1     ! switch off trapping effects
 !  external current profile calculated in extj, returned in extapp
-	  call extj(eps,psi,extapp,extapp2,icur)
+      call extj(eps,psi,extapp,extapp2,icur)
           curden(k)=extapp*vloop+extapp2
         else
           write(6,*)' ERROR***this routine is not yet developed for itot=1'

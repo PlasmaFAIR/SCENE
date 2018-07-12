@@ -41,13 +41,13 @@
       psimin=0.
       dpsi=(psimax-psimin)/(ncon-1)
       do k=1,ncon
-	krev=ncon-k+1
-	psi=psimax-(k-1)*dpsi
+    krev=ncon-k+1
+    psi=psimax-(k-1)*dpsi
         psih=psimax-psi
-	fsi=fprof(psi,2)
-	ftab(krev)=fsi*1.0e6
-	pt=press(psi,1)
-	ptab(krev)=pt
+    fsi=fprof(psi,2)
+    ftab(krev)=fsi*1.0e6
+    pt=press(psi,1)
+    ptab(krev)=pt
         if (k.lt.ncon) then
           jr=0
           if (k.gt.1) then
@@ -83,15 +83,15 @@
           write(66,15)psi/psimax,qq,alpha,sh
  15       format(' psi=',e13.5,' q=',f8.4,' alpha=',e13.5,' sh=',e13.5)
         end if
-	n=1
-	do 88 j=1,ncon
-	  if (psi.gt.psiv(j)) goto 88
-	  n=j
+    n=1
+    do 88 j=1,ncon
+      if (psi.gt.psiv(j)) goto 88
+      n=j
  88     continue
-	if (n.eq.ncon) n=ncon-1
-	rat=(psi-psiv(n))/(psiv(n+1)-psiv(n))
-	qq=sfac(n)+rat*(sfac(n+1)-sfac(n))
-	fptab(krev)=qq
+    if (n.eq.ncon) n=ncon-1
+    rat=(psi-psiv(n))/(psiv(n+1)-psiv(n))
+    qq=sfac(n)+rat*(sfac(n+1)-sfac(n))
+    fptab(krev)=qq
       end do
       b0=mu0*rodi/(2.*pi*rcen)
       b0g=b0*1.0e4
@@ -184,7 +184,7 @@
                   XMIN,YMIN,DX,DY,RMAX,RW,A)
  190     continue
  200  continue
-            
+
       print *,'write out'
 !      open(unit=40,file='interp.baleq',status='new')
       open(unit=40,file='interp.baleq')

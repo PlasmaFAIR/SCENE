@@ -3,8 +3,8 @@
 !
 !----------------------------------------------------------------------
 !
-!  Converts the equilibrium defined on the R-Z mesh to flux surface 
-!  coordinates. The poloidal flux is zero on axis, and rises to umax 
+!  Converts the equilibrium defined on the R-Z mesh to flux surface
+!  coordinates. The poloidal flux is zero on axis, and rises to umax
 !  at the edge
 !
 !------------------------------------------------------------------------
@@ -307,7 +307,7 @@
       if (irem.gt.0) goto 35
 !  If icontour=1, we smooth the contour (attempts to get d^2R/dl^2 smooth
       if (icontour.eq.1) then
-        
+
       end if
       circumf(k)=leng(icon)
       do i=1,icon
@@ -326,7 +326,7 @@
 !!$      call tstplt2(icon/5,leng,r_temp,z_temp)
 !!$      call tstplt(icon,leng,r_temp)
 !!$      call tstplt(icon,leng,z_temp)
-      else 
+      else
 ! Use Colin Roach's contouring algorithm...higher accuracy for higher order
 ! derivatives (2/5/01)
         nrc=nr
@@ -447,15 +447,15 @@
       diff1=(eps1-eps)/tokeps
       if (diff1.gt.0.) then
 !  linear interpolate between u1 and umax
-	 u2=eps*u1/eps1+(eps1-eps)*umax/eps1
+         u2=eps*u1/eps1+(eps1-eps)*umax/eps1
       else
 !  linear interpolate between u1 and zero
-	u2=(tokeps-eps)*u1/(tokeps-eps1)
+        u2=(tokeps-eps)*u1/(tokeps-eps1)
       end if
       if ((u2.gt.umax).or.(u2.lt.0.)) then
-	write(nw,*)' error in psical***diff1=',diff1
+        write(nw,*)' error in psical***diff1=',diff1
         write(nw,*)' u1=',u1,' eps1=',eps1,' eps=',eps
-	stop
+        stop
       end if
       ntrip=0
  5    call argen(u2,eps2,0)
@@ -463,13 +463,13 @@
       if ((diff2.gt.0.).and.(diff1.gt.0.)) then
 ! bump up u2 until eps lies between eps1 and eps2
          u2=u2+0.1*(umax-u2)
-         
-	ntrip=ntrip+1
-	if (ntrip.gt.100) then
-	write(nw,*)' error in psical***cannot span U'
-	stop
-	end if
-	goto 5
+
+        ntrip=ntrip+1
+        if (ntrip.gt.100) then
+        write(nw,*)' error in psical***cannot span U'
+        stop
+        end if
+        goto 5
       end if
       ntrip=0
       i3=0
@@ -477,22 +477,22 @@
  10   u3=u1+(u1-u2)*(eps-eps1)/(eps1-eps2)
       ntrip=ntrip+1
       if ((u3.gt.umax).or.(u3.lt.0.)) then
-	if (ntrip.lt.100) then
-	  if (u3.gt.umax) then
-	    u3=umax
-	    i3=1
-	  end if
-	  if (u3.lt.0.) u3=0.
-	else
-	  write(nw,*)' error lin inter of psical***u3=',u3, eps, eps1, eps2,u2,diff1, diff2
-	  stop
-	end if
+        if (ntrip.lt.100) then
+          if (u3.gt.umax) then
+            u3=umax
+            i3=1
+          end if
+          if (u3.lt.0.) u3=0.
+        else
+          write(nw,*)' error lin inter of psical***u3=',u3, eps, eps1, eps2,u2,diff1, diff2
+          stop
+        end if
       end if
       if (i3.eq.1) then
-	eps3=0.
-	i3=0
+        eps3=0.
+        i3=0
       else
-	call argen(u3,eps3,0)
+        call argen(u3,eps3,0)
       end if
 ! iterate parameters
       eps1=eps2
@@ -526,7 +526,7 @@
 !!$        call tstplt(icon,leng,flxz)
 !!$        call tstplt(icon,leng,z_temp)
 !!$        call tstplt(icon,leng,r_temp)
-!!$!  We now want to fit R and Z to a trig series to ensure smooth higher order 
+!!$!  We now want to fit R and Z to a trig series to ensure smooth higher order
 !!$!  derivatives
 !!$      nharm=nr/10
 !!$      if (nharm.lt.5) nharm=5

@@ -68,14 +68,14 @@
         falnum=srce*tslow/(4.*pi)
         write(nh,10)ss,vc,falnum
 !  zeff
-       	zeff=zm
+        zeff=zm
         if (imp.eq.1) then
           ne=ne19*1.0d19
-	  if (ne.gt.0.) then
-	    zeff=0.
-	    do l=1,nimp+1
-	      ni=densi(psi,l,0)
-	      zeff=zeff+(ni*iz(l)**2)/ne
+          if (ne.gt.0.) then
+            zeff=0.
+            do l=1,nimp+1
+              ni=densi(psi,l,0)
+              zeff=zeff+(ni*iz(l)**2)/ne
             end do
           end if
         end if
@@ -104,7 +104,7 @@
         fsi=fprof(psi,2)
 !  Add in electron screening factor:
         femu=(mu1(k)*(mu3(k)+2.*(nuee(k)+13./(8.*nuei(k))))- &
-             mu2(k)*(mu2(k)-3./(2.*nuei(k))))                      
+             mu2(k)*(mu2(k)-3./(2.*nuei(k))))
         bot=((mu1(k)+nuei(k))*                               &
                 (mu3(k)+2.*(nuee(k)+13.*nuei(k)/8.))    &
               -(mu2(k)-1.5*nuei(k))**2)
@@ -156,10 +156,3 @@
       pdal=7.0e-27*(f1d*f1+f2d*f2)*falnum*amass
       return
    end subroutine pdgen
-
-
-
-
-
-
-

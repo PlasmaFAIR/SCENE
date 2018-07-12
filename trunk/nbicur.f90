@@ -20,7 +20,7 @@ subroutine nbicur()
   real, dimension(:), allocatable :: ebeam, pbeam, rtang, bwidth, bheigh, bgaussR, bgaussZ, bzpos
 
   integer, dimension(:), allocatable :: nbshape, nbptype
-  
+
   real, dimension(:), allocatable :: aion, zion, ne20, tekev, tikev, zeff
   real, dimension(:,:), allocatable :: ni20, pwrfrac
 
@@ -50,7 +50,7 @@ subroutine nbicur()
   mxrho = 51
 
     !J_nb = 0.
-  !Nbi input param: no. of beams, mass of beams, charge, beam-fusion flag 
+  !Nbi input param: no. of beams, mass of beams, charge, beam-fusion flag
   nbeams = 2
   amb = 2
   zbeam = 1
@@ -77,28 +77,28 @@ subroutine nbicur()
   !print*, 'Tesum ', tesum, 'nesum', nesum, count
   neav = nesum/count
   teav = tesum/count
-  
+
   volp = sngl(vol*2*pi)
   print*, 'Plasma volume', volp
 
   !Iterations to find rho
   maxiter = 2
 
-	open(unit=53,file='nbi.dat', iostat=ios)
-	if (ios.ne.0) then
-		write(nw,*) 'Error reading in nbi.dat file'
-		stop
-	end if
-	
-	read(53,*)
-	read(53,*)
-	
-	read(53,*) nbeams
+        open(unit=53,file='nbi.dat', iostat=ios)
+        if (ios.ne.0) then
+                write(nw,*) 'Error reading in nbi.dat file'
+                stop
+        end if
 
-  
+        read(53,*)
+        read(53,*)
+
+        read(53,*) nbeams
+
+
   allocate(ebeam(nbeams), pbeam(nbeams), rtang(nbeams), bwidth(nbeams), bheigh(nbeams), &
        nbptype(nbeams), bgaussR(nbeams), bgaussZ(nbeams), bzpos(nbeams), nbshape(nbeams) )
-  
+
   allocate(pwrfrac(3, nbeams))
 
 
@@ -124,7 +124,7 @@ subroutine nbicur()
   read(53,*)
   read(53,*) nbptype
 
-  
+
   read(53,*)
   read(53,*) bwidth
 
@@ -140,8 +140,8 @@ subroutine nbicur()
   read(53,*)
   read(53,*) bgaussZ
 
-  
-  read(53,*) 
+
+  read(53,*)
   read(53,*) pwrfrac(:,1)
 
 
@@ -152,7 +152,7 @@ subroutine nbicur()
   do l=1,nbeams
         paux = paux + pbeam(l)
   end do
-  
+
   !print*, nbshape
 
   !Background plasma input quantities
@@ -162,7 +162,7 @@ subroutine nbicur()
   allocate(aion(nion), zion(nion), ne20(ncon), tekev(ncon), tikev(ncon), zeff(ncon), &
        dpdrs(ncon), rnormnb(ncon), dvol(ncon), darea(ncon), vprime(ncon), kappa(ncon), &
        dkappa(ncon), shafr(ncon), dshafr(ncon), vprime_norm(ncon), l31(ncon) )
-  
+
 
   !Ions parameters
   if ( nimp+2 .gt. 6) then
@@ -170,7 +170,7 @@ subroutine nbicur()
   else
      nion = nimp+1
   end if
-  
+
   !aion = zmas
   !zion = iz
   !Toroidal magnetic field
@@ -179,7 +179,7 @@ subroutine nbicur()
 
   dpdrs=0.
   rnormnb=0.
-  
+
   allocate( ni20(mxrho, nion))
 
   !Same order to NBEAM
@@ -193,7 +193,7 @@ subroutine nbicur()
   phi = sqrt(phi/phi(1))
 
   call trapfact(l31)
-  
+
   do con=1,ncon
 
      psi = psiv(con)
@@ -217,8 +217,8 @@ subroutine nbicur()
      ne = sngl(dense(psi,0))
      ne20(ncon-con+1) = ne*1.0e-20
 
-     
-     
+
+
      !Split ions into half D and half T
      ni20(ncon-con+1,1) = sngl(densi(psi,1,0)*1.0e-20)/2.
      aion(1) = 2.0
@@ -237,7 +237,7 @@ subroutine nbicur()
         zion(im) = iz(im)
 
      end do
-     
+
      tekev(ncon-con+1) = sngl(tempe(psi,0)*1.0e-3)
 
      tikev(ncon-con+1) = sngl(tempi(psi,1,0)*1.0e-3)
@@ -252,20 +252,20 @@ subroutine nbicur()
               zni=sngl(densi(psi,l,0))
               zeff(ncon-con+1)=sngl(zeff(ncon-con+1)+(zni*iz(l)**2)/ne)
            end do
-          
+
         end if
      end if
-     
+
 
   end do
 
-  
+
   do i=1,ncon
 
 
-  
+
   !   rr = maxval(rpts(ncon-i+1,:)) - r0
-  !   
+  !
   !   print*, rnormnb(i), vprime(i),  shafr(i), dshafr(i)
   end do
 
@@ -277,8 +277,8 @@ subroutine nbicur()
   !Set density to small value at edge otherwise NaNs
   ne20(ncon) = 0.01
   ni20(ncon,:) = 0.01
-	
-  
+
+
   !Allocate arrays to outputs variables (need to do it for max no. of
   !beams/rhos as is allocated in nbeams
   allocate(hofr(mxrho, 3,maxbeams))
@@ -303,7 +303,7 @@ subroutine nbicur()
        etanbTot, beamBeta, pNBAbsorbTot, pNBLossTot, beamFusTot, &
        beamFusChTot, snDTTotal, snDDTotal, iflagnb)
 
-  
+
   ni20=0.0
 
   !Set total current to J_nb
@@ -405,6 +405,6 @@ subroutine trapfact(l31)
               /dox)
       end do
 
-      
-   
+
+
     end subroutine trapfact

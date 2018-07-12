@@ -27,18 +27,18 @@
       ne=dense(psi,0)
       zeff=zm
       if (imp.eq.1) then
-	if (ne.gt.0.) then
-	  zeff=0.
-	  do l=1,nimp+1
-	    zni=densi(psi,l,0)
-	    zeff=zeff+(zni*iz(l)**2)/ne
+        if (ne.gt.0.) then
+          zeff=0.
+          do l=1,nimp+1
+            zni=densi(psi,l,0)
+            zeff=zeff+(zni*iz(l)**2)/ne
           end do
-	else
+        else
           nw=10
-	  write(nw,*)'error*** problem in hirsh, ne=0'
-	  write(nw,*)'cannot evaluate zeff'
-	  stop
-	end if
+          write(nw,*)'error*** problem in hirsh, ne=0'
+          write(nw,*)'cannot evaluate zeff'
+          stop
+        end if
       end if
       zb=zeff
       tau=te/ti
@@ -58,24 +58,24 @@
       alfi0=-1.172/(1.+0.462*x)
       if (nco.eq.1) then
 !  collisionality coeficients from hinton,hazeltine
-	a13=0.027*zm*zm-0.211*zm+1.204
-	b13=0.14*zm*zm-0.87*zm+1.8
-	c13=0.097*zm*zm-0.67*zm+1.643
-	a23=0.01*zm*zm-0.08*zm+0.64
-	b23=0.088*zm*zm-0.535*zm+1.057
-	c23=0.06*zm*zm-0.41*zm+0.97
-	f1=(1.+a13*sqrt(tnue(k))+b13*tnue(k))*(1.+c13*cnue(k))
-	f2=(1.+a23*sqrt(tnue(k))+b23*tnue(k))*(1.+c23*cnue(k))
-	rl31=rl310/f1
-	rl32=(rl320+2.5*rl310)/f2-2.5*rl31
-	fa=(1.+cnui(k)**2)*(1.+cnue(k)**2)
-	alfi=((alfi0+0.35*sqrt(tnui(k)))/(1.+0.7*sqrt(tnui(k)))   &
+        a13=0.027*zm*zm-0.211*zm+1.204
+        b13=0.14*zm*zm-0.87*zm+1.8
+        c13=0.097*zm*zm-0.67*zm+1.643
+        a23=0.01*zm*zm-0.08*zm+0.64
+        b23=0.088*zm*zm-0.535*zm+1.057
+        c23=0.06*zm*zm-0.41*zm+0.97
+        f1=(1.+a13*sqrt(tnue(k))+b13*tnue(k))*(1.+c13*cnue(k))
+        f2=(1.+a23*sqrt(tnue(k))+b23*tnue(k))*(1.+c23*cnue(k))
+        rl31=rl310/f1
+        rl32=(rl320+2.5*rl310)/f2-2.5*rl31
+        fa=(1.+cnui(k)**2)*(1.+cnue(k)**2)
+        alfi=((alfi0+0.35*sqrt(tnui(k)))/(1.+0.7*sqrt(tnui(k)))   &
              +2.1*cnui(k)**2)/fa
       else
 !  collisionless model
-	rl31=rl310
-	rl32=rl320
-	alfi=alfi0
+        rl31=rl310
+        rl32=rl320
+        alfi=alfi0
       end if
       a1e=-ped/pe
       a1i=-pid/pip

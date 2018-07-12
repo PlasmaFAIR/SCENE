@@ -2,7 +2,7 @@ subroutine geqdsk
 
   use param
   implicit none
-  
+
   integer :: i, j, nh, na, con, ij
   double precision :: rmax, rmin, dimr, zmax, zmin, dimz
   double precision :: fprof, press, psi, rat, diff, sqrt
@@ -13,9 +13,9 @@ subroutine geqdsk
   double precision, dimension(nr,nz) :: psirz, psi1
   character(8) :: date
   character(10) :: time
-  
+
   !Writes GEQDSK file
-   
+
   nh = 49
 
   open(unit=nh, file=runname(1:lrunname)//'.geqdsk', &
@@ -27,7 +27,7 @@ subroutine geqdsk
 
   call DATE_AND_TIME(date, time)
 
-     
+
   !First line header, main thing needed in nr and nz
   write(nh,2000) 'SCENE ', date, ' : ', time, 'RUN: ', runname, 0, nr, nz
   rmax = maxval(r)
@@ -54,7 +54,7 @@ subroutine geqdsk
   allocate(psii(nr), f(nr), ff(nr), p(nr), pp(nr))
 
   dpsi=umax/(nr-1)
-  
+
   do i=1,nr
      psii(i) = (i-1)*dpsi
      print*, psii(i)
@@ -95,12 +95,12 @@ subroutine geqdsk
         else
            psirz(i,j) = umax*1.2
         end if
-        
+
      end do
   end do
   !print*, jtor*dr*dz
 
-  
+
   !Extrapolates Psi to edge of grid
   call extrappsi(rmin, rmax, zmin, zmax,psi1)
   write(6,*) 'Smoothing function'
@@ -110,13 +110,13 @@ subroutine geqdsk
   ij=0
   do i=1,nr
      do j=1,nz
-       
+
         if (ixout(i,j).ne.0) then
             ij=ij+1
            diff = diff + ((umax - u(i,j)) - psi1(i,j))**2
            !psi1(i,j) = umax - u(i,j)
         end if
-        
+
      end do
   end do
   write(6,*) 'Avg diff between Psi and fit is :',  sqrt(diff/ij)
@@ -131,7 +131,7 @@ subroutine geqdsk
   do i=1,nr
      psi = psii(i)
      con = 1
-     
+
      !ncon=1 is the outermost flux surface
      do j=1,ncon-1
 
@@ -186,8 +186,8 @@ subroutine geqdsk
      zbdy(:) = zpts(1,:)
 
   end if
-  
-  write(nh, 2022) ndat, nlim 
+
+  write(nh, 2022) ndat, nlim
 
   write(nh,2020) (rbdy(i), zbdy(i), i=1,ndat)
 
@@ -220,7 +220,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   !Subroutine to fit a surface to Psi and then fill in
   !values of Psi outside plasma boundary
 
-  
+
   use param
   implicit none
 
@@ -244,7 +244,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   kr=3
   kz=3
 
-  
+
   rl=sngl(rmin)
   ru=sngl(rmax)
   zl=sngl(zmin)
@@ -252,14 +252,14 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   !no. of points in the plasma/boundary
   m=0
-  
+
   do i=1,nr
      do j=1,nz
         if(ixout(i,j).ne.0) m = m + 1
      end do
   end do
 
- 
+
  !smoothing factor
   sm = (m - sqrt(2.*m))/30000
   sm=0.
@@ -285,7 +285,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   nr1 = nrest
   nz1 = nzest
-  nmax = max(nr1,nz1)  
+  nmax = max(nr1,nz1)
 
 
   if (br.le.bz) then
@@ -296,15 +296,15 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
      b2 = b1+uw-kr
   end if
 
-  
-  
-  lwrk1 =  uw*vw *(2+b1+b2) + 2*(uw+vw+km*(m+nest)+nest-kr-kz) +b2 + 2 
+
+
+  lwrk1 =  uw*vw *(2+b1+b2) + 2*(uw+vw+km*(m+nest)+nest-kr-kz) +b2 + 2
   !lwrk1 = (7*uw*vw + 25*ww) * (ww+1) + 2 * (uw+vw+4*plas)+23*ww+56
- 
+
   lwrk2 = uw*vw*(b2+1)+b2
 
   kwrk = m+(nrest-2*kr-1)*(nzest-2*kz-1) + 1
-  
+
   allocate( u_in(m), r_in(m), z_in(m), w_in(m))
   allocate(tr(nmax), tz(nmax), c((uw*vw)), wrk1(lwrk1), wrk2(lwrk2), iwrk(kwrk))
   allocate(r_o(nr), z_o(nz))
@@ -315,7 +315,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   !tr(nmax-kr-1) = sngl(r(int(2*nr/3)))
   !tz(nmax-kz-1) = sngl(r(int(2*nr/3)))
-  
+
   !tz(
 
   !tr(kr+2:nr1-kr-1)=sngl(r(kr+2:nr-kr-1:2))
@@ -324,7 +324,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   ij=0
   do i=1,nr
      do j=1,nz
-        
+
         if (ixout(i,j).ne.0) then
            ij=ij+1
            u_in(ij) = sngl(umax - u(i,j))
@@ -348,7 +348,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   !write(6,*) nz1, tz(1:nz1)
   !write(6,*) c(1:nr1+nz1)
 
-  
+
   !print*, 'Surfit ier:',ier
 
   iopt=0
@@ -357,7 +357,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
        lwrk2, iwrk, kwrk, ier)
 
   print*, 'Surfit round 2 ier:',ier
-   
+
   do i=1,nr
      r_o(i) = sngl(r(i))
   end do
@@ -371,8 +371,8 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   allocate(wrki(kwrk), wrk3(lwrk1))
 
-  
-  
+
+
   call bispev(tr,nr1,tz,nz1,c,kr,kz,r_o,nr,z_o,nz,psi_extrap, &
        wrk3,lwrk1,wrki, kwrk,ier)
 
@@ -388,11 +388,10 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   write(6,*) 'Bispev in Extrappsi ier = ',ier
 
-    
+
   deallocate( u_in, r_in, z_in, w_in)
   deallocate(tr, tz, c, wrk1, wrk2)
-  deallocate(wrki,wrk3)  
+  deallocate(wrki,wrk3)
 
-  
+
 end subroutine extrappsi
-

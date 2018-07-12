@@ -137,7 +137,7 @@
         y=(i-0.5)*dys
         phi(i+1)=phi(i)+fac*exp(-y*y)*dys
       end do
-  end subroutine erfun  
+  end subroutine erfun
 !
 !******************************************************************
 !!$c
@@ -169,7 +169,7 @@
 !!$        write(6,*)' error****ecrh resonance outside z of plasma'
 !!$        stop
 !!$      end if
-!!$      if (ir.gt.0) then 
+!!$      if (ir.gt.0) then
 !!$        if (ixout(ir,iz).le.0) then
 !!$          write(6,*)' error***ecrh resonance outside plasma'
 !!$          stop
@@ -210,12 +210,12 @@
 !!$            goto 70
 !!$          end if
 !!$          if (psimin.gt.u(i,j)) psimin=u(i,j)
-!!$          if (psimax.lt.u(i,j)) psimax=u(i,j)  
+!!$          if (psimax.lt.u(i,j)) psimax=u(i,j)
 !!$ 70     continue
 !!$ 80   continue
 !!$      sprd=psimax-psimin
 !!$      return
-!!$      end      
+!!$      end
 !!$c
 !******************************************************************
 !
@@ -244,7 +244,7 @@
           sum01(i)=sum01(i)+dn(i)*sm(i)*rmat01/coltau(i,j)
           rmat11=-(3.25+4.*xab(i,j)**2+7.5*xab(i,j)**4)        &
               /(1.+xab(i,j)**2)**2.5
-          sum11(i)=sum11(i)+dn(i)*sm(i)*rmat11/coltau(i,j)          
+          sum11(i)=sum11(i)+dn(i)*sm(i)*rmat11/coltau(i,j)
         end do
         sum10(i)=sum01(i)
       end do
@@ -309,7 +309,7 @@
         gg=(phioy-y*phid)/(2.*y*y)
       end if
       gov=gg
-  end function gov  
+  end function gov
 !
 !******************************************************************
 !
@@ -329,7 +329,7 @@
       double precision pda,v1a,v2a
       double precision, dimension(:), allocatable:: tsd,dnd
       double precision vvec(2*nimp+4),upar(nimp+2)
-      double precision tmat(2*nimp+4,2*nimp+4),rlmat(2*nimp+4,2*nimp+4) 
+      double precision tmat(2*nimp+4,2*nimp+4),rlmat(2*nimp+4,2*nimp+4)
       integer i,j,id,narr,k
 !
       allocate(ch(nimp+2),ts(nimp+2),tsd(nimp+2),sm(nimp+2),  &
@@ -506,7 +506,7 @@
         gg=(phig-y*phid)/(2.*y*y)
       end if
       phig=phig-gg
-   end function phig  
+   end function phig
 !
 !*****************************************************************
 !
@@ -525,7 +525,7 @@
       double precision gov,phig,y,vv,vtij,vdij,arg
       integer nv,i,n,j,k
 !
-      
+
 !
       fc=1.-ft
       vmax=5.
@@ -594,9 +594,3 @@
 !!$                ' mu2=',vis(1,2)*(fc/ft)/(dn(i)*sm(i)),  &
 !!$                ' mu3=',vis(1,3)*(fc/ft)/(dn(i)*sm(i))
   end subroutine viscos
-
-
-
-
-
-

@@ -32,7 +32,7 @@
          stop
       endif
 !
-      nsurf=nr 
+      nsurf=nr
       allocate(ps(nsurf))
       do i=1,nsurf
         ps(i)=(dble(i-1)/dble(nsurf-1))*umax*2.*pi
@@ -193,4 +193,3 @@
 
       return
  end subroutine gs2
-

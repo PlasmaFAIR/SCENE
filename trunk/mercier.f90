@@ -66,7 +66,7 @@
       hegterm(nf)=glassterm(nf)/(alfs-hfun)
       write(82,*)' psiN=',psi/psiv(1),' q=',sfac(nf),' bsterm=',neoterm(nf), &
               ' glass term=',glassterm(nf),' ratio=',neoterm(nf)/glassterm(nf)
-      write(82,*)' psiN=',psi/psiv(1),' q=',sfac(nf),' bsterm=',neoterm(nf),& 
+      write(82,*)' psiN=',psi/psiv(1),' q=',sfac(nf),' bsterm=',neoterm(nf),&
                 ' hegna term=',hegterm(nf),' ratio=',neoterm(nf)/hegterm(nf)
       write(82,*)' Lbs=',mu0*bsj(nf)*sqrt(bsqav(nf))/(fsi*pd)
       write(82,*)' DR=',dres,' dm=',dm

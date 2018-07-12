@@ -7,18 +7,18 @@ module param
 !
 !physical constants...
   double precision pi,eps0,mu0,bk  ! pi, epsilon_0, mu_0 and Boltzman constant
-  double precision mp,me,eq           ! proton and electron masses, 
+  double precision mp,me,eq           ! proton and electron masses,
                                       ! electron charge
 ! ibdry=0 uses original Sykes parameterisation of boundary
 ! 27/4/04 ibdry=1 option introduced to permit more general shapes to be
 ! modelled
    integer ibdry
-! plasma shape parameters: Geometric centre, inverse aspec ratio, 
+! plasma shape parameters: Geometric centre, inverse aspec ratio,
 !                          elongation,triangularity, quadracity separatrix
   double precision rcen,tokeps, elon,tri,quad,kval, amin
 !     kval=0 gives D, kval=1 gives separatrix (DND)
 !
-!  r(theta,psi) for boundary: R=r*cos(th), Z=r*sin(th) defined boundary on 
+!  r(theta,psi) for boundary: R=r*cos(th), Z=r*sin(th) defined boundary on
 !  flux surface psi. There are nflux surfaces
      double precision, dimension(:), allocatable:: theta
      double precision, dimension(:,:), allocatable:: rth
@@ -67,10 +67,10 @@ module param
      double precision fpow,fpow1,fpow2,fpow3,fpow4
      double precision af0,af1,af2,af3,af4
 !  Leading exponent of current profile
-     double precision powj 
-!  if itot=0 and the user specifies the driven current profile, then 
+     double precision powj
+!  if itot=0 and the user specifies the driven current profile, then
 !  a part of that current can be used to 'fill in' the bootstrap current  near
-!  the axis; this driven current is stored in exph2. The extent in normalised 
+!  the axis; this driven current is stored in exph2. The extent in normalised
 !  psi over which the 'filling' occurs in specified in psic
      double precision psic
 !
@@ -86,7 +86,7 @@ module param
      double precision dil    ! ion dilution fraction: used only for fusion
                              ! power calculation when imp=0 is specified
      integer nbet       ! used to count number of beta iterations (if betan>0)
-     
+
 !
 
 !
@@ -94,16 +94,16 @@ module param
      integer imat         ! uses Hirshman formula if IMAT=0, or
                           ! Hirshman-Sigmar for IMAT=1
      integer imp          ! Set to 1 (0) to (not) include impurity ion species
-     integer itot         ! If 1 derives equilibrium from ff-prime and 
+     integer itot         ! If 1 derives equilibrium from ff-prime and
                           ! p-prime profiles; If 0 derives equilibrium from
                           ! specified driven current profile
-     integer neo          ! If set to 1, and ITOT set to 0, derives the 
+     integer neo          ! If set to 1, and ITOT set to 0, derives the
                           ! equilibrium with neoclassical current profile
-                          ! If set to 2, then ibv is set to 1, to indicate 
+                          ! If set to 2, then ibv is set to 1, to indicate
                           ! Bv ramp-induced toroidal electric field
      integer ibv
      double precision rpk,rm  ! R of peak Bz-dot and zero Bz-dot
-     integer nco          ! Set to 1 (0), to (not) include collisions 
+     integer nco          ! Set to 1 (0), to (not) include collisions
                           ! If set >1 then uses Shaing model for collisions
                           ! at tight aspect ratio (for bootstrap current)
 
@@ -114,13 +114,13 @@ module param
 !  Equilibrium analysis...
      integer ncon        ! Required number of flux surfaces to analyse eqbm
      integer npts        ! Number of mesh points on each flux surface
-     integer npass       ! Maximum number of equilibrium iterations in 
+     integer npass       ! Maximum number of equilibrium iterations in
                          ! attempt to converge on required current profile
-     integer icontour    ! When set to zero uses linear interpolation of 
+     integer icontour    ! When set to zero uses linear interpolation of
                          ! psi(R,Z) grid: fine for R, Z and forst derivatives
-                         ! Set to one to smooth the contours to give smooth 
+                         ! Set to one to smooth the contours to give smooth
                          ! second derivatives
-                         ! Set to 2 to use Colin's contouring algorithm, which 
+                         ! Set to 2 to use Colin's contouring algorithm, which
                          ! interpolates the psi mesh using a bi-cibic
                          ! spline
 !
@@ -206,7 +206,7 @@ module param
 !  R and Z coordinates, and poloidal field
   double precision, dimension(:,:), allocatable:: rpts,zpts,bppts
 !  flux surface circumference
-   double precision, dimension(:), allocatable:: circumf 
+   double precision, dimension(:), allocatable:: circumf
 
 ! There follows a list of flux-surface averaged variables:
 !  First we have q, q-prime and q-double-prime
@@ -246,7 +246,7 @@ module param
   double precision, dimension(:,:), allocatable:: psph
 !  Diamagnetic current
   double precision, dimension(:,:), allocatable:: diph
-!  Externally driven current (Ohmic + any auxiliary CD); exph2 is the 
+!  Externally driven current (Ohmic + any auxiliary CD); exph2 is the
 !  part of the externally driven current which fills in the bootstrap
 !  current on axis
   double precision, dimension(:,:), allocatable:: exph,exph2
@@ -264,7 +264,7 @@ module param
 !
 !
 !---------------------------------------------------------------
-! 
+!
 !   Neutral Beam parameters
 ! Beam paramters: width in r and z, tangency radius and beam energy
  double precision:: sig_r, sig_z, A_beam,Z_beam
@@ -273,11 +273,11 @@ module param
 
  !beam fusion power (MW)
  double precision :: bmfus, bmshine
- 
+
  ! Flag for NBI
- integer :: nbi 
+ integer :: nbi
 ! double precision :: E_b, P_beam, I_0, R_t
- 
+
 !
 !---------------------------------------------------------------
 !
@@ -346,6 +346,3 @@ module param
 
 
  end module param
-
-
-     

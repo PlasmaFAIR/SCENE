@@ -33,7 +33,7 @@
           stop
         end if
       end if
-! if ipswtch=-1 then 
+! if ipswtch=-1 then
       if (ipswtch.eq.-1) then
         if (imp.ne.0) then
           write(6,*)' Should not use impurities with ipsw=-1'
@@ -224,11 +224,11 @@
         efac=exp(pedg*xps)
         if (ip.eq.0) then
 !  return total pressure
-          ptem=pa+(pped-pa)*(efac**2-1.)/(efac**2+1.) 
+          ptem=pa+(pped-pa)*(efac**2-1.)/(efac**2+1.)
           if (ppow.gt.1) ptem=ptem+pn*((1.+xps)**ppow-(1.+ppow*xps))
         else if (ip.eq.1) then
 !  return the derivative
-          ptem=-4.*(pedg/umax)*(pped-pa)/(efac+1./efac)**2 
+          ptem=-4.*(pedg/umax)*(pped-pa)/(efac+1./efac)**2
           if (ppow.gt.1.) ptem=ptem-(ppow/umax)*pn*((1.+xps)**(ppow-1.)-1.)
         else
 !  return the second derivative
@@ -246,13 +246,13 @@
      if (ipswtch.eq.15) then
         !Use Lao's et al method for p'
         !ptem
-        
-        
+
+
 
 
      else
-        
-           
+
+
         if (ip.eq.0) then
 ! return pressure
           te=tempe(psi,0)
@@ -298,7 +298,7 @@
         press=pt
      end if
 
-     
+
 
   end function press
 !
@@ -306,8 +306,8 @@
 !
        function pressi(psi,id,ip)
 !
-!    For ip=0/1/2, returns pressure/first pressure derivative/second 
-!    pressure derivative at a given psi, defined such that psi 
+!    For ip=0/1/2, returns pressure/first pressure derivative/second
+!    pressure derivative at a given psi, defined such that psi
 !    increases with the minor radius.
 !
        use param
@@ -459,17 +459,17 @@
       end if
       dense=0.
       if (i.eq.0) then
-	do j=1,nimp+1
-	  dense=dense+iz(j)*densi(psi,j,0)
+        do j=1,nimp+1
+          dense=dense+iz(j)*densi(psi,j,0)
 !          if (psi.lt.0.000000001) write(6,*)' j=',j,' dense', dense
         end do
       else if (i.eq.1) then
-	do j=1,nimp+1
-	  dense=dense+iz(j)*densi(psi,j,1)
+        do j=1,nimp+1
+          dense=dense+iz(j)*densi(psi,j,1)
         end do
       else
-	do j=1,nimp+1
-	  dense=dense+iz(j)*densi(psi,j,2)
+        do j=1,nimp+1
+          dense=dense+iz(j)*densi(psi,j,2)
         end do
       end if
     end function dense
@@ -568,7 +568,7 @@
           nid=nz0*(2.*aa*psin+bb)/umax
           densi=scl*nid*umax*pfac*bpol/pscl
           return
-        else 
+        else
 ! return second derivative
           nidd=2.*nz0*aa/umax**2
           densi=scl*nidd*umax*pfac*bpol/pscl
@@ -589,14 +589,14 @@
            (ipswtch.eq.5).or.(ipswtch.eq.7).or.(ipswtch.eq.8)) then
         if (i.eq.0) then
 !  return density
-          ni=nta+(ntped-nta)*(efac**2-1.)/(efac**2+1.) 
+          ni=nta+(ntped-nta)*(efac**2-1.)/(efac**2+1.)
           if (ntpow.gt.1.) ni=ni+nin*((1.+xps)**ntpow-(1.+ntpow*xps))
           densi=scl*ni*umax*pfac*bpol/pscl
           return
         else if (i.eq.1) then
 !  return the derivative
           nid=-4.*(ntedg/umax)*(ntped-nta)/  &
-               (efac+1./efac)**2 
+               (efac+1./efac)**2
           if (ntpow.gt.1.) nid=nid-(ntpow/umax)*nin*((1.+xps)**(ntpow-1.)-1.)
           densi=scl*nid*umax*pfac*bpol/pscl
           return
@@ -604,7 +604,7 @@
 !  return the second derivative
           nidd=-2.*(ntedg/umax)**2*(ntped-nta)*  &
                  ((efac**2-1.)/(efac**2+1.))/ &
-                (0.5*(efac+1./efac))**2 
+                (0.5*(efac+1./efac))**2
           if (ntpow.gt.1.) &
              nidd=nidd+(nin*ntpow*(ntpow-1.)/umax**2)*(1.+xps)**(ntpow-2.)
           densi=scl*nidd*umax*pfac*bpol/pscl
@@ -613,14 +613,14 @@
       if (ipswtch.eq.9) then
         if (i.eq.0) then
 !  return density
-          ni=nta+(ntped-nta)*(efac**2-1.)/(efac**2+1.) 
+          ni=nta+(ntped-nta)*(efac**2-1.)/(efac**2+1.)
           if (id.eq.1) ni=ni+naa*xps**2+nbb*xps**3
           densi=scl*ni*umax*pfac*bpol/pscl
           return
         else if (i.eq.1) then
 !  return the derivative
           nid=-4.*(ntedg/umax)*(ntped-nta)/  &
-               (efac+1./efac)**2 
+               (efac+1./efac)**2
           if (id.eq.1) nid=nid-2.*naa*xps/umax-3.*nbb*xps**2/umax
           densi=scl*nid*umax*pfac*bpol/pscl
           return
@@ -628,7 +628,7 @@
 !  return the second derivative
           nidd=-2.*(ntedg/umax)**2*(ntped-nta)*  &
                  ((efac**2-1.)/(efac**2+1.))/ &
-                (0.5*(efac+1./efac))**2 
+                (0.5*(efac+1./efac))**2
           if (ntpow.gt.1.) then
              if (id.eq.1)   &
              nidd=nidd+2.*naa/umax**2+6.*nbb*xps/umax**2
@@ -638,14 +638,14 @@
         end if
       end if
       if (ipswtch.eq.6) then
-        
+
         nin=(zn0(id)-nta-(ntped-nta)*(exp(ntedg)-exp(-ntedg))/ &
-                              (exp(ntedg)+exp(-ntedg))) 
+                              (exp(ntedg)+exp(-ntedg)))
         if (i.eq.0) then
 !  return density
            ni=nta+(ntped-nta)*(efac**2-1.)/ &
-                (efac**2+1.) 
-	  ni=ni+nin*((1.+ane)*xps**ntpow-ane*xps**npo1)
+                (efac**2+1.)
+          ni=ni+nin*((1.+ane)*xps**ntpow-ane*xps**npo1)
           densi=scl*ni*umax*pfac*bpol/pscl
           return
         else if (i.eq.1) then
@@ -655,8 +655,8 @@
             write(6,*)' for ntpow or npo1<1'
             stop
           end if
-          nid=-4.*(ntedg/umax)*(ntped-nta)/(efac+1./efac)**2 
-	  nid=nid-(nin/umax)*(ntpow*(1.+ane)*xps**(ntpow-1.)         &
+          nid=-4.*(ntedg/umax)*(ntped-nta)/(efac+1./efac)**2
+          nid=nid-(nin/umax)*(ntpow*(1.+ane)*xps**(ntpow-1.)         &
                -npo1*ane*xps**(npo1-1.))
           densi=scl*nid*umax*pfac*bpol/pscl
           return
@@ -671,8 +671,8 @@
           end if
           nidd=-2.*(ntedg/umax)**2*(ntped-nta)*  &
                 ((efac**2-1.)/(efac**2+1.))/ &
-                (0.5*(efac+1./efac))**2 
-	  nidd=nidd+(nin/umax**2)*(ntpow*(ntpow-1.)*(1.+ane)*xps**(ntpow-2.)  &
+                (0.5*(efac+1./efac))**2
+          nidd=nidd+(nin/umax**2)*(ntpow*(ntpow-1.)*(1.+ane)*xps**(ntpow-2.)  &
                -npo1*(npo1-1.)*ane*xps**(npo1-2.))
           densi=scl*nidd*umax*pfac*bpol/pscl
         end if
@@ -744,8 +744,8 @@
       psin=psi/umax
       if (ipass.eq.0) then
 !  use input profile parameterisation
-	g0=-mu0*scl*r0*r0*(1.-bpol)
-! if ipswtch=-1 then use mesh profile for ffprime 
+        g0=-mu0*scl*r0*r0*(1.-bpol)
+! if ipswtch=-1 then use mesh profile for ffprime
         if (ipswtch.eq.-1) then
           psin=psi/umax
           dpsi=1./nterp
@@ -796,7 +796,7 @@
            return
           end if
           fff=fpow+1.
-	  ff1=fpow1+1
+          ff1=fpow1+1
           ff2=fpow2+1.
           fsq=(2.*umax*g0)*((-1./fff)*xps**fff    &
                             +(af1/ff1)*psin**ff1+ &
@@ -823,12 +823,12 @@
         end if
 !************************************************************
         if (ipswtch.eq.5) then
-	  ffp=g0*xps**fpow
-	  if (id.eq.1) then
-	    fprof=ffp
-	    return
-	  end if
-	  fff=fpow+1
+          ffp=g0*xps**fpow
+          if (id.eq.1) then
+            fprof=ffp
+            return
+          end if
+          fff=fpow+1
           fsq=(2.*umax*g0/fff)*xps**fff
           fsq=fsq+const
           if (fsq.lt.0.) then
@@ -849,9 +849,9 @@
           return
        end if
 
-       !Test function from Lao et al 
+       !Test function from Lao et al
        if (ipswtch.eq.15) then
-          
+
           ffp = g0 * ( af1*psin**1 + af2*psin**2 + &
                af3*psin**3 - (af1+af2+af3)*psin**4)
           if (id.eq.1) then
@@ -882,13 +882,13 @@
        end if
 
 
-       
-	ffp=g0*((1.+xps)**fpow-1.)
-	if (id.eq.1) then
-	  fprof=ffp
-	  return
-	end if
-	fff=fpow+1
+
+        ffp=g0*((1.+xps)**fpow-1.)
+        if (id.eq.1) then
+          fprof=ffp
+          return
+        end if
+        fff=fpow+1
         fsq=-(2.*umax*g0/fff)*((1.+xps)**fff-fff*xps-1.)
         fsq=fsq+const
         if (fsq.lt.0.) then
@@ -909,7 +909,7 @@
      else
 !---------------------------------------------------------------
 !  use discrete form of ff'
-	ij=1
+        ij=1
         xps=psi/umax
         if ((xps.gt.1).or.(xps.lt.0.)) then
           if (abs(xps).lt.1.0d-8) then
@@ -926,8 +926,8 @@
           ij=ncon
         else
           if (xps.lt.psiold(ncon/2)) ij=ncon/2
-	  do while (psiold(ij).ge.xps)
-	    ij=ij+1
+          do while (psiold(ij).ge.xps)
+            ij=ij+1
             if (ij.gt.ncon) then
               write(6,*)' error in calculating xps'
               write(6,*)' psiold(ncon)=',psiold(ncon),' xps=',xps
@@ -985,36 +985,36 @@
 !  integrate up to calculate f
         ffpint=0.
         if (ij.gt.2) then
-	  do j=1,ij-2
-	    ds=psiv(j+1)-psiv(j)
-	    ffpint=ffpint+0.5*(gst(j+1)+gst(j))*ds
+          do j=1,ij-2
+            ds=psiv(j+1)-psiv(j)
+            ffpint=ffpint+0.5*(gst(j+1)+gst(j))*ds
           end do
-	end if
-	if (ij.ne.1) then
+        end if
+        if (ij.ne.1) then
           ds=psiv(ij)-psiv(ij-1)
-	  fup=ffpint+0.5*(gst(ij)+gst(ij-1))*ds
+          fup=ffpint+0.5*(gst(ij)+gst(ij-1))*ds
    ffpint=ffpint+rat*(fup-ffpint)
-  
-	  fsq=2.*scl*ffpint+const
-	  if (fsq.lt.0.) then
+
+          fsq=2.*scl*ffpint+const
+          if (fsq.lt.0.) then
       write(nw,*)'input error1*** f**2<0 in fprof'
       write(nw,*) fsq,2.*scl*ffpint, const
-	    stop
-	  end if
-	  f=sqrt(fsq)
-	else
-	  fsq=const
-	  if (fsq.lt.0.) then
-	    write(nw,*)'input error2*** f**2<0 in fprof'
-	    stop
-	  end if
-	  f=sqrt(fsq)
-	end if
-	if (id.eq.2) then
-	  fprof=f
-	  return
-	else
-	  fprof=ffp/f 
+            stop
+          end if
+          f=sqrt(fsq)
+        else
+          fsq=const
+          if (fsq.lt.0.) then
+            write(nw,*)'input error2*** f**2<0 in fprof'
+            stop
+          end if
+          f=sqrt(fsq)
+        end if
+        if (id.eq.2) then
+          fprof=f
+          return
+        else
+          fprof=ffp/f
           return
        end if
     end if
@@ -1076,17 +1076,17 @@
         if (i.eq.0) then
 !  return electron temperature
           tem=tea+(teped-tea)*(efac**2-1.)/ &
-                  (efac**2+1.) 
+                  (efac**2+1.)
           if (tpoe.gt.1) tem=tem+ten*tfac*(xps**tpoe)
         else if (i.eq.1) then
 !  return the derivative
-          tem=-4.*(teedg/umax)*(teped-tea)/(efac+1./efac)**2 
+          tem=-4.*(teedg/umax)*(teped-tea)/(efac+1./efac)**2
           if (tpoe.gt.1) tem=tem-(tpoe*tfac/umax)*ten*xps**(tpoe-1.)
         else
 !  return the second derivative
           tem=-2.*(teedg/umax)**2*(teped-tea)*  &
                   ((efac**2-1.)/(efac**2+1.))/ &
-                  (0.5*(efac+1./efac))**2 
+                  (0.5*(efac+1./efac))**2
           if (tpoe.gt.1.)    &
               tem=tem+(ten*tfac*tpoe*(tpoe-1.)/umax**2)*xps**(tpoe-2.)
         end if
@@ -1120,7 +1120,7 @@
         else if (i.eq.1) then
 ! return derivative
           tem=(2.*aa*psin+bb)/umax
-        else 
+        else
 ! return second derivative
           tem=2.*aa/umax**2
         end if
@@ -1131,12 +1131,12 @@
         ate=1.5
         tpo1=2.0
         if (i.eq.0) then
-	  tempe=te0*((1.+ate)*xps**tpoe-ate*xps**tpo1)+tea
+          tempe=te0*((1.+ate)*xps**tpoe-ate*xps**tpo1)+tea
         else if (i.eq.1) then
-	  tempe=-(te0/umax)*(tpoe*(1.+ate)*xps**(tpoe-1.)         &
+          tempe=-(te0/umax)*(tpoe*(1.+ate)*xps**(tpoe-1.)         &
                -tpo1*ate*xps**(tpo1-1.))
         else
-	  tempe=(te0/umax**2)*(tpoe*(tpoe-1.)*(1.+ate)*xps**(tpoe-2.)     &
+          tempe=(te0/umax**2)*(tpoe*(tpoe-1.)*(1.+ate)*xps**(tpoe-2.)     &
                -tpo1*(tpo1-1.)**ate*xps**(tpo1-2.))
         end if
         return
@@ -1154,17 +1154,17 @@
         end if
         if (i.eq.0) then
            tem=tea+(teped-tea)*(efac**2-1.)/ &
-                (efac**2+1.) 
-	  tempe=tem+ten*((1.+ate)*xps**tpoe-ate*xps**tpo1)
+                (efac**2+1.)
+          tempe=tem+ten*((1.+ate)*xps**tpoe-ate*xps**tpo1)
         else if (i.eq.1) then
-          tem=-4.*(teedg/umax)*(teped-tea)/(efac+1./efac)**2 
-	  tempe=tem-(ten/umax)*(tpoe*(1.+ate)*xps**(tpoe-1.)         &
+          tem=-4.*(teedg/umax)*(teped-tea)/(efac+1./efac)**2
+          tempe=tem-(ten/umax)*(tpoe*(1.+ate)*xps**(tpoe-1.)         &
                -tpo1*ate*xps**(tpo1-1.))
         else
           tem=-2.*(teedg/umax)**2*(teped-tea)*  &
                 ((efac**2-1.)/(efac**2+1.))/ &
-                (0.5*(efac+1./efac))**2 
-	  tempe=tem+(ten/umax**2)*(tpoe*(tpoe-1.)*(1.+ate)*xps**(tpoe-2.)  &
+                (0.5*(efac+1./efac))**2
+          tempe=tem+(ten/umax**2)*(tpoe*(tpoe-1.)*(1.+ate)*xps**(tpoe-2.)  &
                -tpo1*(tpo1-1.)*ate*xps**(tpo1-2.))
         end if
         return
@@ -1172,17 +1172,17 @@
       if (i.eq.0) then
 !  return electron temperature
         tem=tea+(teped-tea)*(efac**2-1.)/ &
-                (efac**2+1.) 
+                (efac**2+1.)
         if (tpoe.gt.1) tem=tem+ten*((1.+xps)**tpoe-(1.+tpoe*xps))
       else if (i.eq.1) then
 !  return the derivative
-        tem=-4.*(teedg/umax)*(teped-tea)/(efac+1./efac)**2 
+        tem=-4.*(teedg/umax)*(teped-tea)/(efac+1./efac)**2
         if (tpoe.gt.1) tem=tem-(tpoe/umax)*ten*((1.+xps)**(tpoe-1.)-1.)
       else
 !  return the second derivative
         tem=-2.*(teedg/umax)**2*(teped-tea)*  &
                 ((efac**2-1.)/(efac**2+1.))/ &
-                (0.5*(efac+1./efac))**2 
+                (0.5*(efac+1./efac))**2
         if (tpoe.gt.1.)    &
             tem=tem+(ten*tpoe*(tpoe-1.)/umax**2)*(1.+xps)**(tpoe-2.)
       end if
@@ -1341,7 +1341,7 @@
    recursive function elong(con, id) result(kap)
 
      ! Calculate elongation (or derivative with psi if id=1)
-     
+
      use param
      implicit none
 
@@ -1372,16 +1372,16 @@
 
 
      end do
-             
-        
-        
+
+
+
      !Elongation
      if (id .eq. 0) then
         elongf = 2.* zmax/(rmax - rmin)
-        
+
         if (con.eq.ncon) then
            !linear extrapolate to innermost flux surface
-     
+
            elong_u = elong(con-1,0)
            elongp = elong(con,1)
 
@@ -1389,7 +1389,7 @@
 
 
         end if
-        
+
      !Derivative
      else if (id .eq. 1) then
 
@@ -1414,8 +1414,8 @@
            elongf = (elong_u - elong_l)/(psi_u - psi_l)
 
 
-           
-        !Extrapolate second to last derivate to get last flux surface   
+
+        !Extrapolate second to last derivate to get last flux surface
         else if (con .eq. ncon) then
 
            !Notice using first derivative
@@ -1429,10 +1429,10 @@
            rat = (elong_u - elong_l)/(psi_u - psi_l)
 
            elongf = elong(con-1,1) + rat*(psiv(con)-psiv(con-1))
-           
+
         !centred difference
         else
-                     
+
            elong_l = elong(con-1,0)
            elong_u = elong(con+1,0)
 
@@ -1440,21 +1440,21 @@
            psi_u = psiv(con+1)
            elongf = (elong_u - elong_l)/(psi_u - psi_l)
         end if
-        
+
 
      end if
 
      kap = elongf
    end function elong
-   
-        
 
-     
-     
+
+
+
+
    recursive function shift(con, id) result(del)
 
      !Calculates shift from r0 by looking at average r
-     
+
      use param
      implicit none
 
@@ -1462,23 +1462,23 @@
      double precision :: shiftf, rat, del
      double precision :: shift_l, shift_u, psi_u,psi_l
 
-     if (id .eq. 0) then 
+     if (id .eq. 0) then
 
         !Average r value
         !shift = (sum(rpts(con, :))/max(1, size(rpts(con,:)))) - r0
         shiftf = (maxval(rpts(con,:)) + minval(rpts(con,:)))/2 - rcen
-        
+
         !If last fluxsurface, extrapolate
         if (con .eq. ncon) then
            shiftf = shift(con-1,0) + shift(con-1,1)*(psiv(con) -psiv(con-1))
-           
+
         end if
-        
+
      else if (id .eq. 1) then
 
         !forward difference for first point
         if (con .eq. 1) then
-           
+
            shift_l =  shift(con,0)
            shift_u =  shift(con+1,0)
 
@@ -1517,14 +1517,14 @@
            psi_l = psiv(con-1)
            psi_u = psiv(con+1)
            shiftf = (shift_u - shift_l)/(psi_u - psi_l)
-        
+
         end if
 
      end if
 
-     del = shiftf 
+     del = shiftf
    end function shift
-   
+
 
    subroutine dpsidrho (dpdrs, rhos)
 
@@ -1536,16 +1536,16 @@
      double precision :: rhomax, shift
 
      real, dimension(ncon) :: rhos, dpdrs
-     
+
      rho =( maxval(rpts, dim=2) - minval(rpts,dim=2)) /2
-  
+
 
      rho(ncon) = 0.
      rhomax = maxval(rho)
-   
+
 
      !normalise rho
-     
+
      rho = rho/rhomax
      do i =1,ncon
 
@@ -1569,26 +1569,26 @@
      rhos=sngl(rho(ncon:1:-1))
      dpdrs=sngl(dpdr(ncon:1:-1))
    end subroutine dpsidrho
-   
+
 
    ! Volume of each flux surface
    subroutine dVdrho(vols, areas, volsp)
-     
+
      use param
      implicit none
 
-     
+
      double precision, dimension(ncon)  :: voldiff, flxvol, areacon, volcon, flxarea
      integer ::i, j,k, id
 
-     
+
      double precision :: flxvol_l, flxvol_u, psi_u, psi_l
 
      double precision :: r_l, r_r, z_l, z_r, shift, elong
 
      real, dimension(ncon) :: vols, areas, volsp
 
-     
+
      flxarea = 0.
      ! for each contour calculate area with trapeze rule
      do i= ncon,1,-1
@@ -1597,7 +1597,7 @@
 
            r_l = rpts(i,j)
            r_r = rpts(i,j+1)
-           
+
            z_l = zpts(i,j)
            z_r = zpts(i,j+1)
 
@@ -1605,15 +1605,15 @@
            flxarea(i) = flxarea(i) + (abs(z_l+z_r) * abs(r_l-r_r) /2)
            !write(nw,*) flxarea
         end do
-        
+
         !area time 2pi * R  (R = r0 + shift)
         flxvol(i) = flxarea(i) * 2. * pi * (shift(i,0) + rcen)
 
-        !Area/Vol of each flux surface from i-1 to i 
+        !Area/Vol of each flux surface from i-1 to i
         if (i .eq.ncon) then
            areacon(i) = flxarea(i)
            volcon(i) = flxvol(i)
-       
+
         else
            areacon(i) = flxarea(i) - flxarea(i+1)
            volcon(i) = flxvol(i) - flxvol(i+1)
@@ -1624,8 +1624,8 @@
 
      end do
 
-     vol = sum(volcon) 
-  
+     vol = sum(volcon)
+
      ! Calculates gradient dV/drho
      do k =1,ncon
         if (k .eq. 1) then
@@ -1635,7 +1635,7 @@
 
            psi_l = psiv(k)
            psi_u = psiv(k+1)
-        
+
         else if (k .eq. ncon) then
 
            flxvol_l = flxvol(k-1)
@@ -1643,7 +1643,7 @@
 
            psi_l = psiv(k-1)
            psi_u = psiv(k)
-       
+
         else
 
            flxvol_l = flxvol(k-1)
@@ -1661,21 +1661,21 @@
      !change vol/area to between i-1/2 to i+1/2 and flips array
 
      do i=2,ncon
-        
+
         vols(ncon-i+1) = sngl(volcon(i)+volcon(i-1))/2.
         areas(ncon-i+1) = sngl(areacon(i)+areacon(i-1))/2.
         volsp(ncon-i+1) = sngl(voldiff(i)+voldiff(i-1))/2.
 
-     end do  
+     end do
 
-     
+
      volsp(ncon) = voldiff(1)
      vols(ncon) = volcon(1)/2.
      areas(ncon) = areas(1)/2.
 
    end subroutine dVdrho
-   
-   
+
+
    subroutine lam(lambdas, beam, ecomp)
      !From 'Neutral beam heating applications and development'
      !M M Menon, Oak ridge national labs
@@ -1687,7 +1687,7 @@
 
      double precision :: psi, ne, dense, rat
      integer :: i, beam, ecomp
-     
+
      do i=2,ncon
         psi = psiv(i)
 
@@ -1703,7 +1703,7 @@
 
    end subroutine lam
 
-   
+
    subroutine rhotor(phi)
 
      use param
@@ -1723,11 +1723,5 @@
 
         end if
      end do
-     
+
    end subroutine rhotor
-      
-        
-
-        
-
-        

@@ -1,7 +1,7 @@
 program scene
   !     *************
   !
-  use param 
+  use param
   implicit none
   integer i,j,icur,ierr,niter
   double precision errcur,bpold,bnold,bpnew
@@ -12,7 +12,7 @@ program scene
   ! Perform initialisations
   write(6,*) 'Starting SCENE'
 
-  
+
   call init
   ! Initialise error function array for use in bootstrap routine, hirsig
   ! In call bootstrap routine hirsig, don;'t forget you need to load up
@@ -33,7 +33,7 @@ program scene
   !end if
 
 
-  
+
   !  initialise number of iterations
 5 niter=0
   ! Call SCENE equilibrium routines
@@ -46,7 +46,7 @@ program scene
   call equil(niter)
 
 
-    
+
   write(6,*)' done equil'
   ! Convert equilibrium to flux surface coordinates
   call flxsur
@@ -61,7 +61,7 @@ program scene
 
   !Include NBI in current calc
   if (nbi.ge.1) call nbicur()
-  
+
   print*, 'done nbicur'
   !  Calculate currents (and read in externally applied current
   !  profile if itot=0)
@@ -103,7 +103,7 @@ program scene
         else
            vnobs=(totgs-totps-totdi-totex2)/(totex)
         end if
-        
+
         call xarea(spit,spiti)
         vspit=(totgs-totps-totdi-totex2)/spiti
      end if
@@ -116,7 +116,7 @@ program scene
      totex=totex*vloop+totex2
      call getdata
      !print*, totgs, totbs, totps, totdi, totex2, totnb, totex
-     
+
      !  calculate error in ff'
      call ffdgen(1,icur,errcur)
      write(6,*)' done ffdgen'
@@ -173,15 +173,15 @@ program scene
  !Write data to file
   call getdata
 
-  
-  !  Plot out some useful figs 
+
+  !  Plot out some useful figs
   if (igr.ge.0) then
 
      !Call python plotting
      call system("echo "//runname// " | ipython ~/SCENEv2/graphs/graphs.py")
-     
+
   end if
-  
+
   !  Plot stability plots if igr set to 3
   !      if (igr.eq.3) call stab
   !      if (igr.eq.3) call epsplot
@@ -200,5 +200,5 @@ program scene
   !      CALL USRCAL(U,IXOUT)
   !      if (igr.gt.0) call grend
 
-  
+
 end program scene

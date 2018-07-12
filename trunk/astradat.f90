@@ -69,25 +69,25 @@
       do k=1,ncon
         psi=psiv(k)
         te(k)=tempe(psi,0)
-	if (te(k).gt.1.d-10) then
+    if (te(k).gt.1.d-10) then
           ti=tempi(psi,1,0)
           ne=dense(psi,0)
           dion=1.0d-19*densi(psi,1,0)
 !   include inconsistent dilution factor if no impurities...
           if (imp.eq.0) dion=dil*ne*1.0d-19/zm
           arg=-0.476*(abs(log(1.45d-5*ti)))**2.25
- 	else
-	  ne=0.
+    else
+      ne=0.
           dion=0.
           ti=0.
           arg=1.
-	end if
+    end if
         pden(k)=1.27d4*dion**2*exp(arg)
         write(nwr,*)pden(k)
       end do
       close(nwr)
       call astout(ncon,pden,te)
-      return 
+      return
    end subroutine astradat
 !
 !----------------------------------------------------------------------------

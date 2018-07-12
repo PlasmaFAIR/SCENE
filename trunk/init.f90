@@ -508,18 +508,18 @@ end subroutine init
       rlo=rcen-((nr-1)/2)*dr
       zlo=-((nz-1)/2)*dz
       do i=1,nr
-	r(i)=rlo+(i-1)*dr
+        r(i)=rlo+(i-1)*dr
       end do
       do  i=1,nz
-	z(i)=zlo+(i-1)*dz
+        z(i)=zlo+(i-1)*dz
       end do
       if (abs(neo).eq.1) then
-	if (itot.ne.0) then
-	  write(nw,*)'input warning***running cannot input total'
-	  write(nw,*)'current for neoclassical option'
-	  write(nw,*)'have reset itot=0 to specify external current'
-	  itot=0
-	end if
+        if (itot.ne.0) then
+          write(nw,*)'input warning***running cannot input total'
+          write(nw,*)'current for neoclassical option'
+          write(nw,*)'have reset itot=0 to specify external current'
+          itot=0
+        end if
       end if
 !  Set the scaling parameters for temperature and pressure profiles
       if (tpoe.le.1.) then
@@ -610,6 +610,3 @@ end subroutine init
       u=0.; ixout=0.; idout=0.
 !
    end subroutine allocmesh
-
-
-

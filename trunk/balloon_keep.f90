@@ -41,7 +41,7 @@
 !      bsqm=(fprof(psiv(nf-1),2)/rpts(nf-1,1))**2+bppts(nf-1,1)**2
 !      write(6,*)' calc=',dbsqdpsi(nf,1),' num=',       &
 !                (bsqp-bsqm)/(psiv(nf+1)-psiv(nf-1))
-      
+
       dl=circumf(nf)/(npts-1)
       write(6,*)' circumf=',circumf(nf)
       dchi=2.*pi/(npts-1)

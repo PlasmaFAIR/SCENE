@@ -1,9 +1,9 @@
-	subroutine extj(eps,psi,extapp,extapp2,icur)
+    subroutine extj(eps,psi,extapp,extapp2,icur)
 !       *******************************************
 !
 !  User--supplied function. returns the value of <j.b>/<b**2>
-!  in extapp: extapp2 fills in the missing bootstrap current within 
-!  1-ps=psic: extapp is a user-supplied function which is scaled 
+!  in extapp: extapp2 fills in the missing bootstrap current within
+!  1-ps=psic: extapp is a user-supplied function which is scaled
 !  by Vloop to get the total plasma current correct
 !  The profile which you specify will be constant on a flux
 !  surface and J is assumed to be along B so that the total
@@ -86,7 +86,7 @@
 !  spitzer conductivity
           fac=1.98*(ne*eq)*(eq/me)
           sigsp=fac*colt
-	end if
+    end if
 !  extrapolate between flux surfaces:
         ik=0
         if (eps.lt.0.) then
@@ -197,7 +197,7 @@
         bstrapq=bsj(ik+1)-rat*(bsj(ik+1)-bsj(ik))
         bavq=bsqav(ik+1)-rat*(bsqav(ik+1)-bsqav(ik))
         extapp2=-(bstrap*sqrt(bav)-bstrapq*sqrt(bavq))/bav
-      else 
+      else
         extapp2=0.
       end if
   end subroutine extj

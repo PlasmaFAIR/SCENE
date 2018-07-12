@@ -1,7 +1,7 @@
       subroutine elite_data
 !     *********************
 !
-!  This subroutine provides data to the ELITE edge stability code in the 
+!  This subroutine provides data to the ELITE edge stability code in the
 !  required format.  Note, ELITE requires data to be in CGS units!
 !
       use param
@@ -17,7 +17,7 @@
       ncstrt=1
       ncon1=ncon-ncstrt+1
       ctitle='scene.dskbal'
-      ndsk=20  
+      ndsk=20
       write(6,*)' opening file...'
       open(ndsk,file=ctitle)
 !  A dummy string (must start 'iend....')
@@ -85,7 +85,7 @@
       do i=2,ncon1
         if (i.lt.ncon) then
           arr(i)=0.5*(psiv(ncon-i)-psiv(ncon-i+2))*(ncon-1.)*1.0d8
-        else 
+        else
 !  Use quadratic approx for end point....
           arr(ncon)=2.*(0.75*psiv(1)-psiv(2)+0.25*psiv(3))*(ncon-1.)*1.0d8
         end if
@@ -251,7 +251,7 @@
       subroutine elite2_data
 !     *********************
 !
-!  This subroutine provides data to the ELITE edge stability code in the 
+!  This subroutine provides data to the ELITE edge stability code in the
 !  required format. New ELITE format 11/11/02, shape='eqbm'
 !
       use param
@@ -570,9 +570,3 @@
 !        write(801,*)rpts(1,i),zpts(1,i)
 !      end do
    end subroutine elite2_data
-
-
-
-
-
-
