@@ -1173,7 +1173,8 @@ end subroutine equil
       integer i,j,nrp1,nzp1
       integer im1,ip1,jm1,jp1,isum
       integer iprod
-      double precision f,rb,zb,sumx,sumd
+      double precision f,rb,zb
+      integer sumx,sumd
 !
       allocate( nix(nr*nz), niy(nr*nz) )
       nix=0; niy=0
