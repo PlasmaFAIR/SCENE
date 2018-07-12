@@ -1,3 +1,5 @@
+F90 = gfortran
+
 NAME=	scene
 CMD=    scene
 #
@@ -15,7 +17,7 @@ eisplit.f erf.f fastions.f frate.f gausswts.f \
 getrho.f hofr.f hunt.f qsimp.f sigfit.f sinteg.f \
 rinteg.f zinteg.f ssum.f sig_olson.fs/ \
 nbdriver.f nbeams/beamconsts.f nbeams/beams_mfp.f \
-nbicur.f90 geqdsk.f90
+nbicur.f90 geqdsk.f90 toms790.f90
 
 OBJS= \
 param.o balpar.o balloon.o \
@@ -28,17 +30,13 @@ mercier.o gs2.o astradat.o tokameq.o getdata.o  \
 beamconsts.o beams_mfp.o calcbeams.o coulomb.o \
 eisplit.o erf.o fastions.o frate.o gausswts.o \
 getrho.o hofr.o hunt.o qsimp.o sigfit.o sinteg.o \
-rinteg.o zinteg.o ssum.o sig_olson.o nbicur.o geqdsk.o
+rinteg.o zinteg.o ssum.o sig_olson.o nbicur.o geqdsk.o toms790.o
 #
 INPUT=	
 LIBRARIES =  \
- -L/opt/york/phys/pkg/Modules/modulefiles/libraries/ \
  -llapack \
- -L/home/userfs/b/bbp501/SCENEv2/lib/ \
- -ltoms790 \
- -lBLAS \
- -lnbeams  \
- -lsurfit #\
+ -lblas \
+ -L../lib -lsurfit \
 # -lgcvfull
 
 #        -lghost -lgrid_xghost -L/usr/lib/libg2c.so.0 \
@@ -54,14 +52,14 @@ LIBRARIES =  \
 
  # /fuslwf/home/kthcmr/GS2D/gs2dlib.a
 
-DEBUG     = #-heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
+DEBUG     = -std=f2008 -Wall -Wextra #-heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
 DOUBLE    = #-r8 -d8 #-qautodbl=dblpad
 LIN       = # -YEXT_NAMES=LCS -B108
-COMPILE   = ifort -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)
-LOAD      = ifort $(SPECIAL) -o $(CMD) $(LIBS)
+COMPILE   = $(F90) -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)
+LOAD      = $(F90) $(SPECIAL) -o $(CMD) $(LIBS)
 .SUFFIXES:
 
 .SUFFIXES: .o .f .f90

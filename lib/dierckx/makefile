@@ -1,3 +1,5 @@
+F90 = gfortran
+
 SRCS= \
 fporde.f fprati.f fpback.f fprota.f fpgivs.f \
 fpdisc.f fpbspl.f fprank.f fpsurf.f surfit.f \
@@ -12,7 +14,7 @@ EXE= libsurfit.a
 
 DEBUG = #-heap-arrays -g -traceback -check bounds -check arg_temp_created -warn interface
 #OPTIMIZE = # -O3
-COMPILE = ifort -c $(OPTIMIZE) $(DEBUG)
+COMPILE = $(F90) -c $(OPTIMIZE) $(DEBUG)
 LOAD = ar rc  
 
 
