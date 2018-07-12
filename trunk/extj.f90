@@ -30,7 +30,7 @@
       double precision fprof,press,tempe,dense,densi
       double precision sigsp,coolog
       double precision epsfac,ratio,pro,rt,botcol,topcol,colt,vthe,fac
-      double precision rat,rrinv,bav,bstrap,hhb,rle,sigfac
+      double precision rat,rrinv,b_average,bstrap,hhb,rle,sigfac
       double precision psiq,bstrapq,bavq,rsqint,ravint,rla
       double precision t1,t2,t3,t4,scale
 !
@@ -111,7 +111,7 @@
         rrinv=rsqinv(ik+1)-rat*(rsqinv(ik+1)-rsqinv(ik))
         ravint=rav(ik+1)-rat*(rav(ik+1)-rav(ik))
         rsqint=rsqav(ik+1)-rat*(rsqav(ik+1)-rsqav(ik))
-        bav=bsqav(ik+1)-rat*(bsqav(ik+1)-bsqav(ik))
+        b_average=bsqav(ik+1)-rat*(bsqav(ik+1)-bsqav(ik))
 !  hirshman, hawryluk, birge coefficients
         hhb=sighhb(ik+1)-rat*(sighhb(ik+1)-sighhb(ik))
         if (icur.ne.-1) then
@@ -123,7 +123,7 @@
           rle=3.4*(1.13+zeff)/(zeff*(2.67+zeff))
           sigfac=sigsp*rle/1.98
         end if
-        extapp=sigfac*fsi*rrinv/(2.*pi*bav)
+        extapp=sigfac*fsi*rrinv/(2.*pi*b_average)
 !  If ibv set to one, then use electric field profile induced by Bv-ramp
 !  Assumes constant Bv (in R); vloop returned is the required Bv-dot
         if (ibv.eq.1) then
@@ -163,7 +163,7 @@
       end if
       rrinv=rsqinv(ik+1)-rat*(rsqinv(ik+1)-rsqinv(ik))
       bstrap=bsj(ik+1)-rat*(bsj(ik+1)-bsj(ik))
-      bav=bsqav(ik+1)-rat*(bsqav(ik+1)-bsqav(ik))
+      b_average=bsqav(ik+1)-rat*(bsqav(ik+1)-bsqav(ik))
 !  profile specified in terms of psi
       rat=psi/umax
       t1=(1.-rat)**powj
@@ -196,7 +196,7 @@
         end if
         bstrapq=bsj(ik+1)-rat*(bsj(ik+1)-bsj(ik))
         bavq=bsqav(ik+1)-rat*(bsqav(ik+1)-bsqav(ik))
-        extapp2=-(bstrap*sqrt(bav)-bstrapq*sqrt(bavq))/bav
+        extapp2=-(bstrap*sqrt(b_average)-bstrapq*sqrt(bavq))/b_average
       else
         extapp2=0.
       end if
