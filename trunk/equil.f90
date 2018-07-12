@@ -39,7 +39,7 @@ subroutine equil(niter)
 
      if (igr .ge. 1 .and. ibdry .eq. 2) then
         !Display fourier of boundary
-        call system("ipython ~/SCENEv2/graphs/bdytest.py")
+        call execute_command_line("ipython ~/SCENEv2/graphs/bdytest.py")
 
      end if
   end if

@@ -178,7 +178,7 @@ program scene
   if (igr.ge.0) then
 
      !Call python plotting
-     call system("echo "//runname// " | ipython ~/SCENEv2/graphs/graphs.py")
+     call execute_command_line("echo "//runname// " | ipython ~/SCENEv2/graphs/graphs.py")
 
   end if
 
