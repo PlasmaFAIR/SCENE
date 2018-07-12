@@ -2,3 +2,12 @@
 #*
 *.o
 *.mod
+
+*/popcon.dat
+profile_Te.dat
+profile_Ti.dat
+profile_ne.dat
+profile_ni.dat
+psi.dat
+fort.*
+
