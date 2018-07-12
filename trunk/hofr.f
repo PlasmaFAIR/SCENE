@@ -232,13 +232,6 @@ c/    Total HOFR and average pitch angle at flux zone -iflux- :
                      pitchangl(iflux,ie,ib) = (ksiplus(ie) +
      .                    ksiminus(ie))/ (hplus(ie) + hmnus(ie))
 
-                     !if (ib.eq.2.and. ie.eq.1) then
-                     !   print*, iflux, hplus(ie),
-     .	!			 factr(ie), rhoi, hmnus(ie)
-                     !
-                     !end if
-                     !if (iflux.ne.1) hofr(iflux,ie,ib)=hofr(iflux,ie,ib)*rhoi
-
                   else
                      hofr(iflux,ie,ib) = 0.0
                      pitchangl(iflux,ie,ib) = 0.0
