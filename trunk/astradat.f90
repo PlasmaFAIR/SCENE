@@ -217,7 +217,7 @@
         else
           kap(k)=kap(k-1)
         end if
-        do i=1,npts/2.+1
+        do i=1,npts/2+1
           sinarg=zpts(k,i)/(asmall(k)*kap(k))
           if (sinarg.gt.1.) sinarg=1.
           th(i)=asin(sinarg)
