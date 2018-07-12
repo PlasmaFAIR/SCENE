@@ -239,9 +239,8 @@
         write(92,35)chi0val,psiv(nf)/umax,lam
         write(6,*)' Flux surface=',nf,' psi=',psiv(nf)/umax,' lmbda=',lam
         lamges=lam
-15      do i=1,nchi
+        do i=1,nchi
           fb(i)=fbal(i,1)
-!          fdbal(i,1)=fdbal(i,1)+cp*fdbal(i,2)
           write(61,*)' i=',i,' fdbal=',fdbal(i,1),fdbal(i,2)
           yplot(i)=fb(i)
           y2(i)=exp(-chi(i)**2/2.)
@@ -252,16 +251,15 @@
           sumit=sumit+0.5*(eq2(k)*yplot(k)**2+eq2(k+1)*yplot(k+1)**2)
           sumit1=sumit1+0.5*(eq1(k)*fdbal(k,1)**2+eq1(k+1)*fdbal(k+1,1)**2)
         end do
-!        call tstplt(nchi,chi,yplot,0.,0.)
 ! Now shoot to calculate xi_parallel, assuming it is odd in chi
         xipar(nchi/2+1)=0.
         k=nchi/2+1
-        do 16 i=nchi/2+1,nchi-1
+        do i=nchi/2+1,nchi-1
           x=chi(i)
           if (x.lt.pi) then
             k=i
             xipar(k)=0.
-            goto 16
+            cycle
           end if
           an=dchi*balfun2(x,i,pd)
           x=chi(i)+dchi/2.
@@ -270,7 +268,7 @@
           x=chi(i+1)
           dn=dchi*balfun2(x,i,pd)
           xipar(i+1)=xipar(i)+(an+2.*bn+2.*cn+dn)/6.
- 16     end do
+        end do
         im=k
         do i=k+1,nchi
           im=im-1
