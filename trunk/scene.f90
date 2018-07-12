@@ -2,6 +2,7 @@ program scene
   !     *************
   !
   use param
+  use usrcal_mod
   implicit none
   integer i,j,icur,ierr,niter
   double precision errcur,bpold,bnold,bpnew
