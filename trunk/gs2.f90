@@ -19,7 +19,7 @@
       double precision yp1,yp2
       double precision work(2*ncon),polvar(npts),aminor(ncon),fofpsi(ncon)
       double precision y2(ncon),fpint(ncon)
-      character*40 date
+      character(len=40) date
       integer, dimension(1):: iloc
 !      character(len=40), intent(in) :: filename
       double precision, dimension(:), allocatable :: ps,rg,zg

@@ -6,11 +6,11 @@
 !
       use param
       implicit none
-      character*8 ctim
-      character*12 cdat
-      character*35 string
-      character*30 string2
-      character*2 string1
+      character(len=8) ctim
+      character(len=12) cdat
+      character(len=35) string
+      character(len=30) string2
+      character(len=2) string1
       real*4 xp(nr*nz),yp(nr*nz),clevls(50),ftr(4),ftz(4)
       real*4 rdim(nr*nz),zdim(nr*nz)
       real*4 rlo,rup,zlo,zup,ypos,zl,zu,rl,ru,zav
@@ -653,10 +653,10 @@
 !
       use param
       implicit none
-      character*8 ctim
-      character*9 cdat
-      character*30 string
-      character*34 txt
+      character(len=8) ctim
+      character(len=9) cdat
+      character(len=30) string
+      character(len=34) txt
       integer nrob
       integer i,j,l,lmid,ii,ig,jj,ix,lp,icur
       double precision press,dense,densi,fprof,tempe,tempi,bp

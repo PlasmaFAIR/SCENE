@@ -16,7 +16,7 @@
       double precision zmag,rat
       double precision temvar(nr),work(2*ncon),polvar(npts),mshvar(nr,nz)
       double precision aminor(ncon)
-      character*40 date
+      character(len=40) date
       integer, dimension(1):: iloc
 !      character(len=40), intent(in) :: filename
       double precision, dimension(:), allocatable :: ps

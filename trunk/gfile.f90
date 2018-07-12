@@ -8,8 +8,8 @@
       use param
       implicit none
       integer lun,idum,itime,i,j,ij
-      character*34 adum1
-      character*14 adum2
+      character(len=34) adum1
+      character(len=14) adum2
       double precision xdim,zdim,b0vac_r,rzero,zgeo
       double precision rmag,zmag,psimag,psi_lcfs,b0vac
       double precision curnt,xdum,dpsi,press,fprof,rat,psi

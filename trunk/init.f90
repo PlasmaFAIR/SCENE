@@ -175,7 +175,7 @@ end subroutine init
       use param
       use balpar
       implicit none
-      character*4 word
+      character(len=4) word
       double precision val,rlo,zlo
       double precision press,psiax
       integer ival,i

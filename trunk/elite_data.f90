@@ -6,8 +6,8 @@
 !
       use param
       implicit none
-      character*8 dums(10)
-      character*12 ctitle
+      character(len=8) dums(10)
+      character(len=12) ctitle
       double precision arr(ncon)
       double precision psi
       double precision press,fprof,dense,tempe,tempi
@@ -256,8 +256,8 @@
 !
       use param
       implicit none
-      character*8 dum
-      character*12 ctitle
+      character(len=8) dum
+      character(len=12) ctitle
       double precision arr(ncon)
       double precision psi
       double precision press,fprof,dense,tempe,tempi

@@ -425,8 +425,8 @@ end subroutine equil
       integer izr2,irot,istrt,nater,ndmr,ndat,nfm2
       double precision, dimension(:), allocatable:: rdim,zdim,rtmp,ztmp,rinp,zinp,thdim,acof,bcof
       double precision intk,arg1,arg2,zval,rval,rofth,zofth,thmin,erralf
-      character*30 string2
-      character*2 string1
+      character(len=30) string2
+      character(len=2) string1
       double precision alfarr(1000)
       !
 
@@ -1290,7 +1290,7 @@ end subroutine equil
       use param
       implicit none
       integer j,jy,i
-      character*8 word
+      character(len=8) word
 !
       if (ipr.eq.0) write(nw,10)word
   10  format(a)

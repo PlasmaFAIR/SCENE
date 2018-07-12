@@ -1,9 +1,9 @@
 module param
   implicit none
 !  Job title
-  character*50 runname
+  character(len=50) runname
   integer lrunname,ios
-  character*19 title
+  character(len=19) title
 !
 !physical constants...
   double precision pi,eps0,mu0,bk  ! pi, epsilon_0, mu_0 and Boltzman constant
