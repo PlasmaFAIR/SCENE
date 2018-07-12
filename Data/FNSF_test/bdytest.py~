@@ -1,7 +1,0 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-f = open('bdytest.dat', 'r')
-
-npts = f.read()
