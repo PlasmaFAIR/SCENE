@@ -15,7 +15,6 @@ contains
     integer nf,i,ip,im,k,j,ichi,jpass,kpass,ii
     double precision fprof,press
     double precision fbal(2*npts*nturns,2),xipar(2*npts*nturns)
-    double precision eq3(2*npts*nturns),eq4(2*npts*nturns)
     double precision fdbal(2*npts*nturns,2)
     double precision yp(npts),xp(npts)
     double precision eqq(npts),jac(npts),dt1dchi(npts),dt2dchi(npts)
@@ -23,9 +22,9 @@ contains
     double precision pd,psi,bsq,fsi
     double precision chiv,bth,rr,dchi,dl,chi0,dchi0
     double precision chimax,chimin,bsqp,bsqm,t1p,t1m,t2p,t2m
-    double precision hh,an,bn,cn,dn,betn,deln,cp,cm
+    double precision hh,an,bn,cn,dn,betn,deln,cp
     double precision lamold,lamnew,difold,difnew,err
-    double precision x,y,yd,sumit,sumit1,s,alpha,hfun,hdfun
+    double precision x,y,yd,sumit,sumit1
     double precision yplot(2*npts*nturns),y2(2*npts*nturns),nuarr(2*npts*nturns)
     !
     jpass=0
@@ -270,7 +269,6 @@ contains
     integer k,pm
     double precision balfun,x,y,yd
     double precision rat,c1,c2,pi
-    double precision alpha,s,hfun,hdfun
     !
     pi=4.*atan(1.)
     pm=1

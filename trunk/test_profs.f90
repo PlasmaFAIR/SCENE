@@ -5,9 +5,9 @@
 !
       use param
       implicit none
-      integer i,j
-      double precision press,dense,densi,fprof,tempe,tempi,bp
-      double precision psi,psi1,psi2,psi3,pv,pp,pd,ppp,pdd
+      integer i
+      double precision press
+      double precision psi,psi1,psi2,pp,pd,ppp,pdd
 !
       do i=2,ncon-1
         psi=psiv(i)

@@ -8,14 +8,14 @@
       use coldat
       implicit none
 !
-      double precision tempe,tempi,dense,densi,fprof,press
+      double precision tempe,tempi,dense,densi,fprof
       double precision fcp,fcd,psi
 ! Alpha particle properties...
       double precision amass, alen,zal,v0,vc
       double precision te,ti,ted,tid,tau,ne19,ni19,nid,ned,ne,ni
-      double precision ablog,sigv,srce,coolog,tslowsgn,sigd,srcd
+      double precision ablog,sigv,srce,coolog,sigd,srcd
       double precision zeff,falnum,tslow
-      double precision f1d,f2d,ss,arg
+      double precision f1d,f2d,ss
       double precision sgn,pdal,fl0,fl1,fl2
       double precision x1d,x2d,denom,fmua,fsi,pq
       double precision femu,bot
@@ -137,7 +137,7 @@
       vmin=v0
       if (vc.lt.vmin) vmin=vc
       dv=vmin/500
-      nv=v0/dv
+      nv=int(v0/dv)
       dv=v0/(nv-1)
       f1=0.0d0
       f2=0.0d0

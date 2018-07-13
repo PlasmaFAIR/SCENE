@@ -441,7 +441,7 @@ end subroutine equil
         theta=0.; xv=0.; yv=0.; gth=0.; rth=0.; ang2=0.
 !!$!  put X-points in using modified Bishop formula
         dk=kval/(ncon-1)
-        if (kval.eq.0.) dk=1./(ncon-1.)
+        if (kval.lt.1e-8) dk=1./(ncon-1.)
         dth=2.*pi/(npts-1.)
         ang(1)=-pi
         theta(1)=-pi
@@ -451,7 +451,7 @@ end subroutine equil
           theta(j)=theta(1)+(j-1)*dth
         end do
         do i=ncon,2,-1
-          if (kval.eq.0) then
+          if (kval.lt.1e-8) then
 ! simple circle...
              kscl=dk*(i-1.)
              do j=1,npts
@@ -551,8 +551,8 @@ end subroutine equil
       rv1=rth(j,ncon)+rat*(rth(j+1,ncon)-rth(j,ncon))
       rv2=rup
       kscl=kval*rup/rv1
-      if (kscl.eq.0.) kscl=rup/rv1
-      if (kval.eq.0.) then
+      if (kscl.lt.1e-8) kscl=rup/rv1
+      if (kval.lt.1e-8) then
 !        if (iout.eq.1) kscl=2.-kscl
         f=1.-kscl
       else
@@ -1255,8 +1255,8 @@ end subroutine equil
       end do
       call iout(' idout  ')
 !  check mesh is bounded by zeros
-      sumx=0.
-      sumd=0.
+      sumx=0
+      sumd=0
       do i=1,nr
     sumx=sumx+abs(ixout(i,1))
     sumd=sumd+abs(idout(i,1))
@@ -1325,7 +1325,7 @@ end subroutine equil
       integer ni,i,j,iax,jax,nn
 !
 !      dz=dr always
-      if (dr.ne.dz) then
+      if (abs(dr-dz) .gt. 1e-4) then
         write(nw,*)' fatal error***iter routine needs dr=dz'
         write(nw,*)' must set dr=dz'
         stop

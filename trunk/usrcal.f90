@@ -18,8 +18,7 @@ contains
     double precision tempe,dense,densi
     double precision tlen(ncon),epsn(ncon),psinorm(ncon)
     double precision arr0(ncon),arr1(ncon),arr2(ncon),arr3(ncon),arr4(ncon)
-    double precision pow(3,ncon),dum,voltst,pprof(3,ncon),ptprof(ncon)
-    character(len=8) text
+    double precision pow(3,ncon),pprof(3,ncon),ptprof(ncon)
     !
     !  Write temperature and density data for radiation calc
     open(unit=29,file=runname(1:lrunname)//'.radat', &

@@ -10,17 +10,17 @@
       use param
       implicit none
 !
-      integer ndsk,k,nspec,l,kk,ik, midp
+      integer ndsk,k,nspec,kk,ik, midp
       double precision dense,psi,zeff,zni19,ne19,fprof,press,tempi,tempe
       double precision dshafr, shafr, rmaj, rmin, shift, epsil
-      double precision densi,bp, coolog, vnewk, vss, ti, ni, ti_p, ni_p
+      double precision densi,bp, coolog, vss, ti, ni, ti_p, ni_p
       double precision coll, nref, tref
-      double precision zmag,rat,px,py,deltar,deltaz,pf,fsqedg,yp,fsq,yy
+      double precision zmag,rat,px,py,deltar,deltaz,pf,fsqedg
       double precision yp1,yp2
-      double precision work(2*ncon),polvar(npts),aminor(ncon),fofpsi(ncon)
+      double precision polvar(npts),aminor(ncon),fofpsi(ncon)
       double precision y2(ncon),fpint(ncon)
-      character(len=40) date
-      integer, dimension(1):: iloc
+
+
 !      character(len=40), intent(in) :: filename
       double precision, dimension(:), allocatable :: ps,rg,zg
       double precision, dimension(:,:), allocatable :: mshvar,grads

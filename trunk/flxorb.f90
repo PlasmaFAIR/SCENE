@@ -7,11 +7,11 @@
       implicit none
       integer i,j,k
       double precision bp,fprof
-      double precision bth,rr,zz,fsi,psi,btor
+      double precision rr,fsi,psi,btor
       double precision rwall,zwall,rinner,rtst,ztst
       double precision, dimension(:), allocatable:: rk,zk
       double precision, dimension(:,:), allocatable:: bpk,uk
-      double precision bpgrid(nr,nz)
+
 !
       double precision, dimension(:), allocatable::  x,y,f
       double precision, dimension(:,:), allocatable:: grads
@@ -40,8 +40,8 @@
       zwall=8.0
       zwall=z(nz)
       rinner=r(1)
-      nrk=1+(rwall-rinner)/step
-      nzk=zwall/step
+      nrk=int(1+(rwall-rinner)/step)
+      nzk=int(zwall/step)
       rtst=rinner+(nrk-1)*step
       if (rtst.lt.rwall) nrk=nrk+1
       ztst=(nzk-1)*step

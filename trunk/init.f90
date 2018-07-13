@@ -6,8 +6,7 @@
 !------------------------------------------------------------------
       use param
       implicit none
-      double precision psi,dpsi,densi,tempe
-      integer i
+
 !
 ! initialise physical constants
       pi=4.0d0*atan(1.0d0)
@@ -59,7 +58,7 @@ end subroutine init
    use param
    use balpar
    implicit none
-  double precision, dimension(:), allocatable:: psi_in,ne_in,te_in
+
 !  The number of points
 !
       rcen=0.2
@@ -201,8 +200,8 @@ end subroutine init
 ! Read in equilibrium parameters
  60   read(nread,*)word,val
 !  Avoid rounding error if VAL is an integer
-      ival=val+0.1
-      if(val.LT.0.0) ival=val-0.1
+      ival=int(val+0.1)
+      if(val.LT.0.0) ival=int(val-0.1)
       if(word.eq.'rcen')rcen=val
       if(word.eq.'eps ')tokeps=val
       if(word.eq.'ibdr')ibdry=ival
@@ -288,7 +287,7 @@ end subroutine init
       if(word.eq.'nci0')nchi0=ival
       if(word.eq.'chi0')chi0val=val
       if(word.eq.'lam ')lamges=val
-      if(word.eq.'nbi ')nbi=val
+      if(word.eq.'nbi ')nbi=ival
       if(word.eq.'fini')goto 70
       goto 60
  70   continue
@@ -383,7 +382,7 @@ end subroutine init
         stop
       end if
 ! Quick check on consistency of edge parameters
-      if ((imp.eq.0).and.(tea.eq.0.).and.(tia.eq.0.)) then
+      if ((imp.eq.0).and.(tea.lt.1.e-8).and.(tia.lt.1.e-8)) then
         write(6,*)'Profiles require non-zero edge temperature;'
         write(6,*)'set tea or tia non-zero (can be arbitrarily small)'
         stop
@@ -402,7 +401,7 @@ end subroutine init
         nimp=int(val)
         call allocimp
 !  First element is main ion species
-        iz(1)=zm
+        iz(1)=int(zm)
         zmas(1)=zmai
         write(6,*)' zmas1=',zmas(1),zmai
         ztpow(1)=tpoi
@@ -429,7 +428,7 @@ end subroutine init
         nimp=0
         call allocimp
 !  First element is main ion species
-        iz(1)=zm
+        iz(1)=int(zm)
         zmas(1)=zmai
         ztpow(1)=tpoi
         zt0(1)=ti0
@@ -493,8 +492,8 @@ end subroutine init
       zs=rcen*tokeps*elon
       rs=rcen*(1.-tokeps*sin(tri))
 !  create mesh...
-      nr=(r2-r1)/step+6
-      nz=2.*zs/step+6
+      nr=int((r2-r1)/step+6)
+      nz=int(2.*zs/step+6)
       inr=2*(nr/2)
 ! ensure nr and nz are odd
       if (inr.eq.nr) nr=nr+1
@@ -607,6 +606,6 @@ end subroutine init
       allocate( r(nr), z(nz) )
       r=0.; z=0.
       allocate( u(nr,nz),ixout(nr,nz),idout(nr,nz) )
-      u=0.; ixout=0.; idout=0.
+      u=0.; ixout=0; idout=0
 !
    end subroutine allocmesh

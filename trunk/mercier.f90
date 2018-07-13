@@ -6,7 +6,7 @@
 !
       use param
       implicit none
-      integer i,j,k,nf
+      integer i,nf
       double precision qd,rr,bth,psi,fsi,ant,dm,bsq,pd,dres,hfun
       double precision fprof,press,pp,neoterm(ncon),hegterm(ncon),alfs
       double precision av1,av2,av3,av4,av5,av6,bvacu,bpol2,    &

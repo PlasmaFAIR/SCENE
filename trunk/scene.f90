@@ -4,7 +4,7 @@ program scene
   use param
   use usrcal_mod
   implicit none
-  integer i,j,icur,ierr,niter
+  integer i,j,icur,niter
   double precision errcur,bpold,bnold,bpnew
   !
 

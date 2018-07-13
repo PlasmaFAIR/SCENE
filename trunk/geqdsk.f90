@@ -6,7 +6,7 @@ subroutine geqdsk
   integer :: i, j, nh, na, con, ij
   double precision :: rmax, rmin, dimr, zmax, zmin, dimz
   double precision :: fprof, press, psi, rat, diff, sqrt
-  double precision :: Bv0, s, psibdy, dpsi, jtor
+  double precision :: Bv0, psibdy, dpsi, jtor
   integer :: ndat, nlim
   double precision, dimension(:), allocatable :: zbdy, rbdy, rlim, zlim, psii
   double precision, dimension(:), allocatable :: safety, f, ff, p ,pp

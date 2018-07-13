@@ -8,7 +8,7 @@ subroutine nbicur()
 
   integer :: con, l, im,i,j, count
 
-  integer :: nbeams, n, nion, maxiter, inbfus, iflag
+  integer :: nbeams, nion, maxiter, inbfus, iflag
 
   real :: amb, zbeam, b0, volp
   double precision :: rr, nesum, tesum, neav,teav
@@ -31,9 +31,9 @@ subroutine nbicur()
   double precision :: dense, tempe, tempi, densi, shift, elong
   !Output variables
 
-  real, dimension(:,:,:), allocatable :: hofr, jnbie
+  real, dimension(:,:,:), allocatable :: hofr
 
-  real, dimension(:,:), allocatable :: shinethru, jnb
+  real, dimension(:,:), allocatable :: shinethru
 
   real, dimension(:), allocatable ::  jnbTot, pnbe, pnbi, beamDens, beamVel, beamPress, beamFus, &
        pNBLoss, pNBAbsorb, pbfuse, pbfusi, snBeamDD, snBeamDT, nbcur, etanb, &
@@ -233,7 +233,7 @@ subroutine nbicur()
 
         !Half as D
         ni20(ncon-con+1,im) = sngl(densi(psi,im,0)*1.0e-20)
-        aion(im) = zmas(im)
+        aion(im) = real(zmas(im))
         zion(im) = iz(im)
 
      end do
@@ -272,7 +272,7 @@ subroutine nbicur()
 
   !Need to use limit of V' at very small rho
 
-  vprime_norm(2)=4.*pi*pi*rnormnb(2)*amin*kappa(2)*(rcen+amin*shafr(2))
+  vprime_norm(2)=real(4.*pi*pi*rnormnb(2)*amin*kappa(2)*(rcen+amin*shafr(2)))
 
   !Set density to small value at edge otherwise NaNs
   ne20(ncon) = 0.01
@@ -365,12 +365,11 @@ subroutine trapfact(l31)
       use param
       implicit none
       double precision dense,densi
-      double precision ne,tau,zni,zeff,zb
-      double precision pe,fsi,dox
-      double precision x,rj0,psi,bsq,pt,pd,bstrap
-      double precision rla, dst, btot,rr,zz,bphi,bp
-      double precision bigint,fc, fprof
-      integer i,l,k
+      double precision ne,zni,zeff,zb
+      double precision fsi,dox
+      double precision x,psi
+      double precision fc, fprof
+      integer l,k
 !
       real, dimension(ncon) :: l31
 

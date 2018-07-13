@@ -5,7 +5,7 @@
       implicit none
 !
       double precision b0,phi,rho(ncon),dpsi,te(ncon),pden(ncon),ne,   &
-                       dion,arg,ti,psi,parr(ncon)
+                       dion,arg,ti,psi
       double precision densi,tempi,tempe,dense
       integer k,nwr,i
 !
@@ -99,11 +99,11 @@
       implicit none
       integer nma
       double precision rho(nma),vr(nma),g33(nma),ipol(nma),droda(nma),  &
-                g22(nma),g11(nma),shif(nma),kap(nma),trian(nma),kap1(nma)
+                g22(nma),g11(nma),shif(nma),kap(nma),trian(nma)
       double precision pden(ncon),te(ncon)
 !
       integer k,i,im,ipeak,nwr
-      double precision v1(npts),v2(npts),v3(npts),v4(npts),v5(npts)
+      double precision v1(npts),v2(npts),v3(npts),v4(npts)
       double precision th(npts)
       double precision phi,sinarg
       double precision drhodpsi(nma),asmall(nma)
@@ -111,7 +111,6 @@
       double precision ro1,ro2,ro3,x1,x2,x3,aa,bb,cc
       double precision fprof,b0,psi,zpeak,rpeak,dpsi
       double precision av0,av1,av2,dth,del0,del1,ascur
-      double precision press
       double precision intval,intvol
 !
       nwr=62

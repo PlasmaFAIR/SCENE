@@ -15,7 +15,7 @@
       double precision circ(ncon),qban(ncon),vban(ncon),aban(ncon)
       integer iban(ncon)
       integer nban,k,ik,i,k1,k2
-      real xp(npts),zp(npts),xmin,xmax,zmin,zmax
+
 !      dimension btban(400,50),bban(400,50)
 !      dimension sban(400,50),vban(50),aban(50),circ(50),qban(50)
 !      dimension xp(400),y1(400),y2(400),y3(400)

@@ -7,21 +7,15 @@ subroutine getdata
   implicit none
 
   double precision :: rr, zz, rat
-  double precision :: fprof, tempe, tempi, psi,psi_n, bp, B_tor, B_pol, B_tot
-  double precision :: press, densi, dense, safety, ffp, fsi, pp, rho
+  double precision :: fprof, tempe, tempi, psi, bp, B_tor, B_tot
+  double precision :: press, densi, dense, safety, ffp, fsi, pp
   double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2, jnb
-  character(8) :: date
-  character(10) :: time
   double precision :: flux_r, flux_z, te
 
   double precision, dimension(ncon) :: rhoflux, Rflux
   double precision :: rhomax, jtot
 
-  real, dimension(ncon) :: rhos, dpdrs
-
-  integer :: nh, i, j, con, flag
-
-
+  integer :: i, j, nh, con
   nh = 49
 
 
@@ -348,11 +342,10 @@ subroutine popcon()
   implicit none
 
 
-  double precision :: rr, zz, rat
-  double precision :: fprof, tempe, tempi, psi,psi_n, bp, B_tor, B_pol, B_tot
-  double precision :: press, densi, dense, safety, ffp, pp
+  double precision :: fprof
+  double precision :: densi, dense
 
-  integer :: nh, i, j, con, flag
+  integer :: nh
 
 
   nh = 63
@@ -441,7 +434,6 @@ subroutine popcon()
 
 500 format(' ',A12, ' , ', E11.4 , ' , ', A5)
 510 format(' ',A12, ' , ', F11.4 ,' , ',A5)
-520 format(' ',A11, ' , ' ,I11, ' , ', A5)
 
   close(nh)
 
