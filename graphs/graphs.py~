@@ -1,0 +1,16 @@
+import numpy as np
+import currents
+
+
+device = raw_input('Enter device name: ')
+
+print(device, 'graphs will be produced')
+
+
+#Produce currents plot
+currents.curplot(device)
+
+#Produce magnetic field plot
+x
+
+

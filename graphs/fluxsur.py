@@ -1,14 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os.path
 
 
 def flxplot(device):
 
     filename=device+'_fluxsur.dat'
-
-    bdy_dat='bdy.txt'
-
-    bdy=np.loadtxt(bdy_dat, skiprows=1)
+         
     fluxsur = np.loadtxt(filename)
 
 
@@ -24,16 +22,22 @@ def flxplot(device):
 
         plt.plot(fluxsur[i,:,0], fluxsur[i,:,1])
 
+        
 
+    if ( os.path.isfile('bdy.txt')):
+         bdy_dat='bdy.txt'
 
-    plt.plot(bdy[:,0], bdy[:,1], 'k', linewidth=4.0)
+         bdy=np.loadtxt(bdy_dat, skiprows=1)
+
+         plt.plot(bdy[:,0], bdy[:,1], 'k', linewidth=4.0)
+
+         
     ax = plt.gca()
     ax.set_aspect('equal')
     plt.xlabel('R (m)')
     plt.ylabel('Z (m)')
     plt.title(' Flux surfaces of ')
-    #plt.show()
     plt.savefig('flxsur.png')
-    plt.close()
+    plt.show()
 
     print('Flux Surface plot saved')

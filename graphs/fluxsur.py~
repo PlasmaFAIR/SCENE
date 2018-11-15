@@ -1,0 +1,30 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+fluxsur = np.loadtxt('fnsf_fluxsur.dat')
+
+
+npts, ncon = fluxsur[0,:]
+
+fluxsur = np.delete(fluxsur, 0,axis=0)
+
+
+fluxsur = np.reshape(fluxsur, (ncon,  npts, 2 ) )
+
+print(fluxsur[1, 0:9, :])
+
+for i in range(int(ncon)):
+
+    plt.plot(fluxsur[i,:,0], fluxsur[i,:,1])
+
+
+
+ax = plt.gca()
+ax.set_aspect('equal')
+plt.xlabel('R (m)')
+plt.ylabel('Z (m)')
+plt.title(' Flux surfaces of ')
+
+plt.savefig('flxsur.png')
+plt.show()
