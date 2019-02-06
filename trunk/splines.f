@@ -181,7 +181,7 @@ c-----------------------------------------------------------------------
       goto 1
       endif
       h=xa(khi)-xa(klo)
-      if (h.eq.0.d0) then
+      if (abs(h).le.1e-8) then
          write(6,*) 'bad xa input.'
          stop
       endif
@@ -252,7 +252,7 @@ c-----------------------------------------------------------------------
       goto 1
       endif
       h=xa(khi)-xa(klo)
-      if (h.eq.0.d0) then
+      if (abs(h).lt.1e-8) then
          write(6,*) 'bad xa input.'
          stop
       endif

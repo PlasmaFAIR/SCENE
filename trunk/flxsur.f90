@@ -58,11 +58,11 @@
       double precision zer(2)
       double precision umid(nr+1),rmid(nr+1)
 !
-      if (uval.eq.umax) then
+      if (abs(uval-umax).lt.1e-8) then
         epsi=0.
         return
       end if
-      if (uval.eq.0.0d0) then
+      if (abs(uval).lt.1e-8) then
         epsi=tokeps
         return
       end if
@@ -103,12 +103,13 @@
         if (prod.lt.0.) then
           l=l+1
           if (l.lt.3) zer(l)=rmid(i-1)+ul*dr/(ul-un)
-        else if (prod.eq.0.) then
+       else if (abs(prod).lt.1e-10) then
           l=l+1
           if (l.lt.3) zer(l)=r(i)
           un=-ul
         end if
- 10   continue
+10      continue
+        
 !  check that there are two zeros...
       if (l.eq.2) then
 !  found two zeros
@@ -141,15 +142,13 @@
 !
       integer is,ic,izz,ilor,iupr,ir,icon,igot,jpt,i,kc,jc,k
       integer irem,im,ip,nrc,nzc
-      double precision psi,dps,un,uval,ul,rr,zz,prod,rgot,zgot,bp,curint
+      double precision psi,un,uval,ul,rr,zz,prod,rgot,zgot,bp,curint
       double precision flxr(nr*nz),flxz(nr*nz)
       double precision rl(nr*nz),zl(nr*nz),leng(nr*nz),work(nr*nz)
       double precision r_temp(nr*nz),z_temp(nr*nz)
       double precision dl,leq(npts)
-      double precision th, th1,th2,dth
       double precision x1,x2,x3,d1,d2,ydd0,rav1,rav2,rav3
-      integer nharm,m,j,im2,ip2,ihalf
-      double precision, dimension(:), allocatable:: rcof,zcof
+      integer j,ihalf
       double precision psicol(nr,nz),rcol(nr),zcol(nz)
 
 !
@@ -196,7 +195,7 @@
           flxz(ic)=zz
           ir=i-1
           igot=1
-        else if (prod.eq.0.) then
+        else if (abs(prod).lt.1e-8) then
           rgot=r(i)
           ic=ic+1
           flxr(ic)=rgot
@@ -234,7 +233,7 @@
             flxz(ic)=zgot
             izz=i+1
             igot=1
-          else if (prod.eq.0.) then
+          else if (abs(prod).lt.1e-8) then
             zgot=z(i)
             ic=ic+1
             flxr(ic)=rr
@@ -293,7 +292,7 @@
  35   irem=0
       do i=2,icon
         if (irem.eq.0) then
-          if (leng(i).eq.leng(i-1)) then
+          if (abs(leng(i)-leng(i-1)).lt.1e-8) then
 !  remove duplicated point
             irem=i
             icon=icon-1
@@ -432,11 +431,11 @@
 !
 !  error to be tolerated in psi
       err=errit
-      if (eps.eq.0.) then
+      if (abs(eps).lt.1e-8) then
         psi=0.
         return
       end if
-      if (eps.eq.tokeps) then
+      if (abs(eps-tokeps).lt.1e-8) then
         psi=umax
         return
       end if

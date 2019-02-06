@@ -1,6 +1,6 @@
       subroutine fastIons (nbeams, amb, zbeam, ebeam, pbeam, inbfus,
      .     hofr, shinethru, jnbie, jnb, jnbTot, beamDens, beamVel,
-     .     beamPress, jnbfast, l31,
+     .     beamPress, jnbfast, l31, srcfast,
      .     beamFus, beamDTFus, beamDDFus, beamFusDTHe4, beamFusDDHe3,
      .     beamFusDDp, beamFusDDt, snBeamDT, snBeamDD)
 
@@ -246,7 +246,7 @@ c/    Critical energy for fast ion slowing down:
 
 
 c/    Calculate fast and net current densities (A/m2):
-
+                  !print*, 'Beam cur ', ie, ib, bmcur(ie,ib)
                   srcfast(i,ie,ib) = bmcur(ie,ib) *
      x                 (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)/volume
 
@@ -381,6 +381,7 @@ c/    Calculate power division between electrons and ions:
          beamDens(i) = sumdnbib
          beamVel(i) = sumdvbib/sumdnbib
          beamPress(i) = sumPreib
+
       enddo
 
       return

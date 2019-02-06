@@ -24,16 +24,18 @@ subroutine nbicur()
   real, dimension(:), allocatable :: aion, zion, ne20, tekev, tikev, zeff
   real, dimension(:,:), allocatable :: ni20, pwrfrac
 
-  real, dimension(:), allocatable :: rnormnb, kappa, dkappa, shafr, dshafr
+  real, dimension(:), allocatable :: kappa, dkappa, shafr, dshafr
 
-  real, dimension(:), allocatable :: dpdrs, vprime_norm, vprime, dvol, darea
+  real, dimension(:), allocatable :: vprime_norm, vprime, dvol, darea
+  real, dimension(ncon) :: rhos
 
+  double precision, dimension(:), allocatable :: dpdrs, rnormnb
   double precision :: dense, tempe, tempi, densi, shift, elong
   !Output variables
 
-  real, dimension(:,:,:), allocatable :: hofr
+  real, dimension(:,:,:), allocatable :: hofr, srcfast
 
-  real, dimension(:,:), allocatable :: shinethru
+  real, dimension(:,:), allocatable :: shinethru, pnbbm, pnb
 
   real, dimension(:), allocatable ::  jnbTot, pnbe, pnbi, beamDens, beamVel, beamPress, beamFus, &
        pNBLoss, pNBAbsorb, pbfuse, pbfusi, snBeamDD, snBeamDT, nbcur, etanb, &
@@ -46,6 +48,7 @@ subroutine nbicur()
 
   integer :: maxbeams, mxrho
 
+  double precision, dimension(:), allocatable :: source
   maxbeams = 4
   mxrho = 51
 
@@ -159,10 +162,6 @@ subroutine nbicur()
 
 
 
-  allocate(aion(nion), zion(nion), ne20(ncon), tekev(ncon), tikev(ncon), zeff(ncon), &
-       dpdrs(ncon), rnormnb(ncon), dvol(ncon), darea(ncon), vprime(ncon), kappa(ncon), &
-       dkappa(ncon), shafr(ncon), dshafr(ncon), vprime_norm(ncon), l31(ncon) )
-
 
   !Ions parameters
   if ( nimp+2 .gt. 6) then
@@ -170,6 +169,11 @@ subroutine nbicur()
   else
      nion = nimp+1
   end if
+
+  allocate(aion(nion), zion(nion), ne20(ncon), tekev(ncon), tikev(ncon), zeff(ncon), &
+       dpdrs(ncon), rnormnb(ncon), dvol(ncon), darea(ncon), vprime(ncon), kappa(ncon), &
+       dkappa(ncon), shafr(ncon), dshafr(ncon), vprime_norm(ncon), l31(ncon) )
+
 
   !aion = zmas
   !zion = iz
@@ -202,15 +206,15 @@ subroutine nbicur()
      !ncon-con+1 because array needs to start from axis
      shafr(ncon-con+1) = sngl(shift(con,0)/amin)
 
-     dshafr(ncon-con+1) = sngl(shift(con,1)/amin * dpdrs(ncon-con+1))
+     dshafr(ncon-con+1) = sngl(shift(con,1)/amin * dpdrs(con))
 
      kappa(ncon-con+1) = sngl(elong(con,0))
 
-     dkappa(ncon-con+1) = sngl(elong(con,1) * dpdrs(ncon-con+1))
+     dkappa(ncon-con+1) = sngl(elong(con,1) * dpdrs(con))
 
 
      !Already in the correct order
-     vprime_norm(ncon-con+1) = sngl(vprime(ncon-con+1) * dpdrs(ncon-con+1)/amin)
+     vprime_norm(ncon-con+1) = sngl(vprime(ncon-con+1) * dpdrs(con)/amin)
 
 
      !Electron and ion densities and temp (need to be reversed)
@@ -272,33 +276,37 @@ subroutine nbicur()
 
   !Need to use limit of V' at very small rho
 
-  vprime_norm(2)=real(4.*pi*pi*rnormnb(2)*amin*kappa(2)*(rcen+amin*shafr(2)))
+  vprime_norm(2)=real(4.*pi*pi*rnormnb(ncon-1)*amin*kappa(2)*(rcen+amin*shafr(2)))
 
   !Set density to small value at edge otherwise NaNs
   ne20(ncon) = 0.01
   ni20(ncon,:) = 0.01
 
+  rhos = sngl(rnormnb(ncon:1:-1))
 
   !Allocate arrays to outputs variables (need to do it for max no. of
   !beams/rhos as is allocated in nbeams
-  allocate(hofr(mxrho, 3,maxbeams))
+  allocate(hofr(mxrho, 3,maxbeams), srcfast(mxrho,3,maxbeams))
 
   allocate(shinethru(3,maxbeams))
 
   allocate(pNBLoss(maxbeams), pNBAbsorb(maxbeams), etanb(maxbeams), gammanb(maxbeams), nbcur(maxbeams))
 
-  allocate(jnbTot(mxrho), pnbe(mxrho),pnbi(mxrho),beamDens(mxrho),beamVel(mxrho),beamPress(mxrho), &
-       beamFus(mxrho), pbfuse(mxrho), pbfusi(mxrho), snBeamDD(mxrho), snBeamDT(mxrho), jnbfast(mxrho))
+  allocate(jnbTot(mxrho), pnbe(mxrho),pnbi(mxrho),beamDens(mxrho),beamVel(mxrho), &
+       beamPress(mxrho), beamFus(mxrho), pbfuse(mxrho), pbfusi(mxrho),  &
+       snBeamDD(mxrho), snBeamDT(mxrho), jnbfast(mxrho), pnbbm(mxrho,maxbeams), &
+       pnb(ncon,nbeams)) 
 
 
   ! Call beam calc
   call calcBeams(nbeams, amb, zbeam, ebeam, pbeam, inbfus, &
        rtang, nbshape, bwidth, bheigh, nbptype, bgaussR, bgaussZ, &
        bzpos, pwrfrac, maxiter, nion, aion, zion, ne20, ni20, tekev, &
-       tikev, zeff, sngl(rcen), sngl(amin), b0, sngl(vol), ncon, rnormnb, vprime_norm,  &
-       dvol, darea, l31,  &
+       tikev, zeff, sngl(rcen), sngl(amin), b0, sngl(vol), ncon, rhos, vprime_norm,  &
+       dvol, darea, l31, srcfast,  &
        kappa, dkappa, shafr, dshafr, hofr, shinethru, jnbTot, pnbe,  &
-       pnbi, beamDens, beamVel, beamPress, beamFus, jnbfast, pbfuse, pbfusi, snBeamDD, &
+       pnbi, pnbbm,beamDens, beamVel, beamPress, beamFus, jnbfast, pbfuse, &
+       pbfusi, snBeamDD, &
        snBeamDT, nbcur, etanb, gammanb, pNBAbsorb, pNBLoss, nbcurTot, &
        etanbTot, beamBeta, pNBAbsorbTot, pNBLossTot, beamFusTot, &
        beamFusChTot, snDTTotal, snDDTotal, iflagnb)
@@ -317,19 +325,58 @@ subroutine nbicur()
 
   print*, 'flag', iflag
   print*, 'Total NB Current: ', nbcurTot
-
+  print*, 'Total Power lost (MW): ',pNBLoss
+  print*, 'Total Power absorbed (MW): ', pNBAbsorbTot
   !Shinethrough calc for all beams + components
-  bmshine=0.
-  do i=1,nbeams
-     do j=1,3
-        bmshine= bmshine +pwrfrac(j,i)*shinethru(j,i)
-     end do
-  end do
+  ! bmshine=0.
+  ! do i=1,nbeams
+  !    do j=1,3
+  !       bmshine= bmshine +pwrfrac(j,i)*shinethru(j,i)
+  !    end do
+  ! end do
 
-  bmshine = bmshine/nbeams
+  !Sim power to e and i and reverse
+  
+  do i=1, nbeams
+     ! Set Power to vol elements - reverse order (so rho 0->1)
+     pnb(:,i) = dvol(ncon:1:-1)
+     do j=1,ncon
+        ! Times by beam power den (reverse order)
+        pnb(j,i) = pnb(j,i) * pnbbm(ncon-j+1,i)
+
+     end do
+     
+  end do
+  
+        
+  allocate(source(ncon))
+  call momsource(nbeams,dble(pnb),dble(ebeam),dble(rtang), source)
+  nbmom = source
+  
+  
+  bmshine = dble(sum(pNBLoss(1:nbeams)))
   bmfus = dble(beamFusTot)
 
 
+   !Flx average quantities
+   open(unit=48, file=runname(1:lrunname)//'_srcfast.dat', &
+        status='unknown', iostat=ios)
+   if (ios.ne.0) then
+      write(6,*) 'problem opening ',runname(1:lrunname)//'_srcfast.dat'
+      stop
+   end if
+
+   write(48,*) 'Fast source'
+
+   do i = 1,ncon
+      !Some along energy components
+      write(48,28) srcfast(i,:,:nbeams)
+   end do
+
+
+28 format(8e13.6)
+   close(48)
+   
    !Flx average quantities
    open(unit=50, file=runname(1:lrunname)//'_flxav.dat', &
         status='unknown', iostat=ios)
@@ -338,13 +385,14 @@ subroutine nbicur()
       stop
    end if
 
-
+   write(50,*) 'Psi, NB cur (A/m^2), Pow to e (MW/m^3), Power to i (MW/m^3),  &
+        &FI dens (/m^3), FI Vel (/m^2 s), flux sur vol (m^3), FI current (A/m^2)'
    do con=1,ncon
-
-      write(50,30) phi(ncon-con+1), jnbTot(con), pnbe(con), pnbi(con), beamDens(con), beamVel(con), dvol(con), jnbfast(con)
+      
+      write(50,30) psiv(ncon-con+1), jnbTot(con), pnbe(con), pnbi(con), beamDens(con), beamVel(con), dvol(con), jnbfast(con)
 
    end do
-30 format(8e14.6)
+30 format(8e13.6)
 
    close(50)
 
@@ -353,6 +401,46 @@ subroutine nbicur()
 
   !print*, 'Electron Average Temp ', teav, q' and density ', neav
 end subroutine nbicur
+
+
+subroutine momsource(nbeams,power,energy, rtan, source)
+
+!Momentum from Beam energy (keV) and power (MW)
+!Returns NBI momenum
+  
+  use param
+  implicit none
+  integer :: nbeams
+  double precision, dimension(nbeams), intent(in) ::  rtan, energy
+  double precision, dimension(ncon,nbeams) :: power
+  double precision, dimension(ncon) :: source, bm_source,mass, vtor, angf
+  double precision :: densi, rmax
+  integer :: i, con
+
+  source = 0 
+  
+  do i=1,nbeams
+
+     !Source from each beamline
+     bm_source = power(:,i)*1e6*rtan(i)* &
+          (energy(i)*1e3*eq/(2.*mp))**(-0.5)
+     do con=1,ncon
+        !Momentum source term for each flux surface
+        rmax = maxval(rpts(con,:))
+        if (con.eq.ncon) rmax = r0
+        source(con) = source(con)+ bm_source(con)/rmax
+        mass(con) = densi(psiv(con),1,0) *mp*zmai
+     end do
+  end do
+  !Vtor = Mom*time/mass
+  vtor = source  * taue /mass
+  
+  print*, 'Calculated vtor'
+  !Angular freq at R_outer
+  angf = vtor/(maxval(rpts,2))
+
+end subroutine momsource
+
 
 
 

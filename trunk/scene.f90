@@ -25,13 +25,13 @@ program scene
 !!$C  Initialise ICUR parameter...if ICUR=-1 trapped particle
 !!$C  effects are not included in the plasma conductivity.
 !!$      ICUR=0
-  !      if (igr.gt.0) then
-  !	call paper(1)
-  !	call paper(1)
-  !       call devoff
-  !	call filnam('graphs.grd')
-  !        call filon
-  !end if
+  if (igr.gt.0) then
+     !call paper(1)
+     !call paper(1)
+     !call devoff
+     call filnam('graphs.grd')
+     call filon
+  end if
 
 
 
@@ -62,7 +62,7 @@ program scene
 
   !Include NBI in current calc
   if (nbi.ge.1) call nbicur()
-
+  
   print*, 'done nbicur'
   !  Calculate currents (and read in externally applied current
   !  profile if itot=0)
@@ -115,7 +115,7 @@ program scene
         end do
      end do
      totex=totex*vloop+totex2
-     call getdata
+
      !print*, totgs, totbs, totps, totdi, totex2, totnb, totex
 
      !  calculate error in ff'
@@ -171,23 +171,28 @@ program scene
   !Doesn't include NBI in current calc
   !if (nbi.eq.1) call nbicur
 
- !Write data to file
+ !Write data to files
   call getdata
 
-
   !  Plot out some useful figs
-  if (igr.ge.0) then
+  if (igr.gt.0) then
 
      !Call python plotting
-     call execute_command_line("echo "//runname// " | ipython ~/SCENEv2/graphs/graphs.py")
-
+     !call execute_command_line("echo "//runname// " | ipython ~/SCENEv2/graphs/graphs.py")
+     call flxplt
+     call graphs
+     print*, 'Made graphs.grd file'
+     call grend
+     print*, 'Closed graphs.grd'
   end if
-
+  
   !  Plot stability plots if igr set to 3
   !      if (igr.eq.3) call stab
   !      if (igr.eq.3) call epsplot
   !  Call user interface routine
   call usrcal
+  print*, 'Calling NETCDF writer'
+  call write_netcdf()
   !
   !
   !

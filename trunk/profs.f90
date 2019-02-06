@@ -7,7 +7,7 @@
 !
       use param
       implicit none
-      integer ip,id,i,im,ik
+      integer ip,id,im,ik
       double precision psin
       double precision press, psi,xps,ptem,efac
       double precision te,tempe,ti,tempi,ted,tid,tedd,tidd
@@ -41,7 +41,7 @@
         end if
         psin=psi/umax
         dpsi=1./nterp
-        im=psin/dpsi
+        im=int(psin/dpsi)
         if (im.le.1) im=2
         if (im.gt.nterp-1) im=nterp-1
         p1=p_m(im-1)
@@ -66,7 +66,7 @@
       if (ipswtch.eq.-30) then
         psin=psi/umax
         dpsi=1./nterp
-        im=psin/dpsi
+        im=int(psin/dpsi)
         im=1
         do 50 ik=1,nterp
           if (psin.gt.psi_m(ik)) goto 50
@@ -315,7 +315,7 @@
        double precision psin
        double precision pressi,press,psi,xps,ptem,efac
        double precision p1,p2,p3,x1,x2,x3,aa,bb,cc,dpsi
-       integer ip,id,i,im,ik
+       integer ip,id,im,ik
 
        xps=1.-psi/umax
        if (xps.lt.0.) then
@@ -327,7 +327,7 @@
              Stop
           end if
        end if
-       if (ipswtch.eq.-1.) then
+       if (ipswtch.eq.-1) then
           if (imp.ne.0) then
              Write(6,*)' Should not use impurities with ipswtch=-1.'
              Stop
@@ -339,7 +339,7 @@
        if (ipswtch.eq.-30) then
           psin=psi/umax
           dpsi=1./nterp
-          im=psin/dpsi
+          im=int(psin/dpsi)
           im=1
           do 60 ik=1,nterp
              if (psin.gt.psi_m(ik)) goto 60
@@ -437,7 +437,7 @@
       if (imp.eq.0) then
         ti=tempi(psi,1,0)
         te=tempe(psi,0)
-        if ((ti.eq.0.).and.(te.eq.0.)) then
+        if ((ti.lt.1e-8).and.(te.lt.1e-8)) then
           ne=0.
         else
           ne=press(psi,0)/(zm*ti+te)
@@ -691,9 +691,9 @@
          return
         else if (i.eq.1) then
 ! return derivative
-         if (ntpow.eq.1.) then
+         if (abs(ntpow-1.).lt.1e-8) then
            nid=-((nz0-nta)+npo1*ntped*((xps-ane)**2)**((npo1-1.)/2.))/umax
-         else if (ntpow.eq.0) then
+         else if (abs(ntpow).lt.1e-8) then
            nid=-npo1*ntped*((xps-ane)**2)**((npo1-1.)/2.)/umax
          else
            if (ntpow.lt.2.) then
@@ -707,7 +707,7 @@
          return
         else if (i.eq.2) then
 ! return 2nd derivative
-         if ((ntpow.eq.1.).or.(ntpow.eq.0)) then
+         if ((abs(ntpow-1).lt.1e-8).or.(abs(ntpow).lt.1e-8)) then
            nidd=npo1*(npo1-1.)*ntped*((xps-ane)**2)**((npo1-2.)/2.)/umax**2
          else
            if (ntpow.lt.2.) then
@@ -749,7 +749,7 @@
         if (ipswtch.eq.-1) then
           psin=psi/umax
           dpsi=1./nterp
-          im=psin/dpsi
+          im=int(psin/dpsi)
           if (im.le.1) im=2
           if (im.gt.nterp-1) im=nterp-1
           g1=ffp_m(im-1)
@@ -1347,9 +1347,9 @@
 
      integer :: con, id
 
-     integer :: i,j
+     integer :: i
      double precision :: rmin, rmax,zmax
-     double precision :: psi, rat, kap
+     double precision :: rat, kap
 
      double precision :: elong_l, elong_u, psi_l, psi_u, elongp, elongf
 
@@ -1526,16 +1526,15 @@
    end function shift
 
 
-   subroutine dpsidrho (dpdrs, rhos)
+   subroutine dpsidrho (dpdr, rho)
 
      use param
      implicit none
 
      integer :: i
-     double precision, dimension(ncon) :: rho,dpdr, testrho
-     double precision :: rhomax, shift
+     double precision, dimension(ncon) :: rho,dpdr
+     double precision :: rhomax
 
-     real, dimension(ncon) :: rhos, dpdrs
 
      rho =( maxval(rpts, dim=2) - minval(rpts,dim=2)) /2
 
@@ -1548,7 +1547,7 @@
 
      rho = rho/rhomax
      do i =1,ncon
-
+        !print*, i, rho(i)
         if (i .eq. 1) then
 
            dpdr(i) = (psiv(i+1)-psiv(i)) / (rho(i+1) - rho(i))
@@ -1565,9 +1564,7 @@
 
 
      end do
-
-     rhos=sngl(rho(ncon:1:-1))
-     dpdrs=sngl(dpdr(ncon:1:-1))
+   
    end subroutine dpsidrho
 
 
@@ -1579,13 +1576,12 @@
 
 
      double precision, dimension(ncon)  :: voldiff, flxvol, areacon, volcon, flxarea
-     integer ::i, j,k, id
+     integer ::i, j,k
 
 
      double precision :: flxvol_l, flxvol_u, psi_u, psi_l
 
-     double precision :: r_l, r_r, z_l, z_r, shift, elong
-
+     double precision :: r_l, r_r, z_l, z_r, shift
      real, dimension(ncon) :: vols, areas, volsp
 
 
@@ -1668,10 +1664,13 @@
 
      end do
 
+     print*,'Volcon sum is ',sum(volcon)
+     
+     volsp(ncon) = real(voldiff(1))
+     vols(ncon) = real(volcon(1)/2.)
+     areas(ncon) = real(areas(1)/2.)
 
-     volsp(ncon) = voldiff(1)
-     vols(ncon) = volcon(1)/2.
-     areas(ncon) = areas(1)/2.
+     print*,'Vols sum is ',sum(vols)
 
    end subroutine dVdrho
 

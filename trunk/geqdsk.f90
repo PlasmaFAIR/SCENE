@@ -1,19 +1,24 @@
 subroutine geqdsk
-
+!!! Writes out a geqdsk file
+  ! In order to include a limiter the standard SCENE R,Z grid is
+  ! extended by one grid space on all sides psi (nr,nz) -> psi(nr+2,nz+2)
+  ! Uses surfit.f from dierckx to fit a surface inside the boundary to
+  ! extend psi out to the edge of the box
   use param
   implicit none
 
-  integer :: i, j, nh, na, con, ij
+  integer :: i, j, nh, na, con, ij, ind, nr2, nz2, ii
   double precision :: rmax, rmin, dimr, zmax, zmin, dimz
-  double precision :: fprof, press, psi, rat, diff, sqrt
+  double precision :: fprof, press, psi, rat, diff
   double precision :: Bv0, psibdy, dpsi, jtor
   integer :: ndat, nlim
   double precision, dimension(:), allocatable :: zbdy, rbdy, rlim, zlim, psii
   double precision, dimension(:), allocatable :: safety, f, ff, p ,pp
-  double precision, dimension(nr,nz) :: psirz, psi1
+  double precision, dimension(:,:), allocatable :: psirz, psi1
   character(8) :: date
   character(10) :: time
-
+  double precision :: rintrp, zintrp
+  
   !Writes GEQDSK file
 
   nh = 49
@@ -27,18 +32,25 @@ subroutine geqdsk
 
   call DATE_AND_TIME(date, time)
 
+  !Increase box size for limiter
+  nr2 = nr+2
+  nz2 = nz+2
 
-  !First line header, main thing needed in nr and nz
-  write(nh,2000) 'SCENE ', date, ' : ', time, 'RUN: ', runname, 0, nr, nz
-  rmax = maxval(r)
-  rmin = minval(r)
+  allocate(psirz(nr,nz), psi1(nr,nz))
+  
+  !First line header, main thing needed in nr and nz (add one for limiter)
+  write(nh,2000) 'SCENE ', date, ' : ', time, 'RUN: ', runname, 0, nr2, nz2
+
+  !Change box to include limiter surface defined later
+  rmax = maxval(r)+dr
+  rmin = minval(r)-dr
   dimr = rmax - rmin
-  zmax = maxval(z)
-  zmin = minval(z)
+  zmax = maxval(z)+dr
+  zmin = minval(z)-dr
   dimz = zmax-zmin
 
   !Dimensions of R,Z grid
-  print*, dimr, dimz, rcen, rmin
+  !print*, dimr, dimz, rcen, rmin
   write(nh,2020) dimr, dimz, rcen, rmin, 0.
 
   Bv0 = mu0*rodi/(2.*pi*rcen)
@@ -51,13 +63,13 @@ subroutine geqdsk
   !Gets Psi along midplane (sets Psi outside plasma
   !to be umax and then writes F along midplane
 
-  allocate(psii(nr), f(nr), ff(nr), p(nr), pp(nr))
+  allocate(psii(nr2), f(nr2), ff(nr2), p(nr2), pp(nr2))
 
-  dpsi=umax/(nr-1)
+  dpsi=umax/(nr2-1)
 
-  do i=1,nr
+  do i=1,nr2
      psii(i) = (i-1)*dpsi
-     print*, psii(i)
+     !print*, psii(i)
 
      f(i) =  fprof(psii(i),2)
      ff(i) = fprof(psii(i),1)
@@ -67,33 +79,32 @@ subroutine geqdsk
 
 
   !Writes f
-  write(nh,2020) ( f(i), i=1,nr)
+  write(nh,2020) ( f(i), i=1,nr2)
 
 
   !Writes Pressure p
-  write(nh,2020) (p(i), i=1,nr)
+  write(nh,2020) (p(i), i=1,nr2)
 
 
   write(6,*) 'Pressure written to geqdsk'
 
   !Writes ff'
-  write(nh,2020) (ff(i), i=1,nr)
+  write(nh,2020) (ff(i), i=1,nr2)
 
 
   write(6,*) 'ffp written to geqdsk'
 
   !Writes p'
-  write(nh,2020) (pp(i), i=1,nr)
+  write(nh,2020) (pp(i), i=1,nr2)
 
   jtor=0.0
   call extrap2()
+  psirz= umax*1.2
   do i=1,nr
      do j=1,nz
         if (ixout(i,j) .ne. 0) then
            psirz(i,j) = (umax-u(i,j))
            !jtor = jtor + r(i)*press(psirz(i,j),1) + fprof(psirz(i,j),1)/(r(i)*mu0)
-        else
-           psirz(i,j) = umax*1.2
         end if
 
      end do
@@ -104,31 +115,62 @@ subroutine geqdsk
   !Extrapolates Psi to edge of grid
   call extrappsi(rmin, rmax, zmin, zmax,psi1)
   write(6,*) 'Smoothing function'
-
+  
+  allocate(psigeq(nr2,nz2))
+  psigeq = 0.0
+  
   !Writes Psi
+  !Uses extrapolated values outside bdy,
+  !USes actual value inside bdy
   diff=0.
   ij=0
   do i=1,nr
      do j=1,nz
-
+        !Set to extrap val
+        psigeq(i+1,j+1) = psi1(i,j)
+        
         if (ixout(i,j).ne.0) then
-            ij=ij+1
-           diff = diff + ((umax - u(i,j)) - psi1(i,j))**2
+           
+           ij=ij+1
+           !Set psi inside bdy
+           psigeq(i+1,j+1) = umax -u(i,j)
+           diff = diff + ( umax - u(i,j) - psi1(i,j) )**2/(umax-u(i,j))**2
+           
+           !if (psi1(i,j) .lt. 0.01) print*, i,j,umax-u(i,j), psi1(i,j)
            !psi1(i,j) = umax - u(i,j)
         end if
 
      end do
   end do
-  write(6,*) 'Avg diff between Psi and fit is :',  sqrt(diff/ij)
+  write(6,*) 'Avg fractional diff between Psi and fit is :',  sqrt(diff/ij)
+
+  ! Have a psi that has one more layer grid point on each side
 
 
-  print*, 'Writing psi values to eqdsk, only correct in the plasma'
-  write(nh,2020)  ((psirz(i,j), i=1,nr), j=1,nz)
+  !Inside points same as before
+  psigeq(2:nr+1,2:nz+1) = psi1
+
+  !Extrapolate out to the side first (not incl extra z layers)
+  !Left side
+  psigeq(1,2:nz2-1) = 2*psigeq(2,2:nz2-1) -psigeq(3,2:nz2-1)
+
+  !Right
+  psigeq(nr2,2:nz2-1) = 2*psigeq(nr2-1,2:nz2-1) - psigeq(nr2-2,2:nz2-1)
+
+  !Extrapolate out to top and bottom (incl extra r layers)
+  !Top
+  psigeq(:,1) = 2*psigeq(:,2) - psigeq(:,3)
+
+  !Bottom
+  psigeq(:,nz2) = 2*psigeq(:,nz2-1) - psigeq(:,nz2-2)
+
+  print*, 'Writing psi values to eqdsk, extrapolated out to edge'
+  write(nh,2020)  ((psigeq(i,j), i=1,nr2), j=1,nz2)
   write(6,*) 'psi written to geqdsk'
 
-  allocate(safety(nr))
+  allocate(safety(nr2))
   !Writes Safety factor (on R,Z grid)
-  do i=1,nr
+  do i=1,nr2
      psi = psii(i)
      con = 1
 
@@ -148,10 +190,10 @@ subroutine geqdsk
      !Linearly interpolate q from flux surface grid to mesh grid
      safety(i) = sngl( sfac(con) + rat*(sfac(con+1) - sfac(con)))
 
-     print*, i,p(i),pp(i),f(i),ff(i), safety(i)
+     !print*, i,p(i),pp(i),f(i),ff(i), safety(i)
   end do
 
-  write(nh,2020) (safety(i), i=1,nr)
+  write(nh,2020) (safety(i), i=1,nr2)
   write(6,*) 'safety factor written to geqdsk'
 
   !Writes boundary points
@@ -187,18 +229,40 @@ subroutine geqdsk
 
   end if
 
+  ! excl first point in lim, no repeats
+  nlim = ndat-1
+  !nlim = 1
   write(nh, 2022) ndat, nlim
 
   write(nh,2020) (rbdy(i), zbdy(i), i=1,ndat)
 
   write(6,*) 'bdy written to geqdsk'
 
-!!!!!!!!
+
   !Writes Limiter values
+  !Change box range if you change limiter
+  allocate(rlim(nlim), zlim(nlim))
+  !zlim = zbdy*1.
+  !rlim = rbdy
+  ind = maxloc(zbdy,1)
+  do i=2,npts
+     if (rbdy(i)-rbdy(ind) .lt. 0.) then
+        rlim(i-1) = rbdy(i)-dr
+     else
+        rlim(i-1) = rbdy(i)+dr
+     end if
 
-  rlim = (/0.9*rmin,1.1*rmax/)
+     if (zbdy(i) .gt. 0) then
+        zlim(i-1) = zbdy(i)+dz
+     else
+        zlim(i-1) = zbdy(i)-dz
+     end if
+  end do
 
-  zlim = (/1.1*zmin,1.1*zmax/)
+    
+  !rlim = (/0.9*rmin,1.1*rmax/)
+
+  !zlim = (/1.1*zmin,1.1*zmax/)
 
 
   write(nh,2020) (rlim(i), zlim(i), i=1,nlim)
@@ -261,8 +325,8 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
 
  !smoothing factor
-  sm = (m - sqrt(2.*m))/30000
-  sm=0.
+  sm = (m - sqrt(2.*m))/1000000
+  !sm=0.
   !No. of knots0
   nrest=int(kr+sqrt(m/2.))
   nzest=int(kz+sqrt(m/2.))
@@ -351,7 +415,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   !print*, 'Surfit ier:',ier
 
-  iopt=0
+  !iopt=-1
   call surfit(iopt, m, r_in, z_in, u_in, w_in, rl, ru, zl, zu, kr, kz, &
        sm, nrest, nzest,nmax,ep, nr1,tr, nz1, tz, c, fp, wrk1,lwrk1,wrk2, &
        lwrk2, iwrk, kwrk, ier)

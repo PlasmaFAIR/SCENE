@@ -60,11 +60,16 @@
       !write(6,*)' tauipb=',conft/(htpow*1.0d6)/hipb98y1
       hipb98y2=1./(0.0562*(plasi**0.93)*(bvaxis**0.15)*(nebar**0.41)*  &
       (htpow**(-0.69))*(rcen**1.97)*(cirkap**0.78)*(tokeps**0.58)      &
-      *(risomas**0.19)*htpow*1.0d6/conft)
+      *(risomas**0.19)*htpow*1.0d6/conft)    
 !  Energy and helium confinement times
       taue=conft/(htpow*1.0d6)
       !write(6,*)' taue=',taue,' hipb98y1=',hipb98y1
       tauh=3.5*1.0d6*1.602d-19*confa/(pfus*taue)
+
+      ! Petty 2008 scaling law
+      petty = taue/(0.052*(plasi**0.75)*(bvaxis**0.3)*(nebar**0.32)* &
+           (htpow**(-0.47))*(rcen**2.09)*(cirkap**0.88)* &
+           (tokeps**0.84)*(risomas**0.0))
 ! Density normalised to Greenwald
       gwden=plasi/(pi*arad*arad)
       negw=nebar/(10.*gwden)
@@ -86,15 +91,14 @@
       implicit none
 !
       double precision bptot,ptota,ptotv,btotv
-      double precision arg,pden,zni
+      double precision arg,pden,zni, efus, xsec
       double precision rr,zz,uu,p,psi,dalf
       double precision press,densi,dense,tempe,tempi,fprof,bp
       double precision te,ti,ne,dion,rat
       double precision bth,bphi,btot,bvacu,psicut
-      double precision fract,nfast,diff,pdif
-      double precision pfastv,bfastv,pfast,pressi,pimp3
+      double precision pimp3
       double precision, dimension(:), allocatable:: pimp3v
-      integer i,j,ip,l,k,id,it,numit
+      integer i,j,ip,l,k
 !
 !
 !  Calculate volume/area integrals of pressure and B-field
@@ -181,6 +185,14 @@
             arg=1.
          end if
           avti=avti+ti*rr*dr*dz
+          !Alternate Way to calc fusion power
+          !cross section taken from Wesson
+          
+          !xsec = 1.1e-24*(ti/1000)**2
+          !efus = 3.5e6*eq
+          !print*, 'Fusion Power Calc !!!'
+          !print*, ti/1000, dion*1.0e19, efus
+          !pden = xsec*0.25*(dion*1.0e19)**2*efus
           pden=1.27d4*dion**2*exp(arg)
           pfus=pfus+2.*pi*pden*rr*dr*dz
           avel=avel+ne*rr*dr*dz
@@ -210,60 +222,7 @@
 !         call tstplt2(ncon,psiv,pimp3v,fastp)
       end if
 
-! John's old code
-!!$!Correct fast alpha using iteration
-!!$      if (fast.eq.1) then
-!!$         Write(6,*)'--------------------------------------------'
-!!$         Write(6,*)'Calculating fast alpha density'
-!!$         numit=100
-!!$         do 20 it=1,numit
-!!$            fract=palpha/ptotv
-!!$            pimp3=bk*densi
-!!$            nfast=densi(0.0d0,3,0)*1.d-19
-!!$            diff=nfast-fract
-!!$            pdif=100.*diff/fract
-!!$            Write(6,*)' it=',it,' fraction=',fract,' density=',nfast,' Percentage error=',pdif
-!!$!            Write(6,*)' densi=',densi(0,3,0),' difference=',nfast-densi(0,3,0)
-!!$            zn0(3)=fract*1.d19
-!!$            if ((it.eq.numit).and.(pdif.ge.2.5)) then
-!!$               Write(6,*)' ERROR, FAST ALPHA DENSITY NOT FOUND WITHIN ',numit,' ITERATIONS'
-!!$               Stop
-!!$            else if ((it.lt.numit).and.(pdif.ge.2.5)) then
-!!$               palpha=0.
-!!$               do i=1,nr
-!!$                  do 25 j=1,nz
-!!$                     rr=r(i)
-!!$                     zz=z(j)
-!!$                     uu=u(i,j)
-!!$                     psi=umax-uu
-!!$                     if (psi.le.0.) then
-!!$                        k=ncon
-!!$                     else if (psi.ge.umax) then
-!!$                        k=1
-!!$                     else
-!!$                        k=1
-!!$                        do 27 l=1,ncon
-!!$                           if (psi.gt.psiv(l)) goto 27
-!!$                           k=l
-!!$27                         continue
-!!$                        if (k.eq.ncon) k=ncon-1
-!!$                        rat=(psi-psiv(k))/(psiv(k+1))
-!!$                        if ((rat.lt.0).or.(rat.gt.1.)) then
-!!$                           Write(6,*)' ERROR in BETA***rat=',rat
-!!$                           Write(6,*)' k=',k,' psi=',psi
-!!$                           Write(6,*)' psiv(k)=',psiv(k),' psiv(k+1)=',psiv(k+1)
-!!$                           Stop
-!!$                        end if
-!!$                     end if
-!!$                     palpha=palpha+(fastp(k)+rat*(fastp(k+1)-fastp(k)))*rr*dr*dz
-!!$25                continue
-!!$               end do
-!!$            else if (pdif.lt.1.d-3) then
-!!$               goto 20
-!!$            end if
-!!$20       end do
-!!$      end if
-!!$
+
 !Fast beta calculation
       if (fast.eq.1) then
          !Write(6,*)'--------------------------------------------'

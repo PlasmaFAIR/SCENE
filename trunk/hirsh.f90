@@ -1,4 +1,4 @@
-      subroutine hirsh(psi,rj0,x,bsq,pt,pd,k,bstrap)
+      subroutine hirsh(psi,rj0,x,bsq,k,bstrap)
 !     **********************************************
 !
 !  Bootstrap current as calculated by Hirshman (Phys.Fluids 31
@@ -13,7 +13,7 @@
       double precision ted,te,tid,ti,ne,tau,zni,zeff,zb
       double precision pe,pip,ped,pid,ned,znid,dox
       double precision rl310,rl320,alfi0
-      double precision x,rj0,psi,bsq,pt,pd,bstrap
+      double precision x,rj0,psi,bsq,bstrap
       double precision a13,b13,c13,a23,b23,c23
       double precision f1,f2
       double precision rl31,rl32,fa,alfi

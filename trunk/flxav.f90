@@ -29,12 +29,12 @@
       double precision fc,x,ne,pe,rj0,bstrap,conl,dotav
       double precision fq(ncon),fqd(ncon)
       double precision zeff,qq,rnust,ft,sigfac
-      double precision mue1,mue2,mue3,ant1,ant2,ant3
+      double precision ant1,ant2,ant3
       double precision t1(npts),t2(npts),t3(npts)
 !      double precision ppar(ncon),pppar(ncon),ppan(ncon),pppan(ncon)
       integer nst
 !
-      double precision q1,q2,q3,x1,x2,x3,av,bv,cv,qd,qdd
+      double precision q1,q2,q3,x1,x2,x3,av,bv,cv
 !      double precision p1,p2,p3
       double precision nupplt(npts),chiplt(npts),y1(npts),y2(npts),y3(npts) &
                        ,y4(npts),y5(npts),y6(npts)
@@ -421,14 +421,14 @@
 !  if the density or temperature=0 assume bootstrap current =0
               bstrap=0.
             else
-              call hirsig(psi,pt,pd,fc,fsi,conl,dotav,bsq,bstrap,eps,k)
+              call hirsig(psi,fc,fsi,conl,dotav,bsq,bstrap,eps,k)
             end if
           else
             if ((te.eq.0.).or.(ne.eq.0.).or.(ti.eq.0.)) then
 !  if the density or temperature=0 assume bootstrap current =0
               bstrap=0.
             else
-              call hirsh(psi,rj0,x,bsq,pt,pd,k,bstrap)
+              call hirsh(psi,rj0,x,bsq,k,bstrap)
             end if
           end if
         end if

@@ -2,15 +2,15 @@
      .   rtang, nbshape, bwidth, bheigh, nbptype, bgaussR, bgaussZ,
      .   bzpos, pwrfrac, maxiter, nion, aion, zion, ne20, ni20, tekev,
      .   tikev, zeff, r0, a, b0, volp, n, rnorm, vprime, dvol, darea,
-     .   l31,
+     .   l31, srcfast,
      .   kappa, dkappa, shafr, dshafr, hofr, shinethru, jnbTot, pnbe,
-     .   pnbi, beamDens, beamVel, beamPress, beamFus, jnbfast,
+     .   pnbi, pnbbm, beamDens, beamVel, beamPress, beamFus, jnbfast,
      .   pbfuse, pbfusi, snBeamDD,
      .   snBeamDT, nbcur, etanb, gammanb, pNBAbsorb, pNBLoss, nbcurTot,
      .   etanbTot, beamBeta, pNBAbsorbTot, pNBLossTot, beamFusTot,
      .   beamFusChTot, snDTTotal, snDDTotal, iflag)
 
-
+     
 c///////////////////////////////////////////////////////////////////////
 c/
 c/    This is the main calling routine of the Neutral Beam package.
@@ -122,6 +122,7 @@ c/    jnbTot(i)     : Total neutral beam driven current density from all
 c/                    beam lines and energy groups at grid point i (A/m^2)
 c/    pnbe(i)       : Beam heating power to electrons at i (MW/m^3)
 c/    pnbi(i)       : Beam heating power to ions at i (MW/m^3)
+c/    pnbbm(ib)     : Beam heating power from beam ib (MW/m^3)  
 c/    beamDens(i)   : Fast beam ion density at grid point i (/m^3)
 c/    beamPress(i)  : Fast beam ion pressure at i (Pa)
 c/    beamFus(i)    : Beam-target total fusion power density at grid
@@ -239,7 +240,7 @@ c/    --------------------------------
      .     pbfusi(mxrho),snBeamDD(mxrho),  jnbfast(mxrho),
      .     snBeamDT(mxrho), nbcur(maxBeams), etanb(maxBeams),
      .     gammanb(maxBeams), pNBAbsorb(maxBeams), pNBLoss(maxBeams),
-     .     l31(mxrho)
+     .     l31(mxrho), srcfast(mxrho,3,maxBeams), pnbbm(mxrho,maxBeams)
 
 c/    Local Variable Declarations:
 c/    ---------------------------
@@ -250,7 +251,8 @@ c/    routine:
 
       real jnbie(mxrho,3,maxBeams), jnb(mxrho,maxBeams),
      .     beamDDFus(mxrho), beamDTFus(mxrho), beamFusDTHe4(mxrho),
-     .     beamFusDDHe3(mxrho), beamFusDDp(mxrho), beamFusDDt(mxrho)
+     .     beamFusDDHe3(mxrho), beamFusDDp(mxrho), beamFusDDt(mxrho),
+     .     sumpnbbm(maxBeams)
 
 c/    Other local variables:
 
@@ -383,7 +385,7 @@ c/    Calculate fast ion related parameters:
 c/    -------------------------------------
       call fastIons (nbeams, amb, zbeam, ebeam, pbeam, inbfus,
      .     hofr, shinethru, jnbie, jnb, jnbTot, beamDens, beamVel,
-     .     beamPress, jnbfast, l31,
+     .     beamPress, jnbfast, l31, srcfast,
      .     beamFus, beamDTFus, beamDDFus, beamFusDTHe4, beamFusDDHe3,
      .     beamFusDDp, beamFusDDt, snBeamDT, snBeamDD)
 
@@ -395,19 +397,26 @@ c/    by 1.0 - shinethru(ie,ib):
 c     /
       !print*, 'Calc heating'
       do i = 1, nrho
-
+         !print*, srcfast(i,:,:)
          sumpnbi = 0.0
          sumpnbe = 0.0
+         sumpnbbm = 0.0
          do ib = 1, nbeams
             do ie = 1, 3
               sumpnbi = sumpnbi + pbeam(ib)*fbpwr(ie,ib)*
      .         (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)*fNBion(i,ie,ib)
               sumpnbe = sumpnbe + pbeam(ib)*fbpwr(ie,ib)*
      .         (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)*fNBelec(i,ie,ib)
-            enddo
+
+              sumpnbbm(ib) = sumpnbbm(ib) + pbeam(ib)*fbpwr(ie,ib)*
+     .             (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib) *
+     .             (fNBelec(i,ie,ib)+fNBion(i,ie,ib))
+           enddo
+           
          enddo
          pnbi(i) = sumpnbi/volume
          pnbe(i) = sumpnbe/volume
+         pnbbm(i,:) = sumpnbbm/volume
       enddo
 
 c/    Total driven current per beamline (A) and current drive

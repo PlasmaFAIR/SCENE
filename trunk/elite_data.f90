@@ -11,7 +11,6 @@
       double precision arr(ncon)
       double precision psi
       double precision press,fprof,dense,tempe,tempi
-      double precision temar(ncon)
       integer ndsk,i,j,ncon1,ncstrt
 !
       ncstrt=1
@@ -261,7 +260,6 @@
       double precision arr(ncon)
       double precision psi
       double precision press,fprof,dense,tempe,tempi
-      double precision temar(ncon)
       double precision x1,x2,x3,p1,p2,p3,aa,bb
       integer ndsk,i,j,ncon1,ncstrt
 !

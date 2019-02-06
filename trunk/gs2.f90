@@ -10,11 +10,11 @@
       use param
       implicit none
 !
-      integer ndsk,k,nspec,kk,ik, midp
+      integer ndsk,k,nspec,kk,ik
       double precision dense,psi,zeff,zni19,ne19,fprof,press,tempi,tempe
-      double precision dshafr, shafr, rmaj, rmin, shift, epsil
+      double precision dshafr, shafr, rmaj, rmin, shift, epsil, beta_gs2
       double precision densi,bp, coolog, vss, ti, ni, ti_p, ni_p
-      double precision coll, nref, tref
+      double precision coll, nref, tref, bcentr
       double precision zmag,rat,px,py,deltar,deltaz,pf,fsqedg
       double precision yp1,yp2
       double precision polvar(npts),aminor(ncon),fofpsi(ncon)
@@ -26,6 +26,8 @@
       double precision, dimension(:,:), allocatable :: mshvar,grads
       double precision, dimension(:), allocatable :: xn,yn,fna,triang
       double precision, dimension(:), allocatable :: temvar
+      double precision, dimension(ncon) :: dpdrs,rhos
+
       integer :: nsurf,i,j,npt,ifail,nrg,nzg
 !      type(vec2dl) :: sep
       integer, allocatable:: LCELL(:,:), LNEXT(:)
@@ -294,110 +296,160 @@
          stop
       endif
 
-
-      midp = int(ncon/2)
-      nref = dense(psiv(midp),0)
-      tref = tempe(psiv(midp),0)
+      
+      bcentr = mu0*rodi/(2.*pi*rcen)
+      nref = dense(psiv(ncon),0)
+      tref = tempe(psiv(ncon),0)
 
       write(ndsk,*) ' nref = ', nref, 'm^-3, tref = ',tref/1000.,'keV'
       write(ndsk,*) ' mref = ', mp, 'kg, lref = ',amin,'m'
-!
-    do k=2,ncon-1
-       psi=psiv(k)
-       shafr = shift(k,0)
-       dshafr = shift(k,1)
-       rmaj = rcen + shafr
-       rmin = maxval(rpts(k,:)) - rmaj
+      call dpsidrho(dpdrs,rhos)
+      !
+      do k=2,ncon-1
+         psi=psiv(k)
+         shafr = shift(k,0)
+         dshafr = shift(k,1)
+         rmaj = rcen + shafr
+         rmin = maxval(rpts(k,:)) - rmaj
 
-       epsil = rmin/rmaj
+         epsil = rmin/rmaj
+         beta_gs2 = 4.03d-3*nref*1.0d-19*                   &
+              (tref/1000.)*(2.*pi*rcen/(mu0*rodi))**2
+         
+         write(ndsk,*)' rhoc:', psi/umax
+         ne19=dense(psi,0)*1.0d-19
+         write(ndsk,*)' beta:',beta_gs2
+         write(ndsk,*)' B0:',(mu0*rodi)/(2.*pi*rcen)
+         write(ndsk,*)' eps:', epsil
+         write(ndsk,*)' pk:', 2*amin/(rmaj*sfac(k))
+         write(ndsk,*)' epsl:', 2*amin/rmaj
+         write(ndsk,*)' shift:',dshafr*umax/amin
+         write(ndsk,*)' s_hat_input:', qp(k)*psi/sfac(k)
+         !print*, 'Shear info: ', psi/umax,sfac(k),qp(k),rhos(k),dpdrs(k)
+         !         write(ndsk,*)' beta_prime_input:',press(psi,1)*umax*beta_gs2/press(psi,0)
+         write(ndsk,*)' beta_prime_input:',press(psi,1)*8.0d-7*pi*umax/bcentr**2
+         zeff=zm
+         if (imp.eq.1) then
+            if (ne19.gt.0.) then
+               zeff=0.
+               do i=1,nimp+1
+                  zni19=densi(psi,i,0)*1.0d-19
+                  zeff=zeff+(zni19*iz(i)**2)/ne19
+               end do
+            end if
+         end if
+         write(ndsk,*)' zeff:',zeff
+
+         !Include all species
+         !  No. of species
+         nspec=nimp+2
+         !write(ndsk,*)' nspec:',nspec
+         !do i=1,nspec-1
+
+         !    !Temp and dens
+         !    ti = tempi(psi,i,0)
+         !    ni = densi(psi,i,0)
+
+         !    ! Temp and dens gradient of psi
+         !    !
+         !    ! Already normalised to Lref = aminor
+         !    ti_p = tempi(psi,i,1)*umax
+         !    ni_p = densi(psi,i,1)*umax
+
+         !    write(ndsk,*)' Ion species no.',i
+         !    write(ndsk,*)' z:',iz(i)
+         !    write(ndsk,*)' mass:',zmas(i)
+         !    write(ndsk,*)' dens:',ni/nref
+         !    write(ndsk,*)' temp:',ti/tref
+
+         !    ! Needs temp and dens derivatives of minor radius
+         !    write(ndsk,*)' tprim:',-ti_p/ti
+         !    write(ndsk,*)' fprim:',-ni_p/ni
+
+         !    coolog=log(sqrt(ni*1.0d-6)/ti)
+         !    coolog=24.-coolog
+
+         !    !From Wesson 2.15 (added by bhavin 21/03/18)
+         !    coll = 6.6d17*zmas(i)**0.5 * (ti/1000)**1.5/(ni*iz(i)**4*coolog)
+         !    vss = 1./coll
+         !    !vss = sqrt(2.0)*pi*ni * iz(i)**4 * eq**4 * coolog &
+         !    !	/ ( sqrt(zmas(i)*mp) * (ti*eq/bk)**1.5  * (4*pi*eps0)**2 )
+
+         !    write(ndsk,*)' vnewk:',vss*amin/ sqrt(2*tref*bk/mp)
+
+         ! end do
 
 
-      write(ndsk,*)' normalised flux of chosen surface:',psi/umax
-      ne19=dense(psi,0)*1.0d-19
-      write(ndsk,*)' beta:',4.03d-3*nref*1.0d-19*                   &
-                   (tref/1000.)*(2.*pi*rcen/(mu0*rodi))**2
-      write(ndsk,*)' B0:',(mu0*rodi)/(2.*pi*rcen)
-      write(ndsk,*)' eps:', epsil
-      write(ndsk,*)' pk:', 2*amin/(rcen*sfac(k))
-      write(ndsk,*)' epsl:', 2*amin/rcen
-      write(ndsk,*)' shift:',umax*dshafr/amin
-      write(ndsk,*)' shat:', umax*qp(k)/sfac(k)
-      write(ndsk,*)' beta_prime_input:',(umax/press(psi,0))*press(psi,1)*beta
-      zeff=zm
-      if (imp.eq.1) then
-        if (ne19.gt.0.) then
-          zeff=0.
-          do i=1,nimp+1
-            zni19=densi(psi,i,0)*1.0d-19
-            zeff=zeff+(zni19*iz(i)**2)/ne19
-          end do
-        end if
-      end if
-      write(ndsk,*)' zeff:',zeff
-!  No. of species
-      nspec=nimp+2
-      write(ndsk,*)' nspec:',nspec
-      do i=1,nspec-1
+         ! Just Electron and ion
+         nspec=2
+         write(ndsk,*)' nspec:',2
+     
+         !Temp and dens - Enforce quasi-neutrality
+         ti = tempi(psi,1,0)
+         ni = dense(psi,0)
 
-                ti = tempi(psi,i,0)
-                ni = densi(psi,i,0)
-                ti_p = tempi(psi,i,1)
-                ni_p = densi(psi,i,1)
+         ! Temp and dens gradient of psi
+         !
+         ! Already normalised to Lref = aminor
+         ti_p = tempi(psi,1,1)*umax
+         ni_p = densi(psi,1,1)*umax
 
-            write(ndsk,*)' Ion species no.',i
-            write(ndsk,*)' z:',iz(i)
-            write(ndsk,*)' mass:',zmas(i)
-            write(ndsk,*)' dens:',ni/nref
-            write(ndsk,*)' temp:',ti/tref
-            write(ndsk,*)' tprim:',-(umax/ti)*ti_p
-            write(ndsk,*)' fprim:',-(umax/ni)*ni_p
+         write(ndsk,*)' Ion species no.',1
+         write(ndsk,*)' z:',iz(1)
+         write(ndsk,*)' mass:',zmas(1)
+         write(ndsk,*)' dens:',ni/nref
+         write(ndsk,*)' temp:',ti/tref
 
+         ! Needs temp and dens derivatives of minor radius
+         write(ndsk,*)' tprim:',-ti_p/ti
+         write(ndsk,*)' fprim:',-ni_p/ni
 
-            coolog=log(sqrt(ni*1.0d-6)/ti)
-            coolog=24.-coolog
+         coolog=log(sqrt(ni*1.0d-6)/ti)
+         coolog=24.-coolog
 
-                !From Wesson 2.15 (added by bhavin 21/03/18)
-                coll = 6.6d17*zmas(i)**0.5 * (ti/1000)**1.5/(ni*iz(i)**4*coolog)
-                vss = 1./coll
-                !vss = sqrt(2.0)*pi*ni * iz(i)**4 * eq**4 * coolog &
-                !	/ ( sqrt(zmas(i)*mp) * (ti*eq/bk)**1.5  * (4*pi*eps0)**2 )
+         !From Wesson 2.15 (added by bhavin 21/03/18)
+         coll = 6.6d17*zmas(1)**0.5 * (ti/1000)**1.5/(ni*iz(1)**4*coolog)
+         vss = 1./coll
+         !vss = sqrt(2.0)*pi*ni * iz(i)**4 * eq**4 * coolog &
+         !	/ ( sqrt(zmas(i)*mp) * (ti*eq/bk)**1.5  * (4*pi*eps0)**2 )
 
-        write(ndsk,*)' vnewk:',vss*amin/ sqrt(2*tref*bk/mp)
+         write(ndsk,*)' vnewk:',vss*amin/ sqrt(2*tref*bk/mp)
 
+ 
+         ! Electrons
+         write(ndsk,*)' Electron species'
+         write(ndsk,*)' Z:',-1.
+         write(ndsk,*)' mass:',me/mp
+         write(ndsk,*)' dens:',dense(psi,0)/nref
+         write(ndsk,*)' temp:',tempe(psi,0)/tref
+
+         ! Make differential of rho, not psi
+         write(ndsk,*)' tprim:',-tempe(psi,1)*umax/tempe(psi,0)
+         write(ndsk,*)' fprim:',-dense(psi,1)*umax/dense(psi,0)
+
+         coolog=log(sqrt(dense(psi,0)*1.0d-6)/tempe(psi,0))
+         coolog=24.-coolog
+         !vss = sqrt(2.0)*pi*dense(psi,0) * eq**4 * coolog &
+         !	/ (sqrt(me) * (tempe(psi,0)/1000.)**1.5 * (4*pi*eps0)**2 )
+
+         coll = 3.*(2.*pi)**1.5* eps0**2 * me**0.5 * (tempe(psi,0)*bk)**1.5 &
+              / ( dense(psi,0) * eq**4 * coolog)
+         vss = 1./coll
+
+         write(ndsk,*)' vnewk:',vss*amin/ sqrt(2*tref*bk/mp)
+         write(ndsk,*)'end'
       end do
 
-
-      write(ndsk,*)' Electron species'
-      write(ndsk,*)' Z:',-1.
-      write(ndsk,*)' mass:',me/mp
-      write(ndsk,*)' dens:',dense(psi,0)/nref
-      write(ndsk,*)' temp:',tempe(psi,0)/tref
-      write(ndsk,*)' tprim:',-(umax/tempe(psi,0))*tempe(psi,1)
-      write(ndsk,*)' fprim:',-(umax/dense(psi,0))*dense(psi,1)
-
-      coolog=log(sqrt(dense(psi,0)*1.0d-6)/tempe(psi,0))
-      coolog=24.-coolog
-      !vss = sqrt(2.0)*pi*dense(psi,0) * eq**4 * coolog &
-            !	/ (sqrt(me) * (tempe(psi,0)/1000.)**1.5 * (4*pi*eps0)**2 )
-
-      coll = 3.*(2.*pi)**1.5* eps0**2 * me**0.5 * (tempe(psi,0)*bk)**1.5 &
-        / ( dense(psi,0) * eq**4 * coolog)
-      vss = 1./coll
-
-      write(ndsk,*)' vnewk:',vss*amin/ sqrt(2*tref*bk/mp)
-      write(ndsk,*)'end'
-   end do
-
       close(ndsk)
-!
-!end subroutine write_gs2
+      !
+      !end subroutine write_gs2
 
 !!$      do k=ncon,1,-1
 !!$        write(6,*)' psin=',psiv(k)/umax,' fprof=',fprof(psiv(k),1)/fprof(psiv(k),2),' p-prime=',press(psiv(k),1)
 !!$      end do
 
       return
- end subroutine gs2
+    end subroutine gs2
 
 
 !!$      do k=1,nspec-1

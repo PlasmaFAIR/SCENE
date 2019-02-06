@@ -8,8 +8,8 @@ subroutine getdata
 
   double precision :: rr, zz, rat
   double precision :: fprof, tempe, tempi, psi, bp, B_tor, B_tot
-  double precision :: press, densi, dense, safety, ffp, fsi, pp
-  double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2, jnb
+  double precision :: press, densi, dense, safety, ffp, fsi, pp, bsmean
+  double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2, jnb, jbs
   double precision :: flux_r, flux_z, te
 
   double precision, dimension(ncon) :: rhoflux, Rflux
@@ -203,11 +203,12 @@ subroutine getdata
       fsi = sngl(fprof(psi,2))
       ffp = -sngl(fprof(psi,1))
       pp = -sngl(press(psi,1))
-      jtot = +rr*pp + ffp/(mu0*rr)
-      jnb = J_nb(con)*fsi/rr
-
-      te = tempe(psi,0)
-      write(nh,18) rhoflux(con), epsv(con), jtot, jnb, te
+      bsmean = sngl(bsqav(con))
+      
+      jtot = +fsi*pp/bsmean + ffp/(fsi*mu0)
+      jbs = bsj(con)/sqrt(bsmean)
+      jnb = J_nb(con)
+      write(nh,18) psi, jtot, jnb, jbs
 
 
    end do
@@ -218,7 +219,6 @@ subroutine getdata
 !   write(nh,18) psi, ffp, pp
 
 18 format(6e14.6)
-
 
    close(nh)
 
@@ -257,9 +257,9 @@ subroutine getdata
    write(nh, *) ncon
 
    do i=ncon,1,-1
-      write(nh, 20) psiv(i), densi(psiv(i),1,0)
+      write(nh, 22) psiv(i), (densi(psiv(i),j,0), j=1,nimp+1)
    end do
-
+22 format(7e13.6)
    close(nh)
 
    ! write(6,*) 'locust ni data written'
@@ -332,7 +332,11 @@ subroutine getdata
 
    call popcon()
 
+   call jetto()
+   call rfdat()
+   call omfit()
 
+   call vessel()
 end subroutine getdata
 
 
@@ -416,13 +420,14 @@ subroutine popcon()
   write(nh,510) 'Aux Pow',paux, 'MW'
   write(nh,510) 'NBP eff.', bmfus/(paux), ' '
   write(nh,510) 'NBCD eff.', totnb/(1.0d6*paux), ' '
-  write(nh,510) 'Shine through', bmshine, ' '
+  write(nh,510) 'Shine through', bmshine, 'MW'
   write(nh,510) 'Q',sngl( ((pfus*1.0d-6*5)+bmfus)/paux), ' '
 
   write(nh,510) 'N_gw', sngl(negw), ' '
 
   write(nh,510) 'H_IPB98(y1)', sngl(hipb98y1), ' '
   write(nh,510) 'H_IPB98(y2)', sngl(hipb98y2), ' '
+  write(nh,510) 'H_Petty08',   sngl(petty), ' '
   write(nh,510) 'Tau_e', sngl(taue*1.0e3), 'ms'
   write(nh,510) 'Tau_h', sngl(tauh), ' '
 
@@ -438,3 +443,330 @@ subroutine popcon()
   close(nh)
 
 end subroutine popcon
+
+
+subroutine jetto()
+  
+  use param
+  implicit none
+  
+  integer :: con, nh, i, l, nflux
+  double precision :: dense, densi, tempe, tempi, psi, mass,rmax,cs
+  real :: ne, ni, te, ti, zeff, q, zni, vtor, angf, mach
+  double precision, dimension(ncon) :: phi
+
+  nh = 43
+
+  open(unit=nh, file=runname(1:lrunname)//'.jetto', &
+       status='unknown', iostat=ios)
+  if (ios .ne. 0) then
+     write(6,*) 'problem opening ',runname(1:lrunname)//'.jetto'
+     stop
+  end if
+
+  call rhotor(phi)
+ 
+  write(nh,*) 'rho_tor, e den, i den, e temp (keV), i temp (keV), q, Zeff'
+  do con = ncon, 1,-1
+
+  
+     psi = psiv(con)
+     ne = sngl(dense(psi,0))
+     ni = sngl(densi(psi,1,0))
+     te = sngl(tempe(psi,0))
+     ti = sngl(tempi(psi,1,0))
+     q = sngl(sfac(con))
+     mass = ni*mp*zmai
+     rmax = maxval(rpts(con,:))
+     if (con.eq.ncon) rmax=r0
+     
+     vtor = sngl(nbmom(con)*taue/mass)
+     angf = vtor/sngl(rmax)
+
+     cs = sqrt(eq*ti/(zmai*mp))
+
+     mach = vtor/sngl(cs)
+
+     print*, psi, vtor, angf, mach
+  
+     !Effective Z
+     zeff=sngl(zm)
+     if (imp.eq.1) then
+        if (ne.gt.0.) then
+           zeff=0.
+           do l=1,nimp+1
+              zni=sngl(densi(psi,l,0))
+              zeff=zeff+(zni*iz(l)**2)/ne
+           end do
+
+        end if
+     end if   
+     !print*, phi(con), psi
+     write(nh,500) sngl(phi(con)), ne, ni, te, ti,  q, zeff, angf
+
+  end do
+500 format(8e13.6)
+  close(nh)
+
+
+end subroutine jetto
+
+subroutine omfit()
+  
+  use param
+  implicit none
+  
+  integer :: con, nh, i, l, nflux
+  double precision :: dense, densi, tempe, tempi, psi
+  real :: ne, ni, te, ti, zeff, nHe, nIm, zni
+  double precision, dimension(ncon) :: phi
+
+  nh = 43
+
+  open(unit=nh, file=runname(1:lrunname)//'.omfit', &
+       status='unknown', iostat=ios)
+  if (ios .ne. 0) then
+     write(6,*) 'problem opening ',runname(1:lrunname)//'.omfit'
+     stop
+  end if
+
+  call rhotor(phi)
+ 
+  write(nh,*) 'psi, e den (m^-3), i den (m^-3), e temp (keV), i temp (keV), He den (m^-3), Imp den (m^-3)'
+  do con = ncon, 1,-1
+
+  
+     psi = psiv(con)
+     ne = sngl(dense(psi,0))
+     ni = sngl(densi(psi,1,0))
+     te = sngl(tempe(psi,0))
+     ti = sngl(tempi(psi,1,0))
+     nHe = sngl(densi(psi,2,0))
+
+     !Effective Z
+     zeff=sngl(zm)
+     if (imp.eq.1) then
+        if (ne.gt.0.) then
+           zeff=0.
+           do l=1,nimp+1
+              zni=sngl(densi(psi,l,0))
+              zeff=zeff+(zni*iz(l)**2)/ne
+           end do
+
+        end if
+     end if   
+     
+     if (nimp .eq. 2) then
+        nIm = sngl(densi(psi,3,0))
+     else if (nimp .eq. 3) then
+        nIm = sngl( densi(psi,3,0)+densi(psi,4,0))
+     else
+        nIm = 0.
+     end if
+     
+     
+  
+     !print*, phi(con), psi
+     write(nh,500) sngl(psi), ne, ni, te, ti, nHe, nIm, zeff
+
+  end do
+500 format(8e13.6)
+  close(nh)
+
+
+end subroutine omfit
+
+subroutine tglf_input()
+
+  use param
+  implicit none
+
+  integer :: con
+
+  double precision :: psi, rhoc, shafr, dshafr, rmaj, rmin
+  double precision :: kappa, dkappa, b_unit, p_prime, dpsidr
+  double precision :: elong, shift, press
+  
+
+  !TGLF Parameters
+  double precision :: rmin_loc, rmaj_loc, q_loc, q_prime_loc, p_prime_loc
+  double precision :: drmajdx_loc, kappa_loc, s_kappa_loc, delta_loc
+  double precision :: s_delta_loc
+
+  double precision, dimension(ncon) :: dpdrs, rhos
+
+  call dpsidrho(dpdrs,rhos)
+  
+  do con=1,ncon
+
+     psi = psiv(con)
+
+     !Derivative of psi against r
+     dpsidr = dpdrs(con)
+     
+     psi=psiv(con)
+
+     ! Shafranov shift/elongation and derivative in r
+     shafr = shift(con,0)
+     dshafr = shift(con,1)*dpsidr
+     kappa = elong(con,0)
+     dkappa = elong(con,1)*dpsidr
+
+     !Major radius 
+     rmaj = rcen + shafr
+     rmin = maxval(rpts(con,:)) - rmaj
+
+     p_prime = press(psi, 1)*dpsidr
+
+     rhoc = psi/umax
+     
+     rmin_loc = rmin/amin
+     rmaj_loc = rmaj/amin
+     q_loc = sfac(con)
+     q_prime_loc = q_loc**2 * qp(con) / rmin_loc**2
+
+
+     drmajdx_loc = dshafr
+
+     kappa_loc = kappa
+     s_kappa_loc = rmin*dkappa/kappa
+
+     b_unit = qp(con)*dpsidr/rmin
+
+     p_prime_loc = q_loc * amin**2 * p_prime_loc / (rmin*b_unit**2)
+     
+
+  end do
+  
+
+
+end subroutine tglf_input
+
+   
+
+subroutine rfdat()
+
+  use param
+  implicit none
+
+  integer :: i, j, nx, ny, nh
+  double precision :: fprof
+  double precision, dimension(nr,nz) :: psicoord, btcoord, psiNcoord
+
+  nh = 53
+
+  open(unit=nh, file=runname(1:lrunname)//'.rfdat', &
+       status='unknown', iostat=ios)
+  if (ios .ne. 0) then
+     write(6,*) 'problem opening ',runname(1:lrunname)//'.rfdat'
+     stop
+  end if
+
+
+  psicoord = umax - ucoord
+  psiNcoord = psicoord/umax
+
+  do i=1,nr
+     btcoord(i,:) = 1./rcoord(i)
+     do j=1,nz
+
+        !Set f to edge value outside plasma
+        if (psiNcoord(i,j) .gt. 1) then
+
+           btcoord(i,j) = btcoord(i,j) * fprof(umax,2)
+        else
+  
+           btcoord(i,j) = btcoord(i,j)* fprof(psicoord(i,j),2)
+        end if
+        
+     end do
+  end do
+  
+  write(nh,2022) nr, nz
+
+  write(nh,*) 'R  data (m)'
+  write(nh,2020) (rcoord(i), i=1,nr)
+  
+  write(nh,*) 'Z  data (m)'
+  write(nh,2020) (zcoord(j), j=1,nz)
+
+  write(nh,*) 'psiN  data (T m^2)'
+  write(nh,2020) ((psiNcoord(i,j), i=1,nr), j=1,nz)
+
+  write(nh,*) 'Br  data (T)'
+  write(nh,2020) ((brcoord(i,j), i=1,nr), j=1,nz)
+
+  write(nh,*) 'Bz  data (T)'
+  write(nh,2020) ((bzcoord(i,j), i=1,nr), j=1,nz)
+  
+  write(nh,*) 'Bt  data (T)'
+  write(nh,2020) ((btcoord(i,j), i=1,nr), j=1,nz)
+
+2020 format(5e12.4)
+2022 format(2i5)
+
+  close(nh)
+
+end subroutine rfdat 
+
+
+subroutine vessel()
+  ! Set a vessel boundary by adding a set distance to the plasma
+  ! boundary in both R and Z
+  
+  use param
+  implicit none
+
+  integer :: i, nh, ind
+  double precision, dimension(npts) :: rves, zves, rbdy, zbdy
+  double precision :: dwall
+  
+  nh = 57
+
+  open(unit=nh, file=runname(1:lrunname)//'.vessel', &
+       status='unknown', iostat=ios)
+  if (ios .ne. 0) then
+     write(6,*) 'problem opening ',runname(1:lrunname)//'.vessel'
+     stop
+  end if
+
+  rbdy = rpts(1,:)
+  zbdy = zpts(1,:)
+
+  dwall = 0.3
+  
+  ind = maxloc(zbdy,1)
+  
+  do i=1,npts
+
+     if (zbdy(i).gt.0) then
+        zves(i) = zbdy(i)+dwall
+     else if (zbdy(i).lt.0) then
+        zves(i) = zbdy(i)-dwall
+     else
+        zves(i) = zbdy(i)
+     end if
+
+     if (rbdy(i)-rbdy(ind) .gt. 0) then
+        rves(i) = rbdy(i) + dwall
+     else if (rbdy(i)-rbdy(ind) .lt. 0) then
+        rves(i) = rbdy(i) - dwall
+     else
+        rves(i) = rbdy(i)
+     end if
+
+
+  end do
+
+  write(nh, *) npts
+  write(nh, 2020) (rves(i),zves(i), i=1,npts)
+
+
+2020 format(2e14.6)
+    close(nh)
+
+end subroutine vessel
+
+        
+
+     

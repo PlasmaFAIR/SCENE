@@ -9,7 +9,7 @@
 !
       integer i,j,k,ik,icur,jcur
       double precision rr,zz,psi,bth,pd,fsi,ffd,fd,bphi,bsq,bmod
-      double precision alintp,press,fprof,bp
+      double precision press,fprof,bp
       double precision rat,bsmean,bstrap,eps,bra,absj,neubeam
       double precision extapp,extapp2,spitc,extapp3
 !

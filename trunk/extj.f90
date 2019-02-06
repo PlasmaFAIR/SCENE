@@ -69,7 +69,7 @@
           end if
         end if
 !  coulomb logarithm
-        if (pt.eq.0.) then
+        if (abs(pt).lt.1e-8) then
           sigsp=0.
         else
           coolog=log(sqrt(ne*1.0d-6)*bk/te)

@@ -165,7 +165,11 @@ module param
 !  The array containing the normalised flux calculated in the equbm
 !  NOTE**** u=psi_a-psi is max on axis, and zero at the edge
   double precision, dimension(:,:), allocatable:: u  ! (psi-edge - psi)
-!
+  !
+
+  ! Array containing psi extrapolated out to the edge used in G-EQDSK file
+  double precision, dimension(:,:), allocatable:: psigeq
+  
 ! These arrays indicate points inside the plasma (when they are =1)
   integer, dimension(:,:), allocatable :: ixout  ! =1 if mesh point in plasma
   integer, dimension(:,:), allocatable :: idout  ! =1 if cell centre in plasma
@@ -174,8 +178,9 @@ module param
 
 !  rcoord and zcoord label the R and Z coordinates of the centre of each
 !  cell, and btheta is the poloidal magnetic field there
+!  ucoord is the value of u in that position #Added by Bhavin 28.09.18
     double precision, dimension(:), allocatable:: rcoord,zcoord
-    double precision, dimension(:,:), allocatable:: btheta,brcoord,bzcoord
+    double precision, dimension(:,:), allocatable:: btheta,brcoord,bzcoord,ucoord
 !
 !---------------------------------------------------------------------
 !
@@ -227,8 +232,8 @@ module param
   double precision, dimension(:), allocatable:: bsj,ajdotb
   !
 
-  ! neutral beam current
-  double precision, dimension(:), allocatable:: J_nb
+  ! neutral beam current, and momentum
+  double precision, dimension(:), allocatable:: J_nb, nbmom
 !  psiold is a normalised flux variable on which the current guess at
 !  the ff' profile is evoluated (stored in gst)
  double precision, dimension(:), allocatable:: psiold,gst
@@ -298,7 +303,7 @@ module param
 ! Plasma volume, cross-sectional area and internal inductance
   double precision vol,area,rli3,rli2
 ! Confinement time relative to scaling laws...
-  double precision hipb98y1,hipb98y2
+  double precision hipb98y1,hipb98y2, petty
 !
 !----------------------------------------------------------
 !

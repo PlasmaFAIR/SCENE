@@ -15,7 +15,6 @@
       double precision rat,rr,zz,bth
       double precision aidbal,alpha,dqdpsi,sh,qq
       integer i,j,k,krev,jr,n,jp
-      double precision q1,q2,q3,ps1,ps2,ps3,aq,bq,cq,dqdpsitst
 !
       integer mgf,mgx,mgy,nopts,ifail
       logical dpflag
@@ -23,7 +22,6 @@
       double precision psig(nr*(nz/2+1)),qf(ncon),ff(ncon),dpdpsi(ncon)
       double precision r0gd,bt0gd
       double precision psival(nr*(nz/2+1)),rgr(nr*(nz/2+1)),zgr(nr*(nz/2+1))
-      double precision grads(2,nr*(nz/2+1)),triang(7*nr*(nz/2+1))
 !
      integer, allocatable:: LCELL(:,:), LNEXT(:)
      double precision:: XMIN, YMIN, DX, DY, RMAX

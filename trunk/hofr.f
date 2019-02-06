@@ -264,7 +264,8 @@ c               if (ie.eq.1) print*, hofr(i,ie,ib), dv(i)
             shinethru(ie,ib) = 1.0 - sumhofr/volume
          enddo
       enddo
-
+      print*,'Total Volume:',volume
+      print*, 'Sum of dvol:',sum(dv)
 
 c/    Renormalize the deposition profile, so that its volume integral
 c/    divided by the total plasma volume is equal to one:

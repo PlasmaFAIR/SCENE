@@ -7,7 +7,7 @@ SRCS= \
 param.f90 balpar.f90  balloon.f90 usrcal.f90 \
 coldat.f90 scene.f90 init.f90 equil.f90 profs.f90 flxsur.f90  \
 flxav.f90 hirsig.f90 hirsh.f90 splines.f signeo.f90 \
-torcur.f90 extj.f90 output.f90 ffdgen.f90 elite_data.f90 \
+torcur.f90 extj.f90 output.f90 graphs.f90 ffdgen.f90 elite_data.f90 \
 baleq.f90 test_profs.f90 helena.f90 bandat.f90 setnt.f90 \
 chease_dat.f90 gfile.f90 flxorb.f90 lynton.f90 fastbs.f90 caxe_out.f90 \
 bandit.f90 mercier.f90 gs2.f90 astradat.f90 tokameq.f90 \
@@ -16,7 +16,7 @@ calcbeams.f coulomb.f \
 eisplit.f erf.f fastions.f frate.f gausswts.f \
 getrho.f hofr.f hunt.f qsimp.f sigfit.f sinteg.f \
 rinteg.f zinteg.f ssum.f sig_olson.f \
-nbicur.f90 geqdsk.f90 toms790.f90
+nbicur.f90 geqdsk.f90 outcdf.f90 toms790.f90
 
 
 #OBJS= \
@@ -36,10 +36,13 @@ rinteg.o zinteg.o ssum.o sig_olson.o nbicur.o geqdsk.o toms790.o
 
 OBJS_1= $(SRCS:.f90=.o)
 OBJS=$(OBJS_1:.f=.o)
-INPUT=	
+INPUT=
+INCLUDE=  -I$(YORK_NETCDF_DIR)/include 
 LIBRARIES =  \
  -llapack \
  -lblas \
+ -L$(YORK_GHOST_DIR)/lib -lghost -lgrid_xghost \
+ -L$(YORK_NETCDF_DIR)/lib -lnetcdff -lnetcdf \
  -L../lib -lsurfit \
 # -lgcvfull
 
@@ -56,13 +59,13 @@ LIBRARIES =  \
 
  # /fuslwf/home/kthcmr/GS2D/gs2dlib.a
 
-DEBUG     = -std=f2008 -Wall -Wextra #-heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
+DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check #-heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
 DOUBLE    = #-r8 -d8 #-qautodbl=dblpad
 LIN       = # -YEXT_NAMES=LCS -B108
-COMPILE   = $(F90) -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)
+COMPILE   = $(F90) -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)  $(INCLUDE)
 LOAD      = $(F90) $(SPECIAL) -o $(CMD) $(LIBS)
 .SUFFIXES:
 

@@ -9,7 +9,7 @@ subroutine equil(niter)
   integer i,j,k,n0,iax,jax,jm,nr1,nz1,ncon1,ij,ifail,npt,niter,igo
   double precision x,y,f,rm1,sf,dpsi
   double precision ur,ul,fd,fdd,rpeak,rl,upeak,upr
-  double precision slst,r0lst,erres,bp,z0,press
+  double precision slst,r0lst,erres
   double precision px,py,pf,rat, Rmin
   double precision, dimension(:), allocatable:: psiold1,gst1
   double precision, dimension(:), allocatable:: r_old,z_old
@@ -415,19 +415,17 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision errg,dk,dth,kscl,th,rnor,znor,sg,s2g,ratr,rat
+      double precision errg,dk,dth,kscl,th,rnor,znor,sg,s2g,rat
       double precision rv1,rv2,f1,f2,rup,rlo
-      double precision x,y,f,dum,rint,zint
+      double precision x,y,f
       double precision xv(npts),yv(npts),gth(npts),ang(npts),rtemp(npts)
       double precision work(npts),ang2(npts)
-      double precision dzsep,bb,aa,yhalf,xhalf,yx,xx,alf,fun,alfnew,funnew,alf2
-      integer nit,i,j,ipit,jx,igo,iout,iv,nh,k,izmid,nk,nextra,nreadpts,ifm
-      integer izr2,irot,istrt,nater,ndmr,ndat,nfm2
-      double precision, dimension(:), allocatable:: rdim,zdim,rtmp,ztmp,rinp,zinp,thdim,acof,bcof
-      double precision intk,arg1,arg2,zval,rval,rofth,zofth,thmin,erralf
+      integer nit,i,j,ipit,jx,igo,iv,nh,k,izmid,nk,nextra,nreadpts
+      integer izr2,ndmr,ndat
+      double precision, dimension(:), allocatable:: rdim,zdim,rtmp,ztmp,thdim
+      double precision intk,arg1,arg2,zval,rval,rofth
       character(len=30) string2
       character(len=2) string1
-      double precision alfarr(1000)
       !
 
 !      write(6,*)' in bdry2, ibdry=',ibdry,' igo=',igo
@@ -441,7 +439,7 @@ end subroutine equil
         theta=0.; xv=0.; yv=0.; gth=0.; rth=0.; ang2=0.
 !!$!  put X-points in using modified Bishop formula
         dk=kval/(ncon-1)
-        if (kval.lt.1e-8) dk=1./(ncon-1.)
+        if (abs(kval).lt.1e-8) dk=1./(ncon-1.)
         dth=2.*pi/(npts-1.)
         ang(1)=-pi
         theta(1)=-pi
@@ -451,7 +449,7 @@ end subroutine equil
           theta(j)=theta(1)+(j-1)*dth
         end do
         do i=ncon,2,-1
-          if (kval.lt.1e-8) then
+          if (abs(kval).lt.1e-8) then
 ! simple circle...
              kscl=dk*(i-1.)
              do j=1,npts
@@ -551,8 +549,8 @@ end subroutine equil
       rv1=rth(j,ncon)+rat*(rth(j+1,ncon)-rth(j,ncon))
       rv2=rup
       kscl=kval*rup/rv1
-      if (kscl.lt.1e-8) kscl=rup/rv1
-      if (kval.lt.1e-8) then
+      if (abs(kscl).lt.1e-8) kscl=rup/rv1
+      if (abs(kval).lt.1e-8) then
 !        if (iout.eq.1) kscl=2.-kscl
         f=1.-kscl
       else
@@ -956,13 +954,13 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision cval,rhs,ptot,psi,press,vv,betnow,bv
-      integer i,j,ip,n0, test
+      double precision cval,rhs,ptot
+      integer i,j,ip,n0
 !
 ! evaluate total current
       curtot=0.0
       ptot=0.0
-      vv=0.
+      !vv=0.
       do i=1,nr
     do 10 j=1,nz
       if(ixout(i,j).ne.1)goto 10
@@ -1098,7 +1096,7 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision fp,h,psip,fr,afr,psib,psiq,afp,aq,hb
+      double precision fp,h,psip,fr,afr,psib,psiq,afp,hb
       integer itots,iv,jv,is,js,k,isum,ii,ivs,jvs,ivsp,jvsp
 !
       if (ibdry.eq.0) then
@@ -1476,11 +1474,12 @@ end subroutine equil
       implicit none
       integer nx,ny,je,inum,iss,js,ins,jn,k,inn,jnn,i,j
       double precision rc,dudz,dudr,brn,bzn,btot,bn,bnn,brnn,bznn
+      double precision un, unn, utot
       double precision brtot,bztot
 !
       if (icont.gt.-3) then
         allocate( rcoord(nr), zcoord(nz), btheta(nr,nz),   &
-                brcoord(nr,nz),bzcoord(nr,nz))
+                brcoord(nr,nz),bzcoord(nr,nz),ucoord(nr,nz))
       end if
       nx = nr-1
       ny = nz-1
@@ -1497,6 +1496,10 @@ end subroutine equil
         do j = 1,ny
           dudz=0.5*(u(i+1,j+1)-u(i+1,j)+u(i,j+1)-u(i,j))/dz
           dudr=0.5*(u(i+1,j+1)-u(i,j+1)+u(i+1,j)-u(i,j))/dr
+
+!         #Added by Bhavin 28.09.18 for RF calc by Simon freethy 
+          ucoord(i,j)= (u(i+1,j+1)+u(i,j+1)+u(i+1,j)+u(i,j))/4.
+
           brcoord(i,j)=-dudz/rc
           bzcoord(i,j)=dudr/rc
           btheta(i,j)=sqrt(brcoord(i,j)**2+bzcoord(i,j)**2)
@@ -1535,13 +1538,15 @@ end subroutine equil
             if (idout(ins,jn).eq.0) goto 60
 ! if further out do not include
             if ((idout(ins,jn).le.je).and.(je.ne.0)) goto 60
-! found mesh point further into plasma...
+            ! found mesh point further into plasma...
+            un = ucoord(ins,jn)
             bn = btheta(ins,jn)
             brn = brcoord(ins,jn)
             bzn = bzcoord(ins,jn)
 ! continue further in in a straight line
             inn = ins + iss
             jnn = jn + js
+            unn = ucoord(inn,jnn)
             bnn = btheta(inn,jnn)
             brnn = brcoord(inn,jnn)
             bznn = bzcoord(inn,jnn)
@@ -1549,9 +1554,11 @@ end subroutine equil
             btot = btot + 2.0*bn - bnn
             brtot = brtot + 2.0*brn - brnn
             bztot = bztot + 2.0*bzn - bznn
+            utot = utot + 2*un - unn
             inum = inum + 1
  60       continue
       if(inum.eq.0)goto 70
+          ucoord(i,j) = utot/(1.0*inum)
           btheta(i,j) = btot/(1.0*inum)
           brcoord(i,j) = brtot/(1.0*inum)
           bzcoord(i,j) = bztot/(1.0*inum)
@@ -1600,9 +1607,8 @@ end subroutine equil
 !
       use param
       implicit none
-      integer nx,ny,je,inum,iss,js,ins,jn,k,inn,jnn,i,j
-      double precision rc,dudz,dudr,brn,bzn,btot,bn,bnn,brnn,bznn
-      double precision brtot,bztot
+      integer nx,ny,i,j
+      double precision rc,dudz,dudr
       integer nrg,nzg
       double precision rg(nrg),zg(nzg),v(nrg,nzg)
       double precision drg,dzg,brc,bzc,bth,bp,zc

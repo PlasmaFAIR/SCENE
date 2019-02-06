@@ -554,7 +554,7 @@ end subroutine init
       pscl=abs(press(psiax,1)/(scl*bpol*pfac))
       write(6,*)' pscl=',pscl
 !  Allocate arrays for ff' iteration
-      allocate( psiold(ncon),gst(ncon), J_nb(ncon) )
+      allocate( psiold(ncon),gst(ncon), J_nb(ncon), nbmom(ncon) )
 !!$!  Run some checks on input parameters
 !!$      if (tpoe.lt.1.) then
 !!$        write(6,*)'INPUT ERROR****, must set tpoe>1'

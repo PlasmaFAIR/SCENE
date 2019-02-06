@@ -13,7 +13,7 @@
       coolog=20.
       do i=1,nimp+2
         do j=1,nimp+2
-          if (ts(i).eq.0.) then
+          if (abs(ts(i)).lt.1e-8) then
 !  If zero edge temperature, bootstrap current will be zero, so input
 !  dummy variables
             xab(i,j)=1.
@@ -97,7 +97,7 @@
         end do
         tk=rk1*rk2/ks
         if (ks.gt.1) then
-          if (sumk.eq.0.) then
+          if (abs(sumk).lt.1e-8) then
             write(6,*)' ERROR***sumk=0 in conlen'
             stop
           end if
@@ -313,7 +313,7 @@
 !
 !******************************************************************
 !
-      subroutine hirsig(psi,pt,pd,fc,fsi,conl,dotav,bsq,bstrap,aspin,k)
+      subroutine hirsig(psi,fc,fsi,conl,dotav,bsq,bstrap,aspin,k)
 !     ***************************************************************
 !
 !  calculates the bootstrap current using the full hirshman-sigmar
@@ -324,7 +324,7 @@
       implicit none
 !
       double precision tempe,dense,tempi,densi
-      double precision psi,pt,pd,fc,fsi,conl,dotav,bsq,bstrap,aspin
+      double precision psi,fc,fsi,conl,dotav,bsq,bstrap,aspin
       double precision ft
       double precision pda,v1a,v2a
       double precision, dimension(:), allocatable:: tsd,dnd
@@ -444,7 +444,6 @@
       use param
       integer i,j,narr,ndim
       double precision aa(2*nimp+4,2*nimp+4),bb(2*nimp+4),cc(2*nimp+4)
-      double precision wkspce(2*nimp+4)
       double precision rlmat(2*nimp+4,2*nimp+4),tmat(2*nimp+4,2*nimp+4),  &
                        vvec(2*nimp+4),upar(nimp+2)
       integer, allocatable:: IPIV(:)
