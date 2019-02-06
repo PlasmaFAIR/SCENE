@@ -3,7 +3,7 @@ import currents
 import fluxsur
 import overall
 
-device = raw_input('Enter device name: ')
+device = input('Enter device name: ')
 
 print(device, 'graphs will be produced')
 
