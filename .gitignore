@@ -3,6 +3,7 @@
 *.o
 *.mod
 data/*
+trunk/scene
 !data/initial_test
 *.pyc
 */popcon.dat
