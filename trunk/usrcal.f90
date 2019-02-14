@@ -107,8 +107,8 @@ contains
 !!$      write(6,*)' done bandit'
     !      call flxorb
     call helena
-
     call geqdsk
+
 !!$      call lynton
 !!$      write(6,*)' done lynton'
 !!$!      call fastbs

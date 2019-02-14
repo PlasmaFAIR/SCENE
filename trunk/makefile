@@ -18,20 +18,13 @@ getrho.f hofr.f hunt.f qsimp.f sigfit.f sinteg.f \
 rinteg.f zinteg.f ssum.f sig_olson.f \
 nbicur.f90 geqdsk.f90 outcdf.f90 toms790.f90
 
-
-#OBJS= \
+OBJS= \
 param.o balpar.o balloon.o \
 coldat.o scene.o init.o equil.o profs.o flxsur.o \
 flxav.o hirsig.o hirsh.o splines.o signeo.o \
 torcur.o extj.o output.o ffdgen.o usrcal.o elite_data.o \
 #baleq.o test_profs.o helena.o bandat.o setnt.o chease_dat.o \
 gfile.o flxorb.o lynton.o fastbs.o caxe_out.o bandit.o  \
-mercier.o gs2.o astradat.o tokameq.o getdata.o  \
-beamconsts.o beams_mfp.o calcbeams.o coulomb.o \
-eisplit.o erf.o fastions.o frate.o gausswts.o \
-getrho.o hofr.o hunt.o qsimp.o sigfit.o sinteg.o \
-rinteg.o zinteg.o ssum.o sig_olson.o nbicur.o geqdsk.o toms790.o
-#
 
 
 OBJS_1= $(SRCS:.f90=.o)
