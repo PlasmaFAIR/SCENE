@@ -9,6 +9,7 @@ graphs/*.pyc
 graphs/*.py~
 */popcon.dat
 lib/*.a
+lib/dierckx/*.a
 profile_Te.dat
 profile_Ti.dat
 profile_ne.dat
