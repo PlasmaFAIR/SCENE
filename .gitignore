@@ -7,6 +7,7 @@ trunk/scene
 !data/initial_test
 *.pyc
 */popcon.dat
+lib/*.a
 profile_Te.dat
 profile_Ti.dat
 profile_ne.dat
