@@ -1,5 +1,0 @@
-import numpy as np
-
-data = np.loadtxt('ffp.dat')
-
-coeff = np.polyfit('data[0,:]', 
