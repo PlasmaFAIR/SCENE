@@ -6,17 +6,17 @@ subroutine nbicur()
   double precision :: psi
 
 
-  integer :: con, l, im,i,j, count
+  integer :: con, l, im,i,j, count, rr_index
 
   integer :: nbeams, nion, maxiter, inbfus, iflag
 
   real :: amb, zbeam, b0, volp
   double precision :: rr, nesum, tesum, neav,teav
-
+  double precision :: bphi, bth, btot, fprof
   double precision, dimension(ncon) :: phi
   real :: zni, ne
-
-  ! input variables
+  
+  ! Input variables
   real, dimension(:), allocatable :: ebeam, pbeam, rtang, bwidth, bheigh, bgaussR, bgaussZ, bzpos
 
   integer, dimension(:), allocatable :: nbshape, nbptype
@@ -320,6 +320,26 @@ subroutine nbicur()
   do i=1,ncon
      !print*, i, beamVel(i), beamDens(i)
      J_nb(ncon-i+1) = dble(jnbTot(i))*bav(ncon-i+1)/bsqav(ncon-i+1)
+
+     !Account for poloidal field by multiplying Bt/B
+     !Use poloidal field at OMP for each flux surface
+     !Not great as some beam is off axis
+
+     psi = psiv(ncon-i+1)
+     rr = maxval(rpts(ncon-i+1,:))
+
+     ! Calculate Bphi and Btheta
+     rr_index = maxloc(rpts(ncon-i+1,:),1) 
+     bphi = fprof(psi,2)/rr
+     bth = bppts(ncon-i+1,rr_index)
+     btot = sqrt(bth**2 + bphi**2)
+
+     if (i .eq. 1) then
+        bphi = fprof(0.0,2)/r0
+        btot = bphi
+     end if
+     print*, i, bphi/btot
+     J_nb(ncon-i+1) = J_nb(ncon-i+1)*bphi/btot
 
   end do
 
