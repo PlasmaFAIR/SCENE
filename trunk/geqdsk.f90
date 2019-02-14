@@ -7,7 +7,7 @@ subroutine geqdsk
   use param
   implicit none
 
-  integer :: i, j, nh, na, con, ij, ind, nr2, nz2, ii
+  integer :: i, j, nh, na, con, ij, ind, nr2, nz2
   double precision :: rmax, rmin, dimr, zmax, zmin, dimz
   double precision :: fprof, press, psi, rat, diff
   double precision :: Bv0, psibdy, dpsi, jtor
@@ -17,7 +17,7 @@ subroutine geqdsk
   double precision, dimension(:,:), allocatable :: psirz, psi1
   character(8) :: date
   character(10) :: time
-  double precision :: rintrp, zintrp
+
   
   !Writes GEQDSK file
 
