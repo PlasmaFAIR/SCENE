@@ -11,7 +11,7 @@
       double precision gwden,aa,bvacu,nhebar
       integer i
 !
-!  calculate beta values...
+      !  calculate beta values...
       call betas
 !  total auxiliary heating power (in MW):
       if (neo.eq.1) then
