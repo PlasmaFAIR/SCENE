@@ -1,3 +1,4 @@
+
 subroutine geqdsk
 !!! Writes out a geqdsk file
   ! In order to include a limiter the standard SCENE R,Z grid is
@@ -238,14 +239,15 @@ subroutine geqdsk
 
   write(6,*) 'bdy written to geqdsk'
 
-
+  print*, npts, nlim, ndat
   !Writes Limiter values
   !Change box range if you change limiter
   allocate(rlim(nlim), zlim(nlim))
   !zlim = zbdy*1.
   !rlim = rbdy
   ind = maxloc(zbdy,1)
-  do i=2,npts
+  do i=2,ndat
+     print*, i, rbdy(i), rbdy(ind)
      if (rbdy(i)-rbdy(ind) .lt. 0.) then
         rlim(i-1) = rbdy(i)-dr
      else
