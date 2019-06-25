@@ -160,9 +160,6 @@ subroutine nbicur()
 
   !Background plasma input quantities
 
-
-
-
   !Ions parameters
   if ( nimp+2 .gt. 6) then
      nion = 6
@@ -266,11 +263,9 @@ subroutine nbicur()
 
   do i=1,ncon
 
-
-
   !   rr = maxval(rpts(ncon-i+1,:)) - r0
   !
-  !   print*, rnormnb(i), vprime(i),  shafr(i), dshafr(i)
+     print*, rnormnb(i), kappa(i), dkappa(i), shafr(i), dshafr(i)
   end do
 
 
@@ -318,7 +313,6 @@ subroutine nbicur()
   !Note need to reverse order of array again and use <B>/<B^2>
   ! from appropriate flxsur
   do i=1,ncon
-     !print*, i, beamVel(i), beamDens(i)
      J_nb(ncon-i+1) = dble(jnbTot(i))*bav(ncon-i+1)/bsqav(ncon-i+1)
 
      !Account for poloidal field by multiplying Bt/B
@@ -338,7 +332,7 @@ subroutine nbicur()
         bphi = fprof(0.0,2)/r0
         btot = bphi
      end if
-     print*, i, bphi/btot
+     
      J_nb(ncon-i+1) = J_nb(ncon-i+1)*bphi/btot
 
   end do

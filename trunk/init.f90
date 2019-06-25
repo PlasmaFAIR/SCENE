@@ -490,8 +490,8 @@ end subroutine init
       r1=rcen*(1.-tokeps)
       r2=rcen*(1.+tokeps)
       zs=rcen*tokeps*elon
-      !      rs=rcen*(1.-tokeps*sin(tri))
-      rs=rcen*(1.-tokeps*tri)
+      rs=rcen*(1.-tokeps*sin(tri))
+      !rs=rcen*(1.-tokeps*tri)
 !  Create mesh... 
       nr=int((r2-r1)/step+6)
       nz=int(2.*zs/step+6)

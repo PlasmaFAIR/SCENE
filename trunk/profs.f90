@@ -1286,7 +1286,7 @@
             /(2**tpow-1.-tpow)
       end if
       if (i.eq.0) then
-!  return ion temperature
+         !  return ion temperature
         tem=ta+(tped-ta)*(exp(tedg*xps)-exp(-tedg*xps))/ &
                 (exp(tedg*xps)+exp(-tedg*xps)) &
                 +tn*((1.+xps)**tpow-(1.+tpow*xps))
@@ -1295,7 +1295,7 @@
         tem=-4.*(tedg/umax)*(tped-ta)/(exp(tedg*xps)+exp(-tedg*xps))**2 &
                -(tpow/umax)*tn*((1.+xps)**(tpow-1.)-1.)
       else
-!  return the second derivative
+         !  return the second derivative
         tem=-8.*(tedg/umax)**2*(tped-ta)*  &
                 ((exp(tedg*xps)-exp(-tedg*xps))/ &
                 (exp(tedg*xps)+exp(-tedg*xps))**3) &

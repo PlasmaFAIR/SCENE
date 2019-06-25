@@ -1,10 +1,5 @@
+subroutine geqdsk2
 
-subroutine geqdsk
-!!! Writes out a geqdsk file
-  ! In order to include a limiter the standard SCENE R,Z grid is
-  ! extended by one grid space on all sides psi (nr,nz) -> psi(nr+2,nz+2)
-  ! Uses surfit.f from dierckx to fit a surface inside the boundary to
-  ! extend psi out to the edge of the box
   use param
   implicit none
 
@@ -19,7 +14,6 @@ subroutine geqdsk
   character(8) :: date
   character(10) :: time
 
-  
   !Writes GEQDSK file
 
   nh = 49
@@ -37,7 +31,7 @@ subroutine geqdsk
   nr2 = nr+2
   nz2 = nz+2
 
-  allocate(psirz(nr,nz), psi1(nr,nz))
+  allocate(psirz(nr2,nz2), psi1(nr2,nz2))
   
   !First line header, main thing needed in nr and nz (add one for limiter)
   write(nh,2000) 'SCENE ', date, ' : ', time, 'RUN: ', runname, 0, nr2, nz2
@@ -46,12 +40,12 @@ subroutine geqdsk
   rmax = maxval(r)+dr
   rmin = minval(r)-dr
   dimr = rmax - rmin
-  zmax = maxval(z)+dr
-  zmin = minval(z)-dr
+  zmax = maxval(z)+dz
+  zmin = minval(z)-dz
   dimz = zmax-zmin
 
   !Dimensions of R,Z grid
-  !print*, dimr, dimz, rcen, rmin
+  print*, dimr, dimz, rcen, rmin
   write(nh,2020) dimr, dimz, rcen, rmin, 0.
 
   Bv0 = mu0*rodi/(2.*pi*rcen)
@@ -101,9 +95,9 @@ subroutine geqdsk
   jtor=0.0
   call extrap2()
   psirz= umax*1.2
-  do i=1,nr
-     do j=1,nz
-        if (ixout(i,j) .ne. 0) then
+  do i=2,nr+1
+     do j=2,nz+1
+        if (ixout(i-1,j-1) .ne. 0) then
            psirz(i,j) = (umax-u(i,j))
            !jtor = jtor + r(i)*press(psirz(i,j),1) + fprof(psirz(i,j),1)/(r(i)*mu0)
         end if
@@ -116,62 +110,32 @@ subroutine geqdsk
   !Extrapolates Psi to edge of grid
   call extrappsi(rmin, rmax, zmin, zmax,psi1)
   write(6,*) 'Smoothing function'
-  
-  allocate(psigeq(nr2,nz2))
-  psigeq = 0.0
-  
+
   !Writes Psi
-  !Uses extrapolated values outside bdy,
-  !USes actual value inside bdy
   diff=0.
   ij=0
-  do i=1,nr
-     do j=1,nz
-        !Set to extrap val
-        psigeq(i+1,j+1) = psi1(i,j)
-        
-        if (ixout(i,j).ne.0) then
-           
-           ij=ij+1
-           !Set psi inside bdy
-           psigeq(i+1,j+1) = umax -u(i,j)
-           diff = diff + ( umax - u(i,j) - psi1(i,j) )**2/(umax-u(i,j))**2
-           
-           !if (psi1(i,j) .lt. 0.01) print*, i,j,umax-u(i,j), psi1(i,j)
+  do i=2,nr+1
+     do j=2,nz+1
+
+        if (ixout(i-1,j-1).ne.0) then
+            ij=ij+1
+
+            diff = diff + (psirz(i,j) - psi1(i,j))**2
            !psi1(i,j) = umax - u(i,j)
         end if
 
      end do
   end do
-  write(6,*) 'Avg fractional diff between Psi and fit is :',  sqrt(diff/ij)
-
-  ! Have a psi that has one more layer grid point on each side
+  write(6,*) 'Avg diff between Psi and fit is :',  sqrt(diff/ij)
 
 
-  !Inside points same as before
-  psigeq(2:nr+1,2:nz+1) = psi1
-
-  !Extrapolate out to the side first (not incl extra z layers)
-  !Left side
-  psigeq(1,2:nz2-1) = 2*psigeq(2,2:nz2-1) -psigeq(3,2:nz2-1)
-
-  !Right
-  psigeq(nr2,2:nz2-1) = 2*psigeq(nr2-1,2:nz2-1) - psigeq(nr2-2,2:nz2-1)
-
-  !Extrapolate out to top and bottom (incl extra r layers)
-  !Top
-  psigeq(:,1) = 2*psigeq(:,2) - psigeq(:,3)
-
-  !Bottom
-  psigeq(:,nz2) = 2*psigeq(:,nz2-1) - psigeq(:,nz2-2)
-
-  print*, 'Writing psi values to eqdsk, extrapolated out to edge'
-  write(nh,2020)  ((psigeq(i,j), i=1,nr2), j=1,nz2)
+  print*, 'Writing psi values to eqdsk, only correct in the plasma'
+  write(nh,2020)  ((psi1(i,j), i=1,nr2), j=1,nz2)
   write(6,*) 'psi written to geqdsk'
 
   allocate(safety(nr2))
   !Writes Safety factor (on R,Z grid)
-  do i=1,nr2
+  do i=1,nr+1
      psi = psii(i)
      con = 1
 
@@ -230,36 +194,32 @@ subroutine geqdsk
 
   end if
 
-  ! excl first point in lim, no repeats
-  nlim = ndat-1
-  !nlim = 1
+  !nlim = ndat
+  nlim = 1
   write(nh, 2022) ndat, nlim
 
   write(nh,2020) (rbdy(i), zbdy(i), i=1,ndat)
 
   write(6,*) 'bdy written to geqdsk'
 
+
   !Writes Limiter values
   !Change box range if you change limiter
   allocate(rlim(nlim), zlim(nlim))
-  !zlim = zbdy*1.
-  !rlim = rbdy
-  ind = maxloc(zbdy,1)
-  do i=2,ndat
-     if (rbdy(i)-rbdy(ind) .lt. 0.) then
-        rlim(i-1) = rbdy(i)-dr
-     else
-        rlim(i-1) = rbdy(i)+dr
-     end if
-
-     if (zbdy(i) .gt. 0) then
-        zlim(i-1) = zbdy(i)+dz
-     else
-        zlim(i-1) = zbdy(i)-dz
-     end if
-  end do
-
-    
+  ! zlim = zbdy*1.
+  ! rlim = rbdy
+  ! ind = maxloc(zbdy,1)
+  ! do i=1,npts
+  !    if (rbdy(i)-rbdy(ind) .lt. 0.) then
+  !       rlim(i) = rbdy(i)-0.3
+  !    else
+  !       rlim(i) = rbdy(i)+0.3
+  !    end if
+  zlim = 0.0
+  rlim = 0.5
+  !end do
+  
+     
   !rlim = (/0.9*rmin,1.1*rmax/)
 
   !zlim = (/1.1*zmin,1.1*zmax/)
@@ -277,7 +237,7 @@ subroutine geqdsk
 
   close(nh)
 
-end subroutine geqdsk
+end subroutine geqdsk2
 
 
 subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
@@ -302,17 +262,17 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   real, dimension(:), allocatable :: r_o,z_o, psi_extrap
 
   !iopt =-1 =>least sq, 0 (1) smoothing (restart)
-  iopt=0
+  iopt=-1
 
   !kr and kz choose order (3=cubic)
   kr=3
   kz=3
 
 
-  rl=sngl(rmin)
-  ru=sngl(rmax)
-  zl=sngl(zmin)
-  zu=sngl(zmax)
+  rl=sngl(rmin+dr)
+  ru=sngl(rmax-dr)
+  zl=sngl(zmin+dz)
+  zu=sngl(zmax-dz)
 
   !no. of points in the plasma/boundary
   m=0
@@ -325,7 +285,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
 
  !smoothing factor
-  sm = (m - sqrt(2.*m))/1000000
+  sm = (m - sqrt(2.*m))/30000
   !sm=0.
   !No. of knots0
   nrest=int(kr+sqrt(m/2.))
@@ -371,8 +331,8 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   allocate( u_in(m), r_in(m), z_in(m), w_in(m))
   allocate(tr(nmax), tz(nmax), c((uw*vw)), wrk1(lwrk1), wrk2(lwrk2), iwrk(kwrk))
-  allocate(r_o(nr), z_o(nz))
-  allocate(psi_extrap((nr*nz)))
+  allocate(r_o(nr+2), z_o(nz+2))
+  allocate(psi_extrap((nr+2)*(nz+2) ) )
 
   !tr(kr+2) = sngl(r(int(nr/3)))
   !tz(kz+2) = sngl(z(int(nz/3)))
@@ -415,22 +375,26 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   !print*, 'Surfit ier:',ier
 
-  !iopt=-1
+  iopt=0
   call surfit(iopt, m, r_in, z_in, u_in, w_in, rl, ru, zl, zu, kr, kz, &
        sm, nrest, nzest,nmax,ep, nr1,tr, nz1, tz, c, fp, wrk1,lwrk1,wrk2, &
        lwrk2, iwrk, kwrk, ier)
 
   print*, 'Surfit round 2 ier:',ier
 
-  do i=1,nr
+  do i=2,nr+1
      r_o(i) = sngl(r(i))
   end do
+  r_o(1) = sngl(r(1)-dr)
+  r_o(nr+2) = sngl(r(nr)+dr)
 
-  do i=1,nz
+  do i=2,nz+1
      z_o(i) = sngl(z(i))
   end do
-
-  kwrk = nr+nz
+  z_o(1) = sngl(z(1)-dz)
+  z_o(2) = sngl(z(nz)+dz)
+  
+  kwrk = nr+2+nz+2
   lwrk1 = nr*(kr+1) + nz*(kz+1)
 
   allocate(wrki(kwrk), wrk3(lwrk1))
@@ -442,16 +406,13 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
 
   ij=0
-  do i=1,nr
-     do j=1,nz
+  do i=1,nr+2
+     do j=1,nz+2
         ij = ij+1
         psi_out(i,j) = dble(psi_extrap(ij))
      end do
   end do
   write(6,*) 'Extrap psi: ier = ',ier, ' s is : ',sm, ' fp is ',fp, ' for m points: ',m
-
-  write(6,*) 'Bispev in Extrappsi ier = ',ier
-
 
   deallocate( u_in, r_in, z_in, w_in)
   deallocate(tr, tz, c, wrk1, wrk2)

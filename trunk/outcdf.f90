@@ -18,6 +18,7 @@ subroutine write_netcdf()
   !Variable ID for different inputs
   integer :: rhopsi_varid, rhopsi_dimid
   integer :: rr_varid, rr_dimid, zz_varid, zz_dimid
+  integer :: npts_varid, npts_dimid
 
   ! 0D profiles
   integer :: zerod_varid, zerod_dimid
@@ -42,6 +43,7 @@ subroutine write_netcdf()
   ! TGLF  1d profile variable ID 
   integer :: tglf_rmin_varid, tglf_rmaj_varid, tglf_q_varid, tglf_q_prime_varid
   integer :: tglf_p_prime_varid, tglf_drmajdx_varid, tglf_kappa_varid, tglf_s_kappa_varid
+  integer :: tglf_delta_varid, tglf_s_delta_varid
   integer :: tglf_zs_i_varid, tglf_mass_i_varid, tglf_rlns_i_varid, tglf_rlts_i_varid
   integer :: tglf_taus_i_varid, tglf_as_i_varid, tglf_vpar_i_varid, tglf_vpar_shear_i_varid
   integer :: tglf_zs_e_varid, tglf_mass_e_varid, tglf_rlns_e_varid, tglf_rlts_e_varid
@@ -66,6 +68,7 @@ subroutine write_netcdf()
   ! TGLF  1d profile variable ID 
   character (len=*), parameter :: tglf_rmin_unit='', tglf_rmaj_unit='', tglf_q_unit='', tglf_q_prime_unit=''
   character (len=*), parameter :: tglf_p_prime_unit='', tglf_drmajdx_unit='', tglf_kappa_unit='', tglf_s_kappa_unit=''
+  character (len=*), parameter :: tglf_delta_unit='', tglf_s_delta_unit=''
   character (len=*), parameter :: tglf_zs_i_unit='', tglf_mass_i_unit='', tglf_rlns_i_unit='', tglf_rlts_i_unit=''
   character (len=*), parameter :: tglf_taus_i_unit='', tglf_as_i_unit='', tglf_vpar_i_unit='', tglf_vpar_shear_i_unit=''
   character (len=*), parameter :: tglf_zs_e_unit='', tglf_mass_e_unit='', tglf_rlns_e_unit='', tglf_rlts_e_unit=''
@@ -90,17 +93,26 @@ subroutine write_netcdf()
   !TGLF 1D output data
   double precision, dimension(ncon) :: tglf_rmin, tglf_rmaj, tglf_q, tglf_q_prime
   double precision, dimension(ncon) :: tglf_p_prime, tglf_drmajdx, tglf_kappa, tglf_s_kappa
+  double precision, dimension(ncon) :: tglf_delta, tglf_s_delta
   double precision, dimension(ncon) :: tglf_rlns_i, tglf_rlts_i
   double precision, dimension(ncon) :: tglf_taus_i, tglf_as_i, tglf_vpar_i, tglf_vpar_shear_i
   double precision, dimension(ncon) :: tglf_rlns_e, tglf_rlts_e
   double precision, dimension(ncon) :: tglf_taus_e, tglf_as_e, tglf_vpar_e, tglf_vpar_shear_e, tglf_b_unit
 
-  
 
+  ! 2d  variable ID
+  integer :: rpts_varid, zpts_varid, bppts_varid
+
+  ! 2d units
+  character (len=*), parameter :: npts_unit=''
+  character (len=*), parameter :: rpts_unit='m', zpts_unit='m', bppts_unit='T'
+
+  
   double precision, dimension(ncon) :: dPsidrhos, rhos, dPsiNdrho
+  integer, dimension(npts) :: pts
   double precision :: shafr, dshafr, rmaj, rmin
   double precision :: kappa, dkappa, p_prime, dPsidr
-  double precision :: elong, tglf_shear
+  double precision :: elong, tglf_shear, delta, ddelta, triang
 
   
   debug = .True.
@@ -195,6 +207,8 @@ subroutine write_netcdf()
      dshafr = shift(con,1)*dPsidr
      kappa = elong(con,0)
      dkappa = elong(con,1)*dPsidr
+     delta = triang(con,0)
+     ddelta = triang(con,1)*dPsidr
 
      !Major radius 
      rmaj = rcen + shafr
@@ -215,6 +229,10 @@ subroutine write_netcdf()
      tglf_kappa(con) = kappa
      tglf_s_kappa(con) = rmin*dkappa/kappa
 
+     tglf_delta(con) = delta
+     tglf_s_delta(con) = rmin*ddelta
+
+     
      tglf_b_unit(con) = tglf_q(con)*dpsidr/(rmin*2.0*pi)
 
      tglf_p_prime(con) = tglf_q(con) * amin**2 * p_prime * 2 * mu0 / (rmin*tglf_b_unit(con)**2)
@@ -258,12 +276,15 @@ subroutine write_netcdf()
   call check( nf90_def_var(ncid, "rho_psi", NF90_REAL, rhopsi_dimid, rhopsi_varid))
   call check( nf90_put_att(ncid, rhopsi_varid, units, rhopsi_unit))
 
+  call check( nf90_def_dim(ncid, "npts", npts, npts_dimid))
+  call check( nf90_def_var(ncid, "npts", NF90_REAL, npts_dimid, npts_varid))
+  call check( nf90_put_att(ncid, npts_varid, units, npts_unit))
   
   call check( nf90_def_dim(ncid, "R", nr, rr_dimid))
   call check( nf90_def_var(ncid, "R", NF90_REAL, rr_dimid, rr_varid))
   call check( nf90_put_att(ncid, rr_varid, units, rr_unit))
   
-
+  
   !Define "units" for 0D data
   call check( nf90_def_dim(ncid, "ZeroD", 1, zerod_dimid) )
   call check( nf90_def_var(ncid, "ZeroD", NF90_INT, zerod_dimid, zerod_varid))
@@ -275,11 +296,14 @@ subroutine write_netcdf()
   dimidsrho = (/rhopsi_dimid/)
   dimidsR = (/rr_varid/)
 
-  !dimids2d = (/nr, nz/)
+  dimids2d = (/rhopsi_varid, npts_varid/)
 
+  if (debug) print*, 'Assigned dimensions'
   !Assign 0d Variables:
   call check( nf90_def_var(ncid, "bcentr", NF90_REAL, dimids0d, bcentr_varid) ) 
   call check( nf90_def_var(ncid, "amin", NF90_REAL, dimids0d, amin_varid) )
+
+  if (debug) print*, 'Assigned 0D variables'
   
   !Assign 1d Variables:
   call check( nf90_def_var(ncid, "Psi", NF90_REAL, dimidsrho, psi_varid) ) 
@@ -306,7 +330,7 @@ subroutine write_netcdf()
   call check( nf90_def_var(ncid, "Fpsi", NF90_REAL, dimidsrho, fsi_varid) )
   call check( nf90_def_var(ncid, "FFP", NF90_REAL, dimidsrho, ffp_varid) )
   call check( nf90_def_var(ncid, "Pp", NF90_REAL, dimidsrho, pp_varid) )
-    call check( nf90_def_var(ncid, "dPsidrho", NF90_REAL, dimidsrho, dpsidrho_varid) )
+  call check( nf90_def_var(ncid, "dPsidrho", NF90_REAL, dimidsrho, dpsidrho_varid) )
 
   call check( nf90_def_var(ncid, "JTOT", NF90_REAL, dimidsR, jtot_varid) )
   call check( nf90_def_var(ncid, "JEXT", NF90_REAL, dimidsR, jext_varid) )
@@ -352,8 +376,18 @@ subroutine write_netcdf()
   call check( nf90_def_var(ncid, "TGLF_DRMAJDX", NF90_REAL, dimidsrho, tglf_drmajdx_varid) )
   call check( nf90_def_var(ncid, "TGLF_KAPPA", NF90_REAL, dimidsrho, tglf_kappa_varid) )
   call check( nf90_def_var(ncid, "TGLF_S_KAPPA", NF90_REAL, dimidsrho, tglf_s_kappa_varid) )
+  call check( nf90_def_var(ncid, "TGLF_DELTA", NF90_REAL, dimidsrho, tglf_delta_varid) )
+  call check( nf90_def_var(ncid, "TGLF_S_DELTA", NF90_REAL, dimidsrho, tglf_s_delta_varid) )
+
+  if (debug) print*, 'Defined TGLF variables'
   
-  
+  call check( nf90_def_var(ncid, "rpts", NF90_REAL, dimids2d, rpts_varid) )
+
+  call check( nf90_def_var(ncid, "zpts", NF90_REAL, dimids2d, zpts_varid) )
+
+  call check( nf90_def_var(ncid, "bppts", NF90_REAL, dimids2d, bppts_varid) )
+
+    
   if (debug) print*, 'Defined variables'
 
   !Assign Units
@@ -426,7 +460,13 @@ subroutine write_netcdf()
   call check( nf90_put_att(ncid, tglf_drmajdx_varid, units, tglf_drmajdx_unit) )
   call check( nf90_put_att(ncid, tglf_kappa_varid, units, tglf_kappa_unit) )
   call check( nf90_put_att(ncid, tglf_s_kappa_varid, units, tglf_s_kappa_unit))
+  call check( nf90_put_att(ncid, tglf_delta_varid, units, tglf_delta_unit) )
+  call check( nf90_put_att(ncid, tglf_s_delta_varid, units, tglf_s_delta_unit))
   call check( nf90_put_att(ncid, tglf_b_unit_varid, units, tglf_b_unit_unit))
+
+  call check( nf90_put_att(ncid, rpts_varid, units, rpts_unit))
+  call check( nf90_put_att(ncid, zpts_varid, units, zpts_unit))
+  call check( nf90_put_att(ncid, bppts_varid, units, bppts_unit))
   
   if (debug) print*, 'Assigned variable attributes'
   
@@ -438,6 +478,12 @@ subroutine write_netcdf()
   !Put Radial coordinates in
   call check(nf90_put_var(ncid, rhopsi_dimid, rhopsi))
 
+  do i=1, npts
+     pts(i) = i
+  end do
+  !Put poloidal points
+  call check(nf90_put_var(ncid, npts_dimid, pts))
+  
   !Put in 0d variable data
   call check(nf90_put_var(ncid, bcentr_varid, bcentr))
   call check(nf90_put_var(ncid, amin_varid, amin))
@@ -482,7 +528,6 @@ subroutine write_netcdf()
   call check(nf90_put_var(ncid, jps_varid, psph(:,nsym)/1000) )
   call check(nf90_put_var(ncid, jnbi_varid, nbph(:,nsym)/1000) )
 
-
   print*, 'Putting TGLF attrs'
   !Put 1D TGLF variables
 
@@ -511,11 +556,18 @@ subroutine write_netcdf()
   call check( nf90_put_var(ncid, tglf_drmajdx_varid, tglf_drmajdx) )
   call check( nf90_put_var(ncid, tglf_kappa_varid, tglf_kappa) )
   call check( nf90_put_var(ncid, tglf_s_kappa_varid, tglf_s_kappa))
+  call check( nf90_put_var(ncid, tglf_delta_varid, tglf_delta) )
+  call check( nf90_put_var(ncid, tglf_s_delta_varid, tglf_s_delta))
   call check( nf90_put_var(ncid, tglf_b_unit_varid, tglf_b_unit))
 
   if (debug) print*, 'Put variables values in'
-  
 
+  ! 2d variables
+  call check( nf90_put_var(ncid, rpts_varid, rpts ))
+  call check( nf90_put_var(ncid, zpts_varid, rpts ))
+  call check( nf90_put_var(ncid, bppts_varid, bppts ))
+
+  
   
   call check(nf90_close(ncid))
   print *, "*** SUCCESS writing NETCDF file "
