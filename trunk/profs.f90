@@ -1449,6 +1449,111 @@
 
 
 
+   recursive function triang(con, id) result(delta)
+     ! Calculate triangularity (or derivative with psi if id=1)
+
+     use param
+     implicit none
+
+     integer :: con, id
+
+     integer :: i, zind
+     double precision :: rmin, rmax,zmax, rmid, min_rad
+     double precision :: rat, delta
+
+     double precision :: triang_l, triang_u, psi_l, psi_u, triangp, triangf
+
+     rmin = 1.e6
+     rmax = 0.
+     zmax = 0.
+     !find max r,z and min r
+     do i =1,npts
+        if (zpts(con,i) .gt. zmax) then
+           zmax = zpts(con,i)
+           zind = i
+        end if
+        if (rpts(con,i) .lt. rmin) then
+           rmin = rpts(con,i)
+
+        else if (rpts(con,i) .gt. rmax) then
+           rmax = rpts(con,i)
+        end if
+
+     end do
+
+     rmid = (rmax + rmin)/2
+     min_rad = (rmax - rmin)/2
+     if (id.eq.0) then
+
+        if (con.eq.ncon) then
+           !linear extrapolate to innermost flux surface
+
+           triang_u = triang(con-1,0)
+           triangp = triang(con,1)
+
+           triangf = triang_u + triangp*(psiv(con) - psiv(con-1))
+
+        else
+           triangf = (rmid - rpts(con, zind))/min_rad
+
+        end if
+
+     else if (id .eq. 1) then
+
+        !forward difference if first contour
+        if (con .eq. 1) then
+
+           triang_u = triang(con+1,0)
+           triang_l = triang(con,0)
+
+           psi_u = psiv(con+1)
+           psi_l = psiv(con)
+           triangf = (triang_u - triang_l)/(psi_u - psi_l)
+
+        ! backwards difference if second last contour
+        else if (con .eq. ncon-1) then
+
+           triang_u = triang(con, 0)
+           triang_l = triang(con-1,0)
+
+           psi_u = psiv(con)
+           psi_l = psiv(con-1)
+           triangf = (triang_u - triang_l)/(psi_u - psi_l)
+
+
+
+        !Extrapolate second to last derivate to get last flux surface
+        else if (con .eq. ncon) then
+
+           !Notice using first derivative
+           triang_u = triang(con-1, 1)
+           triang_l = triang(con-2,1)
+
+           psi_u = psiv(con-1)
+           psi_l = psiv(con-2)
+
+           !linear extrapolation
+           rat = (triang_u - triang_l)/(psi_u - psi_l)
+
+           triangf = triang(con-1,1) + rat*(psiv(con)-psiv(con-1))
+
+        !centred difference
+        else
+
+           triang_l = triang(con-1,0)
+           triang_u = triang(con+1,0)
+
+           psi_l = psiv(con-1)
+           psi_u = psiv(con+1)
+           triangf = (triang_u - triang_l)/(psi_u - psi_l)
+        end if
+
+     end if
+
+     delta = triangf
+     
+   end function triang
+   
 
 
    recursive function shift(con, id) result(del)

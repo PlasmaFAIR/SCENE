@@ -213,7 +213,6 @@ subroutine write_netcdf()
      !Major radius 
      rmaj = rcen + shafr
      rmin = maxval(rpts(con,:)) - rmaj
-
      p_prime = press(psi, 1)*dpsidr
 
      
@@ -230,7 +229,7 @@ subroutine write_netcdf()
      tglf_s_kappa(con) = rmin*dkappa/kappa
 
      tglf_delta(con) = delta
-     tglf_s_delta(con) = rmin*ddelta
+     tglf_s_delta(con) = rmin*ddelta/sqrt(1-delta**2)
 
      
      tglf_b_unit(con) = tglf_q(con)*dpsidr/(rmin*2.0*pi)
@@ -564,7 +563,7 @@ subroutine write_netcdf()
 
   ! 2d variables
   call check( nf90_put_var(ncid, rpts_varid, rpts ))
-  call check( nf90_put_var(ncid, zpts_varid, rpts ))
+  call check( nf90_put_var(ncid, zpts_varid, zpts ))
   call check( nf90_put_var(ncid, bppts_varid, bppts ))
 
   
