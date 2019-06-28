@@ -487,7 +487,7 @@ subroutine jetto()
 
      mach = vtor/sngl(cs)
 
-     print*, psi, vtor, angf, mach
+     !print*, psi, vtor, angf, mach
   
      !Effective Z
      zeff=sngl(zm)

@@ -9,13 +9,7 @@ ndat = int(f1.readline())
 
 f1.close()
 
-
 bdy = np.loadtxt('bdy.txt',skiprows=1)
-
-
-
-
-
 
 f = open('bdytest.dat', 'r')
 
@@ -37,16 +31,12 @@ for i in range(npts):
 
 
 for j in range(ndat):
-    
     thdim[j] = f.readline()
-
 f.close()
-
 
 diff = bdy[0,0] - rtmp[0]
 
 bdy[:,0] = bdy[:,0] - diff
-
 
 
 plt.plot(theta, ztmp)
@@ -57,6 +47,7 @@ plt.title('Fourier components fit in Z')
 plt.savefig('fourier_z.png')
 plt.show()
 
+print('plotting R ')
 plt.plot(theta, rtmp)
 plt.plot(thdim, bdy[:,0])
 plt.xlabel('Poloidal angle (rad)')
