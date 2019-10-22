@@ -108,6 +108,7 @@ contains
     !      call flxorb
     call helena
     call geqdsk
+    call peqdsk
 
 !!$      call lynton
 !!$      write(6,*)' done lynton'

@@ -16,7 +16,7 @@ calcbeams.f coulomb.f \
 eisplit.f erf.f fastions.f frate.f gausswts.f \
 getrho.f hofr.f hunt.f qsimp.f sigfit.f sinteg.f \
 rinteg.f zinteg.f ssum.f sig_olson.f \
-nbicur.f90 geqdsk.f90 outcdf.f90 toms790.f90
+nbicur.f90 geqdsk.f90 peqdsk.f90 outcdf.f90 toms790.f90
 
 OBJS= \
 param.o balpar.o balloon.o \
@@ -52,7 +52,7 @@ LIBRARIES =  \
 
  # /fuslwf/home/kthcmr/GS2D/gs2dlib.a
 
-DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check #-heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
+DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check -g # -heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
