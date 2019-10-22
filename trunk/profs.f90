@@ -145,8 +145,8 @@
 !  return total pressure
             ptem=pa+(1.-pa)*xps**ppow
           else if (ip.eq.1) then
-!  return the derivative
-            ptem=-ppow*(1.-pa)*xps**(ppow-1.)/umax
+             !  return the derivative
+             ptem=-ppow*(1.-pa)*xps**(ppow-1.)/umax
           else
 !  return the second derivative
             ptem=(ppow*(ppow-1.)*(1.-pa)/umax**2)*xps**(ppow-2.)
@@ -219,12 +219,57 @@
         press=umax*scl*pfac*bpol*ptem
         return
       end if
-!  ipswtch=0
+      if (ipswtch.eq.20) then
+         psin = psi/umax
+         if (ip.eq.0) then
+            !  return total pressure
+            ptem=1.-(1.-ape-pa)*psin**ppow - ape*psin**(ppow-1.)
+         else if (ip.eq.1) then
+            !  return the derivative
+            ptem=-ppow*(1.-ape-pa)*psin**(ppow-1.)/umax - (ppow-1)*ape*psin**(ppow-2.)/umax
+         else
+            !  return the second derivative
+            ptem=-(ppow*(ppow-1.)*(1.-ape-pa)*psin**(ppow-2.)/umax**2) - (ppow-2.)*(ppow-1.)*ape*psin**(ppow-3.)/umax**2
+         end if
+         press=umax*scl*pfac*bpol*ptem/pscl
+         return
+      end if
+       
+      if (ipswtch.eq.21) then
+        if (ppow.lt.2.) then
+          write(6,*)' ERROR***PPOW must be >2, PPOW=',ppow
+          stop
+        end if
+        if (ppo1.lt.2.) then
+          write(6,*)' ERROR***PPO1 must be >2, PPO1=',ppo1
+          stop
+       end if
+       efac = exp(pedg*xps)
+        if (ip.eq.0) then
+           ptem=pa+(pped-pa)*(efac**2-1.)/ &
+                (efac**2+1.)
+          ptem=ptem+pn*((1.+ape)*xps**ppow-ape*xps**ppo1)
+        else if (ip.eq.1) then
+          ptem=-4.*(pedg/umax)*(pped-pa)/(efac+1./efac)**2
+          ptem=ptem-(pn/umax)*(ppow*(1.+ape)*xps**(ppow-1.)         &
+               -ppo1*ape*xps**(ppo1-1.))
+        else
+          ptem=-2.*(pedg/umax)**2*(pped-pa)*  &
+                ((efac**2-1.)/(efac**2+1.))/ &
+                (0.5*(efac+1./efac))**2
+          ptem=ptem+(pn/umax**2)*(ppow*(ppow-1.)*(1.+ape)*xps**(ppow-2.)  &
+               -ppo1*(ppo1-1.)*ape*xps**(ppo1-2.))
+        end if
+        press=umax*scl*pfac*bpol*ptem/pscl
+        return
+     end if
+     
+      !  ipswtch=0
       if (imp.eq.0) then
         efac=exp(pedg*xps)
         if (ip.eq.0) then
-!  return total pressure
-          ptem=pa+(pped-pa)*(efac**2-1.)/(efac**2+1.)
+           !  return total pressure
+           ptem=pa+(pped-pa)*(efac**2-1.)/(efac**2+1.)
           if (ppow.gt.1) ptem=ptem+pn*((1.+xps)**ppow-(1.+ppow*xps))
         else if (ip.eq.1) then
 !  return the derivative
@@ -443,14 +488,14 @@
           ne=press(psi,0)/(zm*ti+te)
         end if
         if (i.eq.0) then
-          dense=ne/bk
+           dense=ne/bk
           return
         end if
         tid=tempi(psi,1,1)
         ted=tempe(psi,1)
         ned=(press(psi,1)-(zm*tid+ted)*ne)/(zm*ti+te)
         if (i.eq.1) then
-          dense=ned/bk
+           dense=ned/bk
           return
         else
        write(6,*)'ERROR*** need to code up higher derivatives of e density'
@@ -789,7 +834,7 @@
             return
           end if
         end if
-        if (ipswtch.eq.1) then
+        if (ipswtch.eq.1 .or. ipswtch.eq.20) then
           ffp=g0*(xps**fpow+af1*psin**fpow1+af2*psin**fpow2)
           if (id.eq.1) then
            fprof=ffp
@@ -882,10 +927,9 @@
        end if
 
 
-
         ffp=g0*((1.+xps)**fpow-1.)
         if (id.eq.1) then
-          fprof=ffp
+           fprof=ffp
           return
         end if
         fff=fpow+1
@@ -908,7 +952,7 @@
         fprof=ffpp
      else
 !---------------------------------------------------------------
-!  use discrete form of ff'
+        !  use discrete form of ff'
         ij=1
         xps=psi/umax
         if ((xps.gt.1).or.(xps.lt.0.)) then
@@ -1141,7 +1185,7 @@
         end if
         return
       end if
-      if ((ipswtch.eq.6).or.(ipswtch.eq.8)) then
+      if ((ipswtch.eq.6).or.(ipswtch.eq.8).or.(ipswtch.eq.21)) then
 !!$        ate=2.1
 !!$        tpo1=3.0
         if (tpoe.lt.2.) then
@@ -1170,7 +1214,7 @@
         return
       end if
       if (i.eq.0) then
-!  return electron temperature
+         !  return electron temperature
         tem=tea+(teped-tea)*(efac**2-1.)/ &
                 (efac**2+1.)
         if (tpoe.gt.1) tem=tem+ten*((1.+xps)**tpoe-(1.+tpoe*xps))
