@@ -17,8 +17,8 @@
       double precision rcinv(npts),sinu(npts),cosu(npts),dpsi1dl(npts), &
                        d2psi1dl2(npts),dnudpsi(npts),d2nudpsi2(npts)
       double precision surfa(npts),bpsur(npts)
-      double precision bsqar(npts),rsqar(npts),rrar(npts),riar(npts)
-      double precision risar(npts),rar(npts),avblir(npts)
+      double precision bsqar(npts),bphiar(npts), rsqar(npts),rrar(npts)
+      double precision riar(npts), risar(npts),rar(npts),avblir(npts)
       double precision sfloc(npts),colop(npts),vpparr(npts)
       double precision bmax(ncon),bmin(ncon)
       double precision tempe,tempi,dense,densi
@@ -43,7 +43,7 @@
       double precision dbtdrho,dbpdrho
 
       if (icont.gt.-3) then
-        allocate( sfac(ncon),bsqav(ncon),   &
+        allocate( sfac(ncon),bsqav(ncon), bphiav(ncon),  &
                 rsqav(ncon),rinv(ncon),rsqinv(ncon),rav(ncon),rnorm(ncon),  &
                 avbli(ncon),qp(ncon),qpp(ncon),cnue(ncon),tnue(ncon), &
                 cnui(ncon),tnui(ncon),bdl(ncon),bav(ncon), ftrap(ncon),ftrapd(ncon),  &
@@ -161,6 +161,7 @@
 !  used to calculate  field integral round boundary
           bpsur(i)=sqrt(bsq)/bth
           bsqar(i)=bsq/bth
+          bphiar(i)=bphi
           rsqar(i)=rr*rr/bth
           rrar(i)=rr/bth
           riar(i)=1./(rr*bth)
@@ -188,7 +189,7 @@
           if (root.lt.erribm) then
            write(nw,*)'fatal error***root<0 in flxav, root=',root
            write(nw,*)' k=',k,' bsq=',bsq,' bmax=',bmax(k)
-           write(nw,*)' bth=',bth,' bphi=',bphi,' fsi=',fsi,' rr=',rr
+           write(nw,*)' bth=',bth,' bph=',i,bphi,' fsi=',fsi,' rr=',rr
            write(nw,*)' psi=',psi
            stop
           end if
@@ -212,8 +213,8 @@
         if (k.eq.100)   &
             write(6,*)' mu0*p-prime=',mu0*press(psiv(k),1),' f-prime=',fprof(psiv(k),1)/fprof(psiv(k),2),' f=',fprof(psiv(k),2)
         call flxint(vpparr,k,ant)
-        vpp(k)=ant
-        !if (k.eq.5) write(6,*)' qp=',qp(k)
+        vpp(k)=ant 
+       !if (k.eq.5) write(6,*)' qp=',qp(k)
         call flxint(d2nudpsi2,k,ant)
         qpp(k)=ant/(2.*pi)
         call flxint(rar,k,rnor)
@@ -221,6 +222,8 @@
         avbli(k)=ant/rnor
         call flxint(bsqar,k,ant)
         bsqav(k)=ant/rnor
+        call flxint(bphiar,k,ant)
+        bphiav(k)=ant/rnor
         call flxint(rsqar,k,ant)
         rsqav(k)=ant/rnor
         call flxint(riar,k,ant)
