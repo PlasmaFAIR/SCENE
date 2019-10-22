@@ -38,7 +38,7 @@ subroutine write_netcdf()
   integer :: jbs_varid, jdi_varid, jps_varid, jnbi_varid
   integer :: jdotb_varid, jbsdotb_varid, jnbdotb_varid
   integer :: fsi_varid, ffp_varid, pp_varid, dpsidrho_varid
-
+  integer :: j_tor_varid, jbs_tor_varid, jnb_tor_varid, jex_tor_varid
 
   ! TGLF  1d profile variable ID 
   integer :: tglf_rmin_varid, tglf_rmaj_varid, tglf_q_varid, tglf_q_prime_varid
@@ -61,7 +61,8 @@ subroutine write_netcdf()
   character (len=*), parameter :: gs2_beta_prime_unit='', zeff_unit='',vnui_unit='', vnue_unit=''
   character (len=*), parameter :: sfac_unit='', jtot_unit='kA/m2' ,jext_unit='kA/m2', jext2_unit='kA/m2'
   character (len=*), parameter :: jbs_unit='kA/m2', jdi_unit='kA/m2', jps_unit='kA/m2', jnbi_unit='kA/m2'
-  character (len=*), parameter :: jdotb_unit='A/m2', jbsdotb_unit='A/m2', jnbdotb_unit='A/m2' 
+  character (len=*), parameter :: jdotb_unit='A/m2', jbsdotb_unit='A/m2', jnbdotb_unit='A/m2'
+  character (len=*), parameter :: j_tor_unit='A/m2', jbs_tor_unit='A/m2', jnb_tor_unit='A/m2', jex_tor_unit='A/m2'
   character (len=*), parameter :: fsi_unit='', ffp_unit='', pp_unit='', dpsidrho_unit='Wb/m3'
 
 
@@ -83,6 +84,7 @@ subroutine write_netcdf()
   double precision, dimension(ncon) :: dshift, shat, pk, eps
   double precision, dimension(ncon) :: gs2_beta_prime, zeff, vnui, vnue
   double precision, dimension(ncon) :: jdotb, jbsdotb, jnbdotb
+  double precision, dimension(ncon) :: jbs_tor, jnb_tor, j_tor, jex_tor
   double precision, dimension(ncon) :: fsi, ffp, pp, bsmean
   
   double precision :: ne19, zni19, coolog, bcentr,colli,colle
@@ -162,6 +164,9 @@ subroutine write_netcdf()
      jbsdotb(con) = bsj(con)/sqrt(bsmean(con))
      jnbdotb(con) = J_nb(con)
 
+     jnb_tor(con) = jnbdotb(con) * bphiav(con)
+     jbs_tor(con) = jbsdotb(con)*bphiav(con)
+     j_tor(con) = jdotb(con) * bphiav(con)
      
      !Zeff profile
      zeff(con) = zm
@@ -236,10 +241,9 @@ subroutine write_netcdf()
 
      tglf_p_prime(con) = tglf_q(con) * amin**2 * p_prime * 2 * mu0 / (rmin*tglf_b_unit(con)**2)
 
-
-     
-     
   end do
+
+  jex_tor = j_tor - jnb_tor - jbs_tor
 
   tglf_zs_i = 1.0
   tglf_zs_e = -1.0
@@ -326,6 +330,10 @@ subroutine write_netcdf()
   call check( nf90_def_var(ncid, "Jtot.B", NF90_REAL, dimidsrho, jdotb_varid) )
   call check( nf90_def_var(ncid, "Jbs.B", NF90_REAL, dimidsrho, jbsdotb_varid) )
   call check( nf90_def_var(ncid, "Jnb.B", NF90_REAL, dimidsrho, jnbdotb_varid) )
+  call check( nf90_def_var(ncid, "J_tor", NF90_REAL, dimidsrho, j_tor_varid) )
+  call check( nf90_def_var(ncid, "Jbs_tor", NF90_REAL, dimidsrho, jbs_tor_varid) )
+  call check( nf90_def_var(ncid, "Jnb_tor", NF90_REAL, dimidsrho, jnb_tor_varid) )
+  call check( nf90_def_var(ncid, "Jex_tor", NF90_REAL, dimidsrho, jex_tor_varid) )
   call check( nf90_def_var(ncid, "Fpsi", NF90_REAL, dimidsrho, fsi_varid) )
   call check( nf90_def_var(ncid, "FFP", NF90_REAL, dimidsrho, ffp_varid) )
   call check( nf90_def_var(ncid, "Pp", NF90_REAL, dimidsrho, pp_varid) )
@@ -417,6 +425,10 @@ subroutine write_netcdf()
   call check( nf90_put_att(ncid,jdotb_varid, units, jdotb_unit))
   call check( nf90_put_att(ncid,jbsdotb_varid, units, jbsdotb_unit))
   call check( nf90_put_att(ncid,jnbdotb_varid, units, jnbdotb_unit))
+  call check( nf90_put_att(ncid,j_tor_varid, units, j_tor_unit))
+  call check( nf90_put_att(ncid,jbs_tor_varid, units, jbs_tor_unit))
+  call check( nf90_put_att(ncid,jnb_tor_varid, units, jnb_tor_unit))
+  call check( nf90_put_att(ncid,jex_tor_varid, units, jex_tor_unit))
   
   call check( nf90_put_att(ncid,jtot_varid, units, jtot_unit))
   call check( nf90_put_att(ncid,jext_varid, units, jext_unit))
@@ -514,6 +526,10 @@ subroutine write_netcdf()
   call check(nf90_put_var(ncid, jdotb_varid, jdotb)) 
   call check(nf90_put_var(ncid, jbsdotb_varid, jbsdotb)) 
   call check(nf90_put_var(ncid, jnbdotb_varid, jnbdotb))
+  call check(nf90_put_var(ncid, j_tor_varid, j_tor)) 
+  call check(nf90_put_var(ncid, jbs_tor_varid, jbs_tor)) 
+  call check(nf90_put_var(ncid, jnb_tor_varid, jnb_tor))
+  call check(nf90_put_var(ncid, jex_tor_varid, jex_tor))
   call check(nf90_put_var(ncid, fsi_varid, fsi)) 
   call check(nf90_put_var(ncid, ffp_varid, ffp)) 
   call check(nf90_put_var(ncid, pp_varid, pp))
