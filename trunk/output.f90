@@ -32,11 +32,15 @@
           dhlo=0.
         end if
         dup=dense(psi,0)
-        dhup=densi(psi,2,0)
-        dimp=densi(psi,3,0)
-!        write(6,*)' R=',r(i),' nz/ne=',dimp/dup
         nebar=nebar+0.5*(dlo+dup)*dr
-        nhebar=nhebar+0.5*(dhlo+dhup)*dr
+        if (nimp .ge. 1) then
+           dhup=densi(psi,2,0)
+           nhebar=nhebar+0.5*(dhlo+dhup)*dr
+        end if
+        if (nimp .ge. 2) then
+           dimp=densi(psi,3,0)
+        end if        
+!        write(6,*)' R=',r(i),' nz/ne=',dimp/dup        
         pdiam=pdiam+dr
  10   continue
       !write(6,*)' nHE/ne=',nhebar/nebar
@@ -155,10 +159,13 @@
           p=press(psi,0)
           ptota=ptota+p*dr*dz
           ptotv=ptotv+p*rr*dr*dz
-          pimp3=pimp3+bk*densi(psi,3,0)*tempi(psi,3,0)*rr*dr*dz
-          if (imp.gt.0) then
-!   calculate helium density
-            dalf=densi(psi,2,0)
+          if (nimp.ge.2) then
+             pimp3=pimp3+bk*densi(psi,3,0)*tempi(psi,3,0)*rr*dr*dz
+          end if
+          
+          if (nimp .ge. 1) then
+             !   calculate helium density
+             dalf=densi(psi,2,0)
           else
             dalf=0.5*(1.-dil)*dense(psi,0)
           end if
