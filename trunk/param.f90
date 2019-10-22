@@ -41,6 +41,7 @@ module param
      double precision pa     ! edge pressure
      double precision pped   ! scales as pedestal pressure
      double precision pedg   ! pedestal gradient/width
+     double precision ape, ppo1 ! used to get flatter core p if ipswtch=21
      double precision pscl   ! scales p profile to get required beta-p
 !  main ion density (10^19 m^-3)
      double precision nipow   ! power of polynomial part
@@ -51,7 +52,7 @@ module param
      double precision naa,nbb   ! for quad ni+tanh (ipswtch=9)
 !  electron temperature (ev)
      double precision tpoe   ! power of polynomial part
-     double precision ate,tpo1  ! used to get flatter core T if ipswtch=6
+     double precision ate,tpo1  ! used to get flatter core T if ipswtch=6,21
      double precision ane,npo1  ! used to get flatter core n if ipswtch=6
      double precision te0,ten     ! central electron temperature
      double precision tea     ! edge electron temperature
@@ -216,8 +217,8 @@ module param
 ! There follows a list of flux-surface averaged variables:
 !  First we have q, q-prime and q-double-prime
   double precision, dimension(:), allocatable:: sfac,qp,qpp
-!  Then we have   <B^2> and V'', <B>
-  double precision, dimension(:), allocatable:: bsqav,vpp, bav
+!  Then we have   <B^2> and V'', <B>, <B_tor>
+  double precision, dimension(:), allocatable:: bsqav,vpp, bav, bphiav
 !  And now: <R^2>, <R^{-1}>, <R^{-2}>, <R>, <1>
   double precision, dimension(:), allocatable:: rsqav,rinv,rsqinv,rav,rnorm
 !  <R^{-4}*B_p^{-2}>  <B>

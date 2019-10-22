@@ -76,6 +76,8 @@ end subroutine init
       p0=1.
       pa=0.
       pped=0.
+      ape=2.1
+      ppo1=3.0
       pedg=1.
       nipow=1.
       ni0=5.
@@ -230,6 +232,8 @@ end subroutine init
       if(word.eq.'p0  ')p0=val
       if(word.eq.'pa  ')pa=val
       if(word.eq.'pped')pped=val
+      if(word.eq.'ppo1')ppo1=val
+      if(word.eq.'ape ')ape=val
       if(word.eq.'pedg')pedg=val
       if(word.eq.'npow')nipow=val
       if(word.eq.'ni0 ')ni0=val
@@ -554,6 +558,10 @@ end subroutine init
       umax=1.
       pscl=abs(press(psiax,1)/(scl*bpol*pfac))
       write(6,*)' pscl=',pscl
+      do i=0,10
+         print*, umax*i/10., press(umax*i/10., 0), press(umax*i/10., 1), press(umax*i/10., 2)
+      end do
+      
 !  Allocate arrays for ff' iteration
       allocate( psiold(ncon),gst(ncon), J_nb(ncon), nbmom(ncon) )
 !!$!  Run some checks on input parameters
