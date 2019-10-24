@@ -7,7 +7,7 @@ subroutine write_netcdf()
   implicit none
 
   logical :: debug
-  character(len=12)  :: cdf_file
+  character(len=lrunname+4) :: cdf_file
   character(len=4) :: file_suffix
   integer :: ncid
   integer, parameter ::  oned=1, twod=2
@@ -120,8 +120,9 @@ subroutine write_netcdf()
   debug = .True.
 
   file_suffix = '.cdf'
+
   cdf_file = runname(1:lrunname)//file_suffix
-  if (debug) print*, 'Saving to ',cdf_file, runname
+  if (debug) print*, 'Saving to ',cdf_file
 
   ! Create (Overwrite) netcdf file
   call check(nf90_create(cdf_file, NF90_CLOBBER,ncid))
