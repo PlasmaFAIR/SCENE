@@ -14,6 +14,7 @@ subroutine write_netcdf()
   integer :: dimids0d(1), dimidsrho(oned), dimids2d(twod), dimidsR(oned)
 
   integer :: con, i
+  double precision :: rat
 
   !Variable ID for different inputs
   integer :: rhopsi_varid, rhopsi_dimid
@@ -135,7 +136,7 @@ subroutine write_netcdf()
 
   
   !Generate input data
-  do con=1,ncon
+  do con=1, ncon
      psi = psiv(con)
      rhopsi(con) = sqrt(psi/psiv(1))
      !Kinetic profiles
@@ -183,25 +184,30 @@ subroutine write_netcdf()
      end if
 
      !Collisionality
+
+     !Ions
      coolog=log(sqrt(ni(con)*1.0d-6)/ti(con))
      coolog=24.-coolog
      
      !From Wesson 2.15 (added by bhavin 21/03/18)
-     colli = 6.6d17*zmas(1)**0.5 * (ti(con)/1000)**1.5/(ni(con)*iz(1)**4*coolog)
-     vnui(con) =amin/ (sqrt(2*te(con)*bk/mp) *colli)
+     ! colli = 6.6d17*zmas(1)**0.5 * (ti(con)/1000)**1.5/(ni(con)*iz(1)**4*coolog)
+     
+     colli = sqrt(2.0)*pi*ni(con) * iz(1)**4 * eq**4 * coolog &
+          / ( sqrt(zmai*mp) * (ti(con)*bk)**1.5  * (4*pi*eps0)**2 )
 
-     !vss = sqrt(2.0)*pi*ni * iz(i)**4 * eq**4 * coolog &
-     !	/ ( sqrt(zmas(i)*mp) * (ti*eq/bk)**1.5  * (4*pi*eps0)**2 )
+     vnui(con) =colli * amin / sqrt(2*te(con)*bk/(zmai*mp)) 
 
      !Collisionality for electrons
      coolog=log(sqrt(ne(con)*1.0d-6)/te(con))
      coolog=24.-coolog
-     !vss = sqrt(2.0)*pi*dense(psi,0) * eq**4 * coolog &
-     !	/ (sqrt(me) * (tempe(psi,0)/1000.)**1.5 * (4*pi*eps0)**2 )
+
+     !colle = 3.*(2.*pi)**1.5* eps0**2 * me**0.5 * (tempe(psi,0)*bk)**1.5 &
+     !     / ( dense(psi,0) * eq**4 * coolog)
      
-     colle = 3.*(2.*pi)**1.5* eps0**2 * me**0.5 * (tempe(psi,0)*bk)**1.5 &
-          / ( dense(psi,0) * eq**4 * coolog)
-     vnue(con) = amin/ (sqrt(2*te(con)*bk/mp) *colle)
+     colle = sqrt(2.0)*pi*ne(con) * eq**4 * coolog &
+     	/ (sqrt(me) * (te(con)*bk)**1.5 * (4*pi*eps0)**2 )
+     
+     vnue(con) = colle * amin / sqrt(2*te(con)*bk/(zmai*mp))
 
 
      ! TGLF parameters
@@ -219,6 +225,12 @@ subroutine write_netcdf()
      !Major radius 
      rmaj = rcen + shafr
      rmin = maxval(rpts(con,:)) - rmaj
+
+     if (con .eq. ncon) then
+        rat = (tglf_rmin(ncon-1) -tglf_rmin(ncon-2))/(psiv(ncon-1) - psiv(ncon-2))
+        rmin = tglf_rmin(ncon-1) + rat*psiv(ncon-1)
+     end if
+     
      p_prime = press(psi, 1)*dpsidr
 
      
