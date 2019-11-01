@@ -391,4 +391,3 @@ nml['species_parameters_2']['vnewk'] = vnue
 
 nmlfile = runname+'_gs2.in'
 nml.write(nmlfile, force=True)
-
