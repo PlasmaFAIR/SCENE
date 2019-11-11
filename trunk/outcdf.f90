@@ -31,7 +31,7 @@ subroutine write_netcdf()
 
   ! 1d profile variable ID
   integer :: psi_varid
-  integer :: te_varid, ti_varid, ne_varid, ni_varid
+  integer :: te_varid, ti_varid, ne_varid, ni_varid, nHe_varid, tHe_varid
   integer :: Lte_varid, Lti_varid, Lne_varid, Lni_varid
   integer :: dshift_varid, shat_varid, pk_varid, eps_varid
   integer :: gs2_beta_prime_varid, zeff_varid, vnui_varid, vnue_varid
@@ -56,7 +56,7 @@ subroutine write_netcdf()
   character (len=*), parameter :: psi_unit="Wb/m2"
   character (len=*), parameter :: rhopsi_unit="", units="units"
   character (len=*), parameter :: rr_unit='m', zz_unit='m'
-  character (len=*), parameter :: te_unit="eV", ti_unit='eV', ne_unit='m^-3', ni_unit='m^-3'
+  character (len=*), parameter :: te_unit="eV", ti_unit='eV', ne_unit='m^-3', ni_unit='m^-3', nHe_unit='m^-3', tHe_unit='keV'
   character (len=*), parameter :: Lte_unit="", Lti_unit='', Lne_unit='', Lni_unit=''
   character (len=*), parameter :: dshift_unit='', shat_unit='', pk_unit='', eps_unit=''
   character (len=*), parameter :: gs2_beta_prime_unit='', zeff_unit='',vnui_unit='', vnue_unit=''
@@ -80,7 +80,7 @@ subroutine write_netcdf()
   
   ! 1d Output data
   double precision :: psi, tempe, tempi, dense, densi, press, shift, fprof
-  double precision, dimension(ncon) :: rhopsi, te, ti, ne, ni
+  double precision, dimension(ncon) :: rhopsi, te, ti, ne, ni, nHe, tHe
   double precision, dimension(ncon) :: Lte, Lti, Lne, Lni
   double precision, dimension(ncon) :: dshift, shat, pk, eps
   double precision, dimension(ncon) :: gs2_beta_prime, zeff, vnui, vnue
@@ -145,6 +145,11 @@ subroutine write_netcdf()
      ne(con) = dense(psi,0)
      ni(con) = densi(psi,1,0)
 
+     if (imp .eq. 1) then
+        nHe(con) = densi(psi, 2, 0)
+        tHe(con) = tempi(psi, 2, 0)
+     end if
+     
      !Kinetic gradients
      Lte(con) = -tempe(psi,1)*umax/te(con)
      Lti(con) = -tempi(psi,1,1)*umax/ti(con)
@@ -327,6 +332,11 @@ subroutine write_netcdf()
   call check( nf90_def_var(ncid, "Ti", NF90_REAL, dimidsrho, ti_varid) )
   call check( nf90_def_var(ncid, "Ne", NF90_REAL, dimidsrho, ne_varid) )
   call check( nf90_def_var(ncid, "Ni", NF90_REAL, dimidsrho, ni_varid) )
+  if (imp .eq. 1) then
+     call check( nf90_def_var(ncid, "N_He", NF90_REAL, dimidsrho, nHe_varid) )
+     call check( nf90_def_var(ncid, "T_He", NF90_REAL, dimidsrho, tHe_varid) )
+  end if
+  
   call check( nf90_def_var(ncid, "LTe", NF90_REAL, dimidsrho, Lte_varid) )
   call check( nf90_def_var(ncid, "LTi", NF90_REAL, dimidsrho, Lti_varid) )
   call check( nf90_def_var(ncid, "Lne", NF90_REAL, dimidsrho, Lne_varid) )
@@ -422,6 +432,11 @@ subroutine write_netcdf()
   call check( nf90_put_att(ncid,ti_varid, units, ti_unit))
   call check( nf90_put_att(ncid,ne_varid, units, ne_unit))
   call check( nf90_put_att(ncid,ni_varid, units, ni_unit))
+
+  if (imp .eq. 1) then
+     call check( nf90_put_att(ncid,nHe_varid, units, nHe_unit))
+     call check( nf90_put_att(ncid,tHe_varid, units, tHe_unit))
+  end if
   call check( nf90_put_att(ncid,Lte_varid, units, Lte_unit))
   call check( nf90_put_att(ncid,Lti_varid, units, Lti_unit))
   call check( nf90_put_att(ncid,Lne_varid, units, Lne_unit))
@@ -523,6 +538,12 @@ subroutine write_netcdf()
   call check(nf90_put_var(ncid, ti_varid, ti)) 
   call check(nf90_put_var(ncid, ne_varid, ne))
   call check(nf90_put_var(ncid, ni_varid, ni))
+
+  if (imp .eq. 1) then
+     call check(nf90_put_var(ncid, nHe_varid, nHe))
+     call check(nf90_put_var(ncid, tHe_varid, tHe))
+  end if
+  
   call check(nf90_put_var(ncid, Lte_varid, Lte))
   call check(nf90_put_var(ncid, Lti_varid, Lti))
   call check(nf90_put_var(ncid, Lne_varid, Lne))
