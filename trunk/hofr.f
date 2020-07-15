@@ -149,9 +149,6 @@ c/    Case for rectangular beam:
                cnorm = pi*gaussR*gaussZ*erf(prterm)*(
      .              erf(pzterm1) + erf(pzterm2))
                cnorm = 1.0/cnorm
-               !print*, prterm, pzterm1, pzterm2
-               !print*, 'erf',erf(prterm), erf(pzterm1),erf(pzterm2)
-               !print*, cnorm
             endif
          endif
 
@@ -166,7 +163,7 @@ c/    ---------------------------------
             shft   = shift(iflux)*rminor
             dshft  = shift_rho(iflux)
             rtest2 = rmajor + shft + rhoi
-
+            
 c/    Check to see if there is intersection with this flux surface:
 
             if (rtest1.ge.rtest2) then
@@ -192,41 +189,30 @@ c/    Limit of rho/vprime at the center:
                      factr(ie) = (2.0*rhoi*volume / vpr(iflux)) *
      .                    omfp(iflux,ie,ib)
 
-
                   enddo
                endif
 
 c/    Calculate contributions from outside intersections:
-
-               !print*, 'calling zinteg for outer intersections'
                sgn = 1.0
                call zinteg
                do ie = 1, 3
-
+                  
                   hplus(ie) = alongz(ie)
                   ksiplus(ie) = avksi(ie)
                enddo
-               !if (ib.eq.2) print*, 'hplus ',hplus(:)
 
 c/    Calculate contributions from inside intersections:
-
-               !print*, 'calling zinteg for inner intersections'
                sgn = -1.0
                call zinteg
                do ie = 1, 3
                   hmnus(ie) = alongz(ie)
                   ksiminus(ie) = avksi(ie)
                enddo
-              !if (ib.eq.2) print*, 'hminus', hmnus(:)
+               
 c/    Total HOFR and average pitch angle at flux zone -iflux- :
-
-               !if (ib.eq.2) print*, 'hplus hmnus',iflux, hplus(ie),
-     .         !  hmnus(ie)
-
-               !print*, 'calc pitch angle'
                do ie = 1, 3
                   if (fbpwr(ie,ib).ne.0.0) then
-
+                     
                      hofr(iflux,ie,ib) = cnorm*factr(ie)*
      .                    (hplus(ie) + hmnus(ie))
                      pitchangl(iflux,ie,ib) = (ksiplus(ie) +
@@ -243,15 +229,12 @@ c/    Total HOFR and average pitch angle at flux zone -iflux- :
          enddo
 
 c/    Set deposition profile at the edge = 0
-
-
          do ie = 1, 3
             hofr(nrho,ie,ib) = 0.0
             pitchangl(nrho,ie,ib) = 0.0
          enddo
       enddo
-      !print*, hofr(:,1,2)
-      !print*, 'calc shinethru'
+
 c/    Calculate beam shinethrough, and other quantities of interest:
 c/    -------------------------------------------------------------
       do ib = 1, nbeams
@@ -259,13 +242,10 @@ c/    -------------------------------------------------------------
             sumhofr = 0.0
             do i = 1, nrho
                sumhofr = sumhofr + hofr(i,ie,ib)*dv(i)
-c               if (ie.eq.1) print*, hofr(i,ie,ib), dv(i)
             enddo
             shinethru(ie,ib) = 1.0 - sumhofr/volume
          enddo
       enddo
-      print*,'Total Volume:',volume
-      print*, 'Sum of dvol:',sum(dv)
 
 c/    Renormalize the deposition profile, so that its volume integral
 c/    divided by the total plasma volume is equal to one:
@@ -280,11 +260,6 @@ c/    ---------------------------------------------------
             if (shinethru(ie,ib).lt.0.0) shinethru(ie,ib) = 0.0
          enddo
       enddo
-
-C      do iflux=1,nrhom1
-c	print*, 'Normalised H(p)', iflux, hofr(iflux,1,2), shinethru(1,1)
-c      end do
-
 
 c/    Calculate the total NB power loss (shinethrough or missed
 c/    the plasma, which is also part of shinethrough in this model).
