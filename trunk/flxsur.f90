@@ -124,7 +124,8 @@
         write(nw,*)' k=',k,' zer(1)=',zer(1)
         do 30 i=1,nr+1
           write(nw,*)' ir=',i,' rmid-',rmid(i),' umid=',umid(i)
- 30     continue
+30        continue
+          call error_msg('error***wrong number of zeros in argen', 2)
         stop
       end if
     end subroutine argen

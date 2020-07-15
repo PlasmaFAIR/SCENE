@@ -103,6 +103,9 @@
       double precision pimp3
       double precision, dimension(:), allocatable:: pimp3v
       integer i,j,ip,l,k
+      logical :: debug
+
+      debug = .false.
 !
 !
 !  Calculate volume/area integrals of pressure and B-field
@@ -275,7 +278,7 @@
 !            Write(6,*)' fastb=',fastb
 !            Write(6,*)'********************************************'
 !         end if
-         Write(6,*)' Fast calculation finished'
+         if (debug) write(6,*)' Fast calculation finished'
       end if
 
 !  pressure peaking factor

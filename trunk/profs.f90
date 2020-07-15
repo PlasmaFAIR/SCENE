@@ -292,11 +292,7 @@
         !Use Lao's et al method for p'
         !ptem
 
-
-
-
      else
-
 
         if (ip.eq.0) then
 ! return pressure
@@ -306,7 +302,8 @@
             ti=tempi(psi,id,0)
             zni=densi(psi,id,0)
             pt=pt+bk*(iz(id)*te+ti)*zni
-          end do
+         end do
+
         else if (ip.eq.1) then
 ! return psi-derivative of pressure
           te=tempe(psi,0)
@@ -631,7 +628,8 @@
       end if
       efac=exp(ntedg*xps)
       if ((ipswtch.eq.0).or.(ipswtch.eq.2).or.   &
-           (ipswtch.eq.5).or.(ipswtch.eq.7).or.(ipswtch.eq.8)) then
+           (ipswtch.eq.5).or.(ipswtch.eq.7).or.  &
+           (ipswtch.eq.8).or.(ipswtch.eq.19)) then
         if (i.eq.0) then
 !  return density
           ni=nta+(ntped-nta)*(efac**2-1.)/(efac**2+1.)
@@ -781,10 +779,10 @@
       implicit none
       integer id,ij,j,im,i0,ip
       double precision psi,fprof
-      double precision xps,ffp,fsq,f,g0,fff,ffpp,ff1,ff2
+      double precision xps,ffp,fsq,f,g0,fff,ffpp,ff1,ff2,ff3,ff4
       double precision rat,ds,fup,ffpint,psin
       double precision x1,x2,x3,g1,g2,g3,aa,bb,cc,dpsi
-!
+      !
       xps=1.-psi/umax
       psin=psi/umax
       if (ipass.eq.0) then
@@ -848,7 +846,8 @@
                             (af2/ff2)*psin**ff2)
           fsq=fsq+const
           if (fsq.lt.0.) then
-            write(6,*)'ERROR****need to reduce bpol as F^2<0 in fprof'
+             write(6,*)'ERROR****need to reduce bpol as F^2<0 in fprof'
+             call error_msg('input error1*** F^2<0 in fprof', 1)
             stop
           end if
           f=sqrt(fsq)
@@ -866,6 +865,49 @@
           fprof=ffpp
           return
         end if
+        !************************************************************
+        if (ipswtch.eq.19) then
+           ffp=g0*(af0*xps**fpow+af1*psin**fpow1+af2*psin**fpow2 + &
+                af3*psin**fpow3+af4*psin**fpow4)
+          if (id.eq.1) then
+           fprof=ffp
+           return
+          end if
+          fff=fpow+1.
+          ff1=fpow1+1
+          ff2=fpow2+1.
+          ff3=fpow3+1
+          ff4=fpow4+1.
+          fsq=(2.*umax*g0)*((-af0/fff)*xps**fff + &
+                            (af1/ff1)*psin**ff1 + &
+                            (af2/ff2)*psin**ff2 + &
+                            (af3/ff3)*psin**ff3 + &
+                            (af4/ff4)*psin**ff4)
+          fsq=fsq+const
+          if (fsq.lt.0.) then
+             write(6,*)'ERROR****need to reduce bpol as F^2<0 in fprof'
+             call error_msg('input error1*** F^2<0 in fprof', 1)
+            stop
+          end if
+          f=sqrt(fsq)
+          if (id.eq.2) then
+            fprof=f
+            return
+          end if
+          if (id.eq.3) then
+            fprof=ffp/f
+            return
+          end if
+          ffpp=(g0/umax)*(-fpow*xps**(fpow-1.)          &
+                          +af1*fpow1*psin**(fpow1-1.)   &
+                          +af2*fpow2*psin**(fpow2-1.)  &
+                          +af3*fpow3*psin**(fpow3-1.)   &
+                          +af4*fpow4*psin**(fpow4-1.))
+          
+          fprof=ffpp
+          return
+       end if
+       
 !************************************************************
         if (ipswtch.eq.5) then
           ffp=g0*xps**fpow
@@ -877,7 +919,8 @@
           fsq=(2.*umax*g0/fff)*xps**fff
           fsq=fsq+const
           if (fsq.lt.0.) then
-            write(6,*)'ERROR****need to reduce bpol as F^2<0 in fprof'
+             write(6,*)'ERROR****need to reduce bpol as F^2<0 in fprof'
+             call error_msg('input error1*** F^2<0 in fprof', 1)
             stop
           end if
           f=sqrt(fsq)
@@ -936,7 +979,8 @@
         fsq=-(2.*umax*g0/fff)*((1.+xps)**fff-fff*xps-1.)
         fsq=fsq+const
         if (fsq.lt.0.) then
-          write(6,*)'ERROR****need to reduce bpol as F^2<0 in fprof'
+           write(6,*)'ERROR****need to reduce bpol as F^2<0 in fprof'
+           call error_msg('input error1*** F^2<0 in fprof', 1)
           stop
         end if
         f=sqrt(fsq)
@@ -1037,19 +1081,20 @@
         if (ij.ne.1) then
           ds=psiv(ij)-psiv(ij-1)
           fup=ffpint+0.5*(gst(ij)+gst(ij-1))*ds
-   ffpint=ffpint+rat*(fup-ffpint)
+          ffpint=ffpint+rat*(fup-ffpint)
 
           fsq=2.*scl*ffpint+const
           if (fsq.lt.0.) then
-      write(nw,*)'input error1*** f**2<0 in fprof'
-      write(nw,*) fsq,2.*scl*ffpint, const
+             write(nw,*)'input error1*** F^2<0 in fprof'
+             call error_msg('input error1*** F^2<0 in fprof', 1)
             stop
           end if
           f=sqrt(fsq)
         else
           fsq=const
           if (fsq.lt.0.) then
-            write(nw,*)'input error2*** f**2<0 in fprof'
+             write(nw,*)'input error2*** F^2<0 in fprof'
+             call error_msg('input error1*** F^2<0 in fprof', 1)
             stop
           end if
           f=sqrt(fsq)
@@ -1185,7 +1230,7 @@
         end if
         return
       end if
-      if ((ipswtch.eq.6).or.(ipswtch.eq.8).or.(ipswtch.eq.21)) then
+      if ((ipswtch.eq.6).or.(ipswtch.eq.8).or.(ipswtch.eq.21).or.(ipswtch.eq.19)) then
 !!$        ate=2.1
 !!$        tpo1=3.0
         if (tpoe.lt.2.) then
@@ -1316,7 +1361,7 @@
         tempi=tem
         return
       end if
-      if ((ipswtch.eq.3).or.(ipswtch.eq.5).or.(ipswtch.eq.6).or.(ipswtch.eq.8)) then
+      if ((ipswtch.eq.3).or.(ipswtch.eq.5).or.(ipswtch.eq.6).or.(ipswtch.eq.8).or.(ipswtch.eq.19)) then
 !  Use scaled electron temperature profiles
         tem=t0*tempe(psi,i)/te0
         tempi=tem
@@ -1687,8 +1732,6 @@
 
      rho =( maxval(rpts, dim=2) - minval(rpts,dim=2)) /2
 
-
-     rho(ncon) = 0.
      rhomax = maxval(rho)
 
 
@@ -1711,8 +1754,9 @@
 
         end if
 
-
      end do
+
+     !rho(ncon) = rho(ncon-1) - psiv(ncon-1)/dpdr(ncon-1)
    
    end subroutine dpsidrho
 
@@ -1733,7 +1777,6 @@
      double precision :: r_l, r_r, z_l, z_r, shift
      real, dimension(ncon) :: vols, areas, volsp
 
-
      flxarea = 0.
      ! for each contour calculate area with trapeze rule
      do i= ncon,1,-1
@@ -1753,7 +1796,7 @@
 
         !area time 2pi * R  (R = r0 + shift)
         flxvol(i) = flxarea(i) * 2. * pi * (shift(i,0) + rcen)
-
+        
         !Area/Vol of each flux surface from i-1 to i
         if (i .eq.ncon) then
            areacon(i) = flxarea(i)
@@ -1803,24 +1846,24 @@
 
      end do
 
+
      !change vol/area to between i-1/2 to i+1/2 and flips array
+     do i=2,ncon-1
 
-     do i=2,ncon
-
-        vols(ncon-i+1) = sngl(volcon(i)+volcon(i-1))/2.
-        areas(ncon-i+1) = sngl(areacon(i)+areacon(i-1))/2.
-        volsp(ncon-i+1) = sngl(voldiff(i)+voldiff(i-1))/2.
+        vols(ncon-i+1) = sngl(volcon(i+1)+volcon(i-1))/2.
+        areas(ncon-i+1) = sngl(areacon(i+1)+areacon(i-1))/2.
+        volsp(ncon-i+1) = sngl(voldiff(i+1)+voldiff(i-1))/2.
 
      end do
 
-     print*,'Volcon sum is ',sum(volcon)
+     volsp(1) = real(voldiff(ncon-1)) 
+     vols(1) =  real(volcon(ncon-1)/2)
+     areas(1) = real(areacon(ncon-1)/2)
      
-     volsp(ncon) = real(voldiff(1))
-     vols(ncon) = real(volcon(1)/2.)
-     areas(ncon) = real(areas(1)/2.)
-
-     print*,'Vols sum is ',sum(vols)
-
+     volsp(ncon) = real(volsp(ncon-1))
+     vols(ncon) = real(vols(ncon-1)/2.)
+     areas(ncon) = real(areas(ncon-1)/2.)
+     
    end subroutine dVdrho
 
 
