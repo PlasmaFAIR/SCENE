@@ -118,7 +118,7 @@ subroutine write_netcdf()
   double precision :: elong, tglf_shear, delta, ddelta, triang
 
   
-  debug = .True.
+  debug = .False.
 
   file_suffix = '.cdf'
 
@@ -127,7 +127,7 @@ subroutine write_netcdf()
 
   ! Create (Overwrite) netcdf file
   call check(nf90_create(cdf_file, NF90_CLOBBER,ncid))
-  write(nw,*) 'Create NetCDF Output'
+  if (debug) write(nw,*) 'Create NetCDF Output'
 
   bcentr = mu0*rodi/(2.*pi*rcen)
 
@@ -170,10 +170,11 @@ subroutine write_netcdf()
      jdotb(con) = fsi(con)*pp(con)/bsmean(con) + ffp(con)/(fsi(con)*mu0)
      jbsdotb(con) = bsj(con)/sqrt(bsmean(con))
      jnbdotb(con) = J_nb(con)
-
+     
      jnb_tor(con) = jnbdotb(con) * bphiav(con)
      jbs_tor(con) = jbsdotb(con)*bphiav(con)
      j_tor(con) = jdotb(con) * bphiav(con)
+     jex_tor(con) = (ffp(con)/(fsi(con)*mu0)  - jbsdotb(con) + fsi(con)*pp(con)/bsmean(con)) * bphiav(con)
      
      !Zeff profile
      zeff(con) = zm
@@ -260,8 +261,6 @@ subroutine write_netcdf()
      tglf_p_prime(con) = tglf_q(con) * amin**2 * p_prime * 2 * mu0 / (rmin*tglf_b_unit(con)**2)
 
   end do
-
-  jex_tor = j_tor - jnb_tor - jbs_tor
 
   tglf_zs_i = 1.0
   tglf_zs_e = -1.0
@@ -517,6 +516,9 @@ subroutine write_netcdf()
   !Put Radial coordinates in
   call check(nf90_put_var(ncid, rhopsi_dimid, rhopsi))
 
+  !Put Major radius coordinates in
+  call check(nf90_put_var(ncid, rr_dimid, r))
+
   do i=1, npts
      pts(i) = i
   end do
@@ -577,7 +579,7 @@ subroutine write_netcdf()
   call check(nf90_put_var(ncid, jps_varid, psph(:,nsym)/1000) )
   call check(nf90_put_var(ncid, jnbi_varid, nbph(:,nsym)/1000) )
 
-  print*, 'Putting TGLF attrs'
+  if (debug) print*, 'Putting TGLF attrs'
   !Put 1D TGLF variables
 
   
@@ -595,7 +597,7 @@ subroutine write_netcdf()
   call check( nf90_put_var(ncid, tglf_vpar_e_varid, tglf_vpar_e) )
   call check( nf90_put_var(ncid, tglf_vpar_shear_e_varid, tglf_vpar_shear_e) )
 
-  print*, 'Put TGLF species values'
+  if (debug) print*, 'Put TGLF species values'
   
   call check( nf90_put_var(ncid, tglf_rmaj_varid, tglf_rmaj) )
   call check( nf90_put_var(ncid, tglf_rmin_varid, tglf_rmin) )
@@ -619,7 +621,7 @@ subroutine write_netcdf()
   
   
   call check(nf90_close(ncid))
-  print *, "*** SUCCESS writing NETCDF file "
+  if (debug) print *, "*** SUCCESS writing NETCDF file "
 
 end subroutine write_netcdf
 

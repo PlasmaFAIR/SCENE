@@ -20,6 +20,9 @@ contains
     double precision arr0(ncon),arr1(ncon),arr2(ncon),arr3(ncon),arr4(ncon)
     double precision pow(3,ncon),pprof(3,ncon),ptprof(ncon)
     !
+    logical :: debug
+
+    debug = .false.
     !  Write temperature and density data for radiation calc
     open(unit=29,file=runname(1:lrunname)//'.radat', &
          status='unknown',iostat=ios)
@@ -149,7 +152,7 @@ contains
     end if
     if (nbal.eq.1) call balloon(ibal)
     if (nbal.gt.1) then
-      write(6,*)' input min and max flux surfaces (1=edge)'
+      if (debug) write(6,*)' input min and max flux surfaces (1=edge)'
       read(5,*)n1,n2
       open(92,file='balloon')
       !        call mercier
@@ -164,7 +167,7 @@ contains
     !        call mercier(i)
     !      end do
     ! plot out temperature gradient length scale...
-    write(6,*)' doing loop'
+    if (debug) write(6,*)' doing loop'
     do i=2,ncon-1
       psi=psiv(i)
       psi1=psiv(i-1)

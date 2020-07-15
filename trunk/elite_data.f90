@@ -12,12 +12,15 @@
       double precision psi
       double precision press,fprof,dense,tempe,tempi
       integer ndsk,i,j,ncon1,ncstrt
+      logical :: debug
+
+      debug = .false.
 !
       ncstrt=1
       ncon1=ncon-ncstrt+1
       ctitle='scene.dskbal'
       ndsk=20
-      write(6,*)' opening file...'
+      if (debug) write(6,*)' opening file...'
       open(ndsk,file=ctitle)
 !  A dummy string (must start 'iend....')
       do i=1,10
@@ -237,7 +240,7 @@
       end do
       write(ndsk,200) arr((ncon1/5)*5+1:ncon1)
       close(ndsk)
-      write(6,*)' file closed...'
+      if (debug) write(6,*)' file closed...'
  10   format(10a8)
  15   format(2i5)
  200  format(5g20.12)
@@ -262,7 +265,11 @@
       double precision press,fprof,dense,tempe,tempi
       double precision x1,x2,x3,p1,p2,p3,aa,bb
       integer ndsk,i,j,ncon1,ncstrt
-!
+      !
+      logical :: debug
+
+      debug = .false.
+
       ncstrt=1
       ncon1=ncon-ncstrt+1
       ndsk=21
@@ -397,7 +404,7 @@
 !  q(psi)
       do i=1,ncon1
         arr(i)=sfac(ncon-i+1)
-!        write(6,*)' i=',i,' ncon=',ncon,' q=',arr(i)
+!        if (debug) write(6,*)' i=',i,' ncon=',ncon,' q=',arr(i)
       end do
       do i=1,ncon1/5
         write(ndsk,200) arr((i*5)-4:i*5)
@@ -560,7 +567,7 @@
       end do
       write(ndsk,200) arr((ncon1/5)*5+1:ncon1)
       close(ndsk)
-      write(6,*)' file closed...'
+      if (debug) write(6,*)' file closed...'
  10   format(a8)
  15   format(2i5)
  200  format(5g20.12)

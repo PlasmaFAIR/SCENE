@@ -28,7 +28,11 @@
      double precision, allocatable:: RW(:), A(:,:)
      double precision, external:: CS2VAL
      integer:: NCC, NRR, NWW
-!
+     !
+     logical :: debug
+     
+     debug = .false.
+     
       open(66,file='alfsh.dat')
       pt=press(0.0d0,0)
       bvac0=mu0*rodi/(2.*pi*r0)
@@ -152,7 +156,7 @@
  90      continue
  100  continue
 !
-      print *,'make interpolant',mgx*mgy,k
+      if (debug) print *,'make interpolant',mgx*mgy,k
       nopts=k
       ifail=0
       ! Setup for interpolation
@@ -183,7 +187,7 @@
  190     continue
  200  continue
 
-      print *,'write out'
+      if (debug) print *,'write out'
 !      open(unit=40,file='interp.baleq',status='new')
       open(unit=40,file='interp.baleq')
          write(40,*) mgx,mgy,mgf

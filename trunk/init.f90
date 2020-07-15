@@ -187,7 +187,11 @@ end subroutine init
       double precision, dimension(:), allocatable:: psi_in,ne_in,te_in,work
       double precision, dimension(:), allocatable:: p_in,ffp_in
       double precision dpsi
-!
+      !
+      logical :: debug
+
+      debug = .false.
+      
       write(6,*) 'What is the name of the *.in input file?'
       write(6,*) '(without the .dat suffix):'
       read(5,*) runname
@@ -407,7 +411,7 @@ end subroutine init
 !  First element is main ion species
         iz(1)=int(zm)
         zmas(1)=zmai
-        write(6,*)' zmas1=',zmas(1),zmai
+        if (debug) write(6,*)' zmas1=',zmas(1),zmai
         ztpow(1)=tpoi
         zt0(1)=ti0
         zta(1)=tia
@@ -557,11 +561,8 @@ end subroutine init
       psiax=0.
       umax=1.
       pscl=abs(press(psiax,1)/(scl*bpol*pfac))
-      write(6,*)' pscl=',pscl
-      do i=0,10
-         print*, umax*i/10., press(umax*i/10., 0), press(umax*i/10., 1), press(umax*i/10., 2)
-      end do
-      
+      if (debug) write(6,*)' pscl=',pscl
+
 !  Allocate arrays for ff' iteration
       allocate( psiold(ncon),gst(ncon), J_nb(ncon), nbmom(ncon) )
 !!$!  Run some checks on input parameters

@@ -18,10 +18,11 @@ subroutine geqdsk
   double precision, dimension(:,:), allocatable :: psirz, psi1
   character(8) :: date
   character(10) :: time
+  logical :: debug
 
+  debug = .false.
   
   !Writes GEQDSK file
-
   nh = 49
 
   open(unit=nh, file=runname(1:lrunname)//'.geqdsk', &
@@ -51,7 +52,7 @@ subroutine geqdsk
   dimz = zmax-zmin
 
   !Dimensions of R,Z grid
-  !print*, dimr, dimz, rcen, rmin
+  !if (debug) print*, dimr, dimz, rcen, rmin
   write(nh,2020) dimr, dimz, rcen, rmin, 0.
 
   Bv0 = mu0*rodi/(2.*pi*rcen)
@@ -70,7 +71,6 @@ subroutine geqdsk
 
   do i=1,nr2
      psii(i) = (i-1)*dpsi
-     !print*, psii(i)
 
      f(i) =  fprof(psii(i),2)
      ff(i) = fprof(psii(i),1)
@@ -87,13 +87,13 @@ subroutine geqdsk
   write(nh,2020) (p(i), i=1,nr2)
 
 
-  write(6,*) 'Pressure written to geqdsk'
+  if (debug) write(6,*) 'Pressure written to geqdsk'
 
   !Writes ff'
   write(nh,2020) (ff(i), i=1,nr2)
 
 
-  write(6,*) 'ffp written to geqdsk'
+  if (debug) write(6,*) 'ffp written to geqdsk'
 
   !Writes p'
   write(nh,2020) (pp(i), i=1,nr2)
@@ -106,16 +106,17 @@ subroutine geqdsk
         if (ixout(i,j) .ne. 0) then
            psirz(i,j) = (umax-u(i,j))
            !jtor = jtor + r(i)*press(psirz(i,j),1) + fprof(psirz(i,j),1)/(r(i)*mu0)
+        
         end if
 
      end do
   end do
-  !print*, jtor*dr*dz
+  !if (debug) print*, jtor*dr*dz
 
 
   !Extrapolates Psi to edge of grid
   call extrappsi(rmin, rmax, zmin, zmax,psi1)
-  write(6,*) 'Smoothing function'
+  if (debug) write(6,*) 'Smoothing function'
   
   allocate(psigeq(nr2,nz2))
   psigeq = 0.0
@@ -137,13 +138,13 @@ subroutine geqdsk
            psigeq(i+1,j+1) = umax -u(i,j)
            diff = diff + ( umax - u(i,j) - psi1(i,j) )**2/(umax-u(i,j))**2
            
-           !if (psi1(i,j) .lt. 0.01) print*, i,j,umax-u(i,j), psi1(i,j)
+           !if (psi1(i,j) .lt. 0.01) if (debug) print*, i,j,umax-u(i,j), psi1(i,j)
            !psi1(i,j) = umax - u(i,j)
         end if
 
      end do
   end do
-  write(6,*) 'Avg fractional diff between Psi and fit is :',  sqrt(diff/ij)
+  if (debug) write(6,*) 'Avg fractional diff between Psi and fit is :',  sqrt(diff/ij)
 
   ! Have a psi that has one more layer grid point on each side
 
@@ -151,6 +152,8 @@ subroutine geqdsk
   !Inside points same as before
   psigeq(2:nr+1,2:nz+1) = psi1
 
+
+  psigeq(2:nr+1,2:nz+1) = psirz
   !Extrapolate out to the side first (not incl extra z layers)
   !Left side
   psigeq(1,2:nz2-1) = 2*psigeq(2,2:nz2-1) -psigeq(3,2:nz2-1)
@@ -165,9 +168,9 @@ subroutine geqdsk
   !Bottom
   psigeq(:,nz2) = 2*psigeq(:,nz2-1) - psigeq(:,nz2-2)
 
-  print*, 'Writing psi values to eqdsk, extrapolated out to edge'
+  if (debug) print*, 'Writing psi values to eqdsk, extrapolated out to edge'
   write(nh,2020)  ((psigeq(i,j), i=1,nr2), j=1,nz2)
-  write(6,*) 'psi written to geqdsk'
+  if (debug) write(6,*) 'psi written to geqdsk'
 
   allocate(safety(nr2))
   !Writes Safety factor (on R,Z grid)
@@ -191,11 +194,11 @@ subroutine geqdsk
      !Linearly interpolate q from flux surface grid to mesh grid
      safety(i) = sngl( sfac(con) + rat*(sfac(con+1) - sfac(con)))
 
-     !print*, i,p(i),pp(i),f(i),ff(i), safety(i)
+     !if (debug) print*, i,p(i),pp(i),f(i),ff(i), safety(i)
   end do
 
   write(nh,2020) (safety(i), i=1,nr2)
-  write(6,*) 'safety factor written to geqdsk'
+  if (debug) write(6,*) 'safety factor written to geqdsk'
 
   !Writes boundary points
 
@@ -205,7 +208,7 @@ subroutine geqdsk
      open(unit=na,file='bdy.txt', &
           status='unknown',iostat=ios)
      if(ios.ne.0) then
-        write(6,*) 'problem opening bdy.txt for boundary R,Z'
+        if (debug) write(6,*) 'problem opening bdy.txt for boundary R,Z'
         stop
      endif
      read(na,*)ndat
@@ -237,7 +240,7 @@ subroutine geqdsk
 
   write(nh,2020) (rbdy(i), zbdy(i), i=1,ndat)
 
-  write(6,*) 'bdy written to geqdsk'
+  if (debug) write(6,*) 'bdy written to geqdsk'
 
   !Writes Limiter values
   !Change box range if you change limiter
@@ -300,7 +303,10 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   integer, dimension(:), allocatable :: wrki,iwrk
   real, dimension(:), allocatable :: r_in, z_in, w_in, u_in
   real, dimension(:), allocatable :: r_o,z_o, psi_extrap
+  logical :: debug
 
+  debug = .false.
+  
   !iopt =-1 =>least sq, 0 (1) smoothing (restart)
   iopt=0
 
@@ -383,7 +389,7 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
   !tz(
 
   !tr(kr+2:nr1-kr-1)=sngl(r(kr+2:nr-kr-1:2))
-  !print*, tr(kr+2:nr-kr-1)
+  !if (debug) print*, tr(kr+2:nr-kr-1)
   !tz(kz+2:nz1-kz-1)=sngl(z(kz+2:nz-kz-1:2))
   ij=0
   do i=1,nr
@@ -399,28 +405,28 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
      end do
   end do
 
-  print*, 2*kr+2, nr1,nrest
-  print*, 2*kz+2, nz1,nzest
-  print*, m, ep, nmax
+  if (debug) print*, 2*kr+2, nr1,nrest
+  if (debug) print*, 2*kz+2, nz1,nzest
+  if (debug) print*, m, ep, nmax
 
   !call surfit(iopt, m, r_in, z_in, u_in, w_in, rl, ru, zl, zu, kr, kz, &
   !     sm, nrest, nzest,nmax,ep, nr1,tr, nz1, tz, c, fp, wrk1,lwrk1,wrk2, &
   !     lwrk2, iwrk, kwrk, ier)
 
-  !print*, tr
+  !if (debug) print*, tr
   !write(6,*) nr1, tr(1:nr1)
   !write(6,*) nz1, tz(1:nz1)
   !write(6,*) c(1:nr1+nz1)
 
 
-  !print*, 'Surfit ier:',ier
+  !if (debug) print*, 'Surfit ier:',ier
 
   !iopt=-1
   call surfit(iopt, m, r_in, z_in, u_in, w_in, rl, ru, zl, zu, kr, kz, &
        sm, nrest, nzest,nmax,ep, nr1,tr, nz1, tz, c, fp, wrk1,lwrk1,wrk2, &
        lwrk2, iwrk, kwrk, ier)
 
-  print*, 'Surfit round 2 ier:',ier
+  if (debug) print*, 'Surfit round 2 ier:',ier
 
   do i=1,nr
      r_o(i) = sngl(r(i))
@@ -448,9 +454,9 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
         psi_out(i,j) = dble(psi_extrap(ij))
      end do
   end do
-  write(6,*) 'Extrap psi: ier = ',ier, ' s is : ',sm, ' fp is ',fp, ' for m points: ',m
+  if (debug) write(6,*) 'Extrap psi: ier = ',ier, ' s is : ',sm, ' fp is ',fp, ' for m points: ',m
 
-  write(6,*) 'Bispev in Extrappsi ier = ',ier
+  if (debug) write(6,*) 'Bispev in Extrappsi ier = ',ier
 
 
   deallocate( u_in, r_in, z_in, w_in)
