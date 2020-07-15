@@ -161,7 +161,7 @@
 !  used to calculate  field integral round boundary
           bpsur(i)=sqrt(bsq)/bth
           bsqar(i)=bsq/bth
-          bphiar(i)=bphi
+          bphiar(i)=bphi/bth
           rsqar(i)=rr*rr/bth
           rrar(i)=rr/bth
           riar(i)=1./(rr*bth)
@@ -300,6 +300,7 @@
       bdl(ncon) = fsi/r0
       bav(ncon) = fsi/r0
       bsqav(ncon)=(fsi/r0)**2
+      bphiav(ncon) = fsi/r0
       rsqav(ncon)=r0**2
       rinv(ncon)=1./r0
       rsqinv(ncon)=1./r0**2
