@@ -4,7 +4,7 @@ NAME=	scene
 CMD=    scene
 #
 SRCS= \
-param.f90 balpar.f90  balloon.f90 usrcal.f90 \
+param.f90 balpar.f90  balloon.f90 usrcal.f90  error_msg.f90\
 coldat.f90 scene.f90 init.f90 equil.f90 profs.f90 flxsur.f90  \
 flxav.f90 hirsig.f90 hirsh.f90 splines.f signeo.f90 \
 torcur.f90 extj.f90 output.f90 graphs.f90 ffdgen.f90 elite_data.f90 \
@@ -52,7 +52,7 @@ LIBRARIES =  \
 
  # /fuslwf/home/kthcmr/GS2D/gs2dlib.a
 
-DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check -g # -heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
+DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check -g -fbacktrace # -heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
