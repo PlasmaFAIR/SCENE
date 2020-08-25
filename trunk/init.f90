@@ -99,6 +99,7 @@ end subroutine init
       tia=0.
       tiped=0.
       tiedg=1.
+      xitb=0.
       fpow=0.1
       fpow1=1.
       fpow2=10.
@@ -256,6 +257,7 @@ end subroutine init
       if(word.eq.'tia ')tia=val
       if(word.eq.'tipd')tiped=val
       if(word.eq.'tidg')tiedg=val
+      if(word.eq.'xitb')xitb=val
       if(word.eq.'cur ')cur=val
       if(word.eq.'paux')paux=val
       if(word.eq.'bpol')bpol=val
@@ -536,7 +538,15 @@ end subroutine init
           ten=(te0-tea-(teped-tea)*(exp(teedg)-exp(-teedg))/ &
                               (exp(teedg)+exp(-teedg))) &
              /1.
-          end if
+        else if (ipswtch.eq.12) then
+          ten=(te0-tea-(teped-tea)*(exp(teedg)-exp(-teedg))/ &
+                              (exp(teedg)+exp(-teedg))) &
+              /(1.-(2**(tpoe+1.)-1.)/(1.+tpoe))
+        else if (ipswtch.eq.13) then
+          ten=(te0-tea-(teped-tea)*(exp(teedg)-exp(-teedg))/ &
+                              (exp(teedg)+exp(-teedg)))
+        end if
+       
       end if
       if (tpoi.le.1.) then
         tin=0.
@@ -544,7 +554,15 @@ end subroutine init
         tin=(ti0-tia-(tiped-tia)*(exp(tiedg)-exp(-tiedg))/ &
                               (exp(tiedg)+exp(-tiedg))) &
            /(2**tpoi-1.-tpoi)
-      end if
+        if (ipswtch.eq.12) then
+          tin=(ti0-tia-(tiped-tia)*(exp(tiedg)-exp(-tiedg))/ &
+                              (exp(tiedg)+exp(-tiedg))) &
+              /(1.-(2**(tpoi+1.)-1.)/(1.+tpoi))
+        else if (ipswtch.eq.13) then
+          tin=(ti0-tia-(tiped-tia)*(exp(tiedg)-exp(-tiedg))/ &
+                              (exp(tiedg)+exp(-tiedg)))
+        end if
+      end if 
       if (imp.eq.0) then
         if (ppow.gt.1.) then
         pn=(p0-pa-(pped-pa)*(exp(pedg)-exp(-pedg))/(exp(pedg)+exp(-pedg))) &
