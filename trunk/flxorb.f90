@@ -47,6 +47,7 @@
       ztst=(nzk-1)*step
       if (ztst.lt.zwall) nzk=nzk+1
       ztst=(nzk-1)*step
+      if (ztst.lt.zwall) nzk=nzk+1      
       nzk=2*nzk-1
       allocate(rk(nrk),zk(nzk),bpk(nrk,nzk),uk(nrk,nzk))
       do i=1,nrk
