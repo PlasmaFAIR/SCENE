@@ -99,6 +99,7 @@ end subroutine init
       tia=0.
       tiped=0.
       tiedg=1.
+      xitb=0.
       fpow=0.1
       fpow1=1.
       fpow2=10.
@@ -260,6 +261,7 @@ end subroutine init
       if(word.eq.'tia ')tia=val
       if(word.eq.'tipd')tiped=val
       if(word.eq.'tidg')tiedg=val
+      if(word.eq.'xitb')xitb=val      
       if(word.eq.'cur ')cur=val
       if(word.eq.'paux')paux=val
       if(word.eq.'bpol')bpol=val

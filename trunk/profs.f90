@@ -530,7 +530,7 @@
 !
       use param
       implicit none
-      double precision densi,psi,efac
+      double precision densi,psi,efac,efaca,efac0
       double precision ni,nid,nidd,ti,te,xps,ted,tid
       double precision press,tempi,tempe
       double precision nta,ntped,ntedg,nin,ntpow,nz0
@@ -629,7 +629,8 @@
       efac=exp(ntedg*xps)
       if ((ipswtch.eq.0).or.(ipswtch.eq.2).or.   &
            (ipswtch.eq.5).or.(ipswtch.eq.7).or.  &
-           (ipswtch.eq.8).or.(ipswtch.eq.19)) then
+           (ipswtch.eq.8).or.(ipswtch.eq.12).or. &
+           (ipswtch.eq.13).or.(ipswtch.eq.19)) then
         if (i.eq.0) then
 !  return density
           ni=nta+(ntped-nta)*(efac**2-1.)/(efac**2+1.)
@@ -762,6 +763,43 @@
          end if
          densi=scl*nidd*umax*pfac*bpol/pscl
          return
+        end if
+     end if
+     if (ipswtch.eq.11) then
+         ! Profile with transport barrier shifted inwards
+        nta=zna(id)
+        ntped=znped(id)
+        ntedg=znedg(id)
+        ntpow=znpow(id)
+        if (ntpow.gt.1.) then
+        nin=(zn0(id)-ntped)/(2**ntpow-1.-ntpow)
+        end if
+        efac=exp(ntedg*(xps-xitb))
+        efaca=exp(-ntedg*xitb)
+        efac0=exp(ntedg*(1.0d0-xitb))
+        if (i.eq.0) then
+!  return density
+          ni=nta+(ntped-nta)*((efac**2-1.)/(efac**2+1.)-(efaca**2-1.)/(efaca**2+1.))/  &
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (ntpow.gt.1.) ni=ni+nin*((1.+xps)**ntpow-(1.+ntpow*xps))
+          densi=scl*ni*umax*pfac*bpol/pscl
+          return
+        else if (i.eq.1) then
+!  return the derivative
+          nid=-4.*(ntedg/umax)*(ntped-nta)*(efac/(efac**2+1.))**2/   &  
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (ntpow.gt.1.) nid=nid-(ntpow/umax)*nin*((1.+xps)**(ntpow-1.)-1.)
+          densi=scl*nid*umax*pfac*bpol/pscl
+          return
+        else
+!  return the second derivative
+          nidd=-8.*(ntedg/umax)**2*(ntped-nta)*  &
+                 (efac**2*(efac**2-1.)/(efac**2+1.)**3)/ &
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (ntpow.gt.1.) &
+             nidd=nidd+(nin*ntpow*(ntpow-1.)/umax**2)*(1.+xps)**(ntpow-2.)
+          densi=scl*nidd*umax*pfac*bpol/pscl
+          return
         end if
       end if
   end function densi
@@ -1123,10 +1161,10 @@
       use param
       implicit none
 !
-      integer i,ip,ik
-      double precision tempe,psi,xps,tem,efac,tfac
+      integer i,ip,ik,nb
+      double precision tempe,psi,xps,tem,efac,tfac,efac0,efaca
       double precision psin,aa,bb,cc,dpsi,t1,t2,t3
-      double precision ps1,ps2,ps3
+      double precision ps1,ps2,ps3,psn
 !
       xps=1.-psi/umax
       efac=exp(teedg*xps)
@@ -1257,6 +1295,86 @@
                -tpo1*(tpo1-1.)*ate*xps**(tpo1-2.))
         end if
         return
+     end if
+           if (ipswtch.eq.11) then
+         ! Profile with transport barrier shifted inwards
+        if (tpoe.gt.1.) tfac=(te0-teped)/(2**tpoe-1.-tpoe)
+        efac=exp(teedg*(xps-xitb))
+        efaca=exp(-teedg*xitb)
+        efac0=exp(teedg*(1.0d0-xitb))
+        if (i.eq.0) then
+!  return electron temperature
+          tem=tea+(teped-tea)*((efac**2-1.)/(efac**2+1.)-(efaca**2-1.)/(efaca**2+1.))/  &
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (tpoe.gt.1.) tem=tem+tfac*((1.+xps)**tpoe-(1.+tpoe*xps))
+          tempe=tem
+          return
+        else if (i.eq.1) then
+!  return the derivative
+          tem=-4.*(teedg/umax)*(teped-tea)*(efac/(efac**2+1.))**2/   &  
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (tpoe.gt.1.) tem=tem-(tpoe/umax)*tfac*((1.+xps)**(tpoe-1.)-1.)
+          tempe=tem
+          return
+        else
+!  return the second derivative
+          tem=-8.*(teedg/umax)**2*(teped-tea)*  &
+                 (efac**2*(efac**2-1.)/(efac**2+1.)**3)/ &
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (tpoe.gt.1.) &
+             tem=tem+(tfac*tpoe*(tpoe-1.)/umax**2)*(1.+xps)**(tpoe-2.)
+          tempe=tem
+          return
+        end if
+      end if
+      if (ipswtch.eq.12) then
+        if (i.eq.0) then
+!  return electron temperature
+          tem=tea+(teped-tea)*(efac**2-1.)/ &
+                  (efac**2+1.) 
+          if (tpoe.gt.1) tem=tem+ten*(1.-(psi/umax)**2             &
+                            -((2.-(psi/umax)**2)**(tpoe+1.)-1)/(1.+tpoe))
+        else if (i.eq.1) then
+!  return the derivative
+          tem=-4.*(teedg/umax)*(teped-tea)/(efac+1./efac)**2 
+          if (tpoe.gt.1) tem=tem+ten*(2.*psi/umax**2)*((2.-(psi/umax)**2)**tpoe-1.)
+        else
+!  return the second derivative
+          tem=-2.*(teedg/umax)**2*(teped-tea)*  &
+                ((efac**2-1.)/(efac**2+1.))/ &
+                (0.5*(efac+1./efac))**2 
+          if (tpoe.gt.1.)    &
+               tem=tem+ten*(2./umax**2)*((2.-(psi/umax)**2)**tpoe-1.     &
+                           -2.*tpoe*(psi/umax)**2*(2.-(psi/umax)**2)**(tpoe-1.))
+        end if
+        tempe=tem
+        return
+      end if
+      if (ipswtch.eq.13) then
+         nb=3 
+         psn=psi/umax
+        if (i.eq.0) then
+!  return electron temperature
+          tem=tea+(teped-tea)*(efac**2-1.)/ &
+                  (efac**2+1.) 
+          if (tpoe.gt.1) tem=tem+ten*((1.-(psi/umax))**(tpoe+1.))*(1.+(tpoe+1.)*psi/umax)      
+!          if (tpoe.gt.1) tem=tem+ten*(1.-(psn**nb)*(nb+tpoe-nb*psn**tpoe)/tpoe)
+        else if (i.eq.1) then
+!  return the derivative
+          tem=-4.*(teedg/umax)*(teped-tea)/(efac+1./efac)**2 
+          if (tpoe.gt.1) tem=tem-ten*((tpoe+1)*(tpoe+2.)/umax)*(psi/umax)*(1.-psi/umax)**tpoe
+!          if (tpoe.gt.1) tem=tem-ten*(nb*(tpoe+nb)/(tpoe*umax))*(psn**(nb-1))*(1.-psn**tpoe)
+        else
+!  return the second derivative
+          tem=-2.*(teedg/umax)**2*(teped-tea)*  &
+                ((efac**2-1.)/(efac**2+1.))/ &
+                (0.5*(efac+1./efac))**2 
+          if (tpoe.gt.1.)    &
+          tem=tem-ten*((tpoe+1.)*(tpoe+2.)/umax**2)*((1.-psi/umax)**(tpoe-1.))*(1.-(1.+tpoe)*psi/umax)
+!          tem=tem-ten*(nb*(tpoe+nb)/(tpoe*umax**2))*(psn**(nb-2))*(nb-1.-(tpoe+nb-1.)*psn**tpoe)
+        end if
+        tempe=tem
+        return
       end if
       if (i.eq.0) then
          !  return electron temperature
@@ -1296,7 +1414,7 @@
       integer i,id
       double precision tempe
       double precision tempi,psi,xps,tem
-      double precision t0,ta,tped,tpow,tedg,tn
+      double precision t0,ta,tped,tpow,tedg,tn,efac,efac0,efaca,tfac
 !
       xps=1.-psi/umax
       if (xps.lt.0.) then
@@ -1366,7 +1484,95 @@
         tem=t0*tempe(psi,i)/te0
         tempi=tem
         return
+     end if
+           if (ipswtch.eq.11) then
+         ! Profile with transport barrier shifted inwards
+        if (tpow.gt.1.) tfac=(t0-tped)/(2**tpow-1.-tpow)
+        efac=exp(tedg*(xps-xitb))
+        efaca=exp(-tedg*xitb)
+        efac0=exp(tedg*(1.0d0-xitb))
+        if (i.eq.0) then
+!  return ion temperature
+          tem=ta+(tped-ta)*((efac**2-1.)/(efac**2+1.)-(efaca**2-1.)/(efaca**2+1.))/  &
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (tpow.gt.1.) tem=tem+tfac*((1.+xps)**tpow-(1.+tpow*xps))
+          tempi=tem
+          return
+        else if (i.eq.1) then
+!  return the derivative
+          tem=-4.*(tedg/umax)*(tped-ta)*(efac/(efac**2+1.))**2/   &  
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (tpow.gt.1.) tem=tem-(tpow/umax)*tfac*((1.+xps)**(tpow-1.)-1.)
+          tempi=tem
+          return
+        else
+!  return the second derivative
+          tem=-8.*(tedg/umax)**2*(tped-ta)*  &
+                 (efac**2*(efac**2-1.)/(efac**2+1.)**3)/ &
+             ((efac0**2-1.)/(efac0**2+1.)-(efaca**2-1.)/(efaca**2+1.))
+          if (tpow.gt.1.) &
+             tem=tem+(tfac*tpow*(tpow-1.)/umax**2)*(1.+xps)**(tpow-2.)
+          tempi=tem
+          return
+        end if
       end if
+!
+      if (ipswtch.eq.12) then
+        if (tpow.le.1.) then
+          tn=0.
+        else
+          tn=(t0-ta-(tped-ta)*(exp(tedg)-exp(-tedg))/ &
+                              (exp(tedg)+exp(-tedg))) &
+              /(1.-(2**(tpow+1.)-1.)/(1.+tpow))
+        end if
+        if (i.eq.0) then
+!  return ion temperature
+          tem=ta+(tped-ta)*(exp(tedg*xps)-exp(-tedg*xps))/ &
+               (exp(tedg*xps)+exp(-tedg*xps)) &
+               +tn*(1.-(psi/umax)**2             &
+                            -((2.-(psi/umax)**2)**(tpow+1.)-1)/(1.+tpow))               
+        else if (i.eq.1) then
+!  return the derivative
+          tem=-4.*(tedg/umax)*(tped-ta)/(exp(tedg*xps)+exp(-tedg*xps))**2 &
+                +tn*(2.*psi/umax**2)*((2.-(psi/umax)**2)**tpow-1.)
+        else
+!  return the second derivative
+          tem=-8.*(tedg/umax)**2*(tped-ta)*  &
+                ((exp(tedg*xps)-exp(-tedg*xps))/ &
+                (exp(tedg*xps)+exp(-tedg*xps))**3) &
+               +tn*(2./umax**2)*((2.-(psi/umax)**2)**tpow-1.     &
+                           -2.*tpow*(psi/umax)**2*(2.-(psi/umax)**2)**(tpow-1.))
+        end if
+        tempi=tem
+        return
+      end if
+      if (ipswtch.eq.13) then
+        if (tpow.le.1.) then
+          tn=0.
+        else
+          tn=(t0-ta-(tped-ta)*(exp(tedg)-exp(-tedg))/ &
+                              (exp(tedg)+exp(-tedg)))
+        end if
+        if (i.eq.0) then
+!  return ion temperature
+          tem=ta+(tped-ta)*(exp(tedg*xps)-exp(-tedg*xps))/ &
+               (exp(tedg*xps)+exp(-tedg*xps)) &
+               +tn*((1.-psi/umax)**(tpow+1.))*(1.+(tpow+1.)*psi/umax)
+        else if (i.eq.1) then
+!  return the derivative
+          tem=-4.*(tedg/umax)*(tped-ta)/(exp(tedg*xps)+exp(-tedg*xps))**2 &
+                -tn*((tpow+1.)*(tpow+2.)/umax)*(psi/umax)*(1.-psi/umax)**tpow
+        else
+!  return the second derivative
+          tem=-8.*(tedg/umax)**2*(tped-ta)*  &
+                ((exp(tedg*xps)-exp(-tedg*xps))/ &
+                (exp(tedg*xps)+exp(-tedg*xps))**3) &
+               -tn*((tpow+1.)*(tpow+2.)/umax**2)*((1.-psi/umax)**(tpow-1.))*(1.-(1.+tpow)*psi/umax)
+        end if
+        tempi=tem
+        return
+     end if
+     ! ipswtch= 0
       if (tpow.le.1.) then
         tn=0.
       else

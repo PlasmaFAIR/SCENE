@@ -64,6 +64,8 @@ module param
      double precision tia     ! edge ion temperature
      double precision tiped   ! scales as pedestal temperature
      double precision tiedg   ! pedestal gradient/width
+!  if ipsw=11, then transport barrier can be shifted from edge by xitb
+     double precision xitb   ! centre of itb relatve to edge (xitb=0 is the edge) 
 !  ff-prime profile parameters...also used to parameterise J_parallel
      double precision fpow,fpow1,fpow2,fpow3,fpow4
      double precision af0,af1,af2,af3,af4
