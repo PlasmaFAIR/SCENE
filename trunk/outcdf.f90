@@ -170,7 +170,7 @@ subroutine write_netcdf()
      jdotb(con) = fsi(con)*pp(con)/bsmean(con) + ffp(con)/(fsi(con)*mu0)
      jbsdotb(con) = bsj(con)/sqrt(bsmean(con))
      jnbdotb(con) = J_nb(con)
-     
+     bphiav(con) = fsi(con) * rsqinv(con)/rinv(con)
      jnb_tor(con) = jnbdotb(con) * bphiav(con)
      jbs_tor(con) = jbsdotb(con)*bphiav(con)
      j_tor(con) = jdotb(con) * bphiav(con)
