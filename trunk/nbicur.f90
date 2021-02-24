@@ -265,6 +265,24 @@ subroutine nbicur()
 
   rhos = sngl(rnormnb(ncon:1:-1))
 
+
+  open(unit=55,file=runname(1:lrunname)//'.nbeams', &
+       status='unknown', iostat=ios)
+  if (ios.ne.0) then
+     write(nw,*) 'Error opening nbeams file'
+     stop
+  end if
+
+  write(55, *) nion, sngl(rcen), sngl(amin), b0, sngl(vol), ncon
+  write(55, *) aion, zion
+
+  do con=1,ncon
+     write(55,*) rhos(con), vprime_norm(con), dvol(con), darea(con), kappa(con), dkappa(con), &
+          shafr(con), dshafr(con), zeff(con), ne20(con), ni20(con, :), tekev(con), tikev(con), psiv(ncon-con+1)
+  end do
+  close(55)
+  
+
   !Allocate arrays to outputs variables (need to do it for max no. of
   !beams/rhos as is allocated in nbeams
   allocate(hofr(mxrho, 3,maxbeams), srcfast(mxrho,3,maxbeams), pitchangl(mxrho, 3, maxbeams))

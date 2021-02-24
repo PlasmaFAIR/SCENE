@@ -254,7 +254,6 @@ c/    Calculate fast and net current densities (A/m2):
      x                 (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)/volume
 
 
-
 c     !!!!!!!!!
 c     Extrapolate to core as rho=0 leads to drop in current
                   if (i .eq.1) then
@@ -273,7 +272,7 @@ c     Extrapolate to core as rho=0 leads to drop in current
 
                   sumjfast = sumjfast + jfast
                   sumjnbie = sumjnbie + jnbie(i,ie,ib) 
-                  print*, factor, sumjnbie, sumjfast                 
+
                   if (inbfus.eq.1) then
 
 c/    Calculate rates of beam-plasma interactions:
