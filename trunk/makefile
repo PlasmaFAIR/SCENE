@@ -80,7 +80,7 @@ all: $(CMD)
 	@echo
 	@echo ">>  `date '+%a %d-%h-%y %r'`  `pwd`  `uname -mns`  $(LOGNAME)"
 
-$(CMD):         $(OBJS) 
+$(CMD): libsurfit $(OBJS)
 	$(LOAD) $(OBJS) $(LIBRARIES)
 	chmod 755 $(CMD)
 
@@ -98,3 +98,5 @@ nbscene:	$(OBJ_NB)
 	$(LOAD_NB) $(OBJ_NB) $(LIBRARIES)
 	chmod 755 $(CMD_NB)
 
+libsurfit:
+	make -C ../lib/dierckx
