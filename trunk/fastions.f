@@ -2,7 +2,7 @@
      .     hofr, shinethru, jnbie, jnb, jnbTot, beamDens, beamVel,
      .     beamPress, jnbfast, l31, srcfast,
      .     beamFus, beamDTFus, beamDDFus, beamFusDTHe4, beamFusDDHe3,
-     .     beamFusDDp, beamFusDDt, snBeamDT, snBeamDD)
+     .     beamFusDDp, beamFusDDt, snBeamDT, snBeamDD, pitch)
 
 c///////////////////////////////////////////////////////////////////////
 c/
@@ -88,13 +88,14 @@ c///////////////////////////////////////////////////////////////////////
       integer nbeams, inbfus
       real amb, zbeam
       real ebeam(maxBeams), pbeam(maxBeams)
-      real hofr(mxrho,3,maxBeams), jnbie(mxrho,3,maxBeams),
+      real hofr(mxrho,3,maxBeams), jnbie(mxrho,3,maxBeams), 
      .     jnb(mxrho,maxBeams), shinethru(3,maxBeams), jnbTot(mxrho),
      .     beamDens(mxrho), beamVel(mxrho), beamPress(mxrho),
      .     beamFus(mxrho), jnbfast(mxrho),
      .     beamDDFus(mxrho), beamDTFus(mxrho), beamFusDTHe4(mxrho),
      .     beamFusDDHe3(mxrho), beamFusDDp(mxrho), beamFusDDt(mxrho),
-     .     snBeamDD(mxrho), snBeamDT(mxrho), l31(mxrho)
+     .     snBeamDD(mxrho), snBeamDT(mxrho), l31(mxrho),
+     .     pitch(mxrho,3,maxBeams)
 
 c/    Local variable declarations:
 c/    ---------------------------
@@ -103,7 +104,7 @@ c/    ---------------------------
 
       real ami, bcoef, capke, cloge, clogi, comfact, dne20, energy,
      .     ecrit, eddn, eddp, edhe3, edtn, epsilon, factor,
-     .     eddnhe3, eddpp, eddpt, edtnhe4,
+     .     eddnhe3, eddpp, eddpt, edtnhe4, fbvel, reslt2,
      .     fb, frate, jfast, rcoef, reslt, rint, rrddn, rrddp,
      .     rrdhe3, rrdt, root3, sumbrack, sumhat, tauf, taus, term,
      .     sumjnbib, sumsDDib, sumsDTib, sumFusib, sumdnbib, sumPreib,
@@ -112,7 +113,7 @@ c/    ---------------------------
      .     zhat, zte, zti, zz, rat, sumdvbib, sumjfast
       integer i, ie, isp, nfrst, nrhom1, jhy, jdeut, jtrit, jhe3, jhe4,
      .        ib, ibion, ireact
-      external fb, frate
+      external fb, frate, fbvel
       common/intg/yc, zhat
       common/sigma/ecrit, comfact, ireact
       save nfrst, jhy, jdeut, jtrit, jhe3, jhe4, ibion
@@ -185,22 +186,22 @@ c/    Initialize arrays to avoid problems with some compilers:
          enddo
       enddo
 
-      nrhom1 = nrho - 1
+      nrhom1 = nrho 
       do  i = nrhom1, 1,-1
+         
          epsilon = rho(i)*rminor/(rmajor + rminor*shift(i))
          dne20 = elecDensity(i)
          zte = elecTemp(i)
          zti = ionTemp(i)
          call coulomb (cloge,dne20,zte,0.0,amb,0.0,0.0,0.0,1)
          taus = 0.2*amb*zte**1.5/(cloge*dne20*zbeam**2)
-
 c/    Calculate trapped electron correction factor:
 
 c         trapfact = l31(i)
          trapfact = (1.55 + 0.85/zef(i))*Sqrt(epsilon) -
      x              (0.20 + 1.55/zef(i))*epsilon
          factor  = 1.0 - (1.0 - trapfact)*zbeam/zef(i)
-c       print*, rho(i), trapfact,  epsilon, zef(i)
+         
          sumjnbib = 0.0
          sumsDDib = 0.0
          sumsDTib = 0.0
@@ -237,19 +238,20 @@ c       print*, rho(i), trapfact,  epsilon, zef(i)
 c/    Critical energy for fast ion slowing down:
 
                   ecrit = 14.8*(zbr**(2./3.))*amb*zte
+
                   yc = Sqrt(ecrit/energy)
 
                   call qsimp(fb, 0., 1., reslt)
+                  call qsimp(fbvel, 0., 1., reslt2)
                   capke = reslt*(1. + yc**3)**(zhat/3.)
                   tauf = taus*Log((1.0+(energy/ecrit)**1.5)/
      x                   (1.0+(zti/ecrit)**1.5))/3.0
 
 
 c/    Calculate fast and net current densities (A/m2):
-                  !print*, 'Beam cur ', ie, ib, bmcur(ie,ib)
+
                   srcfast(i,ie,ib) = bmcur(ie,ib) *
      x                 (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)/volume
-
 
 
 c     !!!!!!!!!
@@ -264,22 +266,12 @@ c     Extrapolate to core as rho=0 leads to drop in current
                   end if
 
 
-
                   jfast = zbeam*srcfast(i,ie,ib)*taus*vbeam(ie,ib)*
      x                    capke*pitchangl(i,ie,ib)
                   jnbie(i,ie,ib) = factor*jfast
 
-                  if (ie.eq.1 .and. ib.eq.1) then
-                     !print*, epsilon, jfast, factor
-                     end if
-
-c                  if (ie.eq.1) then
-c                    print*,  i, jfast,factor,jnbie(i,ie,ib)
-c		     print*, ' '
-c                 end if
-
                   sumjfast = sumjfast + jfast
-                  sumjnbie = sumjnbie + jnbie(i,ie,ib)
+                  sumjnbie = sumjnbie + jnbie(i,ie,ib) 
 
                   if (inbfus.eq.1) then
 
@@ -342,7 +334,8 @@ c/    Calculate fast ion density (#/m^3):
 
 c     /    Calculate fast ion velocty (m/s) only fastest species
                   sumdvbib = sumdvbib + srcfast(i,ie,ib)*taus*
-     .             vbeam(ie,ib)* capke/eCharge
+     .                 vbeam(ie,ib)* reslt2/eCharge
+c     capke/eCharge
 
 c/    Calculate fast ion pressure (in Pa):
 
@@ -384,6 +377,7 @@ c/    Calculate power division between electrons and ions:
 
       enddo
 
+      pitch = pitchangl
       return
       end
 
@@ -411,6 +405,34 @@ c/////////////////////////////////////////////////////////////////////////
       common/intg/yc,zhat
 
       fb=(y**3 / (y**3 + yc**3))**(zhat / 3.0 + 1.0)
+
+      return
+      end
+
+
+c/////////////////////////////////////////////////////////////////////////
+c/
+c/ NAME
+c/    fbvel
+c/
+c/ DESCRIPTION
+c     /    Calculates the distribution function for the fast ions for the velocity
+c/
+c/ PARAMETERS
+c/    y   : normalized fast ion energy
+c/
+c/ RETURNS
+c/    fbvel  : value of distribution function for vel
+c/
+c/
+c/////////////////////////////////////////////////////////////////////////
+
+      real function fbvel(y)
+
+      real y, yc
+      common/intg/yc
+
+      fbvel=(y**3 / (y**3 + yc**3))
 
       return
       end

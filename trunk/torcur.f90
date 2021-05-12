@@ -12,13 +12,16 @@
       double precision press,fprof,bp
       double precision rat,bsmean,bstrap,eps,bra,absj,neubeam
       double precision extapp,extapp2,spitc,extapp3
+      logical :: debug
+
+      debug = .false.
 !
       if (icont.gt.-3) then
         allocate( bsph(nr,nz),psph(nr,nz),diph(nr,nz),exph(nr,nz),   &
                 exph2(nr,nz),gradj(nr,nz),spit(nr,nz),absph(nr,nz),nbph(nr,nz))
       end if
       !
-      print*, 'starting torcur'
+      if (debug) print*, 'starting torcur'
       do i=1,nr
         do j=1,nz
           if (ixout(i,j).le.0) then

@@ -33,7 +33,7 @@ subroutine nbicur()
   double precision :: dense, tempe, tempi, densi, shift, elong
   !Output variables
 
-  real, dimension(:,:,:), allocatable :: hofr, srcfast
+  real, dimension(:,:,:), allocatable :: hofr, srcfast, pitchangl
 
   real, dimension(:,:), allocatable :: shinethru, pnbbm, pnb
 
@@ -72,32 +72,29 @@ subroutine nbicur()
         vol = vol+rr*dr*dz
         count = count +1
         nesum = nesum + dense(psi,0)
-        !print*, dense(psi,0) , tempe(psi,0)
         tesum = tesum + tempe(psi,0)
      end do
   end do
 
-  !print*, 'Tesum ', tesum, 'nesum', nesum, count
   neav = nesum/count
   teav = tesum/count
 
   volp = sngl(vol*2*pi)
-  print*, 'Plasma volume', volp
 
   !Iterations to find rho
   maxiter = 2
 
-        open(unit=53,file='nbi.dat', iostat=ios)
-        if (ios.ne.0) then
-                write(nw,*) 'Error reading in nbi.dat file'
-                stop
-        end if
-
-        read(53,*)
-        read(53,*)
-
-        read(53,*) nbeams
-
+  open(unit=53,file='nbi.dat', iostat=ios)
+  if (ios.ne.0) then
+     write(nw,*) 'Error reading in nbi.dat file'
+     stop
+  end if
+  
+  read(53,*)
+  read(53,*)
+  
+  read(53,*) nbeams
+        
 
   allocate(ebeam(nbeams), pbeam(nbeams), rtang(nbeams), bwidth(nbeams), bheigh(nbeams), &
        nbptype(nbeams), bgaussR(nbeams), bgaussZ(nbeams), bzpos(nbeams), nbshape(nbeams) )
@@ -147,16 +144,13 @@ subroutine nbicur()
   read(53,*)
   read(53,*) pwrfrac(:,1)
 
-
-  pwrfrac(:,2)=pwrfrac(:,1)
+  if (nbeams .eq. 2)  pwrfrac(:,2)=pwrfrac(:,1)
   close(53)
 
   paux=0.
   do l=1,nbeams
         paux = paux + pbeam(l)
   end do
-
-  !print*, nbshape
 
   !Background plasma input quantities
 
@@ -193,10 +187,11 @@ subroutine nbicur()
   !rho_tor = sqrt(Phi_tor)
   phi = sqrt(phi/phi(1))
 
-  call trapfact(l31)
+  !call trapfact(l31)
+  l31 = 0.
 
   do con=1,ncon
-
+     
      psi = psiv(con)
 
      !Shafranov shift  and elongation + derivatives (all need to be reversed)
@@ -260,15 +255,6 @@ subroutine nbicur()
 
   end do
 
-
-  do i=1,ncon
-
-  !   rr = maxval(rpts(ncon-i+1,:)) - r0
-  !
-     print*, rnormnb(i), kappa(i), dkappa(i), shafr(i), dshafr(i)
-  end do
-
-
   !Need to use limit of V' at very small rho
 
   vprime_norm(2)=real(4.*pi*pi*rnormnb(ncon-1)*amin*kappa(2)*(rcen+amin*shafr(2)))
@@ -279,9 +265,27 @@ subroutine nbicur()
 
   rhos = sngl(rnormnb(ncon:1:-1))
 
+
+  open(unit=55,file=runname(1:lrunname)//'.nbeams', &
+       status='unknown', iostat=ios)
+  if (ios.ne.0) then
+     write(nw,*) 'Error opening nbeams file'
+     stop
+  end if
+
+  write(55, *) nion, sngl(rcen), sngl(amin), b0, sngl(vol), ncon
+  write(55, *) aion, zion
+
+  do con=1,ncon
+     write(55,*) rhos(con), vprime_norm(con), dvol(con), darea(con), kappa(con), dkappa(con), &
+          shafr(con), dshafr(con), zeff(con), ne20(con), ni20(con, :), tekev(con), tikev(con), psiv(ncon-con+1)
+  end do
+  close(55)
+  
+
   !Allocate arrays to outputs variables (need to do it for max no. of
   !beams/rhos as is allocated in nbeams
-  allocate(hofr(mxrho, 3,maxbeams), srcfast(mxrho,3,maxbeams))
+  allocate(hofr(mxrho, 3,maxbeams), srcfast(mxrho,3,maxbeams), pitchangl(mxrho, 3, maxbeams))
 
   allocate(shinethru(3,maxbeams))
 
@@ -304,36 +308,36 @@ subroutine nbicur()
        pbfusi, snBeamDD, &
        snBeamDT, nbcur, etanb, gammanb, pNBAbsorb, pNBLoss, nbcurTot, &
        etanbTot, beamBeta, pNBAbsorbTot, pNBLossTot, beamFusTot, &
-       beamFusChTot, snDTTotal, snDDTotal, iflagnb)
+       beamFusChTot, snDTTotal, snDDTotal, pitchangl, iflagnb)
 
-
+  print*, 'Completed NBI calc'
   ni20=0.0
 
   !Set total current to J_nb
   !Note need to reverse order of array again and use <B>/<B^2>
   ! from appropriate flxsur
   do i=1,ncon
+
      J_nb(ncon-i+1) = dble(jnbTot(i))*bav(ncon-i+1)/bsqav(ncon-i+1)
 
      !Account for poloidal field by multiplying Bt/B
      !Use poloidal field at OMP for each flux surface
      !Not great as some beam is off axis
 
-     psi = psiv(ncon-i+1)
-     rr = maxval(rpts(ncon-i+1,:))
+     ! psi = psiv(ncon-i+1)
+     ! rr = maxval(rpts(ncon-i+1,:))
 
-     ! Calculate Bphi and Btheta
-     rr_index = maxloc(rpts(ncon-i+1,:),1) 
-     bphi = fprof(psi,2)/rr
-     bth = bppts(ncon-i+1,rr_index)
-     btot = sqrt(bth**2 + bphi**2)
+     ! ! Calculate Bphi and Btheta
+     ! rr_index = maxloc(rpts(ncon-i+1,:),1) 
+     ! bphi = fprof(psi,2)/rr
+     ! bth = bppts(ncon-i+1,rr_index)
+     ! btot = sqrt(bth**2 + bphi**2)
 
-     if (i .eq. 1) then
-        bphi = fprof(0.0,2)/r0
-        btot = bphi
-     end if
-     
-     J_nb(ncon-i+1) = J_nb(ncon-i+1)*bphi/btot
+     ! if (i .eq. 1) then
+     !    bphi = fprof(0.0,2)/r0
+     !    btot = bphi
+     ! end if
+     ! J_nb(ncon-i+1) = J_nb(ncon-i+1)*bphi/btot
 
   end do
 
@@ -402,18 +406,14 @@ subroutine nbicur()
    write(50,*) 'Psi, NB cur (A/m^2), Pow to e (MW/m^3), Power to i (MW/m^3),  &
         &FI dens (/m^3), FI Vel (/m^2 s), flux sur vol (m^3), FI current (A/m^2)'
    do con=1,ncon
-      
-      write(50,30) psiv(ncon-con+1), jnbTot(con), pnbe(con), pnbi(con), beamDens(con), beamVel(con), dvol(con), jnbfast(con)
+      write(50,30) psiv(ncon-con+1), jnbTot(con), pnbe(con), pnbi(con), beamDens(con), beamVel(con), dvol(con), &
+           jnbfast(con), darea(con), pitchangl(con, 1, :2)
 
    end do
-30 format(8e13.6)
+30 format(11e12.5)
 
    close(50)
 
-  !print*, 'Charge beam fusion ', beamFusChTot
-  !print*, 'Total beam target fusion ', beamFusTot
-
-  !print*, 'Electron Average Temp ', teav, q' and density ', neav
 end subroutine nbicur
 
 
@@ -449,7 +449,6 @@ subroutine momsource(nbeams,power,energy, rtan, source)
   !Vtor = Mom*time/mass
   vtor = source  * taue /mass
   
-  print*, 'Calculated vtor'
   !Angular freq at R_outer
   angf = vtor/(maxval(rpts,2))
 
@@ -478,6 +477,7 @@ subroutine trapfact(l31)
       do k=1,ncon
          psi = psiv(k)
          ne=dense(psi,0)
+         print*, ne
          fsi=fprof(psi,2)
          zeff=zm
          if (imp.eq.1) then
@@ -488,6 +488,7 @@ subroutine trapfact(l31)
                   zeff=zeff+(zni*iz(l)**2)/ne
                end do
             else
+               
                nw=10
                write(nw,*)'error*** problem in trapfact, ne=0'
                write(nw,*)'cannot evaluate zeff'
@@ -495,12 +496,12 @@ subroutine trapfact(l31)
             end if
          end if
          zb=zeff
-
+         print*, ftrap(k)
          fc=1.-ftrap(k)
          x=ftrap(k)/fc
          dox=1.414*zb+zb*zb+x*(0.754+2.657*zb+2.*zb*zb)+x*x*    &
               (0.348+1.243*zb+zb*zb)
-
+         print*, dox
          !Flip the order for NBEAMS
          l31(ncon-k+1)=real(x*(0.754+2.21*zb+zb*zb+x*(0.348+1.243*zb+zb*zb))  &
               /dox)

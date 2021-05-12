@@ -98,7 +98,8 @@
         tk=rk1*rk2/ks
         if (ks.gt.1) then
           if (abs(sumk).lt.1e-8) then
-            write(6,*)' ERROR***sumk=0 in conlen'
+             write(6,*)' ERROR***sumk=0 in conlen'
+             call error_msg('ERROR***sumk=0 in conlen', 1)
             stop
           end if
           errgot=abs(tk/sumk)

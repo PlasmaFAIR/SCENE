@@ -62,7 +62,7 @@ subroutine getdata
 
 
         write(nh,14) rr,dense(psi,0),densi(psi,1,0), B_tor,bp(rr,zz),B_tot, safety, tempe(psi,0)/1000., &
-             press(psi,0)
+             press(psi,0), psi
 
      !If point is on plasma boundary
      else if (ixout(i,nsym) .eq. -1) then
@@ -85,7 +85,7 @@ subroutine getdata
 
 
         write(nh,14) rr,dense(psi,0),densi(psi,1,0), B_tor,bp(rr,zz),B_tot, safety, tempe(psi,0)/1000., &
-             press(psi,0)
+             press(psi,0), psi
 
      end if
 
@@ -93,7 +93,7 @@ subroutine getdata
 
   end do
 
-14 format(ES14.6e2,ES14.6e2, ES14.6e2, ES14.6e2,ES14.6e2, ES14.6e2, ES14.6e2,ES14.6e2, ES14.6e2 )
+14 format(ES14.6e2,ES14.6e2, ES14.6e2, ES14.6e2,ES14.6e2, ES14.6e2, ES14.6e2,ES14.6e2, ES14.6e2, ES14.6e2 )
    close(nh)
 
    !write(6,*) 'Overall data written'

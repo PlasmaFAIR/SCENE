@@ -2,9 +2,13 @@ F90 = gfortran
 
 NAME=	scene
 CMD=    scene
+
+NAME_NB = nbscene
+CMD_NB  = nbscene
+
 #
 SRCS= \
-param.f90 balpar.f90  balloon.f90 usrcal.f90 \
+param.f90 balpar.f90  balloon.f90 usrcal.f90  error_msg.f90\
 coldat.f90 scene.f90 init.f90 equil.f90 profs.f90 flxsur.f90  \
 flxav.f90 hirsig.f90 hirsh.f90 splines.f signeo.f90 \
 torcur.f90 extj.f90 output.f90 graphs.f90 ffdgen.f90 elite_data.f90 \
@@ -26,6 +30,12 @@ torcur.o extj.o output.o ffdgen.o usrcal.o elite_data.o \
 #baleq.o test_profs.o helena.o bandat.o setnt.o chease_dat.o \
 gfile.o flxorb.o lynton.o fastbs.o caxe_out.o bandit.o  \
 
+SRC_NB = nbscene.f   beamconsts.f beams_mfp.f scopy.f \
+sdot.f calcbeams.f coulomb.f eisplit.f erf.f fastions.f  \
+frate.f gausswts.f getrho.f hofr.f hunt.f qsimp.f \
+sigfit.f sinteg.f rinteg.f zinteg.f ssum.f sig_olson.f \
+
+OBJ_NB=$(SRC_NB:.f=.o)
 
 OBJS_1= $(SRCS:.f90=.o)
 OBJS=$(OBJS_1:.f=.o)
@@ -52,7 +62,7 @@ LIBRARIES =  \
 
  # /fuslwf/home/kthcmr/GS2D/gs2dlib.a
 
-DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check -g # -heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
+DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check -g -fbacktrace # -heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
@@ -60,6 +70,8 @@ DOUBLE    = #-r8 -d8 #-qautodbl=dblpad
 LIN       = # -YEXT_NAMES=LCS -B108
 COMPILE   = $(F90) -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)  $(INCLUDE)
 LOAD      = $(F90) $(SPECIAL) -o $(CMD) $(LIBS)
+LOAD_NB   = $(F90) $(SPECIAL) -o $(CMD_NB) $(LIBS)
+
 .SUFFIXES:
 
 .SUFFIXES: .o .f .f90
@@ -81,7 +93,8 @@ $(CMD):         $(OBJS)
 clean:
 	rm -f $(CMD) *.a *.o *.mod
 
-
-
-
+nbscene:	$(OBJ_NB)
+	$(COMPILE) $(SRC_NB)
+	$(LOAD_NB) $(OBJ_NB) $(LIBRARIES)
+	chmod 755 $(CMD_NB)
 

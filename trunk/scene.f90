@@ -6,13 +6,14 @@ program scene
   implicit none
   integer i,j,icur,niter
   double precision errcur,bpold,bnold,bpnew
+  logical :: debug
   !
 
-
+  debug = .false.
   nbet=0
   ! Perform initialisations
   write(6,*) 'Starting SCENE'
-
+  call error_msg('SCENE has begun', -1)
 
   call init
   ! Initialise error function array for use in bootstrap routine, hirsig
@@ -43,27 +44,26 @@ program scene
 
 
   if (ipr.eq.0) write(nw,*)' on the ',niter,' iteration'
-  write(6,*) 'Printing poloidal/toroidal graphs'
+  if (debug) write(6,*) 'Printing poloidal/toroidal graphs'
   call equil(niter)
 
 
-
-  write(6,*)' done equil'
+  if (debug) write(6,*)' done equil'
   ! Convert equilibrium to flux surface coordinates
   call flxsur
-  write(6,*)' done flxsur'
+  if (debug) write(6,*)' done flxsur'
   ! Perform a number of useful averages over flux surfaces
   call flxav
   ! Calculate alpha-particle bootstrap current
   call fastbs
-  write(6,*)' done flxav'
+  if (debug) write(6,*)' done flxav'
 
   j_nb = 0.
 
   !Include NBI in current calc
   if (nbi.ge.1) call nbicur()
   
-  print*, 'done nbicur'
+  if (debug) print*, 'done nbicur'
   !  Calculate currents (and read in externally applied current
   !  profile if itot=0)
   call torcur(icur)
@@ -94,9 +94,9 @@ program scene
         vloop=(totgs-totbs-totps-totdi-totex2)/(totex)
      end if
 
-     print*, ' '
-     print*, 'Vloop = ', vloop
-     print*, ' '
+     if (debug) print*, ' '
+     if (debug) print*, 'Vloop = ', vloop
+     if (debug) print*, ' '
      if (abs(neo).eq.1) then
 
         if (nbi .eq. 2) then
@@ -116,20 +116,20 @@ program scene
      end do
      totex=totex*vloop+totex2
 
-     !print*, totgs, totbs, totps, totdi, totex2, totnb, totex
+     !if (debug) print*, totgs, totbs, totps, totdi, totex2, totnb, totex
 
      !  calculate error in ff'
      call ffdgen(1,icur,errcur)
-     write(6,*)' done ffdgen'
+     if (debug) write(6,*)' done ffdgen'
      if (errcur.gt.errffd) then
         !  need to iterate further on ff'
         if (niter.lt.npass) then
            !  up-date ff'
            call ffdgen(0,icur,errcur)
            !  up-date n,T mesh if appropriate
-           !write(6,*)' in setnt'
+           !if (debug) write(6,*)' in setnt'
            if (igr.eq.5) call setnt
-           !write(6,*)' out setnt'
+           !if (debug) write(6,*)' out setnt'
            icont=-3
            goto 30
         else
@@ -144,13 +144,13 @@ program scene
   !  If we want to converge in betan, start iteration again
   if (betan.gt.0.) then
      nbet=nbet+1
-     write(6,*)' betan=',3.5*betexp/betlim
+     if (debug) write(6,*)' betan=',3.5*betexp/betlim
      if (abs(betan-3.5*betexp/betlim)/betan.gt.0.01) then
         if (nbet.eq.1) then
            bpold=bpol
            bnold=betlim/(3.5*betexp)
            bpol=bpol*betan*betlim/(3.5*betexp)
-           write(6,*)' nbet=',nbet,' betan=',3.5*betexp/betlim, &
+           if (debug) write(6,*)' nbet=',nbet,' betan=',3.5*betexp/betlim, &
                 ' target=',betan
         else
            bpnew=(betan*(bpold-bpol)+bnold*bpol-bpold*3.5*betexp/betlim)  &
@@ -158,7 +158,7 @@ program scene
            bpold=bpol
            bnold=3.5*betexp/betlim
            bpol=bpnew
-           write(6,*)' nbet=',nbet,' betan=',3.5*betexp/betlim, &
+           if (debug) write(6,*)' nbet=',nbet,' betan=',3.5*betexp/betlim, &
                 ' target=',betan
         end if
         !          icont=1
@@ -166,7 +166,7 @@ program scene
      end if
   end if
   if (ipswtch.eq.3) call setnt
-  write(6,*)' done setnt'
+  if (debug) write(6,*)' done setnt'
 
   !Doesn't include NBI in current calc
   !if (nbi.eq.1) call nbicur
@@ -181,9 +181,9 @@ program scene
      !call execute_command_line("echo "//runname// " | ipython ~/SCENEv2/graphs/graphs.py")
      call flxplt
      call graphs
-     print*, 'Made graphs.grd file'
+     if (debug) print*, 'Made graphs.grd file'
      call grend
-     print*, 'Closed graphs.grd'
+     if (debug) print*, 'Closed graphs.grd'
   end if
   
   !  Plot stability plots if igr set to 3
@@ -191,7 +191,7 @@ program scene
   !      if (igr.eq.3) call epsplot
   !  Call user interface routine
   call usrcal
-  print*, 'Calling NETCDF writer'
+  if (debug) print*, 'Calling NETCDF writer'
   call write_netcdf()
   !
   !
@@ -206,5 +206,6 @@ program scene
   !      CALL USRCAL(U,IXOUT)
   !      if (igr.gt.0) call grend
 
+  call error_msg('Clean exit', 0)
 
 end program scene

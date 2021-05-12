@@ -915,7 +915,10 @@ end subroutine equil
       double precision al,ga,rb,zbsq
       double precision x,y,f
       integer igo
+      logical debug
       save
+
+      debug = .false.
 !      data igo/0/
 !
       if(igo.eq.1) go to 20
@@ -928,7 +931,7 @@ end subroutine equil
       zsbsq=zs*zs/zdsq
       ga=(al*(rsb*rsb-1.0)**2 -1.0)/zsbsq
       ga=ga+rsb*rsb
-      write(6,*)' inside bdr and printing'
+      if (debug) write(6,*)' inside bdr and printing'
       if (ipr.eq.0) then
       write(nw,10) r1,r2,rs,zs
  10   format('d-shape boundary)',' r1,r2,rs,zs=',4e12.5)
@@ -1019,7 +1022,11 @@ end subroutine equil
       double precision, allocatable:: RW(:), A(:,:)
       double precision, external:: CS2VAL
       integer:: NCC, NRR, NWW
-      write(6,*) 'running extrap2'
+      logical :: debug
+
+      debug = .false.
+      
+      if (debug) write(6,*) 'running extrap2'
 !
 !  Extrapolation routine to fill out the psi mesh on the R-Z grid
 !  from the points calculated from the G-S solver

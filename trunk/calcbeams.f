@@ -8,7 +8,7 @@
      .   pbfuse, pbfusi, snBeamDD,
      .   snBeamDT, nbcur, etanb, gammanb, pNBAbsorb, pNBLoss, nbcurTot,
      .   etanbTot, beamBeta, pNBAbsorbTot, pNBLossTot, beamFusTot,
-     .   beamFusChTot, snDTTotal, snDDTotal, iflag)
+     .   beamFusChTot, snDTTotal, snDDTotal, pitch, iflag)
 
      
 c///////////////////////////////////////////////////////////////////////
@@ -240,7 +240,8 @@ c/    --------------------------------
      .     pbfusi(mxrho),snBeamDD(mxrho),  jnbfast(mxrho),
      .     snBeamDT(mxrho), nbcur(maxBeams), etanb(maxBeams),
      .     gammanb(maxBeams), pNBAbsorb(maxBeams), pNBLoss(maxBeams),
-     .     l31(mxrho), srcfast(mxrho,3,maxBeams), pnbbm(mxrho,maxBeams)
+     .     l31(mxrho), srcfast(mxrho,3,maxBeams), pnbbm(mxrho,maxBeams),
+     .     pitch(mxrho, 3, maxBeams)
 
 c/    Local Variable Declarations:
 c/    ---------------------------
@@ -368,9 +369,6 @@ c/    Olson's formulation:
          endif
       enddo
 
-c      do i=1,nrho
-c         print*, rho(i), shift_rho(i), elong_rho(i), dv(i)
-c      end do
 
 c/    Calculate fast ion deposition:
 c/    -----------------------------
@@ -387,7 +385,7 @@ c/    -------------------------------------
      .     hofr, shinethru, jnbie, jnb, jnbTot, beamDens, beamVel,
      .     beamPress, jnbfast, l31, srcfast,
      .     beamFus, beamDTFus, beamDDFus, beamFusDTHe4, beamFusDDHe3,
-     .     beamFusDDp, beamFusDDt, snBeamDT, snBeamDD)
+     .     beamFusDDp, beamFusDDt, snBeamDT, snBeamDD, pitch)
 
 
 c/    Calculate total beam heating power density (in MW/m^3):
@@ -397,7 +395,7 @@ c/    by 1.0 - shinethru(ie,ib):
 c     /
       !print*, 'Calc heating'
       do i = 1, nrho
-         !print*, srcfast(i,:,:)
+
          sumpnbi = 0.0
          sumpnbe = 0.0
          sumpnbbm = 0.0
