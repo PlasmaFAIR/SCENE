@@ -66,7 +66,7 @@ DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check -g -fbacktrace # -heap-array
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
-DOUBLE    = #-r8 -d8 #-qautodbl=dblpad
+DOUBLE    = -fdefault-double-8 -fdefault-real-8  #-r8 -d8 #-qautodbl=dblpad
 LIN       = # -YEXT_NAMES=LCS -B108
 COMPILE   = $(F90) -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)  $(INCLUDE)
 LOAD      = $(F90) $(SPECIAL) -o $(CMD) $(LIBS)
