@@ -1,0 +1,37 @@
+stages:
+  - build
+  - ci_status
+  - deploy
+
+variables: &default_variables
+  GIT_SUBMODULE_STRATEGY: recursive
+  BASIC_PACKAGES: "environment-modules make git which cmake findutils"
+  SCENE_PACKAGES: "netcdf-fortran netcdf-devel netcdf-fortran-devel gcc gcc-gfortran"
+  PYTHON_PACKAGES: "python python3 python3-pip python3-devel"
+  EXTRA_PACKAGES: ""
+  WITH_PYTHON: "no"
+
+.install_main_packages: &install_main_packages
+  - dnf install -y ${BASIC_PACKAGES} ${SCENE_PACKAGES} ${PYTHON_PACKAGES} ${EXTRA_PACKAGES}
+  - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -U pip; fi
+  - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -r requirements.txt; fi
+
+.the_default_script: &default_script
+  - echo "Not yet set up to do anything."
+
+default:
+  timeout: 20m
+  artifacts:
+    paths:
+  before_script:
+    - *install_main_packages
+  after_script:
+  interruptible: true
+
+
+standard:
+  stage: build
+  image: fedora:31
+  variables:
+    CASENAME: "standard"
+  script: *default_script
