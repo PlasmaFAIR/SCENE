@@ -1,3 +1,6 @@
+module gs2_output
+  implicit none
+contains
       subroutine gs2
 !     --------------
 !
@@ -472,3 +475,4 @@
 !!$      write(ndsk,*)' fprim:',(umax/dense(psi,0))*dense(psi,1)
 !!$      write(ndsk,*)' vnewk: waiting for formula'
 !!$      close(ndsk)
+end module gs2_output

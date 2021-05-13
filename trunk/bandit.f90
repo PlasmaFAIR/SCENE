@@ -159,6 +159,7 @@
 ! Plots externally applied current within a flux surface as a function of
 ! r/a
 !
+      use ext_current_mod, only : extj
       use param
       implicit none
       integer icur,k,i,nrm,kg

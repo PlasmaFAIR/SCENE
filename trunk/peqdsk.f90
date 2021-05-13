@@ -1,4 +1,7 @@
 
+module peqdsk_output
+  implicit none
+contains
 subroutine peqdsk
   ! Writes out a peqdsk file that can be read in by GACODE profile_gen tool
   ! Contains information about kinetic profiles
@@ -78,3 +81,4 @@ subroutine peqdsk
 
   end subroutine peqdsk
   
+end module peqdsk_output

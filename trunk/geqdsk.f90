@@ -1,4 +1,7 @@
 
+module geqdsk_output
+  implicit none
+contains
 subroutine geqdsk
 !!! Writes out a geqdsk file
   ! In order to include a limiter the standard SCENE R,Z grid is
@@ -466,3 +469,5 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
 
 end subroutine extrappsi
+
+end module geqdsk_output

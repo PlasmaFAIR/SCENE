@@ -7,6 +7,7 @@ contains
 !  This subroutine calculates the toroidal current profiles of the
 !  input, bootstrap, diamagnetic and pfirsch-schluter components.
 !
+      use ext_current_mod, only : extj
       use equilibrium, only : bp
       use param
       implicit none

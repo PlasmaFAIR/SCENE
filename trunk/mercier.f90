@@ -1,3 +1,6 @@
+module mercier_output
+  implicit none
+contains
       subroutine mercier
 !     **********************
 !
@@ -80,3 +83,4 @@
 !      call tstplt2(ncon,sfac,neoterm,hegterm)
       return
   end subroutine mercier
+end module mercier_output

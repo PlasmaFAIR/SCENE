@@ -24,6 +24,7 @@ contains
 !!$     &,itot,powj,scl,nco,p0,bpfac,zmai,aj
 !!$      common/mesh/r(400),z(400),dr,dz,nr,nz,nsym
 !!$      dimension ixout(400,400),gstk(50)
+      use ext_current_mod, only : extj
       use param
       implicit none
       integer k,i,icur,kmax

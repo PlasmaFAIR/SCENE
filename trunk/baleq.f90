@@ -1,3 +1,6 @@
+module idball_output
+  implicit none
+contains
       subroutine baleq
 !     ****************
 !
@@ -211,3 +214,4 @@
 
       return
   end subroutine baleq
+end module idball_output

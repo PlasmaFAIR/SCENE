@@ -1,3 +1,7 @@
+module elite_output
+  implicit none
+contains
+
       subroutine elite_data
 !     *********************
 !
@@ -575,3 +579,4 @@
 !        write(801,*)rpts(1,i),zpts(1,i)
 !      end do
    end subroutine elite2_data
+ end module elite_output

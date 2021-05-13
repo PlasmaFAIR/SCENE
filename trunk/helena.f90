@@ -1,3 +1,6 @@
+module helena_output
+  implicit none
+contains
       subroutine helena
 !     *****************
 !
@@ -135,3 +138,4 @@
       write(nh,*)' '
       !write(6,*)' out helena'
    end subroutine helena
+end module helena_output

@@ -1,3 +1,6 @@
+module tokameq_output
+  implicit none
+contains
       subroutine tokameq
 !     ******************
 !
@@ -58,4 +61,6 @@
       end do
       close(nh)
       return
-      end
+    end subroutine tokameq
+
+end module tokameq_output

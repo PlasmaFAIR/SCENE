@@ -654,6 +654,7 @@ contains
         !
 !    Plots various profiles and outputs run parameters.
 !
+      use ext_current_mod, only : extj
       use equilibrium, only : bp, range, xarea
       use param
       implicit none

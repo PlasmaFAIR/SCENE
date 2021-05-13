@@ -8,9 +8,18 @@ contains
     !  made from here.....the equilibrium is now converged to the required
     !  accuracy.
     !
-    use param
+    use ballon_mod, only : balloon
     use balpar
-    use ballon_mod
+    use elite_output, only : elite_data, elite2_data
+    use ext_current_mod, only : extj
+    use geqdsk_output, only : geqdsk
+    use gs2_output, only : gs2
+    use helena_output, only : helena
+    use idball_output, only : baleq
+    use mercier_output, only : mercier
+    use param
+    use peqdsk_output, only : peqdsk
+    use tokameq_output, only : tokameq
     implicit none
     integer icur,i,n1,n2,j
     double precision extapp,extapp2,rat,scale,eps

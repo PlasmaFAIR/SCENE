@@ -1,3 +1,6 @@
+module ext_current_mod
+  implicit none
+contains
     subroutine extj(eps,psi,extapp,extapp2,icur)
 !       *******************************************
 !
@@ -201,3 +204,4 @@
        extapp2=0.
     end if
   end subroutine extj
+end module ext_current_mod
