@@ -1,1 +1,3 @@
-make SCENE_GHOST_DIR=${GHOST_INSTALL_DIR} SCENE_NETCDF_DIR=$(nf-config --prefix)
+cmake . -B build \
+      -DGHOST_DIR=${GHOST_INSTALL_DIR}
+cmake --build build
