@@ -1,0 +1,1 @@
+make SCENE_GHOST_DIR=${GHOST_INSTALL_DIR} SCENE_NETCDF_DIR=$(nf-config --prefix)

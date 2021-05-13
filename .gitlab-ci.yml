@@ -10,14 +10,23 @@ variables: &default_variables
   PYTHON_PACKAGES: "python python3 python3-pip python3-devel"
   EXTRA_PACKAGES: ""
   WITH_PYTHON: "no"
+  GHOST_DIR: "~/ghost"
+  GHOST_BUILD_DIR: "~/ghost/build"
+  GHOST_INSTALL_DIR: "~/ghost/build/install"
 
 .install_main_packages: &install_main_packages
   - dnf install -y ${BASIC_PACKAGES} ${SCENE_PACKAGES} ${PYTHON_PACKAGES} ${EXTRA_PACKAGES}
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -U pip; fi
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -r requirements.txt; fi
 
-.the_default_script: &default_script
-  - echo "Not yet set up to do anything."
+.install_ghost: &install_ghost
+  - git clone git@github.com:ZedThree/GHOST.git ${GHOST_DIR}
+  - mkdir -p ${GHOST_BUILD_DIR} && cd ${GHOST_BUILD_DIR}
+  - ../configure --prefix ${GHOST_INSTALL_DIR}
+  - make -j && make install
+
+.default_script: &default_script
+  - sh .ci_scripts/ci_build.sh
 
 default:
   timeout: 20m
@@ -25,6 +34,7 @@ default:
     paths:
   before_script:
     - *install_main_packages
+    - *install_ghost
   after_script:
   interruptible: true
 
