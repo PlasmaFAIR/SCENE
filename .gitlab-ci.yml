@@ -6,7 +6,7 @@ stages:
 variables: &default_variables
   GIT_SUBMODULE_STRATEGY: recursive
   BASIC_PACKAGES: "environment-modules make git which cmake findutils"
-  SCENE_PACKAGES: "netcdf-fortran netcdf-devel netcdf-fortran-devel gcc gcc-gfortran"
+  SCENE_PACKAGES: "netcdf-fortran netcdf-devel netcdf-fortran-devel gcc gcc-gfortran blas-devel lapack-devel"
   GHOST_PACKAGES: "libX11-devel libXt-devel"
   PYTHON_PACKAGES: "python python3 python3-pip python3-devel"
   EXTRA_PACKAGES: ""
