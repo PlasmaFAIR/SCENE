@@ -20,7 +20,7 @@ variables: &default_variables
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -r requirements.txt; fi
 
 .install_ghost: &install_ghost
-  - git clone git@github.com:ZedThree/GHOST.git ${GHOST_DIR}
+  - git clone https://github.com/ZedThree/GHOST.git ${GHOST_DIR}
   - mkdir -p ${GHOST_BUILD_DIR} && cd ${GHOST_BUILD_DIR}
   - ../configure --prefix ${GHOST_INSTALL_DIR}
   - make -j && make install
