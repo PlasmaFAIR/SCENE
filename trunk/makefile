@@ -40,12 +40,12 @@ OBJ_NB=$(SRC_NB:.f=.o)
 OBJS_1= $(SRCS:.f90=.o)
 OBJS=$(OBJS_1:.f=.o)
 INPUT=
-INCLUDE=  -I$(YORK_NETCDF_DIR)/include 
+INCLUDE=  -I$(SCENE_NETCDF_DIR)/include
 LIBRARIES =  \
  -llapack \
  -lblas \
- -L$(YORK_GHOST_DIR)/lib -lghost -lgrid_xghost \
- -L$(YORK_NETCDF_DIR)/lib -lnetcdff -lnetcdf \
+ -L$(SCENE_GHOST_DIR)/lib -lghost -lgrid_xghost \
+ -L$(SCENE_NETCDF_DIR)/lib -lnetcdff -lnetcdf \
  -L../lib -lsurfit \
 # -lgcvfull
 

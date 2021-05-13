@@ -17,8 +17,8 @@ To compile SCENE, you need to set two variables that point at the
 install locations of the above two libraries:
 
 ```bash
-  make YORK_GHOST_DIR=/path/to/ghost/install \
-       YORK_NETCDF_DIR=/path/to/netcdf/install
+  make SCENE_GHOST_DIR=/path/to/ghost/install \
+       SCENE_NETCDF_DIR=/path/to/netcdf/install
 ```
 
 This will create a `scene` executable under `trunk/`
