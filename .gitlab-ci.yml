@@ -24,12 +24,14 @@ cache:
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -U pip; fi
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -r requirements.txt; fi
 
-.install_ghost: &install_ghost
-  - git clone https://github.com/ZedThree/GHOST.git ${GHOST_DIR}
-  - mkdir -p ${GHOST_BUILD_DIR} && cd ${GHOST_BUILD_DIR}
-  - ../configure --prefix ${GHOST_INSTALL_DIR}
-  - make && make install
-  - cd ${CI_PROJECT_DIR}
+.install_ghost: &install_ghost |
+  if [ ! -d ${GHOST_DIR} ]; then
+    git clone https://github.com/ZedThree/GHOST.git ${GHOST_DIR}
+    mkdir -p ${GHOST_BUILD_DIR} && cd ${GHOST_BUILD_DIR}
+    ../configure --prefix ${GHOST_INSTALL_DIR}
+    make && make install
+  fi
+  cd ${CI_PROJECT_DIR}
 
 .default_script: &default_script
   - sh .ci_scripts/ci_build.sh
