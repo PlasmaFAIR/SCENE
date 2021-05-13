@@ -10,6 +10,7 @@ SCENE requires:
 
 - a F2008 Fortran compiler (tested with gfortran)
 - netCDF Fortran wrapper (https://github.com/Unidata/netcdf-fortran)
+- LAPACK and BLAS
 - the GHOST Fortran graphics library
   (https://github.com/ZedThree/GHOST currently a private repo)
 
