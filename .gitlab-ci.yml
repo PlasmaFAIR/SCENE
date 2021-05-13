@@ -7,6 +7,7 @@ variables: &default_variables
   GIT_SUBMODULE_STRATEGY: recursive
   BASIC_PACKAGES: "environment-modules make git which cmake findutils"
   SCENE_PACKAGES: "netcdf-fortran netcdf-devel netcdf-fortran-devel gcc gcc-gfortran"
+  GHOST_PACKAGES: "libX11-devel libXt-devel"
   PYTHON_PACKAGES: "python python3 python3-pip python3-devel"
   EXTRA_PACKAGES: ""
   WITH_PYTHON: "no"
@@ -15,7 +16,7 @@ variables: &default_variables
   GHOST_INSTALL_DIR: "${CI_PROJECT_DIR}/ghost/build/install"
 
 .install_main_packages: &install_main_packages
-  - dnf install -y ${BASIC_PACKAGES} ${SCENE_PACKAGES} ${PYTHON_PACKAGES} ${EXTRA_PACKAGES}
+  - dnf install -y ${BASIC_PACKAGES} ${SCENE_PACKAGES} ${PYTHON_PACKAGES} ${EXTRA_PACKAGES} ${GHOST_PACKAGES}
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -U pip; fi
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -r requirements.txt; fi
 
