@@ -73,7 +73,7 @@ set(SCENE_SOURCES
 
 target_sources(scene PRIVATE ${SCENE_SOURCES})
 target_link_libraries(scene ghost::ghost netCDF::netcdff)
-target_link_libraries(scene BLAS::BLAS LAPACK::LAPACK)
+target_link_libraries(scene ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 target_link_libraries(scene surfit)
 
 if (SCENE_ENABLE_DOUBLE)
