@@ -10,7 +10,7 @@ variables: &default_variables
   GHOST_PACKAGES: "libX11-devel libXt-devel"
   PYTHON_PACKAGES: "python python3 python3-pip python3-devel"
   EXTRA_PACKAGES: ""
-  WITH_PYTHON: "no"
+  WITH_PYTHON: "yes"
   GHOST_DIR: "${CI_PROJECT_DIR}/ghost"
   GHOST_BUILD_DIR: "${CI_PROJECT_DIR}/ghost/build"
   GHOST_INSTALL_DIR: "${CI_PROJECT_DIR}/ghost/build/install"
