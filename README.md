@@ -18,8 +18,12 @@ SCENE requires:
 To compile SCENE, you need to tell CMake about the location of GHOST:
 
 ```bash
+# Configure the build, telling CMake where to find ghost
 cmake . -B build -DGHOST_ROOT=/path/to/ghost
+# Compile SCENE
 cmake --build build
+# Run the tests
+cmake --build build --target check
 ```
 
 This will create a `scene` executable under `build/bin/`.
