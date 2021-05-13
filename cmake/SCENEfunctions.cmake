@@ -22,3 +22,28 @@ function(scene_inspect_netcdf_config VAR NX_CONFIG ARG)
     set(${VAR} ${NX_CONFIG_OUTPUT} PARENT_SCOPE)
   endif()
 endfunction()
+
+# Copy FILENAME from source directory to build directory
+macro(scene_copy_file FILENAME)
+  configure_file(
+      ${CMAKE_CURRENT_SOURCE_DIR}/${FILENAME}
+      ${CMAKE_CURRENT_BINARY_DIR}/${FILENAME}
+      COPYONLY)
+endmacro()
+
+
+function(scene_add_test TESTNAME TESTFILE)
+  set(multiValueArgs ARGUMENTS FILES)
+  cmake_parse_arguments(SCENE_TEST "" "" "${multiValueArgs}" ${ARGN})
+
+  scene_copy_file("${TESTFILE}")
+
+  if (SCENE_TEST_FILES)
+    foreach (FILE IN ITEMS ${SCENE_TEST_FILES})
+      scene_copy_file("${FILE}")
+    endforeach()
+  endif()
+
+  add_test(NAME ${TESTNAME}
+    COMMAND ./${TESTFILE} ${SCENE_TEST_ARGUMENTS})
+endfunction()

@@ -14,3 +14,11 @@ option(SCENE_ENABLE_DOUBLE "Promotes precisions of real and complex to double" O
 add_subdirectory(lib/dierckx)
 
 add_subdirectory(trunk)
+
+include(CTest)
+if (BUILD_TESTING)
+  add_subdirectory(tests)
+
+  add_custom_target(check
+    COMMAND ctest --output-on-failure)
+endif()
