@@ -24,7 +24,8 @@ variables: &default_variables
   - git clone https://github.com/ZedThree/GHOST.git ${GHOST_DIR}
   - mkdir -p ${GHOST_BUILD_DIR} && cd ${GHOST_BUILD_DIR}
   - ../configure --prefix ${GHOST_INSTALL_DIR}
-  - make -j && make install
+  - make -j; make && make install
+  - cd ${CI_PROJECT_DIR}
 
 .default_script: &default_script
   - sh .ci_scripts/ci_build.sh
