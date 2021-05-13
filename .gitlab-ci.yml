@@ -15,6 +15,10 @@ variables: &default_variables
   GHOST_BUILD_DIR: "${CI_PROJECT_DIR}/ghost/build"
   GHOST_INSTALL_DIR: "${CI_PROJECT_DIR}/ghost/build/install"
 
+cache:
+  paths:
+    - ${GHOST_DIR}
+
 .install_main_packages: &install_main_packages
   - dnf install -y ${BASIC_PACKAGES} ${SCENE_PACKAGES} ${PYTHON_PACKAGES} ${EXTRA_PACKAGES} ${GHOST_PACKAGES}
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -U pip; fi
