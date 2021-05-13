@@ -95,6 +95,7 @@
       subroutine astout(nma,pden,te)
 !     *****************
 !
+      use flux_average, only : flxint
       use param
       implicit none
       integer nma

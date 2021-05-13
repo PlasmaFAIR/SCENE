@@ -1,3 +1,11 @@
+module scene_init
+  implicit none
+
+  private
+  public :: init
+
+contains
+
   subroutine init
 ! ***************
 
@@ -621,3 +629,5 @@ end subroutine init
       u=0.; ixout=0; idout=0
 !
    end subroutine allocmesh
+ 
+end module scene_init

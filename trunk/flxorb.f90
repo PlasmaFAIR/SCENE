@@ -3,10 +3,11 @@
 !  writes data for Ken's orbit calculation code
 
 !
+      use equilibrium, only : bp
       use param
       implicit none
       integer i,j,k
-      double precision bp,fprof
+      double precision fprof
       double precision rr,fsi,psi,btor
       double precision rwall,zwall,rinner,rtst,ztst
       double precision, dimension(:), allocatable:: rk,zk

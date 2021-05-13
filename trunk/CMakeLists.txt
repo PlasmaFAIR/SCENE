@@ -50,6 +50,7 @@ set(SCENE_SOURCES
   getdata.f90
   getrho.f
   gfile.f90
+  ghost_interface.f90
   graphs.f90
   gs2.f90
   helena.f90

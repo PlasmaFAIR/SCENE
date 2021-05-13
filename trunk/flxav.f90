@@ -1,3 +1,6 @@
+module flux_average
+  implicit none
+contains
       subroutine flxav
 !     ****************
 !
@@ -6,6 +9,7 @@
 !  of the bootstrap current; also evaluates G-S current, pressure
 !  and temperature on each flux surface.
 !
+      use hirsig_mod, only : conlen, hirsig
       use param
       implicit none
       integer k,i,ip,im,l
@@ -605,3 +609,4 @@
    end subroutine flxint
 !
 !***************************************************************
+ end module flux_average

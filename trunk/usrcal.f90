@@ -1,4 +1,5 @@
 module usrcal_mod
+  implicit none
 contains
   subroutine usrcal
     !     *****************

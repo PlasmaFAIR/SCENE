@@ -5,10 +5,11 @@
 !
 !----------------------------------------------------------------------
 !
+      use equilibrium, only : bp
       use param
       implicit none
       double precision ptab(ncon),fptab(ncon),ftab(ncon)
-      double precision press,fprof,bp
+      double precision press,fprof
       double precision bvac0,bvacg,bet0,betg,b0,b0g
       double precision psimin,psimax,dpsi,psi,psih
       double precision fsi,pt

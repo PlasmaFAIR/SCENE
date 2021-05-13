@@ -814,6 +814,7 @@
 !   if ipass>0 uses psi mesh set up from previous eqbm. generation.
 !
       use param
+      use scene_errors
       implicit none
       integer id,ij,j,im,i0,ip
       double precision psi,fprof

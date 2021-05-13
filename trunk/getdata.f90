@@ -1,13 +1,16 @@
+module getdata_mod
+  implicit none
+contains
 subroutine getdata
 
   ! Puts data in the needed in the output file
 
-
+  use equilibrium, only : bp
   use param
   implicit none
 
   double precision :: rr, zz, rat
-  double precision :: fprof, tempe, tempi, psi, bp, B_tor, B_tot
+  double precision :: fprof, tempe, tempi, psi, B_tor, B_tot
   double precision :: press, densi, dense, safety, ffp, fsi, pp, bsmean
   double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2, jnb, jbs
   double precision :: flux_r, flux_z, te
@@ -767,6 +770,4 @@ subroutine vessel()
 
 end subroutine vessel
 
-        
-
-     
+end module getdata_mod        

@@ -5,6 +5,7 @@ subroutine geqdsk
   ! extended by one grid space on all sides psi (nr,nz) -> psi(nr+2,nz+2)
   ! Uses surfit.f from dierckx to fit a surface inside the boundary to
   ! extend psi out to the edge of the box
+  use equilibrium, only : extrap2
   use param
   implicit none
 

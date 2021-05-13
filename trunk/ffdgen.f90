@@ -1,3 +1,7 @@
+module ff_mod
+  implicit none
+contains
+
       subroutine ffdgen(i,icur,errcur)
 !     ********************************
 !
@@ -110,3 +114,5 @@
         write(77,*)' psi=',psiold(k),' g=',gst(k)
       end do
    end subroutine ffdgen
+
+end module ff_mod

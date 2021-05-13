@@ -1,3 +1,8 @@
+module equilibrium
+  implicit none
+
+contains
+
 subroutine equil(niter)
 
   !----------------------------------------------------------------------
@@ -957,7 +962,7 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision cval,rhs,ptot
+      double precision cval,ptot
       integer i,j,ip,n0
 !
 ! evaluate total current
@@ -1325,7 +1330,7 @@ end subroutine equil
       implicit none
       double precision drsq,rr,riph,rimh,ub,residb
       double precision zz,uc,rhsc,cc,others,ua,resida
-      double precision uf,dist,del,resid,rhs
+      double precision uf,dist,del,resid
       double precision ur,ul,fd,fdd,rpeak,rl,upr,upeak
       integer ni,i,j,iax,jax,nn
 !
@@ -1618,7 +1623,7 @@ end subroutine equil
       double precision rc,dudz,dudr
       integer nrg,nzg
       double precision rg(nrg),zg(nzg),v(nrg,nzg)
-      double precision drg,dzg,brc,bzc,bth,bp,zc
+      double precision drg,dzg,brc,bzc,bth,zc
 !
       drg=rg(2)-rg(1)
       dzg=zg(2)-zg(1)
@@ -1654,3 +1659,4 @@ end subroutine equil
  end subroutine valbth2
 !
 !*****************************************************************
+end module equilibrium

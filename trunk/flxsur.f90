@@ -1,3 +1,6 @@
+module flux_surface
+  implicit none
+contains
       subroutine flxsur
 !     *****************
 !
@@ -50,6 +53,7 @@
 !  used in the Grad-Shafranov solver...ie max on axis, zero at edge)
 !
       use param
+      use scene_errors
       implicit none
       double precision uval,epsi
       integer k
@@ -138,12 +142,13 @@
 !  calculates the path of the flux surface labelled by k.
 !  these are loaded into flxr,flxz and icon labels the number of points
 !
+      use equilibrium, only : bp
       use param
       implicit none
 !
       integer is,ic,izz,ilor,iupr,ir,icon,igot,jpt,i,kc,jc,k
       integer irem,im,ip,nrc,nzc
-      double precision psi,un,uval,ul,rr,zz,prod,rgot,zgot,bp,curint
+      double precision psi,un,uval,ul,rr,zz,prod,rgot,zgot,curint
       double precision flxr(nr*nz),flxz(nr*nz)
       double precision rl(nr*nz),zl(nr*nz),leng(nr*nz),work(nr*nz)
       double precision r_temp(nr*nz),z_temp(nr*nz)
@@ -562,3 +567,5 @@
 !!$        end do
 !!$      end do
 !!$      deallocate( rcof, zcof)
+ end module flux_surface
+ 

@@ -3,13 +3,14 @@
 !
 ! writes out flux surface data file for use in bandit
 !
+      use equilibrium, only : bp
       use param
       implicit none
       double precision fax,baxis,dpsi,psi,rat,rr,zz,bth,fsi,bphi,bt,bmod
       double precision psi1,psi2,rn1,ri1,rn2,ri2,vint,aint
       double precision drl,dzl,dl
       double precision psiban(ncon)
-      double precision fprof,bp
+      double precision fprof
       double precision rban(npts,ncon),zban(npts,ncon),btban(npts,ncon)
       double precision bban(npts,ncon),sban(npts,ncon)
       double precision circ(ncon),qban(ncon),vban(ncon),aban(ncon)

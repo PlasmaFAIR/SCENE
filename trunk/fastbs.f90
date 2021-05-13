@@ -1,3 +1,7 @@
+module bootstap
+  implicit none
+
+contains
       subroutine fastbs
 !     *****************
 !
@@ -156,3 +160,5 @@
       pdal=7.0e-27*(f1d*f1+f2d*f2)*falnum*amass
       return
    end subroutine pdgen
+
+end module bootstap

@@ -1,3 +1,6 @@
+module nbi_mod
+  implicit none
+contains
 subroutine nbicur()
 
   use param
@@ -510,3 +513,5 @@ subroutine trapfact(l31)
 
 
     end subroutine trapfact
+
+end module nbi_mod

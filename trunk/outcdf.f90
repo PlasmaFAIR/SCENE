@@ -1,3 +1,7 @@
+module netcdf_interface
+  implicit none
+contains
+
 subroutine write_netcdf()
   ! File ot write SCENE output to NETCDF format
   ! Initially focused for writing gs2 output
@@ -637,3 +641,4 @@ subroutine check(status)
   end if
 end subroutine check
        
+end module netcdf_interface

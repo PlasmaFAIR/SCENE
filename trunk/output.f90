@@ -1,3 +1,6 @@
+module output_mod
+  implicit none
+contains
       subroutine output
 !     *****************
 !
@@ -91,13 +94,14 @@
 !   Calculates beta value as a percentage.
 !   Also calculates different definitions of poloidal beta.
 !
+      use equilibrium, only : bp
       use param
       implicit none
 !
       double precision bptot,ptota,ptotv,btotv
       double precision arg,pden,zni, efus, xsec
       double precision rr,zz,uu,p,psi,dalf
-      double precision press,densi,dense,tempe,tempi,fprof,bp
+      double precision press,densi,dense,tempe,tempi,fprof
       double precision te,ti,ne,dion,rat
       double precision bth,bphi,btot,bvacu,psicut
       double precision pimp3
@@ -308,3 +312,5 @@
 !  plasma volume
       vol=2.*pi*vol
   end subroutine betas
+
+end module output_mod

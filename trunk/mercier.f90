@@ -4,6 +4,7 @@
 !  Calculates various flux surface averages, including the Mercier
 !  coefficient, on flux surface label nf: 1<nf<ncon
 !
+      use flux_average, only : flxint
       use param
       implicit none
       integer i,nf
