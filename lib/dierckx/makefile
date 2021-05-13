@@ -14,7 +14,8 @@ EXE= libsurfit.a
 
 DEBUG = #-heap-arrays -g -traceback -check bounds -check arg_temp_created -warn interface
 #OPTIMIZE = # -O3
-COMPILE = $(F90) -c $(OPTIMIZE) $(DEBUG)
+DOUBLE    = -fdefault-double-8 -fdefault-real-8  #-r8 -d8 #-qautodbl=dblpad
+COMPILE = $(F90) -c $(OPTIMIZE) $(DEBUG) $(DOUBLE)
 LOAD = ar rc  
 
 
