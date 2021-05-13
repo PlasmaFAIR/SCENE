@@ -40,12 +40,12 @@ OBJ_NB=$(SRC_NB:.f=.o)
 OBJS_1= $(SRCS:.f90=.o)
 OBJS=$(OBJS_1:.f=.o)
 INPUT=
-INCLUDE=  -I$(YORK_NETCDF_DIR)/include 
+INCLUDE=  -I$(SCENE_NETCDF_DIR)/include
 LIBRARIES =  \
  -llapack \
  -lblas \
- -L$(YORK_GHOST_DIR)/lib -lghost -lgrid_xghost \
- -L$(YORK_NETCDF_DIR)/lib -lnetcdff -lnetcdf \
+ -L$(SCENE_GHOST_DIR)/lib -lghost -lgrid_xghost \
+ -L$(SCENE_NETCDF_DIR)/lib -lnetcdff -lnetcdf \
  -L../lib -lsurfit \
 # -lgcvfull
 
@@ -66,7 +66,7 @@ DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check -g -fbacktrace # -heap-array
 OPTIMIZE  = #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
-DOUBLE    = #-r8 -d8 #-qautodbl=dblpad
+DOUBLE    = -fdefault-double-8 -fdefault-real-8  #-r8 -d8 #-qautodbl=dblpad
 LIN       = # -YEXT_NAMES=LCS -B108
 COMPILE   = $(F90) -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)  $(INCLUDE)
 LOAD      = $(F90) $(SPECIAL) -o $(CMD) $(LIBS)
@@ -80,7 +80,7 @@ all: $(CMD)
 	@echo
 	@echo ">>  `date '+%a %d-%h-%y %r'`  `pwd`  `uname -mns`  $(LOGNAME)"
 
-$(CMD):         $(OBJS) 
+$(CMD): libsurfit $(OBJS)
 	$(LOAD) $(OBJS) $(LIBRARIES)
 	chmod 755 $(CMD)
 
@@ -98,3 +98,5 @@ nbscene:	$(OBJ_NB)
 	$(LOAD_NB) $(OBJ_NB) $(LIBRARIES)
 	chmod 755 $(CMD_NB)
 
+libsurfit:
+	make -C ../lib/dierckx
