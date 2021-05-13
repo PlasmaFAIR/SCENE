@@ -75,6 +75,8 @@ target_sources(scene PRIVATE ${SCENE_SOURCES})
 target_link_libraries(scene ghost::ghost netCDF::netcdff)
 target_link_libraries(scene ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 target_link_libraries(scene surfit)
+set_target_properties(scene PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 if (SCENE_ENABLE_DOUBLE)
   target_compile_options(scene PUBLIC

@@ -13,13 +13,26 @@ SCENE requires:
 - LAPACK and BLAS
 - the GHOST Fortran graphics library
   (https://github.com/ZedThree/GHOST currently a private repo)
+- CMake
 
-To compile SCENE, you need to set two variables that point at the
-install locations of the above two libraries:
+To compile SCENE, you need to tell CMake about the location of GHOST:
 
 ```bash
-  make SCENE_GHOST_DIR=/path/to/ghost/install \
-       SCENE_NETCDF_DIR=/path/to/netcdf/install
+cmake . -B build -DGHOST_ROOT=/path/to/ghost
+cmake --build build
 ```
 
-This will create a `scene` executable under `trunk/`
+This will create a `scene` executable under `build/bin/`.
+
+You also need to tell CMake about the location of the other
+libraries. You can do that through the below variables using the
+syntax `-D<variable>=/path/to/library`:
+
+- NetCDF: `netCDFFortran_ROOT` for the Fortran API, and `netCDF_ROOT`
+  for the base C library.
+    - Note: for some operating systems that put Fortran modules in an
+      related location to the headers/libraries, such as Fedora, you
+      may also need to set `netCDF_Fortran_INCLUDE_DIR` to the
+      directory containing `netcdf.mod`
+- BLAS: `BLAS_ROOT`
+- LAPACK: `LAPACK_ROOT`
