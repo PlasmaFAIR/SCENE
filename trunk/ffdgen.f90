@@ -28,12 +28,14 @@ contains
       use param
       use profiles_mod, only : fprof, press
       implicit none
-      integer k,i,icur,kmax
-      double precision psi,eps
-      double precision gmax,gold,errcur,gtst,err,errel,err1
-      double precision extapp,extapp2,bavg
-      double precision f,ffd,fd,pd,jedge,fval
-      double precision fcen,bavcen,t3
+      integer, intent(in) :: i, icur
+      double precision, intent(out) :: errcur
+      integer :: k, kmax
+      double precision :: psi,eps
+      double precision :: gmax,gold,gtst,err,errel,err1
+      double precision :: extapp,extapp2,bavg
+      double precision :: f,ffd,fd,pd,jedge,fval
+      double precision :: fcen,bavcen,t3
 !
       gmax=0.
       do k=1,ncon
