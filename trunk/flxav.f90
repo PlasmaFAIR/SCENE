@@ -10,8 +10,10 @@ contains
 !  and temperature on each flux surface.
 !
       use hirsig_mod, only : conlen, hirsig
+      use hirsh_mod, only : hirsh
       use param
       use profiles_mod, only : dense, densi, fprof, press, tempe, tempi
+      use signeo_mod, only : signeo
       implicit none
       integer k,i,ip,im,l
       double precision ffp,pd

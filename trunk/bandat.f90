@@ -1,3 +1,6 @@
+module bandat_output
+  implicit none
+contains
       subroutine bandat
 !     *****************
 !
@@ -158,3 +161,4 @@
       return
       end subroutine bandat
 !
+end module bandat_output

@@ -1,3 +1,6 @@
+module lynton_output
+  implicit none
+contains
       subroutine lynton
 !     *****************
 !
@@ -34,3 +37,4 @@
 10    format(4e14.5)
       close(nh)
   end subroutine lynton
+end module lynton_output

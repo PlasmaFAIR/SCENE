@@ -1,3 +1,7 @@
+module toms790
+  implicit none
+contains
+
 SUBROUTINE CSHEP2 (N,X,Y,F,NC,NW,NR, LCELL,LNEXT,XMIN,YMIN,DX,DY,RMAX,RW,A,IER)
 
 !*****************************************************************************80
@@ -2424,4 +2428,6 @@ subroutine timestamp ( )
     d, trim ( month(m) ), y, h, ':', n, ':', s, '.', mm, trim ( ampm )
 
   return
-end
+end subroutine timestamp
+
+end module toms790

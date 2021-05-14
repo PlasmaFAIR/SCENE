@@ -1,3 +1,6 @@
+module bandit_output
+  implicit none
+contains
       subroutine bandit
 !     *****************
 !
@@ -5,6 +8,7 @@
 !
       use param
       use profiles_mod, only : fprof
+      use toms790, only : CSHEP2, CS2VAL
       implicit none
       double precision br(nr,nz),bz(nr,nz),bt(nr,nz)
       double precision, dimension(:), allocatable::  x,y,f
@@ -15,7 +19,6 @@
       integer, allocatable:: LCELL(:,:), LNEXT(:)
       double precision:: XMIN, YMIN, DX, DY, RMAX
       double precision, allocatable:: RW(:), A(:,:)
-      double precision, external:: CS2VAL
       integer:: NCC, NRR, NWW
 !
 !
@@ -215,3 +218,4 @@
  20   format('r/a=',e12.4,' current=',e12.4,' MA, n=',e12.4,' m**-3, Te=',e12.4,' keV')
       close(76)
 end subroutine curplt
+end module bandit_output

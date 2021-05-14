@@ -13,6 +13,7 @@ contains
       use equilibrium, only : bp, valbth2
       use param
       use profiles_mod, only : dense, densi, fprof, press, tempi, tempe, dpsidrho, shift
+      use toms790, only : CSHEP2, CS2VAL
       implicit none
 !
       integer ndsk,k,nspec,kk,ik
@@ -38,7 +39,6 @@ contains
       integer, allocatable:: LCELL(:,:), LNEXT(:)
       double precision:: XMIN, YMIN, DX, DY, RMAX
       double precision, allocatable:: RW(:), A(:,:)
-      double precision, external:: CS2VAL
       integer:: NCC, NRR, NWW
 !
       do k=2,ncon-1

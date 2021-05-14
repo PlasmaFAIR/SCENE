@@ -10,6 +10,7 @@ subroutine equil(niter)
   !----------------------------------------------------------------------
   !
   use param
+  use toms790, only : CSHEP2, CS2VAL
   implicit none
   integer i,j,k,n0,iax,jax,jm,nr1,nz1,ncon1,ij,ifail,npt,niter,igo
   double precision x,y,f,rm1,sf,dpsi
@@ -24,7 +25,6 @@ subroutine equil(niter)
   integer, allocatable:: LCELL(:,:), LNEXT(:)
   double precision:: XMIN, YMIN, DX, DY, RMAX
   double precision, allocatable:: RW(:), A(:,:)
-  double precision, external:: CS2VAL
   integer:: NCC, NRR, NWW
 
   !
@@ -1016,6 +1016,7 @@ end subroutine equil
 !     ******************
 !
       use param
+      use toms790, only : CSHEP2, CS2VAL
       implicit none
       double precision, dimension(:), allocatable::  x,y,f
       double precision, dimension(:,:), allocatable:: grads
@@ -1025,7 +1026,6 @@ end subroutine equil
       integer, allocatable:: LCELL(:,:), LNEXT(:)
       double precision:: XMIN, YMIN, DX, DY, RMAX
       double precision, allocatable:: RW(:), A(:,:)
-      double precision, external:: CS2VAL
       integer:: NCC, NRR, NWW
       logical :: debug
 

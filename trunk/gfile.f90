@@ -1,3 +1,6 @@
+module gfile_output
+  implicit none
+contains
       subroutine gfile
 !     ****************
 !
@@ -134,3 +137,4 @@
       close(lun)
       return
     end subroutine gfile
+end module gfile_output  

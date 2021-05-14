@@ -1,3 +1,6 @@
+module signeo_mod
+  implicit none
+contains
       subroutine signeo(rnust,ft,zeff,sigfac)
 !     ***************************************
 !
@@ -46,3 +49,4 @@
       end do
       sigfac=sigfac*8./(3.*sqrt(pi))
    end subroutine signeo
+end module signeo_mod

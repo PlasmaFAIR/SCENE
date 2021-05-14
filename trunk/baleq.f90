@@ -11,6 +11,7 @@ contains
       use equilibrium, only : bp
       use param
       use profiles_mod, only : fprof, press
+      use toms790, only : CSHEP2, CS2VAL
       implicit none
       double precision ptab(ncon),fptab(ncon),ftab(ncon)
       double precision bvac0,bvacg,bet0,betg,b0,b0g
@@ -30,7 +31,6 @@ contains
      integer, allocatable:: LCELL(:,:), LNEXT(:)
      double precision:: XMIN, YMIN, DX, DY, RMAX
      double precision, allocatable:: RW(:), A(:,:)
-     double precision, external:: CS2VAL
      integer:: NCC, NRR, NWW
      !
      logical :: debug

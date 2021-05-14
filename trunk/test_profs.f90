@@ -1,3 +1,6 @@
+module test_profs
+  implicit none
+contains
       subroutine tester
 !     *****************
 !
@@ -21,5 +24,5 @@
         write(26,*)' pp=',pp,' pd=',pd
         write(26,*)' ppp=',ppp,' pdd=',pdd
       end do
-      return
-      end
+    end subroutine tester
+end module test_profs

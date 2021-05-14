@@ -1,3 +1,6 @@
+module astradat_output
+  implicit none
+contains
       subroutine astradat
 !     *******************
 !
@@ -319,3 +322,4 @@
       close(nwr)
       return
  end subroutine astout
+end module astradat_output

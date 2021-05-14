@@ -1,3 +1,6 @@
+module chease_output
+  implicit none
+contains
       subroutine chease_dat
 !     *********************
 !
@@ -92,3 +95,4 @@
       end do
       return
   end subroutine chease_dat
+end module chease_output

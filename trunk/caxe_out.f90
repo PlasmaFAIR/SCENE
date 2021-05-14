@@ -1,3 +1,6 @@
+module caxe_output
+  implicit none
+contains
       subroutine caxout
 !     *****************
 !
@@ -34,3 +37,4 @@
       end do
       return
  end subroutine caxout
+end module caxe_output
