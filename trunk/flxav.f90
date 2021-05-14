@@ -1,3 +1,6 @@
+module flux_average
+  implicit none
+contains
       subroutine flxav
 !     ****************
 !
@@ -6,10 +9,14 @@
 !  of the bootstrap current; also evaluates G-S current, pressure
 !  and temperature on each flux surface.
 !
+      use hirsig_mod, only : conlen, hirsig
+      use hirsh_mod, only : hirsh
       use param
+      use profiles_mod, only : dense, densi, fprof, press, tempe, tempi
+      use signeo_mod, only : signeo
       implicit none
       integer k,i,ip,im,l
-      double precision fprof,press,ffp,pd
+      double precision ffp,pd
       double precision ant,bmod,bphi,bsq,bth,dl
       double precision eps,erribm,fsi,psi,pt,rint,rnor,root,rr,zz
       double precision drdl,d2rdl2,dzdl,d2zdl2
@@ -21,7 +28,6 @@
       double precision riar(npts), risar(npts),rar(npts),avblir(npts)
       double precision sfloc(npts),colop(npts),vpparr(npts)
       double precision bmax(ncon),bmin(ncon)
-      double precision tempe,tempi,dense,densi
       double precision te,ti,tau,coolog,bfac,epsfac,ratio,pro,rt, &
                        topcol,botcol,colte,vthe,colti,vthi,zni
       double precision binv,dst,bigint,bigint2,rla,btot,rlag,bp
@@ -605,3 +611,4 @@
    end subroutine flxint
 !
 !***************************************************************
+ end module flux_average

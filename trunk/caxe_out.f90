@@ -1,3 +1,6 @@
+module caxe_output
+  implicit none
+contains
       subroutine caxout
 !     *****************
 !
@@ -5,10 +8,10 @@
 ! MHD stability code
 !
       use param
+      use profiles_mod, only : fprof, press
       implicit none
       integer i,nh
       double precision psi,pp,pf,qr,cu,bv0
-      double precision press,fprof
 !
       nh=117
       open(unit=nh,file=runname(1:lrunname)//'.caxe', &
@@ -34,3 +37,4 @@
       end do
       return
  end subroutine caxout
+end module caxe_output

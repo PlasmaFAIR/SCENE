@@ -1,3 +1,10 @@
+module hirsig_mod
+  implicit none
+
+  private
+  public :: conlen, erfun, hirsig
+
+contains
       subroutine coltim(k)
 !     *****************
 !
@@ -47,6 +54,7 @@
 !  calculates the connection length (Rq in large aspect ratio)
 !
       use param
+      use scene_errors
       implicit none
 
       integer k,kmax,i,iskip,ip,ks
@@ -322,9 +330,9 @@
 !
       use param
       use coldat
+      use profiles_mod, only : tempe, dense, tempi, densi
       implicit none
-!
-      double precision tempe,dense,tempi,densi
+
       double precision psi,fc,fsi,conl,dotav,bsq,bstrap,aspin
       double precision ft
       double precision pda,v1a,v2a
@@ -523,7 +531,7 @@
       double precision fc,vmax,dv
       double precision vtha,omta,vsttau,fac1,fac2
       double precision ft,conl,dotav,bsq,aspin
-      double precision gov,phig,y,vv,vtij,vdij,arg
+      double precision y,vv,vtij,vdij,arg
       integer nv,i,n,j,k
 !
 
@@ -595,3 +603,5 @@
 !!$                ' mu2=',vis(1,2)*(fc/ft)/(dn(i)*sm(i)),  &
 !!$                ' mu3=',vis(1,3)*(fc/ft)/(dn(i)*sm(i))
   end subroutine viscos
+
+end module hirsig_mod

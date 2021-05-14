@@ -1,3 +1,11 @@
+module scene_init
+  implicit none
+
+  private
+  public :: init
+
+contains
+
   subroutine init
 ! ***************
 
@@ -176,10 +184,11 @@ end subroutine init
 !
       use param
       use balpar
+      use profiles_mod, only : press
       implicit none
       character(len=4) word
       double precision val,rlo,zlo
-      double precision press,psiax
+      double precision psiax
       integer ival,i
       integer inr,inz
       integer ndatpt,nndatpt,ntdatpt
@@ -621,3 +630,5 @@ end subroutine init
       u=0.; ixout=0; idout=0
 !
    end subroutine allocmesh
+ 
+end module scene_init

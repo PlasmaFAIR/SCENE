@@ -1,13 +1,16 @@
+module lynton_output
+  implicit none
+contains
       subroutine lynton
 !     *****************
 !
 !  Generates various paramters for Lynton for fast particle physics studies.
 !
       use param
+      use profiles_mod, only : dense, densi, tempi
       implicit none
       integer i,nh,j
       double precision nelec,nion,psi,ss,mdens,tion
-      double precision dense,densi,tempi
 !
       nh=229
 !!$      open(unit=nh,file=runname(1:lrunname)//'.lynton', &
@@ -34,3 +37,4 @@
 10    format(4e14.5)
       close(nh)
   end subroutine lynton
+end module lynton_output

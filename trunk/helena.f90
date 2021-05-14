@@ -1,3 +1,6 @@
+module helena_output
+  implicit none
+contains
       subroutine helena
 !     *****************
 !
@@ -5,11 +8,12 @@
 !  11/4/01
 !
       use param
+      use profiles_mod, only : fprof, press
       implicit none
       integer nh,ishape,mharm,imesh,ias,igam,ipai,npr1,npl1,nchi
       integer i,n1,n2,n3,n4,nh1
       double precision quadh,rhalf,zup,arg
-      double precision press,fprof,amix,rat
+      double precision amix,rat
       double precision psi,dpsi,pp0,ffp0,bv0,bb,gampsi,xv(ncon),yv(ncon),yv2(ncon)
 !
 ! Evaluate quadracity
@@ -135,3 +139,4 @@
       write(nh,*)' '
       !write(6,*)' out helena'
    end subroutine helena
+end module helena_output

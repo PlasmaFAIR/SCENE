@@ -1,12 +1,17 @@
+module flxorb_output
+  implicit none
+contains
       subroutine flxorb
 !     -----------------
 !  writes data for Ken's orbit calculation code
 
 !
+      use equilibrium, only : bp
       use param
+      use profiles_mod, only : fprof
+      use toms790, only : CSHEP2, CS2VAL
       implicit none
       integer i,j,k
-      double precision bp,fprof
       double precision rr,fsi,psi,btor
       double precision rwall,zwall,rinner,rtst,ztst
       double precision, dimension(:), allocatable:: rk,zk
@@ -22,7 +27,6 @@
       integer, allocatable:: LCELL(:,:), LNEXT(:)
       double precision:: XMIN, YMIN, DX, DY, RMAX
       double precision, allocatable:: RW(:), A(:,:)
-      double precision, external:: CS2VAL
       integer:: NCC, NRR, NWW
 !
       open(unit=51,file=runname(1:lrunname)//'.flxorb', &
@@ -239,3 +243,4 @@
       end do
       return
    end subroutine flxorb
+end module flxorb_output

@@ -1,3 +1,8 @@
+module equilibrium
+  implicit none
+
+contains
+
 subroutine equil(niter)
 
   !----------------------------------------------------------------------
@@ -5,6 +10,7 @@ subroutine equil(niter)
   !----------------------------------------------------------------------
   !
   use param
+  use toms790, only : CSHEP2, CS2VAL
   implicit none
   integer i,j,k,n0,iax,jax,jm,nr1,nz1,ncon1,ij,ifail,npt,niter,igo
   double precision x,y,f,rm1,sf,dpsi
@@ -19,7 +25,6 @@ subroutine equil(niter)
   integer, allocatable:: LCELL(:,:), LNEXT(:)
   double precision:: XMIN, YMIN, DX, DY, RMAX
   double precision, allocatable:: RW(:), A(:,:)
-  double precision, external:: CS2VAL
   integer:: NCC, NRR, NWW
 
   !
@@ -957,7 +962,7 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision cval,rhs,ptot
+      double precision cval,ptot
       integer i,j,ip,n0
 !
 ! evaluate total current
@@ -1011,6 +1016,7 @@ end subroutine equil
 !     ******************
 !
       use param
+      use toms790, only : CSHEP2, CS2VAL
       implicit none
       double precision, dimension(:), allocatable::  x,y,f
       double precision, dimension(:,:), allocatable:: grads
@@ -1020,7 +1026,6 @@ end subroutine equil
       integer, allocatable:: LCELL(:,:), LNEXT(:)
       double precision:: XMIN, YMIN, DX, DY, RMAX
       double precision, allocatable:: RW(:), A(:,:)
-      double precision, external:: CS2VAL
       integer:: NCC, NRR, NWW
       logical :: debug
 
@@ -1325,7 +1330,7 @@ end subroutine equil
       implicit none
       double precision drsq,rr,riph,rimh,ub,residb
       double precision zz,uc,rhsc,cc,others,ua,resida
-      double precision uf,dist,del,resid,rhs
+      double precision uf,dist,del,resid
       double precision ur,ul,fd,fdd,rpeak,rl,upr,upeak
       integer ni,i,j,iax,jax,nn
 !
@@ -1453,8 +1458,9 @@ end subroutine equil
       !  returns rhs of g-s equation
 !
       use param
+      use profiles_mod, only : fprof, press
       implicit none
-      double precision pd,ffp,rjphi,rhs,psi,rv,uu,press,fprof
+      double precision pd,ffp,rjphi,rhs,psi,rv,uu
 !
       ! Note -sign as u=psi_a-psi
       psi=umax-uu
@@ -1618,7 +1624,7 @@ end subroutine equil
       double precision rc,dudz,dudr
       integer nrg,nzg
       double precision rg(nrg),zg(nzg),v(nrg,nzg)
-      double precision drg,dzg,brc,bzc,bth,bp,zc
+      double precision drg,dzg,brc,bzc,bth,zc
 !
       drg=rg(2)-rg(1)
       dzg=zg(2)-zg(1)
@@ -1654,3 +1660,4 @@ end subroutine equil
  end subroutine valbth2
 !
 !*****************************************************************
+end module equilibrium

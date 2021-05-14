@@ -1,4 +1,5 @@
 module usrcal_mod
+  implicit none
 contains
   subroutine usrcal
     !     *****************
@@ -7,15 +8,23 @@ contains
     !  made from here.....the equilibrium is now converged to the required
     !  accuracy.
     !
-    use param
+    use ballon_mod, only : balloon
     use balpar
-    use ballon_mod
+    use elite_output, only : elite_data, elite2_data
+    use ext_current_mod, only : extj
+    use geqdsk_output, only : geqdsk
+    use gs2_output, only : gs2
+    use helena_output, only : helena
+    use idball_output, only : baleq
+    use mercier_output, only : mercier
+    use param
+    use peqdsk_output, only : peqdsk
+    use profiles_mod, only : dense, densi, fprof, tempe, tempi
+    use tokameq_output, only : tokameq
     implicit none
     integer icur,i,n1,n2,j
     double precision extapp,extapp2,rat,scale,eps
-    double precision fprof
-    double precision psi1,psi2,eps1,eps2,temp0,temp1,temp2,tempi,psi
-    double precision tempe,dense,densi
+    double precision psi1,psi2,eps1,eps2,temp0,temp1,temp2,psi
     double precision tlen(ncon),epsn(ncon),psinorm(ncon)
     double precision arr0(ncon),arr1(ncon),arr2(ncon),arr3(ncon),arr4(ncon)
     double precision pow(3,ncon),pprof(3,ncon),ptprof(ncon)

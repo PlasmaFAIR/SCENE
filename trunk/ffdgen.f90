@@ -1,3 +1,7 @@
+module ff_mod
+  implicit none
+contains
+
       subroutine ffdgen(i,icur,errcur)
 !     ********************************
 !
@@ -20,12 +24,13 @@
 !!$     &,itot,powj,scl,nco,p0,bpfac,zmai,aj
 !!$      common/mesh/r(400),z(400),dr,dz,nr,nz,nsym
 !!$      dimension ixout(400,400),gstk(50)
+      use ext_current_mod, only : extj
       use param
+      use profiles_mod, only : fprof, press
       implicit none
       integer k,i,icur,kmax
       double precision psi,eps
       double precision gmax,gold,errcur,gtst,err,errel,err1
-      double precision fprof,press
       double precision extapp,extapp2,bavg
       double precision f,ffd,fd,pd,jedge,fval
       double precision fcen,bavcen,t3
@@ -110,3 +115,5 @@
         write(77,*)' psi=',psiold(k),' g=',gst(k)
       end do
    end subroutine ffdgen
+
+end module ff_mod

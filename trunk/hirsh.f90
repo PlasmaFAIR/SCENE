@@ -1,3 +1,6 @@
+module hirsh_mod
+  implicit none
+contains
       subroutine hirsh(psi,rj0,x,bsq,k,bstrap)
 !     **********************************************
 !
@@ -8,8 +11,9 @@
 !  current)
 !
       use param
+      use profiles_mod, only : tempe, tempi, dense, densi
       implicit none
-      double precision tempe,tempi,dense,densi
+
       double precision ted,te,tid,ti,ne,tau,zni,zeff,zb
       double precision pe,pip,ped,pid,ned,znid,dox
       double precision rl310,rl320,alfi0
@@ -88,3 +92,4 @@
       write(6,*)' l310=',rl310,' l31=',rl31,' f1=',f1,' a13=',a13
       write(6,*)' b13=',b13,' c13=',c13,' zm=',zm,' tnue=',tnue(k),' cnue=',cnue(k)
     end  subroutine hirsh
+end module hirsh_mod

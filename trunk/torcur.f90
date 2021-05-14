@@ -1,15 +1,20 @@
+module toroidal_current_mod
+  implicit none
+contains
       subroutine torcur(icur)
 !     ***********************
 !
 !  This subroutine calculates the toroidal current profiles of the
 !  input, bootstrap, diamagnetic and pfirsch-schluter components.
 !
+      use ext_current_mod, only : extj
+      use equilibrium, only : bp
       use param
+      use profiles_mod, only : press, fprof
       implicit none
 !
       integer i,j,k,ik,icur,jcur
       double precision rr,zz,psi,bth,pd,fsi,ffd,fd,bphi,bsq,bmod
-      double precision press,fprof,bp
       double precision rat,bsmean,bstrap,eps,bra,absj,neubeam
       double precision extapp,extapp2,spitc,extapp3
       logical :: debug
@@ -122,3 +127,4 @@
   end subroutine torcur
 !
 !**********************************************************************
+end module toroidal_current_mod

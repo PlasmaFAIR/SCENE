@@ -9,11 +9,11 @@ contains
     !  nup is calculated already in flxav
 
     !
-    use param
     use balpar
+    use param
+    use profiles_mod, only : fprof, press
     implicit none
     integer nf,i,ip,im,k,j,ichi,jpass,kpass,ii
-    double precision fprof,press
     double precision fbal(2*npts*nturns,2),xipar(2*npts*nturns)
     double precision fdbal(2*npts*nturns,2)
     double precision yp(npts),xp(npts)

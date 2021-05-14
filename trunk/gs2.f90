@@ -1,3 +1,6 @@
+module gs2_output
+  implicit none
+contains
       subroutine gs2
 !     --------------
 !
@@ -7,13 +10,16 @@
 !  HRW 22/05/03
 !
 !
+      use equilibrium, only : bp, valbth2
       use param
+      use profiles_mod, only : dense, densi, fprof, press, tempi, tempe, dpsidrho, shift
+      use toms790, only : CSHEP2, CS2VAL
       implicit none
 !
       integer ndsk,k,nspec,kk,ik
-      double precision dense,psi,zeff,zni19,ne19,fprof,press,tempi,tempe
-      double precision dshafr, shafr, rmaj, rmin, shift, epsil, beta_gs2
-      double precision densi,bp, coolog, vss, ti, ni, ti_p, ni_p
+      double precision psi,zeff,zni19,ne19
+      double precision dshafr, shafr, rmaj, rmin, epsil, beta_gs2
+      double precision coolog, vss, ti, ni, ti_p, ni_p
       double precision coll, nref, tref, bcentr
       double precision zmag,rat,px,py,deltar,deltaz,pf,fsqedg
       double precision yp1,yp2
@@ -33,7 +39,6 @@
       integer, allocatable:: LCELL(:,:), LNEXT(:)
       double precision:: XMIN, YMIN, DX, DY, RMAX
       double precision, allocatable:: RW(:), A(:,:)
-      double precision, external:: CS2VAL
       integer:: NCC, NRR, NWW
 !
       do k=2,ncon-1
@@ -471,3 +476,4 @@
 !!$      write(ndsk,*)' fprim:',(umax/dense(psi,0))*dense(psi,1)
 !!$      write(ndsk,*)' vnewk: waiting for formula'
 !!$      close(ndsk)
+end module gs2_output

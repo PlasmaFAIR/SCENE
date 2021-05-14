@@ -1,21 +1,24 @@
+module bandit_output
+  implicit none
+contains
       subroutine bandit
 !     *****************
 !
 ! writes out flux surface data file for use in bandit
 !
       use param
+      use profiles_mod, only : fprof
+      use toms790, only : CSHEP2, CS2VAL
       implicit none
       double precision br(nr,nz),bz(nr,nz),bt(nr,nz)
       double precision, dimension(:), allocatable::  x,y,f
       double precision, dimension(:,:), allocatable:: grads
       double precision px,py,pf,fsi,psi,rr
-      double precision fprof
       integer, dimension(:), allocatable:: triang
       integer npt,k,i,j,ifail
       integer, allocatable:: LCELL(:,:), LNEXT(:)
       double precision:: XMIN, YMIN, DX, DY, RMAX
       double precision, allocatable:: RW(:), A(:,:)
-      double precision, external:: CS2VAL
       integer:: NCC, NRR, NWW
 !
 !
@@ -159,11 +162,12 @@
 ! Plots externally applied current within a flux surface as a function of
 ! r/a
 !
+      use ext_current_mod, only : extj
       use param
+      use profiles_mod, only : dense, tempe
       implicit none
       integer icur,k,i,nrm,kg
       double precision psi,eps,extapp,extapp2,drm,rat,psiup,de,te,curf,rv
-      double precision dense,tempe
       double precision curflx(ncon),rsm(ncon),curden(ncon)
 
 
@@ -214,3 +218,4 @@
  20   format('r/a=',e12.4,' current=',e12.4,' MA, n=',e12.4,' m**-3, Te=',e12.4,' keV')
       close(76)
 end subroutine curplt
+end module bandit_output

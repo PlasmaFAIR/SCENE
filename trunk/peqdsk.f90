@@ -1,13 +1,17 @@
 
+module peqdsk_output
+  implicit none
+contains
 subroutine peqdsk
   ! Writes out a peqdsk file that can be read in by GACODE profile_gen tool
   ! Contains information about kinetic profiles
 
   use param
+  use profiles_mod, only : dense, densi, tempe, tempi
   implicit none
 
   integer :: con, nh
-  double precision :: dense, densi, tempe, tempi, psi
+  double precision :: psi
   real :: ne, ni, te, ti, psin
   real :: dne, dni, dte, dti
 
@@ -78,3 +82,4 @@ subroutine peqdsk
 
   end subroutine peqdsk
   
+end module peqdsk_output

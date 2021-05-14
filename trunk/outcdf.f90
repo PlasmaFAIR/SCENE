@@ -1,9 +1,14 @@
+module netcdf_interface
+  implicit none
+contains
+
 subroutine write_netcdf()
   ! File ot write SCENE output to NETCDF format
   ! Initially focused for writing gs2 output
 
   use param
   use netcdf
+  use profiles_mod, only : tempe, tempi, dense, densi, press, shift, fprof, dpsidrho, dVdrho, rhotor, elong, triang
   implicit none
 
   logical :: debug
@@ -79,7 +84,7 @@ subroutine write_netcdf()
 
   
   ! 1d Output data
-  double precision :: psi, tempe, tempi, dense, densi, press, shift, fprof
+  double precision :: psi
   double precision, dimension(ncon) :: rhopsi, te, ti, ne, ni, nHe, tHe
   double precision, dimension(ncon) :: Lte, Lti, Lne, Lni
   double precision, dimension(ncon) :: dshift, shat, pk, eps
@@ -115,7 +120,7 @@ subroutine write_netcdf()
   integer, dimension(npts) :: pts
   double precision :: shafr, dshafr, rmaj, rmin
   double precision :: kappa, dkappa, p_prime, dPsidr
-  double precision :: elong, tglf_shear, delta, ddelta, triang
+  double precision :: tglf_shear, delta, ddelta
 
   
   debug = .False.
@@ -637,3 +642,4 @@ subroutine check(status)
   end if
 end subroutine check
        
+end module netcdf_interface

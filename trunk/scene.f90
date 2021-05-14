@@ -1,8 +1,24 @@
 program scene
   !     *************
   !
+  use bootstap, only : fastbs
+  use equilibrium, only : equil, xarea
+  use ff_mod, only : ffdgen
+  use flux_average, only: flxav
+  use flux_plot, only : flxplt, graphs
+  use flux_surface, only : flxsur
+  use getdata_mod, only : getdata
+  use ghost_interface
+  use hirsig_mod, only : erfun
+  use netcdf_interface, only : write_netcdf
+  use nbi_mod, only : nbicur
+  use output_mod, only : output
   use param
-  use usrcal_mod
+  use usrcal_mod, only : usrcal
+  use setnt_mod, only : setnt
+  use scene_errors, only : error_msg
+  use scene_init, only : init
+  use toroidal_current_mod, only : torcur
   implicit none
   integer i,j,icur,niter
   double precision errcur,bpold,bnold,bpnew

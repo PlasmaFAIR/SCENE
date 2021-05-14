@@ -1,3 +1,6 @@
+module flux_plot
+  implicit none
+contains
       subroutine flxplt
 !     *****************
 !
@@ -355,13 +358,13 @@
             xp(l)=sngl(rpts(nc,l))
             yp(l)=sngl(zpts(nc,l))
           end do
-	  if (sfac(nc).gt.iq) then
-	    iq=iq+1
-	    if (iq.le.3) then 
+          if (sfac(nc).gt.iq) then
+            iq=iq+1
+            if (iq.le.3) then 
               call thick(2)
               call lincol(2)
             end if
-	  end if
+          end if
 !	  if (modb.eq.-1) then
 !	    if (nc.ne.1) goto 15
 !	  end if
@@ -651,7 +654,10 @@
         !
 !    Plots various profiles and outputs run parameters.
 !
+      use ext_current_mod, only : extj
+      use equilibrium, only : bp, range, xarea
       use param
+      use profiles_mod, only : dense, densi, fprof, press, tempe, tempi
       implicit none
       character(len=8) ctim
       character(len=9) cdat
@@ -659,7 +665,6 @@
       character(len=34) txt
       integer nrob
       integer i,j,l,lmid,ii,ig,jj,ix,lp,icur
-      double precision press,dense,densi,fprof,tempe,tempi,bp
       double precision rstar,zstar,tric,elonc,rhalf,arg,quadc
       double precision psi,rat,bt0,bv0,pcen,ne0
       double precision curgs,rin,rout,rr
@@ -2499,22 +2504,6 @@
 !
 !---------------------------------------------------------
 !
-
-
-
-
-
-
-
-
       end subroutine graphs
 
-
-
-
-
-
-
-
-
-
+end module flux_plot

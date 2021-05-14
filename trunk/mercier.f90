@@ -1,14 +1,19 @@
+module mercier_output
+  implicit none
+contains
       subroutine mercier
 !     **********************
 !
 !  Calculates various flux surface averages, including the Mercier
 !  coefficient, on flux surface label nf: 1<nf<ncon
 !
+      use flux_average, only : flxint
       use param
+      use profiles_mod, only : fprof, press
       implicit none
       integer i,nf
       double precision qd,rr,bth,psi,fsi,ant,dm,bsq,pd,dres,hfun
-      double precision fprof,press,pp,neoterm(ncon),hegterm(ncon),alfs
+      double precision pp,neoterm(ncon),hegterm(ncon),alfs
       double precision av1,av2,av3,av4,av5,av6,bvacu,bpol2,    &
                        glassterm(ncon),volavp,bdel
       double precision marr1(npts),marr2(npts),marr3(npts),marr4(npts)   &
@@ -79,3 +84,4 @@
 !      call tstplt2(ncon,sfac,neoterm,hegterm)
       return
   end subroutine mercier
+end module mercier_output

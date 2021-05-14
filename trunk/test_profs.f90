@@ -1,12 +1,15 @@
+module test_profs
+  implicit none
+contains
       subroutine tester
 !     *****************
 !
 !    Plots various profiles and outputs run parameters.
 !
       use param
+      use profiles_mod, only : press
       implicit none
       integer i
-      double precision press
       double precision psi,psi1,psi2,pp,pd,ppp,pdd
 !
       do i=2,ncon-1
@@ -21,5 +24,5 @@
         write(26,*)' pp=',pp,' pd=',pd
         write(26,*)' ppp=',ppp,' pdd=',pdd
       end do
-      return
-      end
+    end subroutine tester
+end module test_profs

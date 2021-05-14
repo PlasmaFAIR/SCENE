@@ -1,16 +1,21 @@
 
+module geqdsk_output
+  implicit none
+contains
 subroutine geqdsk
 !!! Writes out a geqdsk file
   ! In order to include a limiter the standard SCENE R,Z grid is
   ! extended by one grid space on all sides psi (nr,nz) -> psi(nr+2,nz+2)
   ! Uses surfit.f from dierckx to fit a surface inside the boundary to
   ! extend psi out to the edge of the box
+  use equilibrium, only : extrap2
   use param
+  use profiles_mod, only : fprof, press
   implicit none
 
   integer :: i, j, nh, na, con, ij, ind, nr2, nz2
   double precision :: rmax, rmin, dimr, zmax, zmin, dimz
-  double precision :: fprof, press, psi, rat, diff
+  double precision :: psi, rat, diff
   double precision :: Bv0, psibdy, dpsi, jtor
   integer :: ndat, nlim
   double precision, dimension(:), allocatable :: zbdy, rbdy, rlim, zlim, psii
@@ -465,3 +470,5 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
 
 end subroutine extrappsi
+
+end module geqdsk_output

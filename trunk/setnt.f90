@@ -1,3 +1,6 @@
+module setnt_mod
+  implicit none
+contains
       subroutine setnt
 !     *****************
 !
@@ -108,3 +111,4 @@
 !
       return
 end subroutine setnt
+end module setnt_mod

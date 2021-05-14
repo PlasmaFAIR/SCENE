@@ -1,3 +1,8 @@
+module profiles_mod
+  implicit none
+
+contains
+
       function press(psi,ip)
 !     **********************
 !
@@ -10,8 +15,8 @@
       integer ip,id,im,ik
       double precision psin
       double precision press, psi,xps,ptem,efac
-      double precision te,tempe,ti,tempi,ted,tid,tedd,tidd
-      double precision pt,zni,densi,znid,pd,znidd
+      double precision te,ti,ted,tid,tedd,tidd
+      double precision pt,zni,znid,pd,znidd
       double precision p1,p2,p3,x1,x2,x3,aa,bb,cc,dpsi
 
       xps=1.-psi/umax
@@ -354,8 +359,9 @@
 !
        use param
        implicit none
+       double precision :: pressi
        double precision psin
-       double precision pressi,press,psi,xps,ptem,efac
+       double precision psi,xps,ptem,efac
        double precision p1,p2,p3,x1,x2,x3,aa,bb,cc,dpsi
        integer ip,id,im,ik
 
@@ -472,7 +478,8 @@
 !
       use param
       implicit none
-      double precision psi,dense,densi,tempe,tempi,press
+      double precision :: dense
+      double precision psi
       double precision ne,ned,te,ti,ted,tid
       integer i,j
 !
@@ -532,7 +539,6 @@
       implicit none
       double precision densi,psi,efac,efaca,efac0
       double precision ni,nid,nidd,ti,te,xps,ted,tid
-      double precision press,tempi,tempe
       double precision nta,ntped,ntedg,nin,ntpow,nz0
       double precision psin,dpsi,n1,n2,n3,aa,bb,cc
       double precision ps1,ps2,ps3
@@ -814,6 +820,7 @@
 !   if ipass>0 uses psi mesh set up from previous eqbm. generation.
 !
       use param
+      use scene_errors
       implicit none
       integer id,ij,j,im,i0,ip
       double precision psi,fprof
@@ -1411,9 +1418,10 @@
       use param
       implicit none
 !
+      double precision tempi
+
       integer i,id
-      double precision tempe
-      double precision tempi,psi,xps,tem
+      double precision psi,xps,tem
       double precision t0,ta,tped,tpow,tedg,tn,efac,efac0,efaca,tfac
 !
       xps=1.-psi/umax
@@ -1980,7 +1988,7 @@
 
      double precision :: flxvol_l, flxvol_u, psi_u, psi_l
 
-     double precision :: r_l, r_r, z_l, z_r, shift
+     double precision :: r_l, r_r, z_l, z_r
      real, dimension(ncon) :: vols, areas, volsp
 
      flxarea = 0.
@@ -2082,7 +2090,7 @@
 
      double precision, dimension(ncon) :: lambdas
 
-     double precision :: psi, ne, dense, rat
+     double precision :: psi, ne, rat
      integer :: i, beam, ecomp
 
      do i=2,ncon
@@ -2122,3 +2130,5 @@
      end do
 
    end subroutine rhotor
+ 
+end module profiles_mod

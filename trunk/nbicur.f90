@@ -1,6 +1,10 @@
+module nbi_mod
+  implicit none
+contains
 subroutine nbicur()
 
   use param
+  use profiles_mod, only : dense, tempe, tempi, densi, shift, elong, dpsidrho, dVdrho, rhotor
   implicit none
 
   double precision :: psi
@@ -30,7 +34,6 @@ subroutine nbicur()
   real, dimension(ncon) :: rhos
 
   double precision, dimension(:), allocatable :: dpdrs, rnormnb
-  double precision :: dense, tempe, tempi, densi, shift, elong
   !Output variables
 
   real, dimension(:,:,:), allocatable :: hofr, srcfast, pitchangl
@@ -423,12 +426,13 @@ subroutine momsource(nbeams,power,energy, rtan, source)
 !Returns NBI momenum
   
   use param
+  use profiles_mod, only : densi
   implicit none
   integer :: nbeams
   double precision, dimension(nbeams), intent(in) ::  rtan, energy
   double precision, dimension(ncon,nbeams) :: power
   double precision, dimension(ncon) :: source, bm_source,mass, vtor, angf
-  double precision :: densi, rmax
+  double precision :: rmax
   integer :: i, con
 
   source = 0 
@@ -464,12 +468,12 @@ subroutine trapfact(l31)
 !  Phys. Plasma 4, 4179 (1997)
 !
       use param
+      use profiles_mod, only : dense, densi, fprof
       implicit none
-      double precision dense,densi
       double precision ne,zni,zeff,zb
       double precision fsi,dox
       double precision x,psi
-      double precision fc, fprof
+      double precision fc
       integer l,k
 !
       real, dimension(ncon) :: l31
@@ -510,3 +514,5 @@ subroutine trapfact(l31)
 
 
     end subroutine trapfact
+
+end module nbi_mod
