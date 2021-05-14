@@ -13,9 +13,10 @@ contains
       use param
       use coldat
       implicit none
-!
-      double precision coolog,vthi,vthj,rat,chdn,fac
-      integer i,j,k
+      !
+      integer, intent(in) :: k
+      double precision :: coolog,vthi,vthj,rat,chdn,fac
+      integer :: i,j
 !
       coolog=20.
       do i=1,nimp+2
@@ -57,13 +58,16 @@ contains
       use scene_errors
       implicit none
 
-      integer k,kmax,i,iskip,ip,ks
-      double precision fsi,conl,dotav,dl
-      double precision t1,t2,tk
-      double precision bigth(npts),dbdl(npts)
-      double precision bsq,b1,b2,b3,dbint
-      double precision sumk,rk1,rk2
-      double precision errcon,errgot
+      integer, intent(in) :: k
+      double precision, intent(in) :: fsi
+      double precision, intent(out) :: conl, dotav
+      integer :: kmax,i,iskip,ip,ks
+      double precision :: dl
+      double precision :: t1,t2,tk
+      double precision :: bigth(npts),dbdl(npts)
+      double precision :: bsq,b1,b2,b3,dbint
+      double precision :: sumk,rk1,rk2
+      double precision :: errcon,errgot
 !
       kmax=100
       errcon=1.0d-4
@@ -131,9 +135,9 @@ contains
 !   calculates and stores error function
 !
       implicit none
-      double precision dys,ymax,phi
-      double precision y,fac,pi
-      integer ny,i
+      double precision :: dys,ymax,phi
+      double precision :: y,fac,pi
+      integer :: ny,i
       common/phifun/dys,ymax,phi(2000)
 !
       pi=4.*atan(1.)
@@ -235,11 +239,10 @@ contains
       use coldat
       implicit none
 !
-      double precision sum00(nimp+2),sum01(nimp+2),sum10(nimp+2), &
-                       sum11(nimp+2)
-      double precision rmat00,rmat01,rmat11
-      double precision rnat00,rnat01,rnat10,rnat11
-      integer i,j
+      double precision :: sum00(nimp+2),sum01(nimp+2),sum10(nimp+2), sum11(nimp+2)
+      double precision :: rmat00,rmat01,rmat11
+      double precision :: rnat00,rnat01,rnat10,rnat11
+      integer :: i,j
 !
       do i=1,nspec
         sum00(i)=0.
@@ -285,10 +288,12 @@ contains
 !  Calculates Chandrasakhar function (id=1) or error function (id=0)
 !
       implicit none
-      double precision dys,ymax,phi
-      double precision gov
-      double precision y,ylo,yup,phioy,rat,pi,fac,phid,gg
-      integer id,k
+      double precision, intent(in) :: y
+      integer, intent(in) :: id
+      double precision :: dys,ymax,phi
+      double precision :: gov
+      double precision :: ylo,yup,phioy,rat,pi,fac,phid,gg
+      integer :: k
       common/phifun/dys,ymax,phi(2000)
 !
       pi=4.*atan(1.)
@@ -333,13 +338,16 @@ contains
       use profiles_mod, only : tempe, dense, tempi, densi
       implicit none
 
-      double precision psi,fc,fsi,conl,dotav,bsq,bstrap,aspin
-      double precision ft
-      double precision pda,v1a,v2a
-      double precision, dimension(:), allocatable:: tsd,dnd
-      double precision vvec(2*nimp+4),upar(nimp+2)
-      double precision tmat(2*nimp+4,2*nimp+4),rlmat(2*nimp+4,2*nimp+4)
-      integer i,j,id,narr,k
+      double precision, intent(in) :: psi,fc,fsi,conl,dotav,bsq
+      double precision, intent(out) :: bstrap
+      double precision, intent(in) :: aspin
+      integer, intent(in) :: k
+      double precision :: ft
+      double precision :: pda,v1a,v2a
+      double precision, dimension(:), allocatable :: tsd,dnd
+      double precision :: vvec(2*nimp+4),upar(nimp+2)
+      double precision :: tmat(2*nimp+4,2*nimp+4),rlmat(2*nimp+4,2*nimp+4)
+      integer :: i,j,id,narr
 !
       allocate(ch(nimp+2),ts(nimp+2),tsd(nimp+2),sm(nimp+2),  &
                dn(nimp+2),dnd(nimp+2) )
@@ -452,11 +460,14 @@ contains
 !
       use param
       implicit none
-      integer i,j,narr,ndim, ifail
-      double precision aa(2*nimp+4,2*nimp+4),bb(2*nimp+4),cc(2*nimp+4)
-      double precision rlmat(2*nimp+4,2*nimp+4),tmat(2*nimp+4,2*nimp+4),  &
-                       vvec(2*nimp+4),upar(nimp+2)
-      integer, allocatable:: IPIV(:)
+
+      double precision, intent(in) :: rlmat(2*nimp+4,2*nimp+4),tmat(2*nimp+4,2*nimp+4)
+      double precision, intent(in) :: vvec(2*nimp+4)
+      double precision, intent(out) :: upar(nimp+2)
+      integer, intent(in) :: narr
+      integer :: i,j,ndim, ifail
+      double precision :: aa(2*nimp+4,2*nimp+4),bb(2*nimp+4),cc(2*nimp+4)
+      integer, allocatable :: IPIV(:)
 !
       ndim=2*nimp+4
       do i=1,narr
@@ -487,9 +498,10 @@ contains
 !     ****************
 !
       implicit none
-      double precision dys,ymax,phi
-      double precision y,phig,ylo,yup,fac,pi,phid,rat,gg
-      integer k
+      double precision, intent(in) :: y
+      double precision :: dys,ymax,phi
+      double precision :: phig,ylo,yup,fac,pi,phid,rat,gg
+      integer :: k
       common/phifun/dys,ymax,phi(2000)
 !
       pi=4.*atan(1.)
@@ -525,14 +537,15 @@ contains
       use param
       use coldat
       implicit none
-!
-      double precision vd(nimp+2,500),vt(nimp+2,500),vtot(nimp+2,500)
-      double precision rk11(nimp+2),rk12(nimp+2),rk22(nimp+2)
-      double precision fc,vmax,dv
-      double precision vtha,omta,vsttau,fac1,fac2
-      double precision ft,conl,dotav,bsq,aspin
-      double precision y,vv,vtij,vdij,arg
-      integer nv,i,n,j,k
+      !
+      double precision, intent(in) :: ft, conl, dotav, bsq, aspin
+      integer, intent(in) :: k
+      double precision :: vd(nimp+2,500),vt(nimp+2,500),vtot(nimp+2,500)
+      double precision :: rk11(nimp+2),rk12(nimp+2),rk22(nimp+2)
+      double precision :: fc,vmax,dv
+      double precision :: vtha,omta,vsttau,fac1,fac2
+      double precision :: y,vv,vtij,vdij,arg
+      integer :: nv,i,n,j
 !
 
 !
