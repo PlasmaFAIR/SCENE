@@ -634,7 +634,7 @@ end subroutine write_netcdf
 subroutine check(status)
 
   use netcdf
-  integer, intent ( in) :: status
+  integer, intent (in) :: status
   
   if(status /= nf90_noerr) then
      print *, trim(nf90_strerror(status))

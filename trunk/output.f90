@@ -9,10 +9,10 @@ contains
       use param
       use profiles_mod, only : dense, densi
       implicit none
-      double precision pdiam,dlo,dup,psi,dhlo,dhup,dimp
-      double precision arad,circar,cirkap,htpow,plasi,bvaxis,risomas
-      double precision gwden,aa,bvacu,nhebar
-      integer i
+      double precision :: pdiam,dlo,dup,psi,dhlo,dhup,dimp
+      double precision :: arad,circar,cirkap,htpow,plasi,bvaxis,risomas
+      double precision :: gwden,aa,bvacu,nhebar
+      integer :: i
 !
       !  calculate beta values...
       call betas
@@ -99,14 +99,14 @@ contains
       use profiles_mod, only : press, densi, dense, tempe, tempi, fprof
       implicit none
 !
-      double precision bptot,ptota,ptotv,btotv
-      double precision arg,pden,zni, efus, xsec
-      double precision rr,zz,uu,p,psi,dalf
-      double precision te,ti,ne,dion,rat
-      double precision bth,bphi,btot,bvacu,psicut
-      double precision pimp3
-      double precision, dimension(:), allocatable:: pimp3v
-      integer i,j,ip,l,k
+      double precision :: bptot,ptota,ptotv,btotv
+      double precision :: arg,pden,zni, efus, xsec
+      double precision :: rr,zz,uu,p,psi,dalf
+      double precision :: te,ti,ne,dion,rat
+      double precision :: bth,bphi,btot,bvacu,psicut
+      double precision :: pimp3
+      double precision, dimension(:), allocatable :: pimp3v
+      integer :: i,j,ip,l,k
       logical :: debug
 
       debug = .false.

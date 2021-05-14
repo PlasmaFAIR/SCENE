@@ -9,11 +9,11 @@ contains
 !
       use param
       implicit none
-      integer i,jgot,j,ishot,ntdat
-      double precision pltr(1000),pltt(1000),pltn(1000)
-      double precision psi_new(ncon),ne_new(ncon),te_new(ncon),p_new(ncon)
-      double precision rr1,rr2,ne1,te1,ne2,te2,rat,rr
-      double precision timsht
+      integer :: i,jgot,j,ishot,ntdat
+      double precision :: pltr(1000),pltt(1000),pltn(1000)
+      double precision :: psi_new(ncon),ne_new(ncon),te_new(ncon),p_new(ncon)
+      double precision :: rr1,rr2,ne1,te1,ne2,te2,rat,rr
+      double precision :: timsht
 
 
 !  read in temperature and density profiles from data file
