@@ -8,10 +8,10 @@ CMD_NB  = nbscene
 
 #
 SRCS= \
-param.f90 balpar.f90  balloon.f90 usrcal.f90  error_msg.f90\
-coldat.f90 scene.f90 init.f90 equil.f90 profs.f90 flxsur.f90  \
-flxav.f90 hirsig.f90 hirsh.f90 splines.f signeo.f90 \
-torcur.f90 extj.f90 output.f90 graphs.f90 ffdgen.f90 elite_data.f90 \
+ghost_interface.f90 toms790.f90 param.f90 balpar.f90 error_msg.f90 profs.f90  balloon.f90   \
+coldat.f90 init.f90 equil.f90  hirsig.f90 hirsh.f90 flxsur.f90  \
+signeo.f90 flxav.f90  splines.f  \
+extj.f90 torcur.f90  output.f90 graphs.f90 ffdgen.f90 elite_data.f90 \
 baleq.f90 test_profs.f90 helena.f90 bandat.f90 setnt.f90 \
 chease_dat.f90 gfile.f90 flxorb.f90 lynton.f90 fastbs.f90 caxe_out.f90 \
 bandit.f90 mercier.f90 gs2.f90 astradat.f90 tokameq.f90 \
@@ -19,8 +19,8 @@ getdata.f90  beamconsts.f beams_mfp.f \
 calcbeams.f coulomb.f \
 eisplit.f erf.f fastions.f frate.f gausswts.f \
 getrho.f hofr.f hunt.f qsimp.f sigfit.f sinteg.f \
-rinteg.f zinteg.f ssum.f sig_olson.f \
-nbicur.f90 geqdsk.f90 peqdsk.f90 outcdf.f90 toms790.f90
+rinteg.f zinteg.f ssum.f sig_olson.f  \
+nbicur.f90 geqdsk.f90 peqdsk.f90 outcdf.f90 usrcal.f90  scene.f90
 
 OBJS= \
 param.o balpar.o balloon.o \
