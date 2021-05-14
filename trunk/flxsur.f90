@@ -151,7 +151,7 @@ contains
       integer, intent(in) :: k
       integer :: is,ic,izz,ilor,iupr,ir,icon,igot,jpt,i,kc,jc
       integer :: irem,im,ip,nrc,nzc
-      double precision :: psi,un,uval,ul,rr,zz,prod,rgot,zgot,curint
+      double precision :: un,uval,ul,rr,zz,prod,rgot,zgot,curint
       double precision :: flxr(nr*nz),flxz(nr*nz)
       double precision :: rl(nr*nz),zl(nr*nz),leng(nr*nz),work(nr*nz)
       double precision :: r_temp(nr*nz),z_temp(nr*nz)

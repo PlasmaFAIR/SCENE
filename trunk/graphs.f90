@@ -9,20 +9,20 @@ contains
 !
       use param
       implicit none
-      character(len=8) ctim
-      character(len=12) cdat
-      character(len=35) string
-      character(len=30) string2
-      character(len=2) string1
-      real xp(nr*nz),yp(nr*nz),clevls(50),ftr(4),ftz(4)
-      real rdim(nr*nz),zdim(nr*nz)
-      real rlo,rup,zlo,zup,ypos,zl,zu,rl,ru,zav
-      real zr(nr),zz(nz),elong,spsi
-      real sval,dum
-      real xhalf,yhalf,xx,yx,dzsep,aa,bb
-      double precision psi,qaxis
-      integer i,nc,itst,lmax,l,ipos,iq,nh,nreadpts,nk,k,ndmr
-      real, dimension(:), allocatable:: rbdr,zbdr
+      character(len=8) :: ctim
+      character(len=12) :: cdat
+      character(len=35) :: string
+      character(len=30) :: string2
+      character(len=2) :: string1
+      real :: xp(nr*nz),yp(nr*nz),clevls(50),ftr(4),ftz(4)
+      real :: rdim(nr*nz),zdim(nr*nz)
+      real :: rlo,rup,zlo,zup,ypos,zl,zu,rl,ru,zav
+      real :: zr(nr),zz(nz),elong,spsi
+      real :: sval,dum
+      real :: xhalf,yhalf,xx,yx,dzsep,aa,bb
+      double precision :: psi,qaxis
+      integer :: i,nc,itst,lmax,l,ipos,iq,nh,nreadpts,nk,k,ndmr
+      real, dimension(:), allocatable :: rbdr,zbdr
 !!$!
 !!$!  corners of ecrh footprint
 !!$      if (iso.eq.1) then
@@ -659,41 +659,41 @@ contains
       use param
       use profiles_mod, only : dense, densi, fprof, press, tempe, tempi
       implicit none
-      character(len=8) ctim
-      character(len=9) cdat
-      character(len=30) string
-      character(len=34) txt
-      integer nrob
-      integer i,j,l,lmid,ii,ig,jj,ix,lp,icur
-      double precision rstar,zstar,tric,elonc,rhalf,arg,quadc
-      double precision psi,rat,bt0,bv0,pcen,ne0
-      double precision curgs,rin,rout,rr
-      double precision fcop,rc,rescop,pden,fsi
-      double precision pdedg,ffdedg,extapp,extapp2
-      double precision bth,bphi,bsq,paxis,baxis,bigs,dl
-      integer ishot,ntdat
-      real seplo,sepup,plo,pup,ffplo,ffpup,pplo,ppup
-      real seps(ncon),sffp(ncon),sp(ncon),spp(ncon)
-      real sxlo,sxup,sylo,syup,sy1lo,sy1up,sprup
-      real sx(nr+5),sx1(nr+5),sy(nr+5),sy1(nr+5),sy2(nr+5),sy3(nr+5),spr(nr+5)
-      real sxx(1000),syy(1000)
-      real sxpos,sxposup,sypos
-      real svar,szero,rlo,rup
-      real dilo,diup,bslo,bsup,pslo,psup,tolo,toup
-      double precision timsht
-      double precision jedge,jaxis,pd,fd,fval
-      double precision psilo,psiup,plod,pupd,flo,fup,rlod,rupd
-      double precision q95,bthlo,bthup,betlo,betup,rv
-      double precision dpsi,ffp
-      double precision psi_new(ncon),ne_new(ncon),te_new(ncon)
-      double precision rr1,rr2,ne1,te1,ne2,te2
-      double precision tgot,ngot,psilst,qgot,rpos,zz
-      integer jgot,nh
-      real pltr(1000),pltt(1000),pltn(1000),pltter(1000),pltner(1000), &
-           pltp(1000)
-      real tmax,rnmax,te,ne,rmin,rmax,dum,jrat,pmax
-      real alf95
-      integer isk,na
+      character(len=8) :: ctim
+      character(len=9) :: cdat
+      character(len=30) :: string
+      character(len=34) :: txt
+      integer :: nrob
+      integer :: i,j,l,lmid,ii,ig,jj,ix,lp,icur
+      double precision :: rstar,zstar,tric,elonc,rhalf,arg,quadc
+      double precision :: psi,rat,bt0,bv0,pcen,ne0
+      double precision :: curgs,rin,rout,rr
+      double precision :: fcop,rc,rescop,pden,fsi
+      double precision :: pdedg,ffdedg,extapp,extapp2
+      double precision :: bth,bphi,bsq,paxis,baxis,bigs,dl
+      integer :: ishot,ntdat
+      real :: seplo,sepup,plo,pup,ffplo,ffpup,pplo,ppup
+      real :: seps(ncon),sffp(ncon),sp(ncon),spp(ncon)
+      real :: sxlo,sxup,sylo,syup,sy1lo,sy1up,sprup
+      real :: sx(nr+5),sx1(nr+5),sy(nr+5),sy1(nr+5),sy2(nr+5),sy3(nr+5),spr(nr+5)
+      real :: sxx(1000),syy(1000)
+      real :: sxpos,sxposup,sypos
+      real :: svar,szero,rlo,rup
+      real :: dilo,diup,bslo,bsup,pslo,psup,tolo,toup
+      double precision :: timsht
+      double precision :: jedge,jaxis,pd,fd,fval
+      double precision :: psilo,psiup,plod,pupd,flo,fup,rlod,rupd
+      double precision :: q95,bthlo,bthup,betlo,betup,rv
+      double precision :: dpsi,ffp
+      double precision :: psi_new(ncon),ne_new(ncon),te_new(ncon)
+      double precision :: rr1,rr2,ne1,te1,ne2,te2
+      double precision :: tgot,ngot,psilst,qgot,rpos,zz
+      integer :: jgot,nh
+      real :: pltr(1000),pltt(1000),pltn(1000),pltter(1000),pltner(1000)
+      real :: pltp(1000)
+      real :: tmax,rnmax,te,ne,rmin,rmax,dum,jrat,pmax
+      real :: alf95
+      integer :: isk,na
 !
 !
 !      call tester
