@@ -2,7 +2,7 @@
 module geqdsk_output
   implicit none
 contains
-subroutine geqdsk
+  subroutine geqdsk
 !!! Writes out a geqdsk file
   ! In order to include a limiter the standard SCENE R,Z grid is
   ! extended by one grid space on all sides psi (nr,nz) -> psi(nr+2,nz+2)
@@ -295,14 +295,16 @@ subroutine extrappsi(rmin, rmax, zmin,zmax,psi_out)
 
   use param
   implicit none
-
-  integer ::i,j, ij, m
+  double precision, intent(in) ::  rmin, rmax, zmin, zmax
+  double precision, dimension(nr,nz), intent(out) :: psi_out
+  
+  double precision :: dble
+  integer :: i,j, ij, m
   integer :: iopt, kr, kz, nrest, nzest, nr1, nz1
   integer :: lwrk1, lwrk2, kwrk, ier
   integer :: nmax, uw, vw,ww, km, nest,br,bz, b1,b2
-  double precision ::  rmin, rmax, zmin, zmax, dble
-  real sm, fp, ep, sngl, rl, ru, zl, zu
-  double precision, dimension(nr,nz), intent(out) :: psi_out
+  real :: sm, fp, ep, sngl, rl, ru, zl, zu
+
 
   real, dimension(:), allocatable :: tr, tz, c, wrk1, wrk2, wrk3
   integer, dimension(:), allocatable :: wrki,iwrk
