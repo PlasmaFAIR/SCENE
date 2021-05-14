@@ -1,4 +1,17 @@
-find_package(GHOST REQUIRED)
+if (SCENE_DOWNLOAD_GHOST)
+  message(STATUS "Downloading and configuring GHOST...")
+  include(FetchContent)
+  FetchContent_Declare(
+    ghost
+    GIT_REPOSITORY https://github.com/ZedThree/GHOST
+    GIT_TAG        "b3bed7df7a3b9025eb67d5ab1caa7ea023366435"
+    )
+  FetchContent_MakeAvailable(ghost)
+  message(STATUS "Finished configuring GHOST")
+else()
+  find_package(GHOST REQUIRED)
+endif()
+
 find_package(netCDFFortran REQUIRED)
 find_package(LAPACK REQUIRED)
 find_package(BLAS REQUIRED)

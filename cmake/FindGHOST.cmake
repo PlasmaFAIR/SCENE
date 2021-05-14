@@ -1,5 +1,12 @@
 # FindGHOST
 
+find_package(GHOST CONFIG QUIET
+  NAMES ghost)
+if (GHOST_FOUND)
+  message(STATUS "Found GHOST config")
+  return()
+endif()
+
 find_library(GHOST_LIBRARIES
   NAMES ghost
   DOC "GHOST library locations"
