@@ -10,6 +10,7 @@ project(SCENE
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 option(SCENE_ENABLE_DOUBLE "Promotes precisions of real and complex to double" ON)
+option(SCENE_DOWNLOAD_GHOST "Download and build GHOST as part of SCENE build" OFF)
 
 add_subdirectory(lib/dierckx)
 
