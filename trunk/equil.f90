@@ -12,20 +12,21 @@ subroutine equil(niter)
   use param
   use toms790, only : CSHEP2, CS2VAL
   implicit none
-  integer i,j,k,n0,iax,jax,jm,nr1,nz1,ncon1,ij,ifail,npt,niter,igo
-  double precision x,y,f,rm1,sf,dpsi
-  double precision ur,ul,fd,fdd,rpeak,rl,upeak,upr
-  double precision slst,r0lst,erres
-  double precision px,py,pf,rat, Rmin
-  double precision, dimension(:), allocatable:: psiold1,gst1
-  double precision, dimension(:), allocatable:: r_old,z_old
-  double precision, dimension(:,:), allocatable:: u1,grads
-  double precision, dimension(:), allocatable:: xn,yn,fna,triang
+  integer, intent(in) :: niter
+  integer :: i,j,k,n0,iax,jax,jm,nr1,nz1,ncon1,ij,ifail,npt,igo
+  double precision :: x,y,f,rm1,sf,dpsi
+  double precision :: ur,ul,fd,fdd,rpeak,rl,upeak,upr
+  double precision :: slst,r0lst,erres
+  double precision :: px,py,pf,rat, Rmin
+  double precision, dimension(:), allocatable :: psiold1,gst1
+  double precision, dimension(:), allocatable :: r_old,z_old
+  double precision, dimension(:,:), allocatable :: u1,grads
+  double precision, dimension(:), allocatable :: xn,yn,fna,triang
   !
-  integer, allocatable:: LCELL(:,:), LNEXT(:)
-  double precision:: XMIN, YMIN, DX, DY, RMAX
-  double precision, allocatable:: RW(:), A(:,:)
-  integer:: NCC, NRR, NWW
+  integer, allocatable :: LCELL(:,:), LNEXT(:)
+  double precision :: XMIN, YMIN, DX, DY, RMAX
+  double precision, allocatable :: RW(:), A(:,:)
+  integer :: NCC, NRR, NWW
 
   !
   !  If icont=-3 then we are iterating on ff' => do not need initialisation
@@ -365,8 +366,9 @@ end subroutine equil
 !  (modified sykes routine)
       use param
       implicit none
-      double precision x,y,xl,xr,xbase,yl,yr,ybase,bp,br,bz
-      integer ii,i,jj,j
+      double precision, intent(in) :: x, y
+      double precision :: xl,xr,xbase,yl,yr,ybase,bp,br,bz
+      integer :: ii,i,jj,j
 !
 !  find the first x coord. not less than x
 !
@@ -420,17 +422,19 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision errg,dk,dth,kscl,th,rnor,znor,sg,s2g,rat
-      double precision rv1,rv2,f1,f2,rup,rlo
-      double precision x,y,f
-      double precision xv(npts),yv(npts),gth(npts),ang(npts),rtemp(npts)
-      double precision work(npts),ang2(npts)
-      integer nit,i,j,ipit,jx,igo,iv,nh,k,izmid,nk,nextra,nreadpts
-      integer izr2,ndmr,ndat
-      double precision, dimension(:), allocatable:: rdim,zdim,rtmp,ztmp,thdim
-      double precision intk,arg1,arg2,zval,rval,rofth
-      character(len=30) string2
-      character(len=2) string1
+      double precision, intent(in) :: x,y
+      double precision, intent(out) :: f
+      integer, intent(in) :: igo
+      double precision :: errg,dk,dth,kscl,th,rnor,znor,sg,s2g,rat
+      double precision :: rv1,rv2,f1,f2,rup,rlo
+      double precision :: xv(npts),yv(npts),gth(npts),ang(npts),rtemp(npts)
+      double precision :: work(npts),ang2(npts)
+      integer :: nit,i,j,ipit,jx,iv,nh,k,izmid,nk,nextra,nreadpts
+      integer :: izr2,ndmr,ndat
+      double precision, dimension(:), allocatable :: rdim,zdim,rtmp,ztmp,thdim
+      double precision :: intk,arg1,arg2,zval,rval,rofth
+      character(len=30) :: string2
+      character(len=2) :: string1
       !
 
 !      write(6,*)' in bdry2, ibdry=',ibdry,' igo=',igo
@@ -916,10 +920,11 @@ end subroutine equil
 !
       use param
       implicit none
+      double precision, intent(in) :: x, y
+      double precision, intent(out) :: f
+      integer, intent(in) :: igo
       double precision rzero,rsb,rg,zdsq,zsbsq
       double precision al,ga,rb,zbsq
-      double precision x,y,f
-      integer igo
       logical debug
       save
 
@@ -962,8 +967,9 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision cval,ptot
-      integer i,j,ip,n0
+      integer, intent(in) :: n0, ip
+      double precision :: cval,ptot
+      integer :: i,j
 !
 ! evaluate total current
       curtot=0.0
@@ -1018,15 +1024,15 @@ end subroutine equil
       use param
       use toms790, only : CSHEP2, CS2VAL
       implicit none
-      double precision, dimension(:), allocatable::  x,y,f
-      double precision, dimension(:,:), allocatable:: grads
-      double precision px,py,pf
-      integer, dimension(:), allocatable:: triang
-      integer npt,k,i,j,ifail
-      integer, allocatable:: LCELL(:,:), LNEXT(:)
-      double precision:: XMIN, YMIN, DX, DY, RMAX
-      double precision, allocatable:: RW(:), A(:,:)
-      integer:: NCC, NRR, NWW
+      double precision, dimension(:), allocatable ::  x,y,f
+      double precision, dimension(:,:), allocatable :: grads
+      double precision :: px,py,pf
+      integer, dimension(:), allocatable :: triang
+      integer :: npt,k,i,j,ifail
+      integer, allocatable :: LCELL(:,:), LNEXT(:)
+      double precision :: XMIN, YMIN, DX, DY, RMAX
+      double precision, allocatable :: RW(:), A(:,:)
+      integer :: NCC, NRR, NWW
       logical :: debug
 
       debug = .false.
@@ -1108,8 +1114,9 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision fp,h,psip,fr,afr,psib,psiq,afp,hb
-      integer itots,iv,jv,is,js,k,isum,ii,ivs,jvs,ivsp,jvsp
+      integer, intent(in) :: iv, jv
+      double precision :: fp,h,psip,fr,afr,psib,psiq,afp,hb
+      integer :: itots,is,js,k,isum,ii,ivs,jvs,ivsp,jvsp
 !
       if (ibdry.eq.0) then
         call bdry(r(iv),z(jv),fp,1)
@@ -1180,11 +1187,11 @@ end subroutine equil
 !
       use param
       implicit none
-      integer i,j,nrp1,nzp1
-      integer im1,ip1,jm1,jp1,isum
-      integer iprod
-      double precision f,rb,zb
-      integer sumx,sumd
+      integer :: i,j,nrp1,nzp1
+      integer :: im1,ip1,jm1,jp1,isum
+      integer :: iprod
+      double precision :: f,rb,zb
+      integer :: sumx,sumd
 !
       allocate( nix(nr*nz), niy(nr*nz) )
       nix=0; niy=0
@@ -1300,8 +1307,8 @@ end subroutine equil
 !
       use param
       implicit none
-      integer j,jy,i
-      character(len=8) word
+      integer :: j,jy,i
+      character(len=8), intent(in) :: word
 !
       if (ipr.eq.0) write(nw,10)word
   10  format(a)
@@ -1328,11 +1335,11 @@ end subroutine equil
 !
       use param
       implicit none
-      double precision drsq,rr,riph,rimh,ub,residb
-      double precision zz,uc,rhsc,cc,others,ua,resida
-      double precision uf,dist,del,resid
-      double precision ur,ul,fd,fdd,rpeak,rl,upr,upeak
-      integer ni,i,j,iax,jax,nn
+      double precision :: drsq,rr,riph,rimh,ub,residb
+      double precision :: zz,uc,rhsc,cc,others,ua,resida
+      double precision :: uf,dist,del,resid
+      double precision :: ur,ul,fd,fdd,rpeak,rl,upr,upeak
+      integer :: ni,i,j,iax,jax,nn
 !
 !      dz=dr always
       if (abs(dr-dz) .gt. 1e-4) then
@@ -1436,10 +1443,10 @@ end subroutine equil
 !     **********************************
 !
       implicit none
-      real arr(*)
-      real alo,aup
-      integer lmax,l
-
+      real, intent(in) :: arr(*)
+      integer, intent(in) :: lmax      
+      real, intent(out) :: alo,aup
+      integer :: l
 !
       alo=arr(1)
       aup=arr(1)
@@ -1460,7 +1467,8 @@ end subroutine equil
       use param
       use profiles_mod, only : fprof, press
       implicit none
-      double precision pd,ffp,rjphi,rhs,psi,rv,uu
+      double precision, intent(in) :: rv,uu
+      double precision :: pd,ffp,rjphi,rhs,psi      
 !
       ! Note -sign as u=psi_a-psi
       psi=umax-uu
@@ -1485,10 +1493,10 @@ end subroutine equil
 !
       use param
       implicit none
-      integer nx,ny,je,inum,iss,js,ins,jn,k,inn,jnn,i,j
-      double precision rc,dudz,dudr,brn,bzn,btot,bn,bnn,brnn,bznn
-      double precision un, unn, utot
-      double precision brtot,bztot
+      integer :: nx,ny,je,inum,iss,js,ins,jn,k,inn,jnn,i,j
+      double precision :: rc,dudz,dudr,brn,bzn,btot,bn,bnn,brnn,bznn
+      double precision :: un, unn, utot
+      double precision :: brtot,bztot
 !
       if (icont.gt.-3) then
         allocate( rcoord(nr), zcoord(nz), btheta(nr,nz),   &
@@ -1595,9 +1603,9 @@ end subroutine equil
 !
       use param
       implicit none
-      integer i,j
-      double precision arr(nr,nz)
-      double precision xint
+      double precision, intent(in) :: arr(nr,nz)      
+      double precision, intent(out) :: xint
+      integer :: i,j
 !
       xint=0.0
       do i=1,nr
@@ -1620,10 +1628,10 @@ end subroutine equil
 !
       use param
       implicit none
-      integer nx,ny,i,j
-      double precision rc,dudz,dudr
-      integer nrg,nzg
-      double precision rg(nrg),zg(nzg),v(nrg,nzg)
+      integer, intent(in) :: nrg,nzg
+      double precision, intent(in) :: rg(nrg),zg(nzg),v(nrg,nzg)
+      integer :: nx,ny,i,j
+      double precision :: rc,dudz,dudr
       double precision drg,dzg,brc,bzc,bth,zc
 !
       drg=rg(2)-rg(1)
