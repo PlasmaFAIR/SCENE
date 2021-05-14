@@ -4,7 +4,7 @@ if (SCENE_DOWNLOAD_GHOST)
   FetchContent_Declare(
     ghost
     GIT_REPOSITORY https://github.com/ZedThree/GHOST
-    GIT_TAG        "b3bed7df7a3b9025eb67d5ab1caa7ea023366435"
+    GIT_TAG        "cba30b43bdcc73fb87cff0724337a7d3a1bd7812"
     )
   FetchContent_MakeAvailable(ghost)
   message(STATUS "Finished configuring GHOST")
