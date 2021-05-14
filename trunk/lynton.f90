@@ -9,8 +9,8 @@ contains
       use param
       use profiles_mod, only : dense, densi, tempi
       implicit none
-      integer i,nh,j
-      double precision nelec,nion,psi,ss,mdens,tion
+      integer :: i,nh,j
+      double precision :: nelec,nion,psi,ss,mdens,tion
 !
       nh=229
 !!$      open(unit=nh,file=runname(1:lrunname)//'.lynton', &

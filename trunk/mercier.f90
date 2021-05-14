@@ -11,13 +11,13 @@ contains
       use param
       use profiles_mod, only : fprof, press
       implicit none
-      integer i,nf
-      double precision qd,rr,bth,psi,fsi,ant,dm,bsq,pd,dres,hfun
-      double precision pp,neoterm(ncon),hegterm(ncon),alfs
-      double precision av1,av2,av3,av4,av5,av6,bvacu,bpol2,    &
-                       glassterm(ncon),volavp,bdel
-      double precision marr1(npts),marr2(npts),marr3(npts),marr4(npts)   &
-                       ,marr5(npts),marr6(npts)
+      integer :: i,nf
+      double precision :: qd,rr,bth,psi,fsi,ant,dm,bsq,pd,dres,hfun
+      double precision :: pp,neoterm(ncon),hegterm(ncon),alfs
+      double precision :: av1,av2,av3,av4,av5,av6,bvacu,bpol2
+      double precision :: glassterm(ncon),volavp,bdel
+      double precision :: marr1(npts),marr2(npts),marr3(npts),marr4(npts)
+      double precision :: marr5(npts),marr6(npts)
 
       do nf=1,ncon
       qd=qp(nf)

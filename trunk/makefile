@@ -40,12 +40,12 @@ OBJ_NB=$(SRC_NB:.f=.o)
 OBJS_1= $(SRCS:.f90=.o)
 OBJS=$(OBJS_1:.f=.o)
 INPUT=
-INCLUDE=  -I$(SCENE_NETCDF_DIR)/include
+INCLUDE=  -I${EBROOTNETCDFMINFORTRAN}/include
 LIBRARIES =  \
  -llapack \
  -lblas \
- -L$(SCENE_GHOST_DIR)/lib -lghost -lgrid_xghost \
- -L$(SCENE_NETCDF_DIR)/lib -lnetcdff -lnetcdf \
+ -L${EBROOTGHOST}/lib -lghost -lgrid_xghost \
+ -L${EBROOTNETCDFMINFORTRAN}/lib -lnetcdff -lnetcdf \
  -L../lib -lsurfit \
 # -lgcvfull
 
@@ -62,14 +62,14 @@ LIBRARIES =  \
 
  # /fuslwf/home/kthcmr/GS2D/gs2dlib.a
 
-DEBUG     = -std=f2008 -Wall -Wextra -fbounds-check -g -fbacktrace # -heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
-OPTIMIZE  = #-O # -O3 
+DEBUG     = -std=f2008 -g #-Wall -Wextra -fbounds-check -g -fbacktrace # -heap-arrays  -g -traceback  -check bounds -check arg_temp_created -warn interface
+OPTIMIZE  = -O3 #-flto #-O # -O3 
 LISTING   = # -listing
 SPECIAL   = # -p/fuslwf/home/kthcmr/GS2D
 DOUBLE    = -fdefault-double-8 -fdefault-real-8  #-r8 -d8 #-qautodbl=dblpad
 LIN       = # -YEXT_NAMES=LCS -B108
 COMPILE   = $(F90) -c $(LIN) $(LISTING) $(SPECIAL) $(DOUBLE) $(OPTIMIZE) $(DEBUG)  $(INCLUDE)
-LOAD      = $(F90) $(SPECIAL) -o $(CMD) $(LIBS)
+LOAD      = $(F90) $(OPTIMIZE) $(SPECIAL) -o $(CMD) $(LIBS)
 LOAD_NB   = $(F90) $(SPECIAL) -o $(CMD_NB) $(LIBS)
 
 .SUFFIXES:
