@@ -5,9 +5,9 @@
 !
       use equilibrium, only : bp
       use param
+      use profiles_mod, only : fprof
       implicit none
       integer i,j,k
-      double precision fprof
       double precision rr,fsi,psi,btor
       double precision rwall,zwall,rinner,rtst,ztst
       double precision, dimension(:), allocatable:: rk,zk

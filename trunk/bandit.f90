@@ -4,12 +4,12 @@
 ! writes out flux surface data file for use in bandit
 !
       use param
+      use profiles_mod, only : fprof
       implicit none
       double precision br(nr,nz),bz(nr,nz),bt(nr,nz)
       double precision, dimension(:), allocatable::  x,y,f
       double precision, dimension(:,:), allocatable:: grads
       double precision px,py,pf,fsi,psi,rr
-      double precision fprof
       integer, dimension(:), allocatable:: triang
       integer npt,k,i,j,ifail
       integer, allocatable:: LCELL(:,:), LNEXT(:)
@@ -161,10 +161,10 @@
 !
       use ext_current_mod, only : extj
       use param
+      use profiles_mod, only : dense, tempe
       implicit none
       integer icur,k,i,nrm,kg
       double precision psi,eps,extapp,extapp2,drm,rat,psiup,de,te,curf,rv
-      double precision dense,tempe
       double precision curflx(ncon),rsm(ncon),curden(ncon)
 
 

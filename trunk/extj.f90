@@ -24,13 +24,13 @@ contains
 !      extapp2 used in neoclassical option to add aux current drive
 !
       use param
+      use profiles_mod, only : dense, densi, fprof, press, tempe
       implicit none
       double precision eps,psi,extapp,extapp2
       integer icur
 !
       integer l,ik,k
       double precision xmax,fsi,pt,te,ne,zeff,zni
-      double precision fprof,press,tempe,dense,densi
       double precision sigsp,coolog
       double precision epsfac,ratio,pro,rt,botcol,topcol,colt,vthe,fac
       double precision rat,rrinv,b_average,bstrap,hhb,rle,sigfac

@@ -19,13 +19,12 @@ contains
     use mercier_output, only : mercier
     use param
     use peqdsk_output, only : peqdsk
+    use profiles_mod, only : dense, densi, fprof, tempe, tempi
     use tokameq_output, only : tokameq
     implicit none
     integer icur,i,n1,n2,j
     double precision extapp,extapp2,rat,scale,eps
-    double precision fprof
-    double precision psi1,psi2,eps1,eps2,temp0,temp1,temp2,tempi,psi
-    double precision tempe,dense,densi
+    double precision psi1,psi2,eps1,eps2,temp0,temp1,temp2,psi
     double precision tlen(ncon),epsn(ncon),psinorm(ncon)
     double precision arr0(ncon),arr1(ncon),arr2(ncon),arr3(ncon),arr4(ncon)
     double precision pow(3,ncon),pprof(3,ncon),ptprof(ncon)

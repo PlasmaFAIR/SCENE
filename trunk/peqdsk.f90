@@ -7,10 +7,11 @@ subroutine peqdsk
   ! Contains information about kinetic profiles
 
   use param
+  use profiles_mod, only : dense, densi, tempe, tempi
   implicit none
 
   integer :: con, nh
-  double precision :: dense, densi, tempe, tempi, psi
+  double precision :: psi
   real :: ne, ni, te, ti, psin
   real :: dne, dni, dte, dti
 

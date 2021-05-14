@@ -4,9 +4,9 @@
 !    Plots various profiles and outputs run parameters.
 !
       use param
+      use profiles_mod, only : press
       implicit none
       integer i
-      double precision press
       double precision psi,psi1,psi2,pp,pd,ppp,pdd
 !
       do i=2,ncon-1

@@ -2,11 +2,11 @@
 !     *******************
 !
       use param
+      use profiles_mod, only : dense, densi, tempe, tempi
       implicit none
 !
       double precision b0,phi,rho(ncon),dpsi,te(ncon),pden(ncon),ne,   &
                        dion,arg,ti,psi
-      double precision densi,tempi,tempe,dense
       integer k,nwr,i
 !
       nwr=61
@@ -97,6 +97,7 @@
 !
       use flux_average, only : flxint
       use param
+      use profiles_mod, only : fprof
       implicit none
       integer nma
       double precision rho(nma),vr(nma),g33(nma),ipol(nma),droda(nma),  &
@@ -110,7 +111,7 @@
       double precision drhodpsi(nma),asmall(nma)
       double precision bth,rr,psin,ant,dvdpsi
       double precision ro1,ro2,ro3,x1,x2,x3,aa,bb,cc
-      double precision fprof,b0,psi,zpeak,rpeak,dpsi
+      double precision b0,psi,zpeak,rpeak,dpsi
       double precision av0,av1,av2,dth,del0,del1,ascur
       double precision intval,intvol
 !

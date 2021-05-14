@@ -330,9 +330,9 @@ contains
 !
       use param
       use coldat
+      use profiles_mod, only : tempe, dense, tempi, densi
       implicit none
-!
-      double precision tempe,dense,tempi,densi
+
       double precision psi,fc,fsi,conl,dotav,bsq,bstrap,aspin
       double precision ft
       double precision pda,v1a,v2a

@@ -657,6 +657,7 @@ contains
       use ext_current_mod, only : extj
       use equilibrium, only : bp, range, xarea
       use param
+      use profiles_mod, only : dense, densi, fprof, press, tempe, tempi
       implicit none
       character(len=8) ctim
       character(len=9) cdat
@@ -664,7 +665,6 @@ contains
       character(len=34) txt
       integer nrob
       integer i,j,l,lmid,ii,ig,jj,ix,lp,icur
-      double precision press,dense,densi,fprof,tempe,tempi
       double precision rstar,zstar,tric,elonc,rhalf,arg,quadc
       double precision psi,rat,bt0,bv0,pcen,ne0
       double precision curgs,rin,rout,rr

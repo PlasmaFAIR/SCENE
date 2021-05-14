@@ -184,10 +184,11 @@ end subroutine init
 !
       use param
       use balpar
+      use profiles_mod, only : press
       implicit none
       character(len=4) word
       double precision val,rlo,zlo
-      double precision press,psiax
+      double precision psiax
       integer ival,i
       integer inr,inz
       integer ndatpt,nndatpt,ntdatpt

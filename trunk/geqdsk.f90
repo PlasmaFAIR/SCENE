@@ -10,11 +10,12 @@ subroutine geqdsk
   ! extend psi out to the edge of the box
   use equilibrium, only : extrap2
   use param
+  use profiles_mod, only : fprof, press
   implicit none
 
   integer :: i, j, nh, na, con, ij, ind, nr2, nz2
   double precision :: rmax, rmin, dimr, zmax, zmin, dimz
-  double precision :: fprof, press, psi, rat, diff
+  double precision :: psi, rat, diff
   double precision :: Bv0, psibdy, dpsi, jtor
   integer :: ndat, nlim
   double precision, dimension(:), allocatable :: zbdy, rbdy, rlim, zlim, psii

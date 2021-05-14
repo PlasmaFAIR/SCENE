@@ -10,9 +10,9 @@ contains
 !
       use equilibrium, only : bp
       use param
+      use profiles_mod, only : fprof, press
       implicit none
       double precision ptab(ncon),fptab(ncon),ftab(ncon)
-      double precision press,fprof
       double precision bvac0,bvacg,bet0,betg,b0,b0g
       double precision psimin,psimax,dpsi,psi,psih
       double precision fsi,pt
@@ -47,13 +47,13 @@ contains
       psimin=0.
       dpsi=(psimax-psimin)/(ncon-1)
       do k=1,ncon
-    krev=ncon-k+1
-    psi=psimax-(k-1)*dpsi
+        krev=ncon-k+1
+        psi=psimax-(k-1)*dpsi
         psih=psimax-psi
-    fsi=fprof(psi,2)
-    ftab(krev)=fsi*1.0e6
-    pt=press(psi,1)
-    ptab(krev)=pt
+        fsi=fprof(psi,2)
+        ftab(krev)=fsi*1.0e6
+        pt=press(psi,1)
+        ptab(krev)=pt
         if (k.lt.ncon) then
           jr=0
           if (k.gt.1) then

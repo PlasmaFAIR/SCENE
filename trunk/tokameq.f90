@@ -7,10 +7,10 @@ contains
 !  Code top calculate profile shape input for TOKAMEQ code
 !
       use param
+      use profiles_mod, only : press, fprof
       implicit none
       integer nh,k,j,i
       double precision psi,fpsi,jphi
-      double precision press,fprof
 !
       nh=111
       open(unit=nh,file=runname(1:lrunname)//'.tokameq', &

@@ -7,11 +7,12 @@ subroutine getdata
 
   use equilibrium, only : bp
   use param
+  use profiles_mod, only : fprof, tempe, tempi, press, densi, dense
   implicit none
 
   double precision :: rr, zz, rat
-  double precision :: fprof, tempe, tempi, psi, B_tor, B_tot
-  double precision :: press, densi, dense, safety, ffp, fsi, pp, bsmean
+  double precision :: psi, B_tor, B_tot
+  double precision :: safety, ffp, fsi, pp, bsmean
   double precision :: J_tot, J_ext, J_bs, J_di, J_ps, J_nbi, J_ext2, jnb, jbs
   double precision :: flux_r, flux_z, te
 
@@ -346,11 +347,9 @@ end subroutine getdata
 subroutine popcon()
 
   use param
+  use profiles_mod, only : dense, densi, fprof
   implicit none
 
-
-  double precision :: fprof
-  double precision :: densi, dense
 
   integer :: nh
 
@@ -451,10 +450,11 @@ end subroutine popcon
 subroutine jetto()
   
   use param
+  use profiles_mod, only : rhotor, dense, densi, tempe, tempi
   implicit none
   
   integer :: con, nh, i, l, nflux
-  double precision :: dense, densi, tempe, tempi, psi, mass,rmax,cs
+  double precision :: psi, mass,rmax,cs
   real :: ne, ni, te, ti, zeff, q, zni, vtor, angf, mach
   double precision, dimension(ncon) :: phi
 
@@ -517,10 +517,11 @@ end subroutine jetto
 subroutine omfit()
   
   use param
+  use profiles_mod, only : dense, densi, tempe, tempi, rhotor
   implicit none
   
   integer :: con, nh, i, l, nflux
-  double precision :: dense, densi, tempe, tempi, psi
+  double precision :: psi
   real :: ne, ni, te, ti, zeff, nHe, nIm, zni
   double precision, dimension(ncon) :: phi
 
@@ -582,14 +583,13 @@ end subroutine omfit
 subroutine tglf_input()
 
   use param
+  use profiles_mod, only : dpsidrho, elong, shift, press
   implicit none
 
   integer :: con
 
   double precision :: psi, rhoc, shafr, dshafr, rmaj, rmin
   double precision :: kappa, dkappa, b_unit, p_prime, dpsidr
-  double precision :: elong, shift, press
-  
 
   !TGLF Parameters
   double precision :: rmin_loc, rmaj_loc, q_loc, q_prime_loc, p_prime_loc
@@ -650,10 +650,10 @@ end subroutine tglf_input
 subroutine rfdat()
 
   use param
+  use profiles_mod, only : fprof
   implicit none
 
   integer :: i, j, nx, ny, nh
-  double precision :: fprof
   double precision, dimension(nr,nz) :: psicoord, btcoord, psiNcoord
 
   nh = 53

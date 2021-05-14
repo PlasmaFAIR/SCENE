@@ -8,11 +8,11 @@ contains
 !  Calculates the bootstrap current arising from alpha-particles
 !  Calculation by C T Hsu et al PFB 4 (1992) 4023
 !
-      use param
       use coldat
+      use param
+      use profiles_mod, only : tempe, tempi, dense, densi, fprof
       implicit none
 !
-      double precision tempe,tempi,dense,densi,fprof
       double precision fcp,fcd,psi
 ! Alpha particle properties...
       double precision amass, alen,zal,v0,vc

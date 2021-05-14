@@ -8,8 +8,9 @@
 !  current)
 !
       use param
+      use profiles_mod, only : tempe, tempi, dense, densi
       implicit none
-      double precision tempe,tempi,dense,densi
+
       double precision ted,te,tid,ti,ne,tau,zni,zeff,zb
       double precision pe,pip,ped,pid,ned,znid,dox
       double precision rl310,rl320,alfi0

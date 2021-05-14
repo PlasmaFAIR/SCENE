@@ -1458,8 +1458,9 @@ end subroutine equil
       !  returns rhs of g-s equation
 !
       use param
+      use profiles_mod, only : fprof, press
       implicit none
-      double precision pd,ffp,rjphi,rhs,psi,rv,uu,press,fprof
+      double precision pd,ffp,rjphi,rhs,psi,rv,uu
 !
       ! Note -sign as u=psi_a-psi
       psi=umax-uu

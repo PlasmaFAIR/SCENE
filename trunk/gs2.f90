@@ -12,12 +12,13 @@ contains
 !
       use equilibrium, only : bp, valbth2
       use param
+      use profiles_mod, only : dense, densi, fprof, press, tempi, tempe, dpsidrho, shift
       implicit none
 !
       integer ndsk,k,nspec,kk,ik
-      double precision dense,psi,zeff,zni19,ne19,fprof,press,tempi,tempe
-      double precision dshafr, shafr, rmaj, rmin, shift, epsil, beta_gs2
-      double precision densi, coolog, vss, ti, ni, ti_p, ni_p
+      double precision psi,zeff,zni19,ne19
+      double precision dshafr, shafr, rmaj, rmin, epsil, beta_gs2
+      double precision coolog, vss, ti, ni, ti_p, ni_p
       double precision coll, nref, tref, bcentr
       double precision zmag,rat,px,py,deltar,deltaz,pf,fsqedg
       double precision yp1,yp2
