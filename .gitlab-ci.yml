@@ -6,18 +6,35 @@ stages:
 variables: &default_variables
   GIT_SUBMODULE_STRATEGY: recursive
   BASIC_PACKAGES: "environment-modules make git which cmake findutils"
-  SCENE_PACKAGES: "netcdf-fortran netcdf-devel netcdf-fortran-devel gcc gcc-gfortran"
+  SCENE_PACKAGES: "netcdf-fortran netcdf-devel netcdf-fortran-devel gcc gcc-gfortran blas-devel lapack-devel"
+  GHOST_PACKAGES: "libX11-devel libXt-devel"
   PYTHON_PACKAGES: "python python3 python3-pip python3-devel"
   EXTRA_PACKAGES: ""
-  WITH_PYTHON: "no"
+  WITH_PYTHON: "yes"
+  GHOST_DIR: "${CI_PROJECT_DIR}/ghost"
+  GHOST_BUILD_DIR: "${CI_PROJECT_DIR}/ghost/build"
+  GHOST_INSTALL_DIR: "${CI_PROJECT_DIR}/ghost/build/install"
+
+cache:
+  paths:
+    - ${GHOST_DIR}
 
 .install_main_packages: &install_main_packages
-  - dnf install -y ${BASIC_PACKAGES} ${SCENE_PACKAGES} ${PYTHON_PACKAGES} ${EXTRA_PACKAGES}
+  - dnf install -y ${BASIC_PACKAGES} ${SCENE_PACKAGES} ${PYTHON_PACKAGES} ${EXTRA_PACKAGES} ${GHOST_PACKAGES}
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -U pip; fi
   - if [ "x"${WITH_PYTHON} == "xyes" ]; then pip3 install -r requirements.txt; fi
 
-.the_default_script: &default_script
-  - echo "Not yet set up to do anything."
+.install_ghost: &install_ghost |
+  if [ ! -d ${GHOST_DIR} ]; then
+    git clone https://github.com/ZedThree/GHOST.git ${GHOST_DIR}
+    mkdir -p ${GHOST_BUILD_DIR} && cd ${GHOST_BUILD_DIR}
+    ../configure --prefix ${GHOST_INSTALL_DIR}
+    make && make install
+  fi
+  cd ${CI_PROJECT_DIR}
+
+.default_script: &default_script
+  - sh .ci_scripts/ci_build.sh
 
 default:
   timeout: 20m
@@ -25,6 +42,7 @@ default:
     paths:
   before_script:
     - *install_main_packages
+    - *install_ghost
   after_script:
   interruptible: true
 

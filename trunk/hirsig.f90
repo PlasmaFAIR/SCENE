@@ -443,7 +443,8 @@
 !     ********************************************
 !
       use param
-      integer i,j,narr,ndim
+      implicit none
+      integer i,j,narr,ndim, ifail
       double precision aa(2*nimp+4,2*nimp+4),bb(2*nimp+4),cc(2*nimp+4)
       double precision rlmat(2*nimp+4,2*nimp+4),tmat(2*nimp+4,2*nimp+4),  &
                        vvec(2*nimp+4),upar(nimp+2)

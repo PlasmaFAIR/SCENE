@@ -592,7 +592,8 @@
 !  surface around which we are integrating
 !
       use param
-      integer k
+      implicit none
+      integer i, k
       double precision ans,dl
       double precision arr(npts)
 !
