@@ -26,16 +26,17 @@ contains
       use param
       use profiles_mod, only : dense, densi, fprof, press, tempe
       implicit none
-      double precision eps,psi,extapp,extapp2
-      integer icur
+      double precision, intent(in) :: eps,psi
+      double precision, intent(out) :: extapp, extapp2      
+      integer, intent(in) :: icur
 !
-      integer l,ik,k
-      double precision xmax,fsi,pt,te,ne,zeff,zni
-      double precision sigsp,coolog
-      double precision epsfac,ratio,pro,rt,botcol,topcol,colt,vthe,fac
-      double precision rat,rrinv,b_average,bstrap,hhb,rle,sigfac
-      double precision psiq,bstrapq,bavq,rsqint,ravint,rla
-      double precision t1,t2,t3,t4,scale
+      integer :: l,ik,k
+      double precision :: xmax,fsi,pt,te,ne,zeff,zni
+      double precision :: sigsp,coolog
+      double precision :: epsfac,ratio,pro,rt,botcol,topcol,colt,vthe,fac
+      double precision :: rat,rrinv,b_average,bstrap,hhb,rle,sigfac
+      double precision :: psiq,bstrapq,bavq,rsqint,ravint,rla
+      double precision :: t1,t2,t3,t4,scale
 !
       extapp2=0.
       xmax=0.

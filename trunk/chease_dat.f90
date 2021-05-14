@@ -10,10 +10,10 @@ contains
       use param
       use profiles_mod, only : fprof, press
       implicit none
-      double precision rbound(npts),zbound(npts)
-      double precision fcsm(ncon),rppf(ncon),rfun(ncon)
-      double precision psi,rz0,pedge0,b0exp,ffpval,psip,psim
-      integer i,j,nsttp
+      double precision :: rbound(npts),zbound(npts)
+      double precision :: fcsm(ncon),rppf(ncon),rfun(ncon)
+      double precision :: psi,rz0,pedge0,b0exp,ffpval,psip,psim
+      integer :: i,j,nsttp
 !
       b0exp=mu0*rodi/(2.*pi*r0)
       open(unit=48,file=runname(1:lrunname)//'.chease', &

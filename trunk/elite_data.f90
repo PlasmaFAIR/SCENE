@@ -11,11 +11,11 @@ contains
       use param
       use profiles_mod, only : dense, fprof, press, tempe, tempi
       implicit none
-      character(len=8) dums(10)
-      character(len=12) ctitle
-      double precision arr(ncon)
-      double precision psi
-      integer ndsk,i,j,ncon1,ncstrt
+      character(len=8) :: dums(10)
+      character(len=12) :: ctitle
+      double precision :: arr(ncon)
+      double precision :: psi
+      integer :: ndsk,i,j,ncon1,ncstrt
       logical :: debug
 
       debug = .false.
@@ -263,12 +263,12 @@ contains
       use param
       use profiles_mod, only : dense, fprof, press, tempe, tempi
       implicit none
-      character(len=8) dum
-      character(len=12) ctitle
-      double precision arr(ncon)
-      double precision psi
-      double precision x1,x2,x3,p1,p2,p3,aa,bb
-      integer ndsk,i,j,ncon1,ncstrt
+      character(len=8) :: dum
+      character(len=12) :: ctitle
+      double precision :: arr(ncon)
+      double precision :: psi
+      double precision :: x1,x2,x3,p1,p2,p3,aa,bb
+      integer :: ndsk,i,j,ncon1,ncstrt
       !
       logical :: debug
 
