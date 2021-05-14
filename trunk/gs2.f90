@@ -16,15 +16,15 @@ contains
       use toms790, only : CSHEP2, CS2VAL
       implicit none
 !
-      integer ndsk,k,nspec,kk,ik
-      double precision psi,zeff,zni19,ne19
-      double precision dshafr, shafr, rmaj, rmin, epsil, beta_gs2
-      double precision coolog, vss, ti, ni, ti_p, ni_p
-      double precision coll, nref, tref, bcentr
-      double precision zmag,rat,px,py,deltar,deltaz,pf,fsqedg
-      double precision yp1,yp2
-      double precision polvar(npts),aminor(ncon),fofpsi(ncon)
-      double precision y2(ncon),fpint(ncon)
+      integer :: ndsk,k,nspec,kk,ik
+      double precision :: psi,zeff,zni19,ne19
+      double precision :: dshafr, shafr, rmaj, rmin, epsil, beta_gs2
+      double precision :: coolog, vss, ti, ni, ti_p, ni_p
+      double precision :: coll, nref, tref, bcentr
+      double precision :: zmag,rat,px,py,deltar,deltaz,pf,fsqedg
+      double precision :: yp1,yp2
+      double precision :: polvar(npts),aminor(ncon),fofpsi(ncon)
+      double precision :: y2(ncon),fpint(ncon)
 
 
 !      character(len=40), intent(in) :: filename
@@ -37,9 +37,9 @@ contains
       integer :: nsurf,i,j,npt,ifail,nrg,nzg
 !      type(vec2dl) :: sep
       integer, allocatable:: LCELL(:,:), LNEXT(:)
-      double precision:: XMIN, YMIN, DX, DY, RMAX
-      double precision, allocatable:: RW(:), A(:,:)
-      integer:: NCC, NRR, NWW
+      double precision :: XMIN, YMIN, DX, DY, RMAX
+      double precision, allocatable :: RW(:), A(:,:)
+      integer :: NCC, NRR, NWW
 !
       do k=2,ncon-1
          write(44,*)' psiN=',psiv(k)/umax

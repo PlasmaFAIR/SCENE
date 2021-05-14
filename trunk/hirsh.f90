@@ -13,16 +13,18 @@ contains
       use param
       use profiles_mod, only : tempe, tempi, dense, densi
       implicit none
-
-      double precision ted,te,tid,ti,ne,tau,zni,zeff,zb
-      double precision pe,pip,ped,pid,ned,znid,dox
-      double precision rl310,rl320,alfi0
-      double precision x,rj0,psi,bsq,bstrap
-      double precision a13,b13,c13,a23,b23,c23
-      double precision f1,f2
-      double precision rl31,rl32,fa,alfi
-      double precision a1e,a1i,a2e,a2i
-      integer l,k
+      
+      double precision, intent(in) :: psi, rj0, x, bsq
+      integer, intent(in) :: k
+      double precision, intent(out) :: bstrap      
+      double precision :: ted,te,tid,ti,ne,tau,zni,zeff,zb
+      double precision :: pe,pip,ped,pid,ned,znid,dox
+      double precision :: rl310,rl320,alfi0
+      double precision :: a13,b13,c13,a23,b23,c23
+      double precision :: f1,f2
+      double precision :: rl31,rl32,fa,alfi
+      double precision :: a1e,a1i,a2e,a2i
+      integer :: l
 !
       ted=tempe(psi,1)
       te=tempe(psi,0)
