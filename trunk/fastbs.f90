@@ -13,17 +13,17 @@ contains
       use profiles_mod, only : tempe, tempi, dense, densi, fprof
       implicit none
 !
-      double precision fcp,fcd,psi
+      double precision :: fcp,fcd,psi
 ! Alpha particle properties...
-      double precision amass, alen,zal,v0,vc
-      double precision te,ti,ted,tid,tau,ne19,ni19,nid,ned,ne,ni
-      double precision ablog,sigv,srce,coolog,sigd,srcd
-      double precision zeff,falnum,tslow
-      double precision f1d,f2d,ss
-      double precision sgn,pdal,fl0,fl1,fl2
-      double precision x1d,x2d,denom,fmua,fsi,pq
-      double precision femu,bot
-      integer l,nh,k
+      double precision :: amass, alen,zal,v0,vc
+      double precision :: te,ti,ted,tid,tau,ne19,ni19,nid,ned,ne,ni
+      double precision :: ablog,sigv,srce,coolog,sigd,srcd
+      double precision :: zeff,falnum,tslow
+      double precision :: f1d,f2d,ss
+      double precision :: sgn,pdal,fl0,fl1,fl2
+      double precision :: x1d,x2d,denom,fmua,fsi,pq
+      double precision :: femu,bot
+      integer :: l,nh,k
 !
       nh=229
       open(unit=nh,file=runname(1:lrunname)//'.lynton', &
@@ -132,10 +132,11 @@ contains
 !   fraction (FL1 and FL2)
 !
       implicit none
-      double precision rat,v0,vc,vmin,dv,v,pdal
-      double precision f1,f2,f3,f4,fl0,fl1,fl2
-      double precision f1d,f2d,falnum,amass
-      integer nv,i
+      double precision, intent(in) :: f1d, f2d, falnum, amass, vc, v0
+      double precision, intent(out) :: pdal, fl0, fl1, fl2
+      double precision :: rat,vmin,dv,v
+      double precision :: f1,f2,f3,f4
+      integer :: nv,i
 
       rat=v0/vc
       vmin=v0
