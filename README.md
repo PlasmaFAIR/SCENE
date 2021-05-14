@@ -15,10 +15,14 @@ SCENE requires:
   (https://github.com/ZedThree/GHOST currently a private repo)
 - CMake
 
-To compile SCENE, you need to tell CMake about the location of GHOST:
+To compile SCENE, you either need to tell CMake about the location of
+GHOST, or you can tell CMake to download and build it automatically:
 
 ```bash
-# Configure the build, telling CMake where to find ghost
+# Configure the build, telling CMake to download GHOST
+cmake . -B build -DSCENE_DOWNLOAD_GHOST=ON
+# OR
+# Configure the build, telling CMake where to find GHOST
 cmake . -B build -DGHOST_ROOT=/path/to/ghost
 # Compile SCENE
 cmake --build build
