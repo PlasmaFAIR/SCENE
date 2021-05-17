@@ -15,8 +15,8 @@ contains
 !
      use param
      implicit none
-     integer i
-     double precision deps,psi,emin
+     integer :: i
+     double precision :: deps,psi,emin
 !
 !  First allocate arrays
       if (icont.gt.-3) then
@@ -55,12 +55,13 @@ contains
       use param
       use scene_errors
       implicit none
-      double precision uval,epsi
-      integer k
-      integer jpass,l,i,ixmid(nr+1)
-      double precision un,ul,prod
-      double precision zer(2)
-      double precision umid(nr+1),rmid(nr+1)
+      double precision, intent(in) :: uval
+      double precision, intent(out) :: epsi
+      integer, intent(in) :: k
+      integer :: jpass,l,i,ixmid(nr+1)
+      double precision :: un,ul,prod
+      double precision :: zer(2)
+      double precision :: umid(nr+1),rmid(nr+1)
 !
       if (abs(uval-umax).lt.1e-8) then
         epsi=0.
@@ -145,17 +146,19 @@ contains
       use equilibrium, only : bp
       use param
       implicit none
-!
-      integer is,ic,izz,ilor,iupr,ir,icon,igot,jpt,i,kc,jc,k
-      integer irem,im,ip,nrc,nzc
-      double precision psi,un,uval,ul,rr,zz,prod,rgot,zgot,curint
-      double precision flxr(nr*nz),flxz(nr*nz)
-      double precision rl(nr*nz),zl(nr*nz),leng(nr*nz),work(nr*nz)
-      double precision r_temp(nr*nz),z_temp(nr*nz)
-      double precision dl,leq(npts)
-      double precision x1,x2,x3,d1,d2,ydd0,rav1,rav2,rav3
-      integer j,ihalf
-      double precision psicol(nr,nz),rcol(nr),zcol(nz)
+      !
+      double precision, intent(in) :: psi
+      integer, intent(in) :: k
+      integer :: is,ic,izz,ilor,iupr,ir,icon,igot,jpt,i,kc,jc
+      integer :: irem,im,ip,nrc,nzc
+      double precision :: un,uval,ul,rr,zz,prod,rgot,zgot,curint
+      double precision :: flxr(nr*nz),flxz(nr*nz)
+      double precision :: rl(nr*nz),zl(nr*nz),leng(nr*nz),work(nr*nz)
+      double precision :: r_temp(nr*nz),z_temp(nr*nz)
+      double precision :: dl,leq(npts)
+      double precision :: x1,x2,x3,d1,d2,ydd0,rav1,rav2,rav3
+      integer :: j,ihalf
+      double precision :: psicol(nr,nz),rcol(nr),zcol(nz)
 
 !
       if (icontour.lt.2) then
@@ -431,9 +434,11 @@ contains
 !
       use param
       implicit none
-      double precision eps,psi,err,u1,eps1,diff1,u2,eps2,diff2,u3,eps3
-      double precision tsterr
-      integer i3,ntrip
+      double precision, intent(in) :: eps
+      double precision, intent(out) :: psi
+      double precision :: err,u1,eps1,diff1,u2,eps2,diff2,u3,eps3
+      double precision :: tsterr
+      integer :: i3,ntrip
 !
 !  error to be tolerated in psi
       err=errit

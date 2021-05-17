@@ -186,17 +186,17 @@ end subroutine init
       use balpar
       use profiles_mod, only : press
       implicit none
-      character(len=4) word
-      double precision val,rlo,zlo
-      double precision psiax
-      integer ival,i
-      integer inr,inz
-      integer ndatpt,nndatpt,ntdatpt
-      integer nh,ndat
-      double precision rmax,rmin,zmax,zmin,rval,zval
-      double precision, dimension(:), allocatable:: psi_in,ne_in,te_in,work
-      double precision, dimension(:), allocatable:: p_in,ffp_in
-      double precision dpsi
+      character(len=4) :: word
+      double precision :: val,rlo,zlo
+      double precision :: psiax
+      integer :: ival,i
+      integer :: inr,inz
+      integer :: ndatpt,nndatpt,ntdatpt
+      integer :: nh,ndat
+      double precision :: rmax,rmin,zmax,zmin,rval,zval
+      double precision, dimension(:), allocatable :: psi_in,ne_in,te_in,work
+      double precision, dimension(:), allocatable :: p_in,ffp_in
+      double precision :: dpsi
       !
       logical :: debug
 

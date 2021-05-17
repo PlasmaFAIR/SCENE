@@ -12,12 +12,14 @@ contains
 !
       use param
       implicit none
-      integer ip,id,im,ik
-      double precision psin
-      double precision press, psi,xps,ptem,efac
-      double precision te,ti,ted,tid,tedd,tidd
-      double precision pt,zni,znid,pd,znidd
-      double precision p1,p2,p3,x1,x2,x3,aa,bb,cc,dpsi
+      double precision, intent(in) :: psi
+      integer, intent(in) ::ip
+      integer :: id,im,ik
+      double precision :: psin
+      double precision :: press, xps,ptem,efac
+      double precision :: te,ti,ted,tid,tedd,tidd
+      double precision :: pt,zni,znid,pd,znidd
+      double precision :: p1,p2,p3,x1,x2,x3,aa,bb,cc,dpsi
 
       xps=1.-psi/umax
       if (xps.lt.0.) then
@@ -359,11 +361,13 @@ contains
 !
        use param
        implicit none
+       double precision, intent(in) :: psi
+       integer, intent(in) :: id, ip
        double precision :: pressi
-       double precision psin
-       double precision psi,xps,ptem,efac
-       double precision p1,p2,p3,x1,x2,x3,aa,bb,cc,dpsi
-       integer ip,id,im,ik
+       double precision :: psin
+       double precision :: xps,ptem,efac
+       double precision :: p1,p2,p3,x1,x2,x3,aa,bb,cc,dpsi
+       integer :: im,ik
 
        xps=1.-psi/umax
        if (xps.lt.0.) then
@@ -478,10 +482,11 @@ contains
 !
       use param
       implicit none
+      double precision, intent(in) :: psi
+      integer, intent(in) :: i
       double precision :: dense
-      double precision psi
-      double precision ne,ned,te,ti,ted,tid
-      integer i,j
+      double precision :: ne,ned,te,ti,ted,tid
+      integer :: j
 !
       if (imp.eq.0) then
         ti=tempi(psi,1,0)
@@ -537,12 +542,14 @@ contains
 !
       use param
       implicit none
-      double precision densi,psi,efac,efaca,efac0
-      double precision ni,nid,nidd,ti,te,xps,ted,tid
-      double precision nta,ntped,ntedg,nin,ntpow,nz0
-      double precision psin,dpsi,n1,n2,n3,aa,bb,cc
-      double precision ps1,ps2,ps3
-      integer i,id,ip,ik
+      double precision, intent(in) :: psi
+      integer, intent(in) :: id, i
+      double precision :: densi, efac,efaca,efac0
+      double precision :: ni,nid,nidd,ti,te,xps,ted,tid
+      double precision :: nta,ntped,ntedg,nin,ntpow,nz0
+      double precision :: psin,dpsi,n1,n2,n3,aa,bb,cc
+      double precision :: ps1,ps2,ps3
+      integer ip,ik
 !
       if (imp.eq.0) then
         ti=tempi(psi,1,0)
@@ -822,11 +829,13 @@ contains
       use param
       use scene_errors
       implicit none
-      integer id,ij,j,im,i0,ip
-      double precision psi,fprof
-      double precision xps,ffp,fsq,f,g0,fff,ffpp,ff1,ff2,ff3,ff4
-      double precision rat,ds,fup,ffpint,psin
-      double precision x1,x2,x3,g1,g2,g3,aa,bb,cc,dpsi
+      double precision, intent(in) :: psi
+      integer, intent(in) :: id
+      integer :: ij,j,im,i0,ip
+      double precision :: fprof
+      double precision :: xps,ffp,fsq,f,g0,fff,ffpp,ff1,ff2,ff3,ff4
+      double precision :: rat,ds,fup,ffpint,psin
+      double precision :: x1,x2,x3,g1,g2,g3,aa,bb,cc,dpsi
       !
       xps=1.-psi/umax
       psin=psi/umax
@@ -1168,10 +1177,12 @@ contains
       use param
       implicit none
 !
-      integer i,ip,ik,nb
-      double precision tempe,psi,xps,tem,efac,tfac,efac0,efaca
-      double precision psin,aa,bb,cc,dpsi,t1,t2,t3
-      double precision ps1,ps2,ps3,psn
+      double precision, intent(in) :: psi
+      integer, intent(in) :: i
+      integer :: ip,ik,nb
+      double precision :: tempe,xps,tem,efac,tfac,efac0,efaca
+      double precision :: psin,aa,bb,cc,dpsi,t1,t2,t3
+      double precision :: ps1,ps2,ps3,psn
 !
       xps=1.-psi/umax
       efac=exp(teedg*xps)
@@ -1418,11 +1429,11 @@ contains
       use param
       implicit none
 !
-      double precision tempi
-
-      integer i,id
-      double precision psi,xps,tem
-      double precision t0,ta,tped,tpow,tedg,tn,efac,efac0,efaca,tfac
+      double precision, intent(in) ::psi
+      integer, intent(in) :: id, i
+      double precision :: tempi
+      double precision :: xps,tem
+      double precision :: t0,ta,tped,tpow,tedg,tn,efac,efac0,efaca,tfac
 !
       xps=1.-psi/umax
       if (xps.lt.0.) then
@@ -1648,7 +1659,7 @@ contains
      use param
      implicit none
 
-     integer :: con, id
+     integer, intent(in) :: con, id
 
      integer :: i
      double precision :: rmin, rmax,zmax
@@ -1758,7 +1769,7 @@ contains
      use param
      implicit none
 
-     integer :: con, id
+     integer, intent(in) :: con, id
 
      integer :: i, zind
      double precision :: rmin, rmax,zmax, rmid, min_rad
@@ -1866,7 +1877,7 @@ contains
      use param
      implicit none
 
-     integer :: id, con
+     integer, intent(in) :: id, con
      double precision :: shiftf, rat, del
      double precision :: shift_l, shift_u, psi_u,psi_l
 
@@ -1940,7 +1951,7 @@ contains
      implicit none
 
      integer :: i
-     double precision, dimension(ncon) :: rho,dpdr
+     double precision, dimension(ncon), intent(out) :: rho,dpdr
      double precision :: rhomax
 
 
@@ -1989,7 +2000,7 @@ contains
      double precision :: flxvol_l, flxvol_u, psi_u, psi_l
 
      double precision :: r_l, r_r, z_l, z_r
-     real, dimension(ncon) :: vols, areas, volsp
+     real, dimension(ncon), intent(out) :: vols, areas, volsp
 
      flxarea = 0.
      ! for each contour calculate area with trapeze rule
@@ -2088,10 +2099,10 @@ contains
      use param
      implicit none
 
-     double precision, dimension(ncon) :: lambdas
-
+     double precision, dimension(ncon), intent(out) :: lambdas
+     integer, intent(in) :: beam, ecomp
      double precision :: psi, ne, rat
-     integer :: i, beam, ecomp
+     integer :: i
 
      do i=2,ncon
         psi = psiv(i)
@@ -2115,7 +2126,7 @@ contains
      implicit none
 
      integer :: con
-     double precision, dimension(ncon) :: phi
+     double precision, dimension(ncon), intent(out) :: phi
 
      phi=0.0
      do con=ncon,1,-1

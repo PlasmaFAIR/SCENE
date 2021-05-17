@@ -15,38 +15,38 @@ contains
       use profiles_mod, only : dense, densi, fprof, press, tempe, tempi
       use signeo_mod, only : signeo
       implicit none
-      integer k,i,ip,im,l
-      double precision ffp,pd
-      double precision ant,bmod,bphi,bsq,bth,dl
-      double precision eps,erribm,fsi,psi,pt,rint,rnor,root,rr,zz
-      double precision drdl,d2rdl2,dzdl,d2zdl2
-      double precision psi1,psi2,psi3,nu,nu1,nu2,ffpp,pdd
-      double precision rcinv(npts),sinu(npts),cosu(npts),dpsi1dl(npts), &
-                       d2psi1dl2(npts),dnudpsi(npts),d2nudpsi2(npts)
-      double precision surfa(npts),bpsur(npts)
-      double precision bsqar(npts),bphiar(npts), rsqar(npts),rrar(npts)
-      double precision riar(npts), risar(npts),rar(npts),avblir(npts)
-      double precision sfloc(npts),colop(npts),vpparr(npts)
-      double precision bmax(ncon),bmin(ncon)
-      double precision te,ti,tau,coolog,bfac,epsfac,ratio,pro,rt, &
-                       topcol,botcol,colte,vthe,colti,vthi,zni
-      double precision binv,dst,bigint,bigint2,rla,btot,rlag,bp
-      double precision bla(npts),bla2(npts)
-      double precision fc,x,ne,pe,rj0,bstrap,conl,dotav
-      double precision fq(ncon),fqd(ncon)
-      double precision zeff,qq,rnust,ft,sigfac
-      double precision ant1,ant2,ant3
-      double precision t1(npts),t2(npts),t3(npts)
+      integer :: k,i,ip,im,l
+      double precision ::  ffp,pd
+      double precision ::  ant,bmod,bphi,bsq,bth,dl
+      double precision ::  eps,erribm,fsi,psi,pt,rint,rnor,root,rr,zz
+      double precision ::  drdl,d2rdl2,dzdl,d2zdl2
+      double precision ::  psi1,psi2,psi3,nu,nu1,nu2,ffpp,pdd
+      double precision ::  rcinv(npts),sinu(npts),cosu(npts),dpsi1dl(npts)
+      double precision :: d2psi1dl2(npts),dnudpsi(npts),d2nudpsi2(npts)
+      double precision :: surfa(npts),bpsur(npts)
+      double precision :: bsqar(npts),bphiar(npts), rsqar(npts),rrar(npts)
+      double precision :: riar(npts), risar(npts),rar(npts),avblir(npts)
+      double precision :: sfloc(npts),colop(npts),vpparr(npts)
+      double precision :: bmax(ncon),bmin(ncon)
+      double precision :: te,ti,tau,coolog,bfac,epsfac,ratio,pro,rt
+      double precision :: topcol,botcol,colte,vthe,colti,vthi,zni
+      double precision :: binv,dst,bigint,bigint2,rla,btot,rlag,bp
+      double precision :: bla(npts),bla2(npts)
+      double precision :: fc,x,ne,pe,rj0,bstrap,conl,dotav
+      double precision :: fq(ncon),fqd(ncon)
+      double precision :: zeff,qq,rnust,ft,sigfac
+      double precision :: ant1,ant2,ant3
+      double precision :: t1(npts),t2(npts),t3(npts)
 !      double precision ppar(ncon),pppar(ncon),ppan(ncon),pppan(ncon)
-      integer nst
+      integer :: nst
 !
-      double precision q1,q2,q3,x1,x2,x3,av,bv,cv
+      double precision :: q1,q2,q3,x1,x2,x3,av,bv,cv
 !      double precision p1,p2,p3
-      double precision nupplt(npts),chiplt(npts),y1(npts),y2(npts),y3(npts) &
-                       ,y4(npts),y5(npts),y6(npts)
-      double precision plotx(npts),ploty1(ncon,npts),ploty2(ncon,npts), &
-                       ploty3(npts),ploty4(npts)
-      double precision dbtdrho,dbpdrho
+      double precision :: nupplt(npts),chiplt(npts),y1(npts),y2(npts),y3(npts)
+      double precision :: y4(npts),y5(npts),y6(npts)
+      double precision :: plotx(npts),ploty1(ncon,npts),ploty2(ncon,npts)
+      double precision :: ploty3(npts),ploty4(npts)
+      double precision :: dbtdrho,dbpdrho
 
       if (icont.gt.-3) then
         allocate( sfac(ncon),bsqav(ncon), bphiav(ncon),  &
@@ -599,9 +599,11 @@ contains
 !
       use param
       implicit none
-      integer i, k
-      double precision ans,dl
-      double precision arr(npts)
+      double precision, intent(in) :: arr(npts)
+      integer, intent(in) :: k
+      double precision, intent(out) :: ans
+      integer :: i
+      double precision ::  dl
 !
       ans=0.
       dl=circumf(k)/(npts-1.)

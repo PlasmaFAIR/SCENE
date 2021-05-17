@@ -10,16 +10,16 @@ contains
       use profiles_mod, only : fprof
       use toms790, only : CSHEP2, CS2VAL
       implicit none
-      double precision br(nr,nz),bz(nr,nz),bt(nr,nz)
-      double precision, dimension(:), allocatable::  x,y,f
-      double precision, dimension(:,:), allocatable:: grads
-      double precision px,py,pf,fsi,psi,rr
-      integer, dimension(:), allocatable:: triang
-      integer npt,k,i,j,ifail
-      integer, allocatable:: LCELL(:,:), LNEXT(:)
-      double precision:: XMIN, YMIN, DX, DY, RMAX
-      double precision, allocatable:: RW(:), A(:,:)
-      integer:: NCC, NRR, NWW
+      double precision :: br(nr,nz),bz(nr,nz),bt(nr,nz)
+      double precision, dimension(:), allocatable ::  x,y,f
+      double precision, dimension(:,:), allocatable :: grads
+      double precision :: px,py,pf,fsi,psi,rr
+      integer, dimension(:), allocatable :: triang
+      integer :: npt,k,i,j,ifail
+      integer, allocatable :: LCELL(:,:), LNEXT(:)
+      double precision :: XMIN, YMIN, DX, DY, RMAX
+      double precision, allocatable :: RW(:), A(:,:)
+      integer :: NCC, NRR, NWW
 !
 !
 !  Extrapolation routine to fill out the psi mesh on the R-Z grid
@@ -166,9 +166,9 @@ contains
       use param
       use profiles_mod, only : dense, tempe
       implicit none
-      integer icur,k,i,nrm,kg
-      double precision psi,eps,extapp,extapp2,drm,rat,psiup,de,te,curf,rv
-      double precision curflx(ncon),rsm(ncon),curden(ncon)
+      integer :: icur,k,i,nrm,kg
+      double precision :: psi,eps,extapp,extapp2,drm,rat,psiup,de,te,curf,rv
+      double precision :: curflx(ncon),rsm(ncon),curden(ncon)
 
 
       curflx(ncon)=0.

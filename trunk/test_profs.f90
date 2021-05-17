@@ -9,8 +9,8 @@ contains
       use param
       use profiles_mod, only : press
       implicit none
-      integer i
-      double precision psi,psi1,psi2,pp,pd,ppp,pdd
+      integer :: i
+      double precision :: psi,psi1,psi2,pp,pd,ppp,pdd
 !
       do i=2,ncon-1
         psi=psiv(i)

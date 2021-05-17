@@ -8,9 +8,9 @@ contains
       use profiles_mod, only : dense, densi, tempe, tempi
       implicit none
 !
-      double precision b0,phi,rho(ncon),dpsi,te(ncon),pden(ncon),ne,   &
-                       dion,arg,ti,psi
-      integer k,nwr,i
+      double precision :: b0,phi,rho(ncon),dpsi,te(ncon),pden(ncon),ne
+      double precision :: dion,arg,ti,psi
+      integer :: k,nwr,i
 !
       nwr=61
       open(unit=nwr,file=runname(1:lrunname)//'.astra', &
@@ -102,21 +102,21 @@ contains
       use param
       use profiles_mod, only : fprof
       implicit none
-      integer nma
-      double precision rho(nma),vr(nma),g33(nma),ipol(nma),droda(nma),  &
-                g22(nma),g11(nma),shif(nma),kap(nma),trian(nma)
-      double precision pden(ncon),te(ncon)
+      integer, intent(in) :: nma
+      double precision, intent(in) :: pden(ncon),te(ncon)
+      double precision :: rho(nma),vr(nma),g33(nma),ipol(nma),droda(nma)
+      double precision :: g22(nma),g11(nma),shif(nma),kap(nma),trian(nma)
 !
-      integer k,i,im,ipeak,nwr
-      double precision v1(npts),v2(npts),v3(npts),v4(npts)
-      double precision th(npts)
-      double precision phi,sinarg
-      double precision drhodpsi(nma),asmall(nma)
-      double precision bth,rr,psin,ant,dvdpsi
-      double precision ro1,ro2,ro3,x1,x2,x3,aa,bb,cc
-      double precision b0,psi,zpeak,rpeak,dpsi
-      double precision av0,av1,av2,dth,del0,del1,ascur
-      double precision intval,intvol
+      integer :: k,i,im,ipeak,nwr
+      double precision :: v1(npts),v2(npts),v3(npts),v4(npts)
+      double precision :: th(npts)
+      double precision :: phi,sinarg
+      double precision :: drhodpsi(nma),asmall(nma)
+      double precision :: bth,rr,psin,ant,dvdpsi
+      double precision :: ro1,ro2,ro3,x1,x2,x3,aa,bb,cc
+      double precision :: b0,psi,zpeak,rpeak,dpsi
+      double precision :: av0,av1,av2,dth,del0,del1,ascur
+      double precision :: intval,intvol
 !
       nwr=62
       open(unit=nwr,file=runname(1:lrunname)//'_2.astra', &

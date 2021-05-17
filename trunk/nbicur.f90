@@ -40,12 +40,12 @@ subroutine nbicur()
 
   real, dimension(:,:), allocatable :: shinethru, pnbbm, pnb
 
-  real, dimension(:), allocatable ::  jnbTot, pnbe, pnbi, beamDens, beamVel, beamPress, beamFus, &
-       pNBLoss, pNBAbsorb, pbfuse, pbfusi, snBeamDD, snBeamDT, nbcur, etanb, &
-       gammanb, jnbfast, l31
+  real, dimension(:), allocatable ::  jnbTot, pnbe, pnbi, beamDens, beamVel, beamPress, beamFus
+  real, dimension(:), allocatable :: pNBLoss, pNBAbsorb, pbfuse, pbfusi, snBeamDD, snBeamDT, nbcur
+  real, dimension(:), allocatable :: etanb, gammanb, jnbfast, l31
 
-  real :: pNBAbsorbTot, pNBLossTot, nbcurTot, etanbTot, beamBeta, beamFusTot, beamFusChTot, &
-       snDTTotal, snDDTotal
+  real :: pNBAbsorbTot, pNBLossTot, nbcurTot, etanbTot, beamBeta
+  real :: beamFusTot, beamFusChTot, snDTTotal, snDDTotal
 
   integer :: iflagnb
 
@@ -428,11 +428,13 @@ subroutine momsource(nbeams,power,energy, rtan, source)
   use param
   use profiles_mod, only : densi
   implicit none
-  integer :: nbeams
+  integer, intent(in) :: nbeams
+  double precision, dimension(ncon,nbeams), intent(in) :: power  
   double precision, dimension(nbeams), intent(in) ::  rtan, energy
-  double precision, dimension(ncon,nbeams) :: power
-  double precision, dimension(ncon) :: source, bm_source,mass, vtor, angf
+  double precision, dimension(ncon), intent(out) :: source
+  double precision, dimension(ncon) :: bm_source,mass, vtor, angf
   double precision :: rmax
+
   integer :: i, con
 
   source = 0 
@@ -469,14 +471,15 @@ subroutine trapfact(l31)
 !
       use param
       use profiles_mod, only : dense, densi, fprof
-      implicit none
-      double precision ne,zni,zeff,zb
-      double precision fsi,dox
-      double precision x,psi
-      double precision fc
-      integer l,k
+      implicit none      
+      real, dimension(ncon), intent(out) :: l31
+      double precision :: ne,zni,zeff,zb
+      double precision :: fsi,dox
+      double precision :: x,psi
+      double precision :: fc
+      integer :: l,k
 !
-      real, dimension(ncon) :: l31
+
 
       do k=1,ncon
          psi = psiv(k)

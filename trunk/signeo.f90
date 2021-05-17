@@ -9,10 +9,11 @@ contains
 !
       use param
       implicit none
-      double precision rnust,ft,zeff,sigfac
-      double precision xmax,dx,fac,xx,xsq,expo,erfp,errf
-      double precision rle,rlt,taunu,rl1,rl2,fs
-      double precision ftstar,arg,gox,errarg
+      double precision, intent(in) :: rnust,ft,zeff
+      double precision, intent(out) :: sigfac
+      double precision :: xmax,dx,fac,xx,xsq,expo,erfp,errf
+      double precision :: rle,rlt,taunu,rl1,rl2,fs
+      double precision :: ftstar,arg,gox,errarg
       integer nb,i
 !
       xmax=10.

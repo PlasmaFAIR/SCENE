@@ -11,23 +11,23 @@ contains
       use profiles_mod, only : fprof
       use toms790, only : CSHEP2, CS2VAL
       implicit none
-      integer i,j,k
-      double precision rr,fsi,psi,btor
-      double precision rwall,zwall,rinner,rtst,ztst
-      double precision, dimension(:), allocatable:: rk,zk
-      double precision, dimension(:,:), allocatable:: bpk,uk
+      integer :: i,j,k
+      double precision :: rr,fsi,psi,btor
+      double precision :: rwall,zwall,rinner,rtst,ztst
+      double precision, dimension(:), allocatable :: rk,zk
+      double precision, dimension(:,:), allocatable :: bpk,uk
 
 !
-      double precision, dimension(:), allocatable::  x,y,f
-      double precision, dimension(:,:), allocatable:: grads
-      double precision px,py,pf
-      integer, dimension(:), allocatable:: triang
-      integer npt_nag,ifail,nrk,nzk
+      double precision, dimension(:), allocatable ::  x,y,f
+      double precision, dimension(:,:), allocatable :: grads
+      double precision :: px,py,pf
+      integer, dimension(:), allocatable :: triang
+      integer :: npt_nag,ifail,nrk,nzk
 !
-      integer, allocatable:: LCELL(:,:), LNEXT(:)
-      double precision:: XMIN, YMIN, DX, DY, RMAX
-      double precision, allocatable:: RW(:), A(:,:)
-      integer:: NCC, NRR, NWW
+      integer, allocatable :: LCELL(:,:), LNEXT(:)
+      double precision :: XMIN, YMIN, DX, DY, RMAX
+      double precision, allocatable :: RW(:), A(:,:)
+      integer :: NCC, NRR, NWW
 !
       open(unit=51,file=runname(1:lrunname)//'.flxorb', &
            status='unknown',iostat=ios)

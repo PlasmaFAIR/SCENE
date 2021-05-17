@@ -10,8 +10,8 @@ contains
       use param
       use profiles_mod, only : fprof, press
       implicit none
-      integer i,nh
-      double precision psi,pp,pf,qr,cu,bv0
+      integer :: i,nh
+      double precision :: psi,pp,pf,qr,cu,bv0
 !
       nh=117
       open(unit=nh,file=runname(1:lrunname)//'.caxe', &

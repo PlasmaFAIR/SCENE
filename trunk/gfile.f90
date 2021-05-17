@@ -11,13 +11,13 @@ contains
       use param
       use profiles_mod, only : fprof, press
       implicit none
-      integer lun,idum,itime,i,j,ij
-      character(len=34) adum1
-      character(len=14) adum2
-      double precision xdim,zdim,b0vac_r,rzero,zgeo
-      double precision rmag,zmag,psimag,psi_lcfs,b0vac
-      double precision curnt,xdum,dpsi,rat,psi
-      double precision arr(nr)
+      integer :: lun,idum,itime,i,j,ij
+      character(len=34) :: adum1
+      character(len=14) :: adum2
+      double precision :: xdim,zdim,b0vac_r,rzero,zgeo
+      double precision :: rmag,zmag,psimag,psi_lcfs,b0vac
+      double precision :: curnt,xdum,dpsi,rat,psi
+      double precision :: arr(nr)
 !
 !  2 dummy integers
       itime=0
