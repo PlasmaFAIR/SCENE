@@ -40,9 +40,8 @@ contains
             zeff=zeff+(zni*iz(l)**2)/ne
           end do
         else
-          nw=10
-          write(nw,*)'error*** problem in hirsh, ne=0'
-          write(nw,*)'cannot evaluate zeff'
+          write(*,*) 'error*** problem in hirsh, ne=0'
+          write(*,*) 'cannot evaluate zeff'
           stop
         end if
       end if

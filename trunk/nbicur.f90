@@ -495,10 +495,8 @@ subroutine trapfact(l31)
                   zeff=zeff+(zni*iz(l)**2)/ne
                end do
             else
-               
-               nw=10
-               write(nw,*)'error*** problem in trapfact, ne=0'
-               write(nw,*)'cannot evaluate zeff'
+               write(*,*) 'error*** problem in trapfact, ne=0'
+               write(*,*) 'cannot evaluate zeff'
                stop
             end if
          end if
