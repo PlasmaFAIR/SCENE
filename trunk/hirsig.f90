@@ -360,7 +360,6 @@ contains
 !  load up species properties into unifying arrays (e=1, i=2, i=
 !  3,4,...nimp+2, in same order as impure arrays above
       nspec=nimp+2
-      mp=1.6726e-27
       ch(1)=-eq
       ts(1)=tempe(psi,0)
       tsd(1)=tempe(psi,1)
