@@ -15,9 +15,6 @@ contains
       use param
       implicit none
 
-! Define read and write units
-      nread=11
-      nw=6
 ! set default parameters
       call default
 ! read in desired parameters

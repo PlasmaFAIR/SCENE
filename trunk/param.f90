@@ -152,8 +152,8 @@ module param
 !
 !
 ! Read and write units:
-     integer :: nread
-     integer :: nw
+     integer, parameter :: nread = 11
+     integer, parameter :: nw = 6
 !
 !  Impurity ion information
      integer :: nimp      ! number of impurity ions
