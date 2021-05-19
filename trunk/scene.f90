@@ -141,20 +141,20 @@ program scene
       end if
 
       !  need to iterate further on ff'
-      if (niter.lt.npass) then
-        !  up-date ff'
-        call ffdgen(0,icur,errcur)
-        !  up-date n,T mesh if appropriate
-        !if (debug) write(6,*)' in setnt'
-        if (igr.eq.5) call setnt
-        !if (debug) write(6,*)' out setnt'
-        icont=-3
-      else
-        write(nw,*)'warning***ffd has not converged to specified'
-        write(nw,*)'accuracy. accuracy=',errcur,' requested=',errffd
-      end if
-
+      !  up-date ff'
+      call ffdgen(0,icur,errcur)
+      !  up-date n,T mesh if appropriate
+      !if (debug) write(6,*)' in setnt'
+      if (igr.eq.5) call setnt
+      !if (debug) write(6,*)' out setnt'
+      icont=-3
     end do equilibrium_convergence
+
+    ! We reached npass iterations without convergence
+    if (errcur > errffd) then
+      write(nw,*)'warning***ffd has not converged to specified'
+      write(nw,*)'accuracy. accuracy=',errcur,' requested=',errffd
+    end if
 
     !  equilibrium converged to specified accuracy...
     !  generate output
