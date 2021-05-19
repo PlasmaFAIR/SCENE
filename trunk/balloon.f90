@@ -266,15 +266,14 @@ contains
     !  Used for the solution to the ballooning equation
     !
     use balpar
+    use param, only : pi
     implicit none
     double precision, intent(in) :: x
     integer, intent(in) :: k
     double precision, intent(in) :: y, yd
     double precision :: balfun    
     integer :: pm
-    double precision :: rat,c1,c2,pi
-    !
-    pi=4.*atan(1.)
+    double precision :: rat,c1,c2
     pm=1
     if (x.lt.0.) pm=-1
     rat=(x-chi(k))/(chi(k+pm)-chi(k))
@@ -300,15 +299,14 @@ contains
     !  y(k) is the solution to the ballooning equation at x=x(k)
     !
     use balpar
+    use param, only : pi
     implicit none
     double precision, intent(in) :: x
     integer, intent(in) :: k
     double precision, intent(in) :: pd
     integer :: pm
-    double precision balfun2,pi
+    double precision balfun2
     double precision rat,c1,c2
-    !
-    pi=4.*atan(1.)
     pm=1
     if (x.lt.0.) pm=-1
     rat=(x-chi(k))/(chi(k+pm)-chi(k))

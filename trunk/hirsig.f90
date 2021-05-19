@@ -134,13 +134,12 @@ contains
 !
 !   calculates and stores error function
 !
+      use param, only : pi
       implicit none
       double precision :: dys,ymax,phi
-      double precision :: y,fac,pi
+      double precision :: y,fac
       integer :: ny,i
       common/phifun/dys,ymax,phi(2000)
-!
-      pi=4.*atan(1.)
       ymax=3.
       ny=2000
       dys=ymax/(ny-1.)
@@ -287,16 +286,15 @@ contains
 !
 !  Calculates Chandrasakhar function (id=1) or error function (id=0)
 !
+      use param, only : pi
       implicit none
       double precision, intent(in) :: y
       integer, intent(in) :: id
       double precision :: dys,ymax,phi
       double precision :: gov
-      double precision :: ylo,yup,phioy,rat,pi,fac,phid,gg
+      double precision :: ylo,yup,phioy,rat,fac,phid,gg
       integer :: k
       common/phifun/dys,ymax,phi(2000)
-!
-      pi=4.*atan(1.)
       if (y.lt.0.) then
         write(6,*)'error***only positive arguments to error fn, y=',y
         stop
@@ -496,14 +494,13 @@ contains
       function phig(y)
 !     ****************
 !
+      use param, only : pi
       implicit none
       double precision, intent(in) :: y
       double precision :: dys,ymax,phi
-      double precision :: phig,ylo,yup,fac,pi,phid,rat,gg
+      double precision :: phig,ylo,yup,fac,phid,rat,gg
       integer :: k
       common/phifun/dys,ymax,phi(2000)
-!
-      pi=4.*atan(1.)
       if (y.lt.0.) then
         write(6,*)'error***only positive arguments to error fn, y=',y
         stop
