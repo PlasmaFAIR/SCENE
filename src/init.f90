@@ -15,18 +15,6 @@ contains
       use param
       implicit none
 
-!
-! initialise physical constants
-      pi=4.0d0*atan(1.0d0)
-      mu0=pi*4.0d-7
-      bk=1.602d-19
-      eps0=8.8542d-12
-      mp=1.6726d-27
-      me=9.1094d-31
-      eq=1.6022d-19
-! Define read and write units
-      nread=11
-      nw=6
 ! set default parameters
       call default
 ! read in desired parameters

@@ -1,4 +1,5 @@
 module param
+  use, intrinsic :: iso_fortran_env, only : real64
   implicit none
 !  Job title
   character(len=50) :: runname
@@ -6,9 +7,21 @@ module param
   character(len=19) :: title
 !
 !physical constants...
-  double precision :: pi,eps0,mu0,bk  ! pi, epsilon_0, mu_0 and Boltzman constant
-  double precision :: mp,me,eq           ! proton and electron masses,
-                                      ! electron charge
+  !> \(\pi\)
+  real(real64), parameter :: pi = 4.0d0*atan(1.0d0)
+  !> Vacuum permeability (SI)
+  real(real64), parameter :: mu0 = pi*4.0d-7
+  !> Vacuum permittivity (SI)
+  real(real64), parameter :: eps0 = 8.8542d-12
+  !> Boltzman constant
+  real(real64), parameter :: bk = 1.602d-19
+  !> Proton mass
+  real(real64), parameter :: mp = 1.6726d-27
+  !> Electron mass
+  real(real64), parameter :: me = 9.1094d-31
+  !> Electron charge
+  real(real64), parameter :: eq = 1.6022d-19
+
 ! ibdry=0 uses original Sykes parameterisation of boundary
 ! 27/4/04 ibdry=1 option introduced to permit more general shapes to be
 ! modelled
@@ -139,8 +152,8 @@ module param
 !
 !
 ! Read and write units:
-     integer :: nread
-     integer :: nw
+     integer, parameter :: nread = 11
+     integer, parameter :: nw = 6
 !
 !  Impurity ion information
      integer :: nimp      ! number of impurity ions
