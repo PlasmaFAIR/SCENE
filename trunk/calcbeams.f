@@ -10,7 +10,6 @@
      .   etanbTot, beamBeta, pNBAbsorbTot, pNBLossTot, beamFusTot,
      .   beamFusChTot, snDTTotal, snDDTotal, pitch, iflag)
 
-     
 c///////////////////////////////////////////////////////////////////////
 c/
 c/    This is the main calling routine of the Neutral Beam package.
@@ -217,7 +216,6 @@ c/    stored in one of the common blocks.
       include 'nbplasma.inc'
       include 'nbconsts.inc'
 
-
 c/    Subroutine Variable Declarations:
 c/    --------------------------------
       integer iflag, nbeams, inbfus, n, nion, maxiter
@@ -271,9 +269,6 @@ c/    Other local variables:
 
       iflag = 0
 
-      !print*, 'Beginning Nbeams'
-
-
 c/    Check dimensions and return with error message if not right:
 
       if (nbeams.GT.maxBeams) then
@@ -321,8 +316,6 @@ c/    Notice: Below we use the BLAS routine scopy which copies one
 c/    vector into another. If BLAS is not available (unlikely) then
 c/    this part can be replaced by a simple do loop.
 c     /
-
-
       call scopy (n, rnorm, 1, rho, 1)
       call scopy (n, vprime, 1, vpr, 1)
       call scopy (n, dvol, 1, dv, 1)
@@ -372,13 +365,11 @@ c/    Olson's formulation:
 
 c/    Calculate fast ion deposition:
 c/    -----------------------------
-      !print*, 'Calling hofr'
       call hofrho (nbeams, ebeam, pbeam, rtang, nbshape, bwidth,
      .   bheigh, nbptype, bgaussR, bgaussZ, bzpos, hofr, shinethru,
      .   pNBAbsorb, pNBLoss, pNBAbsorbTot, pNBLossTot)
 
 
-      !print*, 'calling fastIons'
 c/    Calculate fast ion related parameters:
 c/    -------------------------------------
       call fastIons (nbeams, amb, zbeam, ebeam, pbeam, inbfus,
@@ -393,9 +384,7 @@ c/    (summed over all beams and energy components)
 c/    Recall that now hofr is normalized, so we must multiply
 c/    by 1.0 - shinethru(ie,ib):
 c     /
-      !print*, 'Calc heating'
       do i = 1, nrho
-
          sumpnbi = 0.0
          sumpnbe = 0.0
          sumpnbbm = 0.0
@@ -405,12 +394,10 @@ c     /
      .         (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)*fNBion(i,ie,ib)
               sumpnbe = sumpnbe + pbeam(ib)*fbpwr(ie,ib)*
      .         (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)*fNBelec(i,ie,ib)
-
               sumpnbbm(ib) = sumpnbbm(ib) + pbeam(ib)*fbpwr(ie,ib)*
      .             (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib) *
      .             (fNBelec(i,ie,ib)+fNBion(i,ie,ib))
            enddo
-           
          enddo
          pnbi(i) = sumpnbi/volume
          pnbe(i) = sumpnbe/volume
@@ -439,7 +426,6 @@ c/    efficiencies (summed over energy components);
          etanbTot = 1.0e-06*nbcurTot / pNBAbsorbTot
       endif
 
-      !print*, 'Calc beam beta'
 c/    Calculate the beam beta:
 c/    -----------------------
       beamBeta = sdot(nrhom1, beamPress, 1,dvol, 1)
@@ -465,7 +451,6 @@ c/    particle products of the beam-plasma interactions:
          call eiSplit (eDTHe4, massHe4, fDTHe4ion, fDTHe4elec)
 
          do i = 1, nrho
-            !print*, 'DD and DT Fusion', beamDDFus(i), beamDTFus(i)
             beamFusIon(i) = beamFusDDHe3(i) * fDDHe3ion(i) +
      .                      beamFusDDp(i) * fDDpion(i) +
      .                      beamFusDDt(i) * fDDtion(i) +
@@ -486,6 +471,6 @@ c/   Calculate totals of selected quantities:
          snDTTotal = sdot(nrhom1,snBeamDT,1,dvol,1)
 
       endif
-      !print*, 'Finished nbeams'
+
       return
       end subroutine

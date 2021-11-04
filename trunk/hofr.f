@@ -90,7 +90,6 @@ c/    ---------------------------
 
       pi2 = pi**2
 
-
 c/    Calculate parameters for Gaussian integrations:
 c/    ----------------------------------------------
       call gaussWts (nz, wz, sz)
@@ -117,12 +116,9 @@ c/    ----------------------------
          zpos  = bzpos(ib)
          ptype = nbptype(ib)
 
-
-
 c/    Calculate beam stopping cross sections:
 c/    --------------------------------------
          call Beams_mfp
-
 
 c/    Normalization factor for current distribution:
 c/    ---------------------------------------------
@@ -135,12 +131,10 @@ c/    Case for circular beam:
                fact2 = fact**2
                cnorm = pi*gaussR**2*(1.0 - exp(-fact2))
                cnorm = 1.0/cnorm
-
              endif
 c/    Case for rectangular beam:
 
           else if (shape.eq.1) then
-
             if (ptype.eq.0) cnorm = 1.0/(height*width)
             if (ptype.eq.1) then
                prterm = 0.5*width/gaussR
@@ -151,7 +145,6 @@ c/    Case for rectangular beam:
                cnorm = 1.0/cnorm
             endif
          endif
-
 
 c/    Getting ready for the big DO loop:
 c/    ---------------------------------
@@ -177,31 +170,27 @@ c/    Limit of rho/vprime at the center:
 
                if (rhoi.eq.0.0) then
                   rlimit = 4.0*pi2*elong0*(rmajor + rminor*shift(1))
-
                   do ie = 1, 3
-
                      factr(ie) = 2.0*volume*omfp(1,ie,ib)/rlimit
-
                   enddo
                else
-                !!!! CHECK THIS !!!!! added a rhoi for normalisation
                   do ie = 1, 3
                      factr(ie) = (2.0*rhoi*volume / vpr(iflux)) *
      .                    omfp(iflux,ie,ib)
-
                   enddo
                endif
 
 c/    Calculate contributions from outside intersections:
+
                sgn = 1.0
                call zinteg
                do ie = 1, 3
-                  
                   hplus(ie) = alongz(ie)
                   ksiplus(ie) = avksi(ie)
                enddo
 
 c/    Calculate contributions from inside intersections:
+
                sgn = -1.0
                call zinteg
                do ie = 1, 3
@@ -210,25 +199,23 @@ c/    Calculate contributions from inside intersections:
                enddo
                
 c/    Total HOFR and average pitch angle at flux zone -iflux- :
+
                do ie = 1, 3
                   if (fbpwr(ie,ib).ne.0.0) then
-                     
                      hofr(iflux,ie,ib) = cnorm*factr(ie)*
      .                    (hplus(ie) + hmnus(ie))
                      pitchangl(iflux,ie,ib) = (ksiplus(ie) +
      .                    ksiminus(ie))/ (hplus(ie) + hmnus(ie))
-
                   else
                      hofr(iflux,ie,ib) = 0.0
                      pitchangl(iflux,ie,ib) = 0.0
-
                   endif
-
                enddo
             endif
          enddo
 
 c/    Set deposition profile at the edge = 0
+
          do ie = 1, 3
             hofr(nrho,ie,ib) = 0.0
             pitchangl(nrho,ie,ib) = 0.0

@@ -142,11 +142,10 @@ c/    ion population:
             inbfus = 0
          endif
          nfrst = 1
-
-
       endif
 
       root3 = Sqrt(3.0)
+
 c/    Calculate the equivalent atomic current of each beamline in A:
 c/    (Recall that pbeam is in MW and ebeam in keV!):
 
@@ -195,13 +194,12 @@ c/    Initialize arrays to avoid problems with some compilers:
          zti = ionTemp(i)
          call coulomb (cloge,dne20,zte,0.0,amb,0.0,0.0,0.0,1)
          taus = 0.2*amb*zte**1.5/(cloge*dne20*zbeam**2)
+
 c/    Calculate trapped electron correction factor:
 
-c         trapfact = l31(i)
          trapfact = (1.55 + 0.85/zef(i))*Sqrt(epsilon) -
      x              (0.20 + 1.55/zef(i))*epsilon
          factor  = 1.0 - (1.0 - trapfact)*zbeam/zef(i)
-         
          sumjnbib = 0.0
          sumsDDib = 0.0
          sumsDTib = 0.0
@@ -219,7 +217,6 @@ c         trapfact = l31(i)
          do ib = 1, nbeams
             sumjnbie = 0.0
             do ie = 1, 3
-
                if (fbpwr(ie,ib).ne.0.0) then
                   energy = ebeam(ib)/float(ie)
                   sumbrack = 0.0
@@ -238,38 +235,28 @@ c         trapfact = l31(i)
 c/    Critical energy for fast ion slowing down:
 
                   ecrit = 14.8*(zbr**(2./3.))*amb*zte
-
                   yc = Sqrt(ecrit/energy)
-
                   call qsimp(fb, 0., 1., reslt)
                   call qsimp(fbvel, 0., 1., reslt2)
                   capke = reslt*(1. + yc**3)**(zhat/3.)
                   tauf = taus*Log((1.0+(energy/ecrit)**1.5)/
      x                   (1.0+(zti/ecrit)**1.5))/3.0
 
-
 c/    Calculate fast and net current densities (A/m2):
 
                   srcfast(i,ie,ib) = bmcur(ie,ib) *
      x                 (1.0 - shinethru(ie,ib)) * hofr(i,ie,ib)/volume
 
-
-c     !!!!!!!!!
 c     Extrapolate to core as rho=0 leads to drop in current
                   if (i .eq.1) then
                      rat = (srcfast(i+2,ie,ib) - srcfast(i+1,ie,ib) )/
      x                    (rho(i+2) - rho(i+1))
 
-                     !srcfast(i,ie,ib) = srcfast(i+1,ie,ib) -
-     x               !     rat*(rho(i+1) - rho(i) )
-
                   end if
-
 
                   jfast = zbeam*srcfast(i,ie,ib)*taus*vbeam(ie,ib)*
      x                    capke*pitchangl(i,ie,ib)
                   jnbie(i,ie,ib) = factor*jfast
-
                   sumjfast = sumjfast + jfast
                   sumjnbie = sumjnbie + jnbie(i,ie,ib) 
 
@@ -331,11 +318,9 @@ c/    Calculate rates of beam-plasma interactions:
 c/    Calculate fast ion density (#/m^3):
                   sumdnbib = sumdnbib + srcfast(i,ie,ib)*tauf/eCharge
 
-
-c     /    Calculate fast ion velocty (m/s) only fastest species
+c     Calculate fast ion velocty (m/s) only fastest species
                   sumdvbib = sumdvbib + srcfast(i,ie,ib)*taus*
      .                 vbeam(ie,ib)* reslt2/eCharge
-c     capke/eCharge
 
 c/    Calculate fast ion pressure (in Pa):
 
@@ -355,15 +340,12 @@ c/    Calculate power division between electrons and ions:
             enddo
 
             jnb(i,ib) = sumjnbie
-
             sumjnbib = sumjnbib + sumjnbie
          enddo
-
          snBeamDD(i) = sumsDDib
          snBeamDT(i) = sumsDTib
          jnbTot(i) = sumjnbib
          jnbfast(i) = sumjfast
-
          beamFus(i)  = sumFusib
          beamDTFus(i) = sumDTFusib
          beamDDFus(i) = sumDDFusib
@@ -374,7 +356,6 @@ c/    Calculate power division between electrons and ions:
          beamDens(i) = sumdnbib
          beamVel(i) = sumdvbib/sumdnbib
          beamPress(i) = sumPreib
-
       enddo
 
       pitch = pitchangl
