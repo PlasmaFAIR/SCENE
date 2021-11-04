@@ -15,7 +15,7 @@ option(SCENE_HAS_NBEAMS "Has modified version of NBEAMS with SCENE support" OFF)
 
 add_subdirectory(lib/dierckx)
 
-add_subdirectory(trunk)
+add_subdirectory(src)
 
 include(CTest)
 if (BUILD_TESTING)
