@@ -551,7 +551,15 @@ end subroutine init
           ten=(te0-tea-(teped-tea)*(exp(teedg)-exp(-teedg))/ &
                               (exp(teedg)+exp(-teedg))) &
              /1.
-          end if
+        else if (ipswtch.eq.12) then
+          ten=(te0-tea-(teped-tea)*(exp(teedg)-exp(-teedg))/ &
+                              (exp(teedg)+exp(-teedg))) &
+              /(1.-(2**(tpoe+1.)-1.)/(1.+tpoe))
+        else if (ipswtch.eq.13) then
+          ten=(te0-tea-(teped-tea)*(exp(teedg)-exp(-teedg))/ &
+                              (exp(teedg)+exp(-teedg)))
+        end if
+       
       end if
       if (tpoi.le.1.) then
         tin=0.
@@ -559,7 +567,15 @@ end subroutine init
         tin=(ti0-tia-(tiped-tia)*(exp(tiedg)-exp(-tiedg))/ &
                               (exp(tiedg)+exp(-tiedg))) &
            /(2**tpoi-1.-tpoi)
-      end if
+        if (ipswtch.eq.12) then
+          tin=(ti0-tia-(tiped-tia)*(exp(tiedg)-exp(-tiedg))/ &
+                              (exp(tiedg)+exp(-tiedg))) &
+              /(1.-(2**(tpoi+1.)-1.)/(1.+tpoi))
+        else if (ipswtch.eq.13) then
+          tin=(ti0-tia-(tiped-tia)*(exp(tiedg)-exp(-tiedg))/ &
+                              (exp(tiedg)+exp(-tiedg)))
+        end if
+      end if 
       if (imp.eq.0) then
         if (ppow.gt.1.) then
         pn=(p0-pa-(pped-pa)*(exp(pedg)-exp(-pedg))/(exp(pedg)+exp(-pedg))) &
