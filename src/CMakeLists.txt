@@ -108,3 +108,6 @@ target_compile_options(scene PRIVATE
   $<$<Fortran_COMPILER_ID:GNU>:
     -std=f2008 >
   )
+
+include(Sanitizers)
+enable_sanitizers(scene)
