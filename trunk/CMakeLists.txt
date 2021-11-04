@@ -8,6 +8,10 @@ if (SCENE_DOWNLOAD_GHOST)
     )
   FetchContent_MakeAvailable(ghost)
   message(STATUS "Finished configuring GHOST")
+  target_compile_options(ghost PRIVATE
+    $<$<Fortran_COMPILER_ID:GNU>:
+      -Wno-align-commons >
+      )
 else()
   find_package(GHOST REQUIRED)
 endif()
