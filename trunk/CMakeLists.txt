@@ -24,6 +24,8 @@ add_executable(scene)
 
 if (SCENE_HAS_NBEAMS)
   set(SCENE_NBI_SOURCE_FILE nbicur.f90)
+  find_package(nbeams REQUIRED)
+  target_link_libraries(scene PRIVATE nbeams::nbeams)
 else()
   set(SCENE_NBI_SOURCE_FILE nbicur_no_nbeams.f90)
 endif()
@@ -77,9 +79,9 @@ set(SCENE_SOURCES
   )
 
 target_sources(scene PRIVATE ${SCENE_SOURCES})
-target_link_libraries(scene ghost::ghost netCDF::netcdff)
-target_link_libraries(scene ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
-target_link_libraries(scene surfit)
+target_link_libraries(scene PRIVATE ghost::ghost netCDF::netcdff)
+target_link_libraries(scene PRIVATE ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
+target_link_libraries(scene PRIVATE surfit)
 set_target_properties(scene PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
