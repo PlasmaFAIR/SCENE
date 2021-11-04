@@ -188,7 +188,7 @@ contains
         sval=sngl(paux-vloop*(totex-totex2)*1.0d-6)
       else
         sval=sngl(paux)
-      end if  
+      end if
       call typenf(sval,3)
       call typecs(' bpol=')
       sval=sngl(bpol)
@@ -321,11 +321,11 @@ contains
 !---------------------------------------------------------------------
 !
 !!$	  if (itst.eq.0) then
-!!$	    call plotcs(0.03,ypos,' edge')
+!!$     call plotcs(0.03,ypos,' edge')
 !!$	  end if
 !!$	  itst=(ncon-nc)/1
 !!$	  if (itst.eq.0) then
-!!$	    call plotcs(0.03,ypos,' centre')
+!!$     call plotcs(0.03,ypos,' centre')
 !!$	  end if
 !!$	  call ctrmag(15)
 !!$          call plotne(0.4,ypos,spsi,4)
@@ -360,13 +360,13 @@ contains
           end do
           if (sfac(nc).gt.iq) then
             iq=iq+1
-            if (iq.le.3) then 
+            if (iq.le.3) then
               call thick(2)
               call lincol(2)
             end if
           end if
 !	  if (modb.eq.-1) then
-!	    if (nc.ne.1) goto 15
+!       if (nc.ne.1) goto 15
 !	  end if
           if (nc.eq.1) call thick(5)
 !          if (iso.eq.1) call ptjoin(ftr,ftz,1,4,-1)
@@ -440,31 +440,31 @@ contains
 !!$	  call normal
 !!$	  itst=nc/1
 !!$	  if (itst.eq.0) then
-!!$	    call plotcs(0.03,ypos,' edge')
+!!$     call plotcs(0.03,ypos,' edge')
 !!$	  end if
 !!$	  itst=(ncon-nc)/1
 !!$	  if (itst.eq.0) then
-!!$	    call plotcs(0.03,ypos,' centre')
+!!$     call plotcs(0.03,ypos,' centre')
 !!$	  end if
 !!$	  call ctrmag(15)
 !!$          call plotne(0.4,ypos,spsi,4)
 !	  if (nc.lt.ncon+1) call plotnf(0.4,ypos,qq,2)
-	  zl=zlo-0.06
-	  zu=zlo-0.03
-	  call pspace(0.75,0.81,zl,zu)
-	  call map(0.,1.,0.,1.)
-	  call pcscen(0.5,0.5,' R (m)')
-	  rl=rlo-0.055
-	  ru=rl+0.03
-	  zav=(zlo+zup)/2.
-	  zl=zav-0.2
-	  zu=zav+0.2
-	  call pspace(rl,ru,zl,zu)
-	  call map(0.,1.,0.,1.)
-	  call ctrori(90.)
-	  call pcscen(0.5,0.5,' Z (m)')
-	  call ctrori(0.)
-	end if
+      zl=zlo-0.06
+      zu=zlo-0.03
+      call pspace(0.75,0.81,zl,zu)
+      call map(0.,1.,0.,1.)
+      call pcscen(0.5,0.5,' R (m)')
+      rl=rlo-0.055
+      ru=rl+0.03
+      zav=(zlo+zup)/2.
+      zl=zav-0.2
+      zu=zav+0.2
+      call pspace(rl,ru,zl,zu)
+      call map(0.,1.,0.,1.)
+      call ctrori(90.)
+      call pcscen(0.5,0.5,' Z (m)')
+      call ctrori(0.)
+    end if
  20   continue
       call pspace(0.15,1.3,0.1,0.92)
       call border
@@ -533,15 +533,15 @@ contains
             xp(l)=sngl(rpts(nc,l))
             yp(l)=sngl(zpts(nc,l))
           end do
-	  if (sfac(nc).gt.iq) then
-	    iq=iq+1
-	    if (iq.le.3) then 
+      if (sfac(nc).gt.iq) then
+        iq=iq+1
+        if (iq.le.3) then
               call thick(2)
               call lincol(2)
             end if
-	  end if
+      end if
 !	  if (modb.eq.-1) then
-!	    if (nc.ne.1) goto 15
+!       if (nc.ne.1) goto 15
 !	  end if
           if (nc.eq.1) call thick(5)
 !          if (iso.eq.1) call ptjoin(ftr,ftz,1,4,-1)
@@ -615,31 +615,31 @@ contains
 !!$	  call normal
 !!$	  itst=nc/1
 !!$	  if (itst.eq.0) then
-!!$	    call plotcs(0.03,ypos,' edge')
+!!$     call plotcs(0.03,ypos,' edge')
 !!$	  end if
 !!$	  itst=(ncon-nc)/1
 !!$	  if (itst.eq.0) then
-!!$	    call plotcs(0.03,ypos,' centre')
+!!$     call plotcs(0.03,ypos,' centre')
 !!$	  end if
 !!$	  call ctrmag(15)
 !!$          call plotne(0.4,ypos,spsi,4)
 !	  if (nc.lt.ncon+1) call plotnf(0.4,ypos,qq,2)
-	  zl=zlo-0.06
-	  zu=zlo-0.03
-	  call pspace(0.75,0.81,zl,zu)
-	  call map(0.,1.,0.,1.)
-	  call pcscen(0.5,0.5,' R (m)')
-	  rl=rlo-0.055
-	  ru=rl+0.03
-	  zav=(zlo+zup)/2.
-	  zl=zav-0.2
-	  zu=zav+0.2
-	  call pspace(rl,ru,zl,zu)
-	  call map(0.,1.,0.,1.)
-	  call ctrori(90.)
-	  call pcscen(0.5,0.5,' Z (m)')
-	  call ctrori(0.)
-	end if
+      zl=zlo-0.06
+      zu=zlo-0.03
+      call pspace(0.75,0.81,zl,zu)
+      call map(0.,1.,0.,1.)
+      call pcscen(0.5,0.5,' R (m)')
+      rl=rlo-0.055
+      ru=rl+0.03
+      zav=(zlo+zup)/2.
+      zl=zav-0.2
+      zu=zav+0.2
+      call pspace(rl,ru,zl,zu)
+      call map(0.,1.,0.,1.)
+      call ctrori(90.)
+      call pcscen(0.5,0.5,' Z (m)')
+      call ctrori(0.)
+    end if
  147   continue
 !      call pspace(0.15,1.3,0.1,0.92)
 !      call border
@@ -1105,8 +1105,8 @@ contains
 !  toroidal and vacuum magnetic field on axis
       l=0
       do 80 i=1,nr
-	if (r(i).gt.rcen) goto 80
-	l=i
+    if (r(i).gt.rcen) goto 80
+    l=i
  80   continue
       rat=(rcen-r(l))/(r(l+1)-r(l))
       psi=umax-(u(l,nsym)+rat*(u(l+1,nsym)-u(l,nsym)))
@@ -1175,15 +1175,15 @@ contains
       end if
       call plotcs(0.03,0.69,' Curr. index=')
       if (itot.eq.0) then
-	if (neo.eq.1) then
-	  call typecs('neoclassical')
-	else if (neo.eq.-1) then
-	  call typecs('spitzer')
-	else
-	  call typecs('user-defined')
-	end if
+    if (neo.eq.1) then
+      call typecs('neoclassical')
+    else if (neo.eq.-1) then
+      call typecs('spitzer')
+    else
+      call typecs('user-defined')
+    end if
       else
-	call typecs("ff' profile specified")
+    call typecs("ff' profile specified")
       end if
       call plotcs(0.03,0.66,' Z=')
       svar=sngl(zm)
@@ -1336,7 +1336,7 @@ contains
          svar=fastb
          call typenf(svar,3)
       end if
-         
+
 
       call plotcs(0.03,0.36,' q')
       call suffix
@@ -1492,9 +1492,9 @@ contains
       svar=sngl(tauh)
       call typenf(svar,4)
       if (nco.ge.1) then
-	call plotcs(0.03,0.03,'collisional model')
+    call plotcs(0.03,0.03,'collisional model')
       else
-	call plotcs(0.03,0.03,'collisionless model')
+    call plotcs(0.03,0.03,'collisionless model')
       end if
 !---------------------------------------------------------------------
 ! job  title
@@ -1533,18 +1533,18 @@ contains
       toup=0.
       jj=nsym
       do i=1,nr
-	if (sngl(diph(i,jj)).gt.diup) diup=sngl(diph(i,jj))
-	if (sngl(diph(i,jj)).lt.dilo) dilo=sngl(diph(i,jj))
-	if (sngl(psph(i,jj)).gt.psup) psup=sngl(psph(i,jj))
-	if (sngl(psph(i,jj)).lt.pslo) pslo=sngl(psph(i,jj))
-	if (sngl(bsph(i,jj)).gt.bsup) bsup=sngl(bsph(i,jj))
-	if (sngl(bsph(i,jj)).lt.bslo) bslo=sngl(bsph(i,jj))
-	if (sngl(exph(i,jj)).gt.toup) toup=sngl(exph(i,jj))
-	if (sngl(exph(i,jj)).lt.tolo) tolo=sngl(exph(i,jj))
-	if (sngl(exph2(i,jj)).gt.toup) toup=sngl(exph2(i,jj))
-	if (sngl(exph2(i,jj)).lt.tolo) tolo=sngl(exph2(i,jj))
-	if (sngl(gradj(i,jj)).gt.toup) toup=sngl(gradj(i,jj))
-	if (sngl(gradj(i,jj)).lt.tolo) tolo=sngl(gradj(i,jj))
+    if (sngl(diph(i,jj)).gt.diup) diup=sngl(diph(i,jj))
+    if (sngl(diph(i,jj)).lt.dilo) dilo=sngl(diph(i,jj))
+    if (sngl(psph(i,jj)).gt.psup) psup=sngl(psph(i,jj))
+    if (sngl(psph(i,jj)).lt.pslo) pslo=sngl(psph(i,jj))
+    if (sngl(bsph(i,jj)).gt.bsup) bsup=sngl(bsph(i,jj))
+    if (sngl(bsph(i,jj)).lt.bslo) bslo=sngl(bsph(i,jj))
+    if (sngl(exph(i,jj)).gt.toup) toup=sngl(exph(i,jj))
+    if (sngl(exph(i,jj)).lt.tolo) tolo=sngl(exph(i,jj))
+    if (sngl(exph2(i,jj)).gt.toup) toup=sngl(exph2(i,jj))
+    if (sngl(exph2(i,jj)).lt.tolo) tolo=sngl(exph2(i,jj))
+    if (sngl(gradj(i,jj)).gt.toup) toup=sngl(gradj(i,jj))
+    if (sngl(gradj(i,jj)).lt.tolo) tolo=sngl(gradj(i,jj))
       end do
       tolo=tolo/1000.
       toup=toup/1000.
@@ -1616,7 +1616,7 @@ contains
             sx(i+lp)=sx1(i)
             sy(i+lp)=sy1(i)
             sx(i)=sngl(rin)
-	    sy(i)=(-rin*pdedg-ffdedg/(rin*mu0))/1000.
+        sy(i)=(-rin*pdedg-ffdedg/(rin*mu0))/1000.
           end if
         end if
         if (rr.gt.rout) then
@@ -1645,7 +1645,7 @@ contains
             sx(i+lp)=sx1(i)
             sy1(i+lp)=sy2(i)
             sx(i)=sngl(rin)
-	    sy1(i)=sngl((vloop*extapp+extapp2)*fsi/(1000.*rin))
+        sy1(i)=sngl((vloop*extapp+extapp2)*fsi/(1000.*rin))
             write(6,*)' R=',sx(i),' exJ=',sy1(i)
             write(6,*)' extapp=',extapp,' fsi=',fsi,' extapp2=',extapp2
           end if
@@ -1656,7 +1656,7 @@ contains
             sx(i+lp)=sx1(i)
             sy1(i+lp)=sy2(i)
             sx(i+1)=sngl(rout)
-	    sy1(i+1)=sngl((vloop*extapp+extapp2)*fsi/(1000.*rout))
+        sy1(i+1)=sngl((vloop*extapp+extapp2)*fsi/(1000.*rout))
           end if
         end if
       end do
@@ -1672,7 +1672,7 @@ contains
             sx(i+lp)=sx1(i)
             sy2(i+lp)=sy3(i)
             sx(i)=sngl(rin)
-	    sy2(i)=sngl(extapp2*fsi/(1000.*rin))
+        sy2(i)=sngl(extapp2*fsi/(1000.*rin))
           end if
         end if
         if (rr.gt.rout) then
@@ -1681,7 +1681,7 @@ contains
             sx(i+lp)=sx1(i)
             sy2(i+lp)=sy3(i)
             sx(i+1)=sngl(rout)
-	    sy2(i+1)=sngl(extapp2*fsi/(1000.*rout))
+        sy2(i+1)=sngl(extapp2*fsi/(1000.*rout))
           end if
         end if
       end do
@@ -1745,37 +1745,37 @@ contains
       call map(0.,1.,0.,1.)
       sypos=0.5
       sxpos=0.5
-      call pcscen(sxpos,sypos,' R(m)') 
+      call pcscen(sxpos,sypos,' R(m)')
 !      call frame
 !      call filnam('graphs.grd')
 !  plot of bootstrap current
       if (neo.ge.0) then
-	call pspace(0.1,0.44,0.08,0.41)
-	call map(rlo,rup,bslo,bsup)
-	call axorig(rlo,bslo)
-	call ctrmag(6)
-	call axessi(0.,0.)
-	call ctrmag(14)
-	lp=0
-	do  i=1,nr
-	 if (r(i).lt.r0) then
+    call pspace(0.1,0.44,0.08,0.41)
+    call map(rlo,rup,bslo,bsup)
+    call axorig(rlo,bslo)
+    call ctrmag(6)
+    call axessi(0.,0.)
+    call ctrmag(14)
+    lp=0
+    do  i=1,nr
+     if (r(i).lt.r0) then
            sx1(i)=sngl(r(i))
-	   sy1(i)=sngl(bsph(i,jj)/1000.)
+       sy1(i)=sngl(bsph(i,jj)/1000.)
            if (ixout(i,jj).le.0) sy(i)=0.
-	 else
-	   if (lp.eq.1) then
-	     lp=lp+1
-	     sy1(i)=0.
-	     sx1(i)=r0
-	   else
-	     sy1(i)=sngl(bsph(i-1,jj)/1000.)
-	     sx1(i)=sngl(r(i-1))
+     else
+       if (lp.eq.1) then
+         lp=lp+1
+         sy1(i)=0.
+         sx1(i)=r0
+       else
+         sy1(i)=sngl(bsph(i-1,jj)/1000.)
+         sx1(i)=sngl(r(i-1))
              if (ixout(i-1,jj).le.0) sy1(i)=0.
-	   end if
-	 end if
+       end if
+     end if
         end do
-	sx1(nr+1)=sngl(r(nr))
-	sy1(nr+1)=0.
+    sx1(nr+1)=sngl(r(nr))
+    sy1(nr+1)=0.
 !  add in edge values
         lp=0
         do i=1,nr+1
@@ -1801,28 +1801,28 @@ contains
             end if
           end if
         end do
-	call curveo(sx,sy,1,nr+3)
-	call border
-	call pspace(0.05,0.07,0.15,0.39)
-	call map(0.,1.,0.,1.)
-	sypos=0.5
-	sxpos=0.5
-	call ctrori(90.)
-	call pcscen(sxpos,sypos,'J')
-	call suffix
-	call typecs('b')
-	call normal
-	call typecs(' (kA m')
-	call supfix
-	call typecs('-2')
-	call normal
-	call typecs(')')
-	call ctrori(0.)
-	call pspace(0.38,0.42,0.04,0.05)
-	call map(0.,1.,0.,1.)
-	sypos=0.5
-	sxpos=0.5
-	call pcscen(sxpos,sypos,' R (m)')
+    call curveo(sx,sy,1,nr+3)
+    call border
+    call pspace(0.05,0.07,0.15,0.39)
+    call map(0.,1.,0.,1.)
+    sypos=0.5
+    sxpos=0.5
+    call ctrori(90.)
+    call pcscen(sxpos,sypos,'J')
+    call suffix
+    call typecs('b')
+    call normal
+    call typecs(' (kA m')
+    call supfix
+    call typecs('-2')
+    call normal
+    call typecs(')')
+    call ctrori(0.)
+    call pspace(0.38,0.42,0.04,0.05)
+    call map(0.,1.,0.,1.)
+    sypos=0.5
+    sxpos=0.5
+    call pcscen(sxpos,sypos,' R (m)')
       end if
 !  Pfirsch--Schluter current plots
       call pspace(0.1,0.44,0.47,0.81)
@@ -1851,7 +1851,7 @@ contains
             bphi=fsi/rin
             bth=bp(rin,0.0d0)
             bsq=bphi*bphi+bth*bth
-	    sy(i)=-fsi*fsi*pdedg*(1.-bsq/bsqav(1))/(1000.*rin*bsq)
+        sy(i)=-fsi*fsi*pdedg*(1.-bsq/bsqav(1))/(1000.*rin*bsq)
           end if
         end if
         if (rr.gt.rout) then
@@ -1863,7 +1863,7 @@ contains
             bphi=fsi/rout
             bth=bp(rout,0.0d0)
             bsq=bphi*bphi+bth*bth
-	    sy(i+1)=-fsi*fsi*pdedg*(1.-bsq/bsqav(1))/(1000.*rout*bsq)
+        sy(i+1)=-fsi*fsi*pdedg*(1.-bsq/bsqav(1))/(1000.*rout*bsq)
           end if
         end if
       end do
@@ -1916,7 +1916,7 @@ contains
             bphi=fsi/rin
             bth=bp(rin,0.0d0)
             bsq=bphi*bphi+bth*bth
-	    sy(i)=-rin*bth*bth*pdedg/(1000.*bsq)
+        sy(i)=-rin*bth*bth*pdedg/(1000.*bsq)
           end if
         end if
         if (rr.gt.rout) then
@@ -1928,7 +1928,7 @@ contains
             bphi=fsi/rout
             bth=bp(rout,0.0d0)
             bsq=bphi*bphi+bth*bth
-	    sy(i+1)=-rout*bth*bth*pdedg/(1000.*bsq)
+        sy(i+1)=-rout*bth*bth*pdedg/(1000.*bsq)
           end if
         end if
       end do
@@ -2054,11 +2054,11 @@ contains
           call plotcs(0.03,0.45,' Bv-dot=')
         end if
         svar=sngl(vloop)
-	call typenf(svar,4)
+    call typenf(svar,4)
         if (ibv.eq.0) then
-	  call typecs(' V')
+      call typecs(' V')
         else
-	  call typecs(' Ts')
+      call typecs(' Ts')
           call supfix
           call typecs('-1')
           call normal
@@ -2070,12 +2070,12 @@ contains
 !	call typecs('=0) = ')
 !	call typenf(vnobs,4)
 !	call typecs(' v')
-	if (neo.eq.1) then
-	  call plotcs(0.03,0.4,' Loop v (Spitz.)=')
+    if (neo.eq.1) then
+      call plotcs(0.03,0.4,' Loop v (Spitz.)=')
           svar=sngl(vspit)
-	  call typenf(svar,4)
-	  call typecs(' V')
-	end if
+      call typenf(svar,4)
+      call typecs(' V')
+    end if
       end if
       call plotcs(0.03,0.35,' H')
       call suffix
@@ -2488,13 +2488,13 @@ contains
       call lincol(0)
       call full
       call curveo(sx,sy,1,j)
-      call curveo(sx,sy2,1,j) 
+      call curveo(sx,sy2,1,j)
       do i=1,j
         sy2(i)=3.*sy(i)
         sy(i)=4.*sy(i)
       end do
       call curveo(sx,sy,1,j)
-      call curveo(sx,sy2,1,j) 
+      call curveo(sx,sy2,1,j)
       call pspace(0.2,0.8,0.8,0.9)
       call border
       call map(0.,1.,0.,1.)
