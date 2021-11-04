@@ -22,6 +22,12 @@ find_package(BLAS REQUIRED)
 
 add_executable(scene)
 
+if (SCENE_HAS_NBEAMS)
+  set(SCENE_NBI_SOURCE_FILE nbicur.f90)
+else()
+  set(SCENE_NBI_SOURCE_FILE nbicur_no_nbeams.f90)
+endif()
+
 set(SCENE_SOURCES
   astradat.f90
   baleq.f90
@@ -65,7 +71,6 @@ set(SCENE_SOURCES
   init.f90
   lynton.f90
   mercier.f90
-  nbicur.f90
   outcdf.f90
   output.f90
   param.f90
@@ -87,6 +92,7 @@ set(SCENE_SOURCES
   torcur.f90
   usrcal.f90
   zinteg.f
+  ${SCENE_NBI_SOURCE_FILE}
   )
 
 target_sources(scene PRIVATE ${SCENE_SOURCES})
