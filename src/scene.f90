@@ -1,6 +1,4 @@
 program scene
-  !     *************
-  !
   use bootstap, only : fastbs
   use equilibrium, only : equil, xarea
   use ff_mod, only : ffdgen
@@ -43,9 +41,6 @@ program scene
 !!$C  effects are not included in the plasma conductivity.
 !!$      ICUR=0
   if (igr.gt.0) then
-     !call paper(1)
-     !call paper(1)
-     !call devoff
      call filnam('graphs.grd')
      call filon
   end if
@@ -56,8 +51,6 @@ program scene
 5 niter=0
   ! Call SCENE equilibrium routines
 30 niter=niter+1
-
-
 
   if (ipr.eq.0) write(nw,*)' on the ',niter,' iteration'
   if (debug) write(6,*) 'Printing poloidal/toroidal graphs'
@@ -83,10 +76,6 @@ program scene
   !  Calculate currents (and read in externally applied current
   !  profile if itot=0)
   call torcur(icur)
-
-  !do i=1,nr
-  !   print*, i, nbph(i,nsym)
-  !end do
 
   !  Calculate total current contributions....
   call xarea(bsph,totbs)
@@ -143,9 +132,7 @@ program scene
            !  up-date ff'
            call ffdgen(0,icur,errcur)
            !  up-date n,T mesh if appropriate
-           !if (debug) write(6,*)' in setnt'
            if (igr.eq.5) call setnt
-           !if (debug) write(6,*)' out setnt'
            icont=-3
            goto 30
         else
@@ -209,18 +196,6 @@ program scene
   call usrcal
   if (debug) print*, 'Calling NETCDF writer'
   call write_netcdf()
-  !
-  !
-  !
-!!$c  gst stores values of ff'
-!!$      do 20 k=1,ncon+1
-!!$	gst(k)=0.
-!!$ 20   continue
-  !
-  !
-  !C Call user ouput interface
-  !      CALL USRCAL(U,IXOUT)
-  !      if (igr.gt.0) call grend
 
   call error_msg('Clean exit', 0)
 
