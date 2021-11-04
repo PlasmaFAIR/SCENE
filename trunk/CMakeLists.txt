@@ -35,30 +35,20 @@ set(SCENE_SOURCES
   balpar.f90
   bandat.f90
   bandit.f90
-  beamconsts.f
-  beams_mfp.f
-  calcbeams.f
   caxe_out.f90
   chease_dat.f90
   coldat.f90
-  coulomb.f
-  eisplit.f
   elite_data.f90
   equil.f90
-  erf.f
   error_msg.f90
   extj.f90
   fastbs.f90
-  fastions.f
   ffdgen.f90
   flxav.f90
   flxorb.f90
   flxsur.f90
-  frate.f
-  gausswts.f
   geqdsk.f90
   getdata.f90
-  getrho.f
   gfile.f90
   ghost_interface.f90
   graphs.f90
@@ -66,8 +56,6 @@ set(SCENE_SOURCES
   helena.f90
   hirsh.f90
   hirsig.f90
-  hofr.f
-  hunt.f
   init.f90
   lynton.f90
   mercier.f90
@@ -76,22 +64,15 @@ set(SCENE_SOURCES
   param.f90
   peqdsk.f90
   profs.f90
-  qsimp.f
-  rinteg.f
   scene.f90
   setnt.f90
-  sig_olson.f
-  sigfit.f
   signeo.f90
-  sinteg.f
   splines.f
-  ssum.f
   test_profs.f90
   tokameq.f90
   toms790.f90
   torcur.f90
   usrcal.f90
-  zinteg.f
   ${SCENE_NBI_SOURCE_FILE}
   )
 
