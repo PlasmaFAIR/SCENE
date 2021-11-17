@@ -23,7 +23,7 @@ program scene
   use flux_plot, only : flxplt, graphs
   use flux_surface, only : flxsur
   use getdata_mod, only : getdata
-  use ghost_interface
+  use ghost_interface, only: filnam, filon, grend, map
   use hirsig_mod, only : erfun
   use netcdf_interface, only : write_netcdf
   use nbi_mod, only : nbicur
