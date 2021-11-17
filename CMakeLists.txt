@@ -12,6 +12,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 option(SCENE_ENABLE_DOUBLE "Promotes precisions of real and complex to double" ON)
 option(SCENE_DOWNLOAD_GHOST "Download and build GHOST as part of SCENE build" OFF)
 option(SCENE_HAS_NBEAMS "Has modified version of NBEAMS with SCENE support" OFF)
+option(SCENE_DOWNLOAD_NEASYF "Download and build neasy-f as part of SCENE build" ON)
 
 add_subdirectory(lib/dierckx)
 

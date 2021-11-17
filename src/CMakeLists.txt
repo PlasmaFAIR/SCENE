@@ -16,6 +16,20 @@ else()
   find_package(GHOST REQUIRED)
 endif()
 
+if (SCENE_DOWNLOAD_NEASYF)
+  message(STATUS "Downloading and configuring neasy-f...")
+  include(FetchContent)
+  FetchContent_Declare(
+    neasyf
+    GIT_REPOSITORY https://github.com/PlasmaFAIR/neasy-f
+    GIT_TAG        main
+    )
+  FetchContent_MakeAvailable(neasyf)
+  message(STATUS "Finished configuring neasy-f")
+else()
+  find_package(neasyf REQUIRED)
+endif()
+
 find_package(netCDFFortran REQUIRED)
 find_package(LAPACK REQUIRED)
 find_package(BLAS REQUIRED)
@@ -79,7 +93,8 @@ set(SCENE_SOURCES
   )
 
 target_sources(scene PRIVATE ${SCENE_SOURCES})
-target_link_libraries(scene PRIVATE ghost::ghost netCDF::netcdff)
+target_link_libraries(scene PRIVATE netCDF::netcdff neasyf::neasyf)
+target_link_libraries(scene PRIVATE ghost::ghost)
 target_link_libraries(scene PRIVATE ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 target_link_libraries(scene PRIVATE surfit)
 set_target_properties(scene PROPERTIES
