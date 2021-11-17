@@ -73,6 +73,7 @@ set(SCENE_SOURCES
   hirsh.f90
   hirsig.f90
   init.f90
+  lapack_interface.f90
   lynton.f90
   mercier.f90
   outcdf.f90

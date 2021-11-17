@@ -456,6 +456,7 @@ contains
 !     ********************************************
 !
       use param
+      use lapack_interface, only: dgesv
       implicit none
 
       double precision, intent(in) :: rlmat(2*nimp+4,2*nimp+4),tmat(2*nimp+4,2*nimp+4)
