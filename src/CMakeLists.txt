@@ -97,7 +97,7 @@ endif()
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_compile_options(scene PRIVATE
     $<$<Fortran_COMPILER_ID:GNU>:
-      -g -Wall -fimplicit-none -fbounds-check >
+      -g -Wall -fimplicit-none -fbounds-check -Wimplicit-interface -Wimplicit-procedure>
     $<$<Fortran_COMPILER_ID:Intel>:
       -g -implicitnone -warn all -nogen-interfaces -CB -traceback >
     )
