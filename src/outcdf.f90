@@ -2,10 +2,9 @@ module netcdf_interface
   implicit none
 contains
 
+  !> Write SCENE output to netCDF file
   subroutine write_netcdf()
-    ! File ot write SCENE output to NETCDF format
-    ! Initially focused for writing gs2 output
-
+    use, intrinsic :: iso_fortran_env, only : real64
     use param
     use neasyf, only: neasyf_open, neasyf_close, neasyf_dim, neasyf_write
     use profiles_mod, only: tempe, tempi, dense, densi, press, shift, fprof, dpsidrho, dVdrho, rhotor, elong, triang
@@ -18,7 +17,7 @@ contains
     integer :: dimidsrho(1), dimids2d(2), dimidsR(1)
 
     integer :: con, i
-    double precision :: rat
+    real(real64) :: rat
 
     !Variable ID for different inputs
     integer :: rhopsi_dimid
@@ -26,32 +25,32 @@ contains
     integer :: npts_dimid
 
     ! 1d Output data
-    double precision :: psi
-    double precision, dimension(ncon) :: rhopsi, te, ti, ne, ni, nHe, tHe
-    double precision, dimension(ncon) :: Lte, Lti, Lne, Lni
-    double precision, dimension(ncon) :: dshift, shat, pk, eps
-    double precision, dimension(ncon) :: gs2_beta_prime, zeff, vnui, vnue
-    double precision, dimension(ncon) :: jdotb, jbsdotb, jnbdotb
-    double precision, dimension(ncon) :: jbs_tor, jnb_tor, j_tor, jex_tor
-    double precision, dimension(ncon) :: fsi, ffp, pp, bsmean
+    real(real64) :: psi
+    real(real64), dimension(ncon) :: rhopsi, te, ti, ne, ni, nHe, tHe
+    real(real64), dimension(ncon) :: Lte, Lti, Lne, Lni
+    real(real64), dimension(ncon) :: dshift, shat, pk, eps
+    real(real64), dimension(ncon) :: gs2_beta_prime, zeff, vnui, vnue
+    real(real64), dimension(ncon) :: jdotb, jbsdotb, jnbdotb
+    real(real64), dimension(ncon) :: jbs_tor, jnb_tor, j_tor, jex_tor
+    real(real64), dimension(ncon) :: fsi, ffp, pp, bsmean
 
-    double precision :: ne19, zni19, coolog, bcentr, colli, colle
+    real(real64) :: ne19, zni19, coolog, bcentr, colli, colle
 
-    double precision :: tglf_zs_i, tglf_zs_e, tglf_mass_i, tglf_mass_e
+    real(real64) :: tglf_zs_i, tglf_zs_e, tglf_mass_i, tglf_mass_e
 
     !TGLF 1D output data
-    double precision, dimension(ncon) :: tglf_rmin, tglf_rmaj, tglf_q, tglf_q_prime
-    double precision, dimension(ncon) :: tglf_p_prime, tglf_drmajdx, tglf_kappa, tglf_s_kappa
-    double precision, dimension(ncon) :: tglf_delta, tglf_s_delta
-    double precision, dimension(ncon) :: tglf_rlns_i, tglf_rlts_i
-    double precision, dimension(ncon) :: tglf_taus_i, tglf_as_i, tglf_vpar_i, tglf_vpar_shear_i
-    double precision, dimension(ncon) :: tglf_rlns_e, tglf_rlts_e
-    double precision, dimension(ncon) :: tglf_taus_e, tglf_as_e, tglf_vpar_e, tglf_vpar_shear_e, tglf_b_unit
+    real(real64), dimension(ncon) :: tglf_rmin, tglf_rmaj, tglf_q, tglf_q_prime
+    real(real64), dimension(ncon) :: tglf_p_prime, tglf_drmajdx, tglf_kappa, tglf_s_kappa
+    real(real64), dimension(ncon) :: tglf_delta, tglf_s_delta
+    real(real64), dimension(ncon) :: tglf_rlns_i, tglf_rlts_i
+    real(real64), dimension(ncon) :: tglf_taus_i, tglf_as_i, tglf_vpar_i, tglf_vpar_shear_i
+    real(real64), dimension(ncon) :: tglf_rlns_e, tglf_rlts_e
+    real(real64), dimension(ncon) :: tglf_taus_e, tglf_as_e, tglf_vpar_e, tglf_vpar_shear_e, tglf_b_unit
 
-    double precision, dimension(ncon) :: dPsidrhos, rhos, dPsiNdrho
-    double precision :: shafr, dshafr, rmaj, rmin
-    double precision :: kappa, dkappa, p_prime, dPsidr
-    double precision :: tglf_shear, delta, ddelta
+    real(real64), dimension(ncon) :: dPsidrhos, rhos, dPsiNdrho
+    real(real64) :: shafr, dshafr, rmaj, rmin
+    real(real64) :: kappa, dkappa, p_prime, dPsidr
+    real(real64) :: tglf_shear, delta, ddelta
 
     debug = .False.
 
