@@ -24,4 +24,5 @@ if (BUILD_TESTING)
 
   add_custom_target(check
     COMMAND ctest --output-on-failure)
+  add_dependencies(check scene)
 endif()
