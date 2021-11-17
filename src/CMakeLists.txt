@@ -69,7 +69,7 @@ set(SCENE_SOURCES
   scene.f90
   setnt.f90
   signeo.f90
-  splines.f
+  splines.f90
   test_profs.f90
   tokameq.f90
   toms790.f90
