@@ -420,6 +420,7 @@ end subroutine equil
 !
 ! Sets up the boundary of the flux surface
 !
+      use splines, only: spline1d
       use param
       implicit none
       double precision, intent(in) :: x,y

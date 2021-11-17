@@ -143,6 +143,7 @@ contains
 !  calculates the path of the flux surface labelled by k.
 !  these are loaded into flxr,flxz and icon labels the number of points
 !
+      use splines, only: spline1d
       use equilibrium, only : bp
       use param
       implicit none

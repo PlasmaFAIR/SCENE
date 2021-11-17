@@ -14,6 +14,7 @@ contains
       use param
       use profiles_mod, only : dense, densi, fprof, press, tempi, tempe, dpsidrho, shift
       use toms790, only : CSHEP2, CS2VAL
+      use splines, only: spline, zspline
       implicit none
 !
       integer :: ndsk,k,nspec,kk,ik

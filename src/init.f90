@@ -173,6 +173,7 @@ end subroutine init
       use param
       use balpar
       use profiles_mod, only : press
+      use splines, only: spline1d
       implicit none
       character(len=4) :: word
       double precision :: val,rlo,zlo
