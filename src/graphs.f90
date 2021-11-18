@@ -1,12 +1,31 @@
 module flux_plot
   implicit none
 contains
-      subroutine flxplt
-!     *****************
-!
-!   plots the flux contours around which variables are integrated.
-!   ....and the ecrh footprint
-!
+  !> Setup GHOST grid file
+  subroutine initialise_graphs
+    use ghost_interface, only: filnam, filon
+    call filnam('graphs.grd')
+    call filon
+  end subroutine initialise_graphs
+
+  !> Create all of the GHOST graphs
+  subroutine make_all_graphs(debug)
+    use ghost_interface, only: grend
+    logical, optional, intent(in) :: debug
+    logical :: local_debug
+    local_debug = .false.
+    if (present(debug)) local_debug = debug
+    call flxplt
+    call graphs
+    if (local_debug) print*, 'Made graphs.grd file'
+    call grend
+    if (local_debug) print*, 'Closed graphs.grd'
+  end subroutine make_all_graphs
+
+  !> Plots the flux contours around which variables are integrated,
+  !> and the ECRH footprint
+  subroutine flxplt
+
       use param
       implicit none
       character(len=8) :: ctim
@@ -436,14 +455,9 @@ contains
       call frame
 
    end subroutine flxplt
-!
-!**********************************************************************
-!
-      subroutine graphs
-!     *****************
-        !
-!    Plots various profiles and outputs run parameters.
-!
+
+   !> Plots various profiles and outputs run parameters
+   subroutine graphs
       use ext_current_mod, only : extj
       use equilibrium, only : bp, range, xarea
       use param
@@ -2096,10 +2110,6 @@ contains
       call map(0.,1.,0.,1.)
       call pcscen(0.5,0.5,'Wce')
       call frame
-!
-!
-!---------------------------------------------------------
-!
-      end subroutine graphs
+    end subroutine graphs
 
 end module flux_plot

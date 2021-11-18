@@ -20,10 +20,9 @@ program scene
   use equilibrium, only : equil, xarea
   use ff_mod, only : ffdgen
   use flux_average, only: flxav
-  use flux_plot, only : flxplt, graphs
+  use flux_plot, only : initialise_graphs, make_all_graphs
   use flux_surface, only : flxsur
   use getdata_mod, only : getdata
-  use ghost_interface, only: filnam, filon, grend, map
   use hirsig_mod, only : erfun
   use netcdf_interface, only : write_netcdf
   use nbi_mod, only : nbicur
@@ -58,8 +57,7 @@ program scene
 !!$C  effects are not included in the plasma conductivity.
 !!$      ICUR=0
   if (igr.gt.0) then
-     call filnam('graphs.grd')
-     call filon
+    call initialise_graphs()
   end if
 
   beta_convergence: do
@@ -214,14 +212,7 @@ program scene
 
   !  Plot out some useful figs
   if (igr.gt.0) then
-
-     !Call python plotting
-     !call execute_command_line("echo "//runname// " | ipython ~/SCENEv2/graphs/graphs.py")
-     call flxplt
-     call graphs
-     if (debug) print*, 'Made graphs.grd file'
-     call grend
-     if (debug) print*, 'Closed graphs.grd'
+    call make_all_graphs(debug)
   end if
 
   !  Plot stability plots if igr set to 3
