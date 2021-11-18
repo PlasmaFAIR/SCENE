@@ -9,33 +9,35 @@ a variety of file formats.
 SCENE requires:
 
 - a F2008 Fortran compiler (tested with gfortran)
-- netCDF Fortran wrapper (https://github.com/Unidata/netcdf-fortran)
+- [neasy-f][neasyf] netCDF Fortran wrapper
+    - this requires [netCDF][netcdf] and the [netCDF-Fortran][netcdff] API
 - LAPACK and BLAS
-- the GHOST Fortran graphics library
-  (https://github.com/ZedThree/GHOST currently a private repo)
 - CMake
 
-To compile SCENE, you either need to tell CMake about the location of
-GHOST, or you can tell CMake to download and build it automatically:
+And optionally, the [GHOST Fortran graphics library][ghost].
+
+To build SCENE, run `cmake`:
 
 ```bash
-# Configure the build, telling CMake to download GHOST
-cmake . -B build -DSCENE_DOWNLOAD_GHOST=ON
-# OR
-# Configure the build, telling CMake where to find GHOST
-cmake . -B build -DGHOST_ROOT=/path/to/ghost
+# Configure the build
+cmake . -B build
 # Compile SCENE
 cmake --build build
-# Run the tests
+```
+
+You can run the tests like so:
+
+```bash
 cmake --build build --target check
 ```
 
-This will create a `scene` executable under `build/bin/`.
-
-You also need to tell CMake about the location of the other
+You may also need to tell CMake about the location of the other
 libraries. You can do that through the below variables using the
 syntax `-D<variable>=/path/to/library`:
 
+- neasy-f: `neasyf_ROOT`
+    - by default, SCENE will download neasy-f automatically as required. You can
+      turn this behaviour off with `-DSCENE_DOWNLOAD_NEASYF=off`
 - NetCDF: `netCDFFortran_ROOT` for the Fortran API, and `netCDF_ROOT`
   for the base C library.
     - Note: for some operating systems that put Fortran modules in an
@@ -44,3 +46,30 @@ syntax `-D<variable>=/path/to/library`:
       directory containing `netcdf.mod`
 - BLAS: `BLAS_ROOT`
 - LAPACK: `LAPACK_ROOT`
+
+For example, here's how to set the location of netCDF:
+
+```bash
+cmake . -B build -DnetCDFFortran_ROOT=/path/to/netcdf/fortran
+```
+
+### Using GHOST
+
+To compile SCENE with GHOST, you either need to tell CMake about the
+location of GHOST, or you can tell CMake to download and build it
+automatically:
+
+```bash
+# Configure the build, telling CMake to download GHOST
+cmake . -B build -DSCENE_DOWNLOAD_GHOST=ON
+# OR
+# Configure the build, telling CMake where to find GHOST
+cmake . -B build -DGHOST_ROOT=/path/to/ghost
+```
+
+This will create a `scene` executable under `build/bin/`.
+
+[ghost]: https://github.com/ZedThree/GHOST
+[neasyf]: https://github.com/PlasmaFAIR/neasy-f
+[netcdf]: https://www.unidata.ucar.edu/software/netcdf/
+[netcdff]: https://github.com/Unidata/netcdf-fortran
