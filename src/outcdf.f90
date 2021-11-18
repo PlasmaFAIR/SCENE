@@ -4,7 +4,7 @@ contains
 
   !> Write SCENE output to netCDF file
   subroutine write_netcdf()
-    use, intrinsic :: iso_fortran_env, only : real64
+    use, intrinsic :: iso_fortran_env, only: real64
     use param
     use neasyf, only: neasyf_open, neasyf_close, neasyf_dim, neasyf_write
     use profiles_mod, only: tempe, tempi, dense, densi, press, shift, fprof, dpsidrho, dVdrho, rhotor, elong, triang
@@ -321,9 +321,218 @@ contains
     call neasyf_write(ncid, "zpts", zpts, dim_ids=dimids2d, units='m')
     call neasyf_write(ncid, "bppts", bppts, dim_ids=dimids2d, units='T')
 
+    call write_input_parameters(ncid)
+
     call neasyf_close(ncid)
     if (debug) print *, "*** SUCCESS writing NETCDF file "
 
   end subroutine write_netcdf
+
+  !> Write the input parameters to a new group in given file
+  subroutine write_input_parameters(file_id)
+    use param, only: rcen, tokeps, ibdry, nfm, elon, tri, quad, kval, step, &
+                     ipr, igr, fpow, powj, fpow3, fpow4, af3, af4, fpow1, &
+                     fpow2, af1, af0, af2, psic, ipswtch, ppow, p0, pa, &
+                     pped, ppo1, ape, pedg, nipow, ni0, nia, naa, nbb, niped, &
+                     niedg, ane, npo1, ate, tpo1, tpoe, te0, tea, teped, teedg, &
+                     tpoi, ti0, tia, tiped, tiedg, xitb, cur, paux, bpol, pfac, &
+                     betan, dil, rodi, imat, ifast, scl, omega, frac, zm, zmai, &
+                     icontour, imp, itot, fast, neo, nco, ncon, npts, nouter, &
+                     ninner, npass, errit, errffd, icont, nbi
+    use balpar, only: nbal, ibal, nturns, nchi0, nchi, chi0val, lamges
+    use neasyf, only: neasyf_write, neasyf_error
+    use netcdf, only: nf90_def_grp
+
+    !> NetCDF ID of parent file
+    integer, intent(in) :: file_id
+
+    ! NetCDF ID of the parameter group
+    integer :: group_id
+
+    call neasyf_error(nf90_def_grp(file_id, "inputs", group_id), &
+                      ncid=file_id, message="creating inputs group")
+
+    call neasyf_write(group_id, "af0", af0, &
+         description="Coefficients used in ffp and J profile")
+    call neasyf_write(group_id, "af1", af1, &
+         description="Coefficients used in ffp and J profile")
+    call neasyf_write(group_id, "af2", af2, &
+         description="Coefficients used in ffp and J profile")
+    call neasyf_write(group_id, "af3", af3, &
+         description="Coefficients used in ffp and J profile")
+    call neasyf_write(group_id, "af4", af4, &
+         description="Coefficients used in ffp and J profile")
+    call neasyf_write(group_id, "ane", ane, &
+         description="Flatten core density for ips==6 or 21")
+    call neasyf_write(group_id, "ape", ape, &
+         description="Flatten core pressure if ips==21")
+    call neasyf_write(group_id, "ate", ate, &
+         description="Flatten core temperature for ips==6")
+    call neasyf_write(group_id, "betn", betan, &
+         description="Target value of betan (bpol re-scaled if betan>0)")
+    call neasyf_write(group_id, "bpol", bpol, &
+         description="Approximate starting beta-poloidal for p0==1")
+    call neasyf_write(group_id, "chi0", chi0val, &
+         description="")
+    call neasyf_write(group_id, "cur", cur, &
+         description="Total toroidal plasma current", units="MA")
+    call neasyf_write(group_id, "dil", dil, &
+         description="Ion dilution factor for imp==0")
+    call neasyf_write(group_id, "elon", elon, &
+         description="Elongation of plasma boundary")
+    call neasyf_write(group_id, "eps", tokeps, &
+         description="Inverse aspect ratio of boundary")
+    call neasyf_write(group_id, "erfd", errffd, &
+         description="Target error between input and output currents")
+    call neasyf_write(group_id, "erit", errit, &
+         description="Target error for Grad-Shafranov solver")
+    call neasyf_write(group_id, "fast", fast, &
+         description="Calculate beta due to fast alpha particles")
+    call neasyf_write(group_id, "fpo1", fpow1, &
+         description="Initial ff' profile (increase to peak near axis)")
+    call neasyf_write(group_id, "fpo2", fpow2, &
+         description="Initial ff' profile (increase to peak near edge)")
+    call neasyf_write(group_id, "fpo3", fpow3, &
+         description="Initial ff' profile (increase to peak near axis)")
+    call neasyf_write(group_id, "fpo4", fpow4, &
+         description="Initial ff' profile (increase to peak near edge)")
+    call neasyf_write(group_id, "fpow", fpow, &
+         description="Initial ff' profile (on-axis peaking)")
+    call neasyf_write(group_id, "frac", frac, &
+         description="Control rate of convergence of Grad-Shafranov solver")
+    call neasyf_write(group_id, "ibal", ibal, &
+         description="The flux surface analysed for ballooning stability for nbal==1")
+    call neasyf_write(group_id, "ibdr", ibdry, &
+         description="Boundary shape: 0 is default (Sykes) shape; 1 is more general shape")
+    call neasyf_write(group_id, "icon", icont, &
+         description="If 1, use a 'warm' start for the equilibrium solver")
+    call neasyf_write(group_id, "ictr", icontour, &
+         description="Controls contouring algorithm; 0: linear interpolation, &
+         &1: linear interpolation + smoothing, 2: bi-cubic spline interpolation")
+    call neasyf_write(group_id, "ifas", ifast, &
+         description="If 1, bootstrap current includes alpha-particle contribution")
+    call neasyf_write(group_id, "igr", igr, &
+         description="Controls graphics output (requires GHOST)")
+    call neasyf_write(group_id, "imat", imat, &
+         description="Bootstrap model: 0: Hirshman, 1: Hirshman-Sigmar")
+    call neasyf_write(group_id, "imp", imp, &
+         description="Enable impurities")
+    call neasyf_write(group_id, "ipr", ipr, &
+         description="Controls printout to screen")
+    call neasyf_write(group_id, "ipsw", ipswtch, &
+         description="Profile form")
+    call neasyf_write(group_id, "itot", itot, &
+         description="If 1, use ff-prime and p-prime to derive equilibrium, else use specified driven current profile")
+    call neasyf_write(group_id, "kval", kval, &
+         description="If ibdr==1, kval->1 provides DND; kval=0 limiter")
+    call neasyf_write(group_id, "lam", lamges, &
+         description="")
+    call neasyf_write(group_id, "naa", naa, &
+         description="")
+    call neasyf_write(group_id, "nbal", nbal, &
+         description="")
+    call neasyf_write(group_id, "nbb", nbb, &
+         description="")
+    call neasyf_write(group_id, "nbi", nbi, &
+         description="")
+    call neasyf_write(group_id, "nchi", nchi, &
+         description="")
+    call neasyf_write(group_id, "nci0", nchi0, &
+         description="")
+    call neasyf_write(group_id, "nco", nco, &
+         description="Collisionality model")
+    call neasyf_write(group_id, "ncon", ncon, &
+         description="Number of flux surfaces evaluated")
+    call neasyf_write(group_id, "nedg", niedg, &
+         description="Pedestal density gradient for imp==1")
+    call neasyf_write(group_id, "neo", neo, &
+         description="Enable neoclassical current")
+    call neasyf_write(group_id, "nfm", nfm, &
+         description="Number of Fourier modes for ibdr==2")
+    call neasyf_write(group_id, "ni0", ni0, &
+         description="Central main ion density for imp==1")
+    call neasyf_write(group_id, "nia", nia, &
+         description="Edge main ion density fraction for imp==1")
+    call neasyf_write(group_id, "ninn", ninner, &
+         description="Number of inner iterations in Grad-Shafranov solver")
+    call neasyf_write(group_id, "nout", nouter, &
+         description="Number of iterations in Grad-Shafranov solver")
+    call neasyf_write(group_id, "npas", npass, &
+         description="Maximum number of equilibrium iterations")
+    call neasyf_write(group_id, "nped", niped, &
+         description="Pedestal main ion density fraction for imp==1")
+    call neasyf_write(group_id, "npo1", npo1, &
+         description="")
+    call neasyf_write(group_id, "npow", nipow, &
+         description="Main ion density profile for imp==1")
+    call neasyf_write(group_id, "npts", npts, &
+         description="Number of poloidal points on flux surface")
+    call neasyf_write(group_id, "ntrn", nturns, &
+         description="Number of periods in 2*pi along field line for ballooning calculation &
+         &(nturns in positive and negative directions)")
+    call neasyf_write(group_id, "omeg", omega, &
+         description="Accelerate equilibrium convergence (proportional to psi)")
+    call neasyf_write(group_id, "p0", p0, &
+         description="Extra pressure to help get beta up")
+    call neasyf_write(group_id, "pa", pa, &
+         description="mu0* (SI units) edge pressure for imp==0")
+    call neasyf_write(group_id, "paux", paux, &
+         description="Auxiliary heating power for taue", units="MW")
+    call neasyf_write(group_id, "pedg", pedg, &
+         description="Pedestal pressure gradient for imp==0")
+    call neasyf_write(group_id, "pfac", pfac, &
+         description="")
+    call neasyf_write(group_id, "powj", powj, &
+         description="Exponent of driven current profile")
+    call neasyf_write(group_id, "pped", pped, &
+         description="mu0* pedestal pressure (approx) (SI units) for imp==0")
+    call neasyf_write(group_id, "ppo1", ppo1, &
+         description="")
+    call neasyf_write(group_id, "ppow", ppow, &
+         description="Electron pressure profile for imp==0")
+    call neasyf_write(group_id, "psic", psic, &
+         description="Extent in psi where bootstrap current is filled in")
+    call neasyf_write(group_id, "quad", quad, &
+         description="Quadracity (squareness) for ibdr==1")
+    call neasyf_write(group_id, "rcen", rcen, &
+         description="Geometric axis of plasma boundary", units="m")
+    call neasyf_write(group_id, "rodi", rodi, &
+         description="Rod current (gives vacuum B-field", units="MA")
+    call neasyf_write(group_id, "scl", scl, &
+         description="Guess at current scaling")
+    call neasyf_write(group_id, "step", step, &
+         description="Mesh size", units="m")
+    call neasyf_write(group_id, "te0", te0, &
+         description="Central electron temperature", units="eV")
+    call neasyf_write(group_id, "tea", tea, &
+         description="Edge electron temperature", units="eV")
+    call neasyf_write(group_id, "tedg", teedg, &
+         description="Pedestal electron temperature gradient")
+    call neasyf_write(group_id, "tepd", teped, &
+         description="Pedestal electron temperature", units="eV")
+    call neasyf_write(group_id, "ti0", ti0, &
+         description="Central ion temperature", units="eV")
+    call neasyf_write(group_id, "tia", tia, &
+         description="Edge ion temperature", units="eV")
+    call neasyf_write(group_id, "tidg", tiedg, &
+         description="Pedestal ion temperature gradient")
+    call neasyf_write(group_id, "tipd", tiped, &
+         description="Pedestal ion temperature", units="eV")
+    call neasyf_write(group_id, "tpo1", tpo1, &
+         description="Used to flatten core temperature")
+    call neasyf_write(group_id, "tpoe", tpoe, &
+         description="Electron temperature profile")
+    call neasyf_write(group_id, "tpoi", tpoi, &
+         description="Ion temperature profile")
+    call neasyf_write(group_id, "tri", tri, &
+         description="Triangularity of plasma boundary")
+    call neasyf_write(group_id, "xitb", xitb, &
+         description="Position of transport barrier in normalised flux, from the edge")
+    call neasyf_write(group_id, "zm", zm, &
+         description="Charge of main species ion (<ZEFF)")
+    call neasyf_write(group_id, "zmai", zmai, &
+         description="Main ion species mass (c.f. H)")
+
+  end subroutine write_input_parameters
 
 end module netcdf_interface
