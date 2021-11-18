@@ -1,21 +1,3 @@
-if (SCENE_DOWNLOAD_GHOST)
-  message(STATUS "Downloading and configuring GHOST...")
-  include(FetchContent)
-  FetchContent_Declare(
-    ghost
-    GIT_REPOSITORY https://github.com/ZedThree/GHOST
-    GIT_TAG        "cba30b43bdcc73fb87cff0724337a7d3a1bd7812"
-    )
-  FetchContent_MakeAvailable(ghost)
-  message(STATUS "Finished configuring GHOST")
-  target_compile_options(ghost PRIVATE
-    $<$<Fortran_COMPILER_ID:GNU>:
-      -Wno-align-commons >
-      )
-else()
-  find_package(GHOST REQUIRED)
-endif()
-
 if (SCENE_DOWNLOAD_NEASYF)
   message(STATUS "Downloading and configuring neasy-f...")
   include(FetchContent)
@@ -66,8 +48,6 @@ set(SCENE_SOURCES
   geqdsk.f90
   getdata.f90
   gfile.f90
-  ghost_interface.f90
-  graphs.f90
   gs2.f90
   helena.f90
   hirsh.f90
@@ -95,11 +75,40 @@ set(SCENE_SOURCES
 
 target_sources(scene PRIVATE ${SCENE_SOURCES})
 target_link_libraries(scene PRIVATE netCDF::netcdff neasyf::neasyf)
-target_link_libraries(scene PRIVATE ghost::ghost)
 target_link_libraries(scene PRIVATE ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 target_link_libraries(scene PRIVATE surfit)
 set_target_properties(scene PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+if (SCENE_USE_GHOST)
+  if (SCENE_DOWNLOAD_GHOST)
+    message(STATUS "Downloading and configuring GHOST...")
+    include(FetchContent)
+    FetchContent_Declare(
+      ghost
+      GIT_REPOSITORY https://github.com/ZedThree/GHOST
+      GIT_TAG        "cba30b43bdcc73fb87cff0724337a7d3a1bd7812"
+      )
+    FetchContent_MakeAvailable(ghost)
+    message(STATUS "Finished configuring GHOST")
+    target_compile_options(ghost PRIVATE
+      $<$<Fortran_COMPILER_ID:GNU>:
+      -Wno-align-commons >
+      )
+  else()
+    find_package(GHOST REQUIRED)
+  endif()
+
+  target_sources(scene PRIVATE
+    ghost_interface.f90
+    graphs.f90
+    )
+  target_link_libraries(scene PRIVATE ghost::ghost)
+else()  
+  target_sources(scene PRIVATE
+    graphs_no_ghost.f90
+    )
+endif()
 
 if (SCENE_ENABLE_DOUBLE)
   target_compile_options(scene PUBLIC
