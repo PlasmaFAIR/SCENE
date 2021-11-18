@@ -1,30 +1,4 @@
-if (SCENE_DOWNLOAD_NEASYF)
-  message(STATUS "Downloading and configuring neasy-f...")
-  include(FetchContent)
-  FetchContent_Declare(
-    neasyf
-    GIT_REPOSITORY https://github.com/PlasmaFAIR/neasy-f
-    GIT_TAG        main
-    )
-  FetchContent_MakeAvailable(neasyf)
-  message(STATUS "Finished configuring neasy-f")
-else()
-  find_package(neasyf REQUIRED)
-endif()
-
-find_package(netCDFFortran REQUIRED)
-find_package(LAPACK REQUIRED)
-find_package(BLAS REQUIRED)
-
 add_executable(scene)
-
-if (SCENE_HAS_NBEAMS)
-  set(SCENE_NBI_SOURCE_FILE nbicur.f90)
-  find_package(nbeams REQUIRED)
-  target_link_libraries(scene PRIVATE nbeams::nbeams)
-else()
-  set(SCENE_NBI_SOURCE_FILE nbicur_no_nbeams.f90)
-endif()
 
 set(SCENE_SOURCES
   astradat.f90
@@ -70,15 +44,45 @@ set(SCENE_SOURCES
   toms790.f90
   torcur.f90
   usrcal.f90
-  ${SCENE_NBI_SOURCE_FILE}
   )
 
 target_sources(scene PRIVATE ${SCENE_SOURCES})
-target_link_libraries(scene PRIVATE netCDF::netcdff neasyf::neasyf)
-target_link_libraries(scene PRIVATE ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
-target_link_libraries(scene PRIVATE surfit)
 set_target_properties(scene PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+##################################################
+# Dependencies
+
+target_link_libraries(scene PRIVATE surfit)
+
+find_package(netCDFFortran REQUIRED)
+target_link_libraries(scene PRIVATE netCDF::netcdff neasyf::neasyf)
+
+find_package(LAPACK REQUIRED)
+find_package(BLAS REQUIRED)
+target_link_libraries(scene PRIVATE ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
+
+if (SCENE_DOWNLOAD_NEASYF)
+  message(STATUS "Downloading and configuring neasy-f...")
+  include(FetchContent)
+  FetchContent_Declare(
+    neasyf
+    GIT_REPOSITORY https://github.com/PlasmaFAIR/neasy-f
+    GIT_TAG        main
+    )
+  FetchContent_MakeAvailable(neasyf)
+  message(STATUS "Finished configuring neasy-f")
+else()
+  find_package(neasyf REQUIRED)
+endif()
+
+if (SCENE_HAS_NBEAMS)
+  find_package(nbeams REQUIRED)
+  target_link_libraries(scene PRIVATE nbeams::nbeams)
+  target_sources(scene PRIVATE nbicur.f90)
+else()
+  target_sources(scene PRIVATE nbicur_no_nbeams.f90)
+endif()
 
 if (SCENE_USE_GHOST)
   if (SCENE_DOWNLOAD_GHOST)
@@ -109,6 +113,9 @@ else()
     graphs_no_ghost.f90
     )
 endif()
+
+##################################################
+# Build options
 
 if (SCENE_ENABLE_DOUBLE)
   target_compile_options(scene PUBLIC
