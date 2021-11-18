@@ -23,38 +23,8 @@ contains
       double precision :: psi,qaxis
       integer :: i,nc,itst,lmax,l,ipos,iq,nh,nreadpts,nk,k,ndmr
       real, dimension(:), allocatable :: rbdr,zbdr
-!!$!
-!!$!  corners of ecrh footprint
-!!$      if (iso.eq.1) then
-!!$        ftr(1)=rf-drf/2.
-!!$        ftr(2)=rf-drf/2.
-!!$        ftr(3)=rf+drf/2.
-!!$        ftr(4)=rf+drf/2.
-!!$        ftz(1)=zf-dzf/2.
-!!$        ftz(2)=zf+dzf/2.
-!!$        ftz(3)=zf+dzf/2.
-!!$        ftz(4)=zf-dzf/2.
-!!$      end if
-! Read in free boundary
+      ! Read in free boundary
       nh=39
-!      open(unit=nh,file='hidelta04_rob4_2.dat', &
-!!$      open(unit=nh,file='step15_fiesta.txt', &
-!!$           status='unknown',iostat=ios)
-!!$      if(ios.ne.0) then
-!!$         write(6,*) 'problem opening rz8694.dat'
-!!$         stop
-!!$      endif
-!!$      read(nh,*)nreadpts
-!!$      if (nreadpts.gt.(nr*nz)) then
-!!$        write(6,*)' error*****nead to define larger rdim and zdim arrays in flxplt'
-!!$        write(6,*)' nr*nz=',nr*nz,' nreadpts=',nreadpts
-!!$        stop
-!!$      end if
-!!$      do i=1,nreadpts
-!!$        read(nh,*)rdim(i),zdim(i)
-!!$!        write(6,*)' i=',i,' R=',rdim(i),' Z=',zdim(i)
-!!$      end do
-!*************************************************
       if (ibdry.eq.2) then
         open(unit=nh,file='bdy.txt',status='unknown',iostat=ios)
         if(ios.ne.0) then
@@ -70,7 +40,7 @@ contains
       end if
       qaxis=sfac(ncon)
       iq=int(qaxis)+1
-!!$!
+
 !  Write out all input parameters:
       call pspace(0.85,1.3,0.1,0.92)
       call map(0.,1.,0.,1.)
@@ -317,18 +287,7 @@ contains
           ypos=ypos-0.025
         end do
       end if
-!
-!---------------------------------------------------------------------
-!
-!!$	  if (itst.eq.0) then
-!!$     call plotcs(0.03,ypos,' edge')
-!!$	  end if
-!!$	  itst=(ncon-nc)/1
-!!$	  if (itst.eq.0) then
-!!$     call plotcs(0.03,ypos,' centre')
-!!$	  end if
-!!$	  call ctrmag(15)
-!!$          call plotne(0.4,ypos,spsi,4)
+
       elong=sngl(2.*zs/(r2-r1))
       do i=1,nr
         zr(i)=sngl(r(i))
@@ -375,80 +334,8 @@ contains
           call broken(2,10,2,10)
 !          call ptjoin(rbdr,zbdr,1,nreadpts,-1)
           call full
-!!$          if (nc.eq.1) then
-!!$!  Set up boundary (Preinhalter data)
-!!$          r1=0.2338
-!!$          r2=1.3269
-!!$          xx=0.53
-!!$          yx=1.11**2
-!!$          xhalf=0.297
-!!$          yhalf=0.588**2
-!!$          aa=((xhalf-r1)/yhalf-(xx-r1)/yx)/(yhalf-yx)
-!!$          bb=(xx-r1-aa*yx**2)/yx
-!!$          nreadpts=20
-!!$          dzsep=sqrt(yx)/(nreadpts-1)
-!!$          k=0
-!!$          do i=1,nreadpts
-!!$            k=k+1
-!!$            zdim(k)=(i-1)*dzsep
-!!$            rdim(k)=r1+aa*zdim(k)**4+bb*zdim(k)**2
-!!$            write(6,*)' k=',k,' R=',rdim(k),' Z=',zdim(k)
-!!$          end do
-!!$          write(6,*)'**************'
-!!$          xhalf=1.12
-!!$          yhalf=0.552**2
-!!$          aa=((xhalf-r2)/yhalf-(xx-r2)/yx)/(yhalf-yx)
-!!$          bb=(xx-r2-aa*yx**2)/yx
-!!$          nreadpts=20
-!!$          dzsep=sqrt(yx)/(nreadpts-1)
-!!$          do i=2,nreadpts
-!!$            k=k+1
-!!$            zdim(k)=sqrt(yx)-(i-1)*dzsep
-!!$            rdim(k)=r2+aa*zdim(k)**4+bb*zdim(k)**2
-!!$            write(6,*)' k=',k,' R=',rdim(k),' Z=',zdim(k)
-!!$          end do
-!!$          write(6,*)' *************'
-!!$          nk=k
-!!$          do i=1,nk-1
-!!$            k=k+1
-!!$            rdim(k)=rdim(nk-i)
-!!$            zdim(k)=-zdim(nk-i)
-!!$            write(6,*)' k=',k,' R=',rdim(k),' Z=',zdim(k)
-!!$          end do
-!!$          nk=k
-!!$          call lincol(2)
-!!$          call broken(10,5,10,5)
-!!$          call ptjoin(rdim,zdim,1,nk,-1)
-!!$          call full
-!!$          end if
  15       call thick(1)
           call lincol(0)
-!!$          call pspace(0.85,1.2,0.1,0.87)
-!!$          call map(0.,1.,0.,1.)
-!!$          call border
-!!$          call ctrmag(15)
-!!$          ipos=nc/1
-!!$          ypos=1.-(ipos+4)*0.04
-!!$	  call undlin(1)
-!!$          call plotcs(0.15,0.95,'poloidal flux surfaces')
-!!$!	  call plotcs(0.15,0.95,'safety factor')
-!!$          call undlin(0)
-!!$          call ctrmag(12)
-!!$          call pcscen(0.5,0.88,'t m')
-!!$	  call supfix
-!!$          call typecs('2')
-!!$	  call normal
-!!$	  itst=nc/1
-!!$	  if (itst.eq.0) then
-!!$     call plotcs(0.03,ypos,' edge')
-!!$	  end if
-!!$	  itst=(ncon-nc)/1
-!!$	  if (itst.eq.0) then
-!!$     call plotcs(0.03,ypos,' centre')
-!!$	  end if
-!!$	  call ctrmag(15)
-!!$          call plotne(0.4,ypos,spsi,4)
-!	  if (nc.lt.ncon+1) call plotnf(0.4,ypos,qq,2)
       zl=zlo-0.06
       zu=zlo-0.03
       call pspace(0.75,0.81,zl,zu)
@@ -484,22 +371,6 @@ contains
       write(string,fmt='('' Run time:'',a8,'' on '',a12)') ctim,cdat
 !      call pcsend(0.98,0.6,string)
       call plotcs(0.01,0.2,string)
-!!$      call thick(2)
-!!$      call plotcs(0.25,0.25,title)
-!!$      call thick(1)
-!      if (abs(modb).eq.1) then
-!!  mod b contours
-!	zlo=0.16
-!	zup=0.75
-!	rup=0.81
-!	rlo=rup-(zup-zlo)/elong
-!	call pspace(rlo,rup,zlo,zup)
-!	call map(zr(1),zr(nr),zz(1),zz(nz))
-!	do 50 i=1,ncon
-!	   clevls(i)=bmin+(i-1.)*(bmax-bmin)/(ncon-1.)
-! 50     continue
-!	call contra(bmoda,1,nr,400,1,nz,400,clevls,1,10)
-!      end if
       call frame
 
       elong=sngl(2.*zs/(r2-r1))
@@ -540,90 +411,9 @@ contains
               call lincol(2)
             end if
       end if
-!	  if (modb.eq.-1) then
-!       if (nc.ne.1) goto 15
-!	  end if
           if (nc.eq.1) call thick(5)
-!          if (iso.eq.1) call ptjoin(ftr,ftz,1,4,-1)
-          call ptjoin(xp,yp,1,lmax,-1)
-          call lincol(2)
-          call broken(2,10,2,10)
-!          call ptjoin(rbdr,zbdr,1,nreadpts,-1)
-          call full
-!!$          if (nc.eq.1) then
-!!$!  Set up boundary (Preinhalter data)
-!!$          r1=0.2338
-!!$          r2=1.3269
-!!$          xx=0.53
-!!$          yx=1.11**2
-!!$          xhalf=0.297
-!!$          yhalf=0.588**2
-!!$          aa=((xhalf-r1)/yhalf-(xx-r1)/yx)/(yhalf-yx)
-!!$          bb=(xx-r1-aa*yx**2)/yx
-!!$          nreadpts=20
-!!$          dzsep=sqrt(yx)/(nreadpts-1)
-!!$          k=0
-!!$          do i=1,nreadpts
-!!$            k=k+1
-!!$            zdim(k)=(i-1)*dzsep
-!!$            rdim(k)=r1+aa*zdim(k)**4+bb*zdim(k)**2
-!!$            write(6,*)' k=',k,' R=',rdim(k),' Z=',zdim(k)
-!!$          end do
-!!$          write(6,*)'**************'
-!!$          xhalf=1.12
-!!$          yhalf=0.552**2
-!!$          aa=((xhalf-r2)/yhalf-(xx-r2)/yx)/(yhalf-yx)
-!!$          bb=(xx-r2-aa*yx**2)/yx
-!!$          nreadpts=20
-!!$          dzsep=sqrt(yx)/(nreadpts-1)
-!!$          do i=2,nreadpts
-!!$            k=k+1
-!!$            zdim(k)=sqrt(yx)-(i-1)*dzsep
-!!$            rdim(k)=r2+aa*zdim(k)**4+bb*zdim(k)**2
-!!$            write(6,*)' k=',k,' R=',rdim(k),' Z=',zdim(k)
-!!$          end do
-!!$          write(6,*)' *************'
-!!$          nk=k
-!!$          do i=1,nk-1
-!!$            k=k+1
-!!$            rdim(k)=rdim(nk-i)
-!!$            zdim(k)=-zdim(nk-i)
-!!$            write(6,*)' k=',k,' R=',rdim(k),' Z=',zdim(k)
-!!$          end do
-!!$          nk=k
-!!$          call lincol(2)
-!!$          call broken(10,5,10,5)
-!!$          call ptjoin(rdim,zdim,1,nk,-1)
-!!$          call full
-!!$          end if
           call thick(1)
           call lincol(0)
-!!$          call pspace(0.85,1.2,0.1,0.87)
-!!$          call map(0.,1.,0.,1.)
-!!$          call border
-!!$          call ctrmag(15)
-!!$          ipos=nc/1
-!!$          ypos=1.-(ipos+4)*0.04
-!!$	  call undlin(1)
-!!$          call plotcs(0.15,0.95,'poloidal flux surfaces')
-!!$!	  call plotcs(0.15,0.95,'safety factor')
-!!$          call undlin(0)
-!!$          call ctrmag(12)
-!!$          call pcscen(0.5,0.88,'t m')
-!!$	  call supfix
-!!$          call typecs('2')
-!!$	  call normal
-!!$	  itst=nc/1
-!!$	  if (itst.eq.0) then
-!!$     call plotcs(0.03,ypos,' edge')
-!!$	  end if
-!!$	  itst=(ncon-nc)/1
-!!$	  if (itst.eq.0) then
-!!$     call plotcs(0.03,ypos,' centre')
-!!$	  end if
-!!$	  call ctrmag(15)
-!!$          call plotne(0.4,ypos,spsi,4)
-!	  if (nc.lt.ncon+1) call plotnf(0.4,ypos,qq,2)
       zl=zlo-0.06
       zu=zlo-0.03
       call pspace(0.75,0.81,zl,zu)
@@ -1158,14 +948,6 @@ contains
       call normal
       if ((ipswtch.eq.2).or.(ipswtch.eq.0)) then
         call plotcs(0.03,0.72,' Pedestal width, T=')
-!!$        do i=nr,1,-1
-!!$          if (ixout(i,nsym).eq.1) then
-!!$          write(6,*)' dpsi/dR=',(u(i,nsym)-u(i-1,nsym))/(r(i)-r(i-1)),   &
-!!$                    ' r*bth=',r2*bp(r2,0.0d0)
-!!$          psi=umax-u(i,nsym)
-!!$          write(6,*)' r=',r(i),' temp=',tempe(psi,0)/1000.,' psi=',psi
-!!$          end if
-!!$        end do
         svar=sngl(umax/(r2*bp(r2,0.0d0)*teedg))
         call typenf(svar,3)
         call typecs(', ')
@@ -1371,12 +1153,6 @@ contains
       pd=press(psi,1)
       fd=fprof(psi,1)/fval
       jedge=-(fval*pd/sqrt(bsqav(1))+fd*sqrt(bsqav(1))/mu0)
-!      write(6,*)' pd=',pd,' fd=',fd,' fval=',fval,' jedge=',jedge
-!!$      psi=psiv(ncon)
-!!$      fval=fprof(psi,2)
-!!$      pd=press(psi,1)
-!!$      fd=fprof(psi,1)/fval
-!!$      jaxis=-(fval*pd/sqrt(bsqav(ncon))+fd*sqrt(bsqav(ncon))/mu0)
       jrat=sngl(jedge*area/cur)
       call plotcs(0.03,0.24,'jedge/j-avge=')
       call typene(jrat,4)
@@ -1443,51 +1219,6 @@ contains
       call plotcs(0.03,0.15,'p peaking=')
       svar=sngl(ppeak)
       call typenf(svar,4)
-!!$      if (nimp.gt.0) then
-!!$      call plotcs(0.03,0.27,' z')
-!!$      call plotcs(0.18,0.27,' n')
-!!$      call suffix
-!!$      call typecs('0')
-!!$      call normal
-!!$      call typecs('/n')
-!!$      call suffix
-!!$      call typecs('i0')
-!!$      call normal
-!!$      call plotcs(0.38,0.27,' t')
-!!$      call suffix
-!!$      call typecs('0')
-!!$      call normal
-!!$      call typecs('(ev)')
-!!$      call plotcs(0.57,0.27,' ')
-!!$      call ctrfnt(2)
-!!$      call typenc(97)
-!!$      call suffix
-!!$      call typecs('t')
-!!$      call normal
-!!$      call plotcs(0.74,0.27,' ')
-!!$      call typenc(97)
-!!$      call ctrfnt(0)
-!!$      call suffix
-!!$      call typecs('n')
-!!$      call normal
-!!$      call plotcs(0.9,0.27,'m')
-!!$      ds=0.03
-!!$      do 50 i=1,nimp
-!!$      yy=0.27-i*ds
-!!$      call plotcs(0.01,yy,' ')
-!!$      call typeni(iz(i+1),2)
-!!$      call typecs('  ')
-!!$      call typenf(zn(i+1),4)
-!!$      call typecs(' ')
-!!$      call typenf(zt(i+1),1)
-!!$      call typecs(' ')
-!!$      call typenf(zat(i+1),2)
-!!$      call typecs(' ')
-!!$      call typenf(zan(i+1),2)
-!!$      call typecs(' ')
-!!$      call typenf(zmas(i+1),2)
-!!$ 50   continue
-!!$      end if
       call plotcs(0.03,0.07,' tauhe*/taue=')
       svar=sngl(tauh)
       call typenf(svar,4)
@@ -1587,11 +1318,6 @@ contains
       szero=0.
       call axessi(szero,szero)
       call ctrmag(14)
-!!$      do i=1,nr
-!!$	sy(i)=sngl(gradj(i,jj)/1000.)
-!!$	sy1(i)=sngl(exph(i,jj)/1000.)
-!!$	sx(i)=sngl(r(i))
-!!$      end do
       write(73,*)' R,          Jphi(MAm**-2)'
       do  i=1,nr
         sx1(i)=sngl(r(i))
@@ -1710,19 +1436,6 @@ contains
       end do
       close(73)
       call curveo(sx,sy,1,nr+2)
-!      open(24,file='JCTF-NBI-ECCD.nbi')
-!      read(24,56)nrob
-! 56   format(' No. points in Driven J-profile=       ',i6)
-!      write(6,*)' nrob=',nrob
-!      read(24,*)txt
-!      read(24,*)txt
-!      do i=1,nrob
-!        read(24,*)sxx(i),syy(i)
-!        write(6,*)' sx=',sxx(i),' sy=',syy(i)
-!      end do
-!      close(24)
-!      call lincol(4)
-!      call curveo(sxx,syy,1,nrob)
       call lincol(0)
       call pspace(0.5,0.525,0.55,0.81)
       call map(0.,1.,0.,1.)
@@ -2213,18 +1926,6 @@ contains
  20   open(20,file='mast_8694.dat')
       read(20,*)ishot,timsht,ntdat
       write(6,*)' ishot=',ishot,' timsht=',timsht,ntdat
-!!$      if (ntdat.gt.nr) then
-!!$        write(6,*)'WARNING***only plotting 1st ',nr,' data points'
-!!$        write(6,*)' Increase dimensions of pltr,pltt and pltn for more'
-!!$        ntdat=nr
-!!$      end if
-!!$      do i=1,ntdat
-!!$        read(20,*)pltr(i),pltn(i),pltt(i)
-!!$        pltn(i)=pltn(i)*1.0d19
-!!$        pltt(i)=pltt(i)*1000.
-!!$        pltp(i)=(1.+ti0/te0)*bk*pltt(i)*pltn(i)
-!!$!        write(6,*)' i=',i,' R=',pltr(i),' T=',pltt(i),' ne=',pltn(i)
-!!$      end do
       do i=1,ntdat
         read(20,*)pltr(i),pltn(i),pltt(i)
         write(6,*)' R=',pltr(i),' n=',pltn(i),' T=',pltt(i)
@@ -2232,13 +1933,6 @@ contains
         pltt(i)=pltt(i)*1000.
       end do
       close(20)
-!!$    open(20,file='mast_4985Te.dat')
-!!$      do i=1,ntdat
-!!$        read(20,*)pltr(i),pltt(i)
-!!$        write(6,*)' R=',pltr(i),' T=',pltt(i)
-!!$        pltt(i)=pltt(i)*1000.
-!!$        pltp(i)=(1.+ti0/te0)*bk*pltt(i)*pltn(i)
-!!$      end do
       do  i=1,ntdat-1
         pltter(i)=0.
         pltner(i)=0.
@@ -2343,43 +2037,8 @@ contains
       call border
       call map(0.,1.,0.,1.)
       call pcscen(0.5,0.5,'DENSITY PROFILE')
-!!$      call pspace(1.0,1.4,0.2,0.7)
-!!$      call border
-!!$      call map(rmin,rmax,0.,pmax)
-!!$      call axorig(0.,0.)
-!!$      call axessi(0.,0.)
-!!$      call errbar(pltr,pltp,pltner,pltner,1,ntdat,235,1)
-!!$      call lincol(3)
-!!$      call curveo(sx,sy2,1,lmid)
-!!$      call lincol(0)
-!!$      call pspace(1.0,1.4,0.7,0.8)
-!!$      call border
-!!$      call map(0.,1.,0.,1.)
-!!$      call pcscen(0.5,0.5,'PRESSURE PROFILE')
       call frame
       close(20)
-!!$      do i=1,ncon
-!!$        sx(i)=psiv(i)/umax
-!!$        sy(i)=-press(psiv(i),1)
-!!$        if (i.eq.1) then
-!!$          pmax=sy(1)
-!!$        else
-!!$          if (pmax.lt.sy(i)) pmax=sy(i)
-!!$        end if
-!!$      end do
-!!$      call pspace(0.1,0.5,0.2,0.7)
-!!$      call border
-!!$      call map(0.,1.,0.,pmax)
-!!$      call axorig(0.,0.)
-!!$      call ctrmag(12)
-!!$      call axessi(0.,0.)
-!!$      call lincol(3)
-!!$      call curveo(sx,sy,1,ncon)
-!!$      call lincol(0)
-!!$      call pspace(0.1,0.5,0.7,0.8)
-!!$      call border
-!!$      call map(0.,1.,0.,1.)
-!!$      call pcscen(0.5,0.5,'P-prime')
       do i=1,ncon
         sx(i)=psiv(i)/umax
         sy(i)=dense(psiv(i),0)
@@ -2390,69 +2049,6 @@ contains
           if (pmax.lt.sy(i)) pmax=sy(i)
         end if
       end do
-!!$      call pspace(0.1,0.5,0.2,0.7)
-!!$      call border
-!!$      call map(0.,1.,0.,pmax)
-!!$      call axorig(0.,0.)
-!!$      call ctrmag(12)
-!!$      call axessi(0.,0.)
-!!$      call errbar(sx,sy2,pltter,pltter,1,ncon,235,1)
-!!$      call lincol(3)
-!!$      call curveo(sx,sy,1,ncon)
-!!$      call lincol(0)
-!!$      call pspace(0.1,0.5,0.7,0.8)
-!!$      call border
-!!$      call map(0.,1.,0.,1.)
-!!$      call pcscen(0.5,0.5,'n(psi)')
-!!$      do i=1,ncon
-!!$        sx(i)=psiv(i)/umax
-!!$        sy(i)=bk*dense(psiv(i),0)*tempe(psiv(i),0)
-!!$        sy2(i)=p_m(i)
-!!$        if (i.eq.1) then
-!!$          pmax=sy(1)
-!!$        else
-!!$          if (pmax.lt.sy(i)) pmax=sy(i)
-!!$        end if
-!!$      end do
-!!$      call pspace(0.55,0.95,0.2,0.7)
-!!$      call border
-!!$      call map(0.,1.,0.,pmax)
-!!$      call axorig(0.,0.)
-!!$      call ctrmag(12)
-!!$      call axessi(0.,0.)
-!!$      call errbar(sx,sy2,pltter,pltter,1,ncon,235,1)
-!!$      call lincol(3)
-!!$      call curveo(sx,sy,1,ncon)
-!!$      call lincol(0)
-!!$      call pspace(0.55,0.95,0.7,0.8)
-!!$      call border
-!!$      call map(0.,1.,0.,1.)
-!!$      call pcscen(0.5,0.5,'P(psi)')
-!!$      do i=1,ncon
-!!$        sx(i)=sngl(psiv(i)/umax)
-!!$        sy(i)=sngl(tempe(psiv(i),0))
-!!$        sy2(i)=sngl(te_m(i))
-!!$        if (i.eq.1) then
-!!$          pmax=sy(1)
-!!$        else
-!!$          if (pmax.lt.sy(i)) pmax=sy(i)
-!!$        end if
-!!$      end do
-!!$      call pspace(1.05,1.4,0.2,0.7)
-!!$      call border
-!!$      call map(0.,1.,0.,pmax)
-!!$      call axorig(0.,0.)
-!!$      call ctrmag(12)
-!!$      call axessi(0.,0.)
-!!$      call errbar(sx,sy2,pltter,pltter,1,ncon,235,1)
-!!$      call lincol(3)
-!!$      call curveo(sx,sy,1,ncon)
-!!$      call lincol(0)
-!!$      call pspace(1.05,1.4,0.7,0.8)
-!!$      call border
-!!$      call map(0.,1.,0.,1.)
-!!$      call pcscen(0.5,0.5,'T(psi)')
-!!$      call frame
       end if
       j=0
       do i=1,nr
