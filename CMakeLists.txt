@@ -17,6 +17,7 @@ cmake_dependent_option(SCENE_DOWNLOAD_GHOST "Download and build GHOST as part of
   "SCENE_USE_GHOST" OFF)
 option(SCENE_HAS_NBEAMS "Has modified version of NBEAMS with SCENE support" OFF)
 option(SCENE_DOWNLOAD_NEASYF "Download and build neasy-f as part of SCENE build" ON)
+option(SCENE_DOWNLOAD_FUUID4 "Download and build fuuid4 as part of SCENE build" ON)
 
 add_subdirectory(lib/dierckx)
 

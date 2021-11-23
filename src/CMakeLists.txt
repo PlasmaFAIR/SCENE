@@ -23,6 +23,7 @@ set(SCENE_SOURCES
   getdata.f90
   gfile.f90
   gs2.f90
+  header.f90
   helena.f90
   hirsh.f90
   hirsig.f90
@@ -55,9 +56,6 @@ set_target_properties(scene PROPERTIES
 
 target_link_libraries(scene PRIVATE surfit)
 
-find_package(netCDFFortran REQUIRED)
-target_link_libraries(scene PRIVATE netCDF::netcdff neasyf::neasyf)
-
 find_package(LAPACK REQUIRED)
 find_package(BLAS REQUIRED)
 target_link_libraries(scene PRIVATE ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
@@ -75,6 +73,23 @@ if (SCENE_DOWNLOAD_NEASYF)
 else()
   find_package(neasyf REQUIRED)
 endif()
+find_package(netCDFFortran REQUIRED)
+target_link_libraries(scene PRIVATE netCDF::netcdff neasyf::neasyf)
+
+if (SCENE_DOWNLOAD_FUUID4)
+  message(STATUS "Downloading and configuring fuuid4...")
+  include(FetchContent)
+  FetchContent_Declare(
+    fuuid4
+    GIT_REPOSITORY https://github.com/PlasmaFAIR/fuuid4
+    GIT_TAG        main
+    )
+  FetchContent_MakeAvailable(fuuid4)
+  message(STATUS "Finished configuring fuuid4")
+else()
+  find_package(fuuid4 REQUIRED)
+endif()
+target_link_libraries(scene PRIVATE fuuid4::fuuid4)
 
 if (SCENE_HAS_NBEAMS)
   find_package(nbeams REQUIRED)

@@ -16,6 +16,7 @@
 
 !> SPDX-License-Identifier: GPL-3.0-only
 program scene
+  use, intrinsic :: iso_fortran_env, only : output_unit
   use bootstap, only : fastbs
   use equilibrium, only : equil, xarea
   use ff_mod, only : ffdgen
@@ -33,16 +34,20 @@ program scene
   use scene_errors, only : error_msg
   use scene_init, only : init
   use toroidal_current_mod, only : torcur
+  use header_mod, only : header_type
   implicit none
   integer i,j,icur,niter
   double precision errcur,bpold,bnold,bpnew
   logical :: debug
-  !
+  type(header_type) :: header
+
+  header = header_type()
 
   debug = .false.
   nbet=0
   ! Perform initialisations
-  write(6,*) 'Starting SCENE'
+  write(output_unit, *) 'Starting SCENE'
+  write(output_unit, '(a)') header%to_string(comment_character=" ")
   call error_msg('SCENE has begun', -1)
 
   call init
