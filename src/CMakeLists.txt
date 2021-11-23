@@ -114,6 +114,9 @@ else()
     )
 endif()
 
+add_subdirectory(fortran-git-version)
+target_link_libraries(scene PRIVATE fortran_git::fortran_git)
+
 ##################################################
 # Build options
 
