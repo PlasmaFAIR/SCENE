@@ -3,12 +3,17 @@ module netcdf_interface
 contains
 
   !> Write SCENE output to netCDF file
-  subroutine write_netcdf()
+  subroutine write_netcdf(header)
     use, intrinsic :: iso_fortran_env, only: real64
     use param
-    use neasyf, only: neasyf_open, neasyf_close, neasyf_dim, neasyf_write
+    use neasyf, only: neasyf_open, neasyf_close, neasyf_dim, neasyf_write, neasyf_metadata
     use profiles_mod, only: tempe, tempi, dense, densi, press, shift, fprof, dpsidrho, dVdrho, rhotor, elong, triang
+    use git_version, only: get_git_version
+    use header_mod, only: header_type
     implicit none
+
+    !> Header with run UUID and creation timestamp
+    type(header_type), intent(in) :: header
 
     logical :: debug
     character(len=lrunname + 4) :: cdf_file
@@ -216,6 +221,12 @@ contains
 
     tglf_q_prime(ncon) = 0.0
     tglf_p_prime(ncon) = 0.0
+
+    call neasyf_metadata(ncid, &
+                         software_name="SCENE", &
+                         software_version=get_git_version(), &
+                         file_id=header%run_uuid, &
+                         created=header%date_time)
 
     !Define Radial dimension
     call neasyf_dim(ncid, "rho_psi", values=rhopsi, dimid=rhopsi_dimid, &

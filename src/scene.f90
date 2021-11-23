@@ -226,7 +226,7 @@ program scene
   !  Call user interface routine
   call usrcal
   if (debug) print*, 'Calling NETCDF writer'
-  call write_netcdf()
+  call write_netcdf(header)
 
   call error_msg('Clean exit', 0)
 
