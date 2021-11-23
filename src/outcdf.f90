@@ -16,8 +16,8 @@ contains
     type(header_type), intent(in) :: header
 
     logical :: debug
-    character(len=lrunname + 4) :: cdf_file
-    character(len=4) :: file_suffix
+    character(len=:), allocatable :: cdf_file
+    character(len=*), parameter :: file_suffix = ".cdf"
     integer :: ncid
     integer :: dimidsrho(1), dimids2d(2), dimidsR(1)
 
@@ -59,9 +59,8 @@ contains
 
     debug = .False.
 
-    file_suffix = '.cdf'
-
-    cdf_file = runname(1:lrunname)//file_suffix
+    allocate(character(len=len_trim(runname) + len_trim(file_suffix))::cdf_file)
+    cdf_file = trim(runname) // file_suffix
     if (debug) print *, 'Saving to ', cdf_file
 
     ncid = neasyf_open(cdf_file, "w")
