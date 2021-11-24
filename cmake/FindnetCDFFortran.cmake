@@ -51,7 +51,8 @@ get_filename_component(NF_CONFIG_TMP "${NF_CONFIG}" DIRECTORY)
 get_filename_component(NF_CONFIG_LOCATION "${NF_CONFIG_TMP}" DIRECTORY)
 if (netCDFFortran_DEBUG)
   message(STATUS "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] "
-    " NF_CONFIG_LOCATION = ${NF_CONFIG_LOCATION}")
+    " NF_CONFIG_LOCATION = ${NF_CONFIG_LOCATION}"
+    " NF_CONFIG = ${NF_CONFIG}")
 endif()
 
 scene_inspect_netcdf_config(NF_HINTS_INCLUDE_DIR "${NF_CONFIG}" "--includedir")
@@ -96,15 +97,25 @@ if (netCDFFortran_DEBUG)
 endif()
 mark_as_advanced(netCDF_Fortran_LIBRARY)
 
-scene_inspect_netcdf_config(_ncxx4_version "${NF_CONFIG}" "--version")
-string(REGEX REPLACE "netCDF-cxx4 \([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)" "\\1" _netcdfcxx_version_major "${_ncxx4_version}")
-string(REGEX REPLACE "netCDF-cxx4 \([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)" "\\2" _netcdfcxx_version_minor "${_ncxx4_version}")
-string(REGEX REPLACE "netCDF-cxx4 \([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)" "\\3" _netcdfcxx_version_patch "${_ncxx4_version}")
-set(netCDFFortran_VERSION "${_netcdf_version_major}.${_netcdf_version_minor}.${_netcdf_version_patch}${_netcdf_version_note}")
-unset(_ncxx4_version)
-unset(_netcdf_version_major)
-unset(_netcdf_version_minor)
-unset(_netcdf_version_patch)
+scene_inspect_netcdf_config(_nf_version "${NF_CONFIG}" "--version")
+if (_nf_version)
+  string(REGEX REPLACE "netCDF-Fortran \([0-9]+\.[0-9]+\.[0-9]+\)" "\\1" netCDFFortran_VERSION "${_nf_version}")
+  message(STATUS "Found netCDFFortran version ${netCDFCxx_VERSION}")
+else ()
+  message(WARNING "Couldn't get NetCDF version")
+endif()
+unset(_nf_version)
+
+if (NOT netCDF_Fortran_LIBRARY OR NOT netCDF_Fortran_INCLUDE_DIR)
+  find_package(PkgConfig)
+  if (PkgConfig_FOUND)
+    pkg_search_module(PkgNetcdfFortran netcdf-fortran)
+    set(netCDF_Fortran_LIBRARY ${PkgNetcdfFortran_LINK_LIBRARIES} CACHE STRING "NetCDFFortran libraries" FORCE)
+    set(netCDF_Fortran_INCLUDE_DIR
+      "${PkgNetcdfFortran_INCLUDE_DIRS}"
+      CACHE STRING "NetCDFFortran include path" FORCE)
+  endif()
+endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(netCDFFortran
