@@ -225,15 +225,15 @@ contains
                          software_name="SCENE", &
                          software_version=get_git_version(), &
                          file_id=header%run_uuid, &
-                         created=header%date_time)
+                         date_created=header%date_time)
 
     !Define Radial dimension
     call neasyf_dim(ncid, "rho_psi", values=rhopsi, dimid=rhopsi_dimid, &
-                    description="Radial coordinate")
+                    long_name="Radial coordinate")
     call neasyf_dim(ncid, "npts", dim_size=npts, dimid=npts_dimid, &
-                    description="Poloidal points")
+                    long_name="Poloidal points")
     call neasyf_dim(ncid, "R", values=R, dimid=rr_dimid, &
-                    units="m", description="Major radius")
+                    units="m", long_name="Major radius")
 
     if (debug) print *, 'Assigned variable names'
 
@@ -363,185 +363,185 @@ contains
                       ncid=file_id, message="creating inputs group")
 
     call neasyf_write(group_id, "af0", af0, &
-         description="Coefficients used in ffp and J profile")
+         long_name="Coefficients used in ffp and J profile")
     call neasyf_write(group_id, "af1", af1, &
-         description="Coefficients used in ffp and J profile")
+         long_name="Coefficients used in ffp and J profile")
     call neasyf_write(group_id, "af2", af2, &
-         description="Coefficients used in ffp and J profile")
+         long_name="Coefficients used in ffp and J profile")
     call neasyf_write(group_id, "af3", af3, &
-         description="Coefficients used in ffp and J profile")
+         long_name="Coefficients used in ffp and J profile")
     call neasyf_write(group_id, "af4", af4, &
-         description="Coefficients used in ffp and J profile")
+         long_name="Coefficients used in ffp and J profile")
     call neasyf_write(group_id, "ane", ane, &
-         description="Flatten core density for ips==6 or 21")
+         long_name="Flatten core density for ips==6 or 21")
     call neasyf_write(group_id, "ape", ape, &
-         description="Flatten core pressure if ips==21")
+         long_name="Flatten core pressure if ips==21")
     call neasyf_write(group_id, "ate", ate, &
-         description="Flatten core temperature for ips==6")
+         long_name="Flatten core temperature for ips==6")
     call neasyf_write(group_id, "betn", betan, &
-         description="Target value of betan (bpol re-scaled if betan>0)")
+         long_name="Target value of betan (bpol re-scaled if betan>0)")
     call neasyf_write(group_id, "bpol", bpol, &
-         description="Approximate starting beta-poloidal for p0==1")
+         long_name="Approximate starting beta-poloidal for p0==1")
     call neasyf_write(group_id, "chi0", chi0val, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "cur", cur, &
-         description="Total toroidal plasma current", units="MA")
+         long_name="Total toroidal plasma current", units="MA")
     call neasyf_write(group_id, "dil", dil, &
-         description="Ion dilution factor for imp==0")
+         long_name="Ion dilution factor for imp==0")
     call neasyf_write(group_id, "elon", elon, &
-         description="Elongation of plasma boundary")
+         long_name="Elongation of plasma boundary")
     call neasyf_write(group_id, "eps", tokeps, &
-         description="Inverse aspect ratio of boundary")
+         long_name="Inverse aspect ratio of boundary")
     call neasyf_write(group_id, "erfd", errffd, &
-         description="Target error between input and output currents")
+         long_name="Target error between input and output currents")
     call neasyf_write(group_id, "erit", errit, &
-         description="Target error for Grad-Shafranov solver")
+         long_name="Target error for Grad-Shafranov solver")
     call neasyf_write(group_id, "fast", fast, &
-         description="Calculate beta due to fast alpha particles")
+         long_name="Calculate beta due to fast alpha particles")
     call neasyf_write(group_id, "fpo1", fpow1, &
-         description="Initial ff' profile (increase to peak near axis)")
+         long_name="Initial ff' profile (increase to peak near axis)")
     call neasyf_write(group_id, "fpo2", fpow2, &
-         description="Initial ff' profile (increase to peak near edge)")
+         long_name="Initial ff' profile (increase to peak near edge)")
     call neasyf_write(group_id, "fpo3", fpow3, &
-         description="Initial ff' profile (increase to peak near axis)")
+         long_name="Initial ff' profile (increase to peak near axis)")
     call neasyf_write(group_id, "fpo4", fpow4, &
-         description="Initial ff' profile (increase to peak near edge)")
+         long_name="Initial ff' profile (increase to peak near edge)")
     call neasyf_write(group_id, "fpow", fpow, &
-         description="Initial ff' profile (on-axis peaking)")
+         long_name="Initial ff' profile (on-axis peaking)")
     call neasyf_write(group_id, "frac", frac, &
-         description="Control rate of convergence of Grad-Shafranov solver")
+         long_name="Control rate of convergence of Grad-Shafranov solver")
     call neasyf_write(group_id, "ibal", ibal, &
-         description="The flux surface analysed for ballooning stability for nbal==1")
+         long_name="The flux surface analysed for ballooning stability for nbal==1")
     call neasyf_write(group_id, "ibdr", ibdry, &
-         description="Boundary shape: 0 is default (Sykes) shape; 1 is more general shape")
+         long_name="Boundary shape: 0 is default (Sykes) shape; 1 is more general shape")
     call neasyf_write(group_id, "icon", icont, &
-         description="If 1, use a 'warm' start for the equilibrium solver")
+         long_name="If 1, use a 'warm' start for the equilibrium solver")
     call neasyf_write(group_id, "ictr", icontour, &
-         description="Controls contouring algorithm; 0: linear interpolation, &
+         long_name="Controls contouring algorithm; 0: linear interpolation, &
          &1: linear interpolation + smoothing, 2: bi-cubic spline interpolation")
     call neasyf_write(group_id, "ifas", ifast, &
-         description="If 1, bootstrap current includes alpha-particle contribution")
+         long_name="If 1, bootstrap current includes alpha-particle contribution")
     call neasyf_write(group_id, "igr", igr, &
-         description="Controls graphics output (requires GHOST)")
+         long_name="Controls graphics output (requires GHOST)")
     call neasyf_write(group_id, "imat", imat, &
-         description="Bootstrap model: 0: Hirshman, 1: Hirshman-Sigmar")
+         long_name="Bootstrap model: 0: Hirshman, 1: Hirshman-Sigmar")
     call neasyf_write(group_id, "imp", imp, &
-         description="Enable impurities")
+         long_name="Enable impurities")
     call neasyf_write(group_id, "ipr", ipr, &
-         description="Controls printout to screen")
+         long_name="Controls printout to screen")
     call neasyf_write(group_id, "ipsw", ipswtch, &
-         description="Profile form")
+         long_name="Profile form")
     call neasyf_write(group_id, "itot", itot, &
-         description="If 1, use ff-prime and p-prime to derive equilibrium, else use specified driven current profile")
+         long_name="If 1, use ff-prime and p-prime to derive equilibrium, else use specified driven current profile")
     call neasyf_write(group_id, "kval", kval, &
-         description="If ibdr==1, kval->1 provides DND; kval=0 limiter")
+         long_name="If ibdr==1, kval->1 provides DND; kval=0 limiter")
     call neasyf_write(group_id, "lam", lamges, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "naa", naa, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "nbal", nbal, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "nbb", nbb, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "nbi", nbi, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "nchi", nchi, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "nci0", nchi0, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "nco", nco, &
-         description="Collisionality model")
+         long_name="Collisionality model")
     call neasyf_write(group_id, "ncon", ncon, &
-         description="Number of flux surfaces evaluated")
+         long_name="Number of flux surfaces evaluated")
     call neasyf_write(group_id, "nedg", niedg, &
-         description="Pedestal density gradient for imp==1")
+         long_name="Pedestal density gradient for imp==1")
     call neasyf_write(group_id, "neo", neo, &
-         description="Enable neoclassical current")
+         long_name="Enable neoclassical current")
     call neasyf_write(group_id, "nfm", nfm, &
-         description="Number of Fourier modes for ibdr==2")
+         long_name="Number of Fourier modes for ibdr==2")
     call neasyf_write(group_id, "ni0", ni0, &
-         description="Central main ion density for imp==1")
+         long_name="Central main ion density for imp==1")
     call neasyf_write(group_id, "nia", nia, &
-         description="Edge main ion density fraction for imp==1")
+         long_name="Edge main ion density fraction for imp==1")
     call neasyf_write(group_id, "ninn", ninner, &
-         description="Number of inner iterations in Grad-Shafranov solver")
+         long_name="Number of inner iterations in Grad-Shafranov solver")
     call neasyf_write(group_id, "nout", nouter, &
-         description="Number of iterations in Grad-Shafranov solver")
+         long_name="Number of iterations in Grad-Shafranov solver")
     call neasyf_write(group_id, "npas", npass, &
-         description="Maximum number of equilibrium iterations")
+         long_name="Maximum number of equilibrium iterations")
     call neasyf_write(group_id, "nped", niped, &
-         description="Pedestal main ion density fraction for imp==1")
+         long_name="Pedestal main ion density fraction for imp==1")
     call neasyf_write(group_id, "npo1", npo1, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "npow", nipow, &
-         description="Main ion density profile for imp==1")
+         long_name="Main ion density profile for imp==1")
     call neasyf_write(group_id, "npts", npts, &
-         description="Number of poloidal points on flux surface")
+         long_name="Number of poloidal points on flux surface")
     call neasyf_write(group_id, "ntrn", nturns, &
-         description="Number of periods in 2*pi along field line for ballooning calculation &
+         long_name="Number of periods in 2*pi along field line for ballooning calculation &
          &(nturns in positive and negative directions)")
     call neasyf_write(group_id, "omeg", omega, &
-         description="Accelerate equilibrium convergence (proportional to psi)")
+         long_name="Accelerate equilibrium convergence (proportional to psi)")
     call neasyf_write(group_id, "p0", p0, &
-         description="Extra pressure to help get beta up")
+         long_name="Extra pressure to help get beta up")
     call neasyf_write(group_id, "pa", pa, &
-         description="mu0* (SI units) edge pressure for imp==0")
+         long_name="mu0* (SI units) edge pressure for imp==0")
     call neasyf_write(group_id, "paux", paux, &
-         description="Auxiliary heating power for taue", units="MW")
+         long_name="Auxiliary heating power for taue", units="MW")
     call neasyf_write(group_id, "pedg", pedg, &
-         description="Pedestal pressure gradient for imp==0")
+         long_name="Pedestal pressure gradient for imp==0")
     call neasyf_write(group_id, "pfac", pfac, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "powj", powj, &
-         description="Exponent of driven current profile")
+         long_name="Exponent of driven current profile")
     call neasyf_write(group_id, "pped", pped, &
-         description="mu0* pedestal pressure (approx) (SI units) for imp==0")
+         long_name="mu0* pedestal pressure (approx) (SI units) for imp==0")
     call neasyf_write(group_id, "ppo1", ppo1, &
-         description="")
+         long_name="")
     call neasyf_write(group_id, "ppow", ppow, &
-         description="Electron pressure profile for imp==0")
+         long_name="Electron pressure profile for imp==0")
     call neasyf_write(group_id, "psic", psic, &
-         description="Extent in psi where bootstrap current is filled in")
+         long_name="Extent in psi where bootstrap current is filled in")
     call neasyf_write(group_id, "quad", quad, &
-         description="Quadracity (squareness) for ibdr==1")
+         long_name="Quadracity (squareness) for ibdr==1")
     call neasyf_write(group_id, "rcen", rcen, &
-         description="Geometric axis of plasma boundary", units="m")
+         long_name="Geometric axis of plasma boundary", units="m")
     call neasyf_write(group_id, "rodi", rodi, &
-         description="Rod current (gives vacuum B-field", units="MA")
+         long_name="Rod current (gives vacuum B-field", units="MA")
     call neasyf_write(group_id, "scl", scl, &
-         description="Guess at current scaling")
+         long_name="Guess at current scaling")
     call neasyf_write(group_id, "step", step, &
-         description="Mesh size", units="m")
+         long_name="Mesh size", units="m")
     call neasyf_write(group_id, "te0", te0, &
-         description="Central electron temperature", units="eV")
+         long_name="Central electron temperature", units="eV")
     call neasyf_write(group_id, "tea", tea, &
-         description="Edge electron temperature", units="eV")
+         long_name="Edge electron temperature", units="eV")
     call neasyf_write(group_id, "tedg", teedg, &
-         description="Pedestal electron temperature gradient")
+         long_name="Pedestal electron temperature gradient")
     call neasyf_write(group_id, "tepd", teped, &
-         description="Pedestal electron temperature", units="eV")
+         long_name="Pedestal electron temperature", units="eV")
     call neasyf_write(group_id, "ti0", ti0, &
-         description="Central ion temperature", units="eV")
+         long_name="Central ion temperature", units="eV")
     call neasyf_write(group_id, "tia", tia, &
-         description="Edge ion temperature", units="eV")
+         long_name="Edge ion temperature", units="eV")
     call neasyf_write(group_id, "tidg", tiedg, &
-         description="Pedestal ion temperature gradient")
+         long_name="Pedestal ion temperature gradient")
     call neasyf_write(group_id, "tipd", tiped, &
-         description="Pedestal ion temperature", units="eV")
+         long_name="Pedestal ion temperature", units="eV")
     call neasyf_write(group_id, "tpo1", tpo1, &
-         description="Used to flatten core temperature")
+         long_name="Used to flatten core temperature")
     call neasyf_write(group_id, "tpoe", tpoe, &
-         description="Electron temperature profile")
+         long_name="Electron temperature profile")
     call neasyf_write(group_id, "tpoi", tpoi, &
-         description="Ion temperature profile")
+         long_name="Ion temperature profile")
     call neasyf_write(group_id, "tri", tri, &
-         description="Triangularity of plasma boundary")
+         long_name="Triangularity of plasma boundary")
     call neasyf_write(group_id, "xitb", xitb, &
-         description="Position of transport barrier in normalised flux, from the edge")
+         long_name="Position of transport barrier in normalised flux, from the edge")
     call neasyf_write(group_id, "zm", zm, &
-         description="Charge of main species ion (<ZEFF)")
+         long_name="Charge of main species ion (<ZEFF)")
     call neasyf_write(group_id, "zmai", zmai, &
-         description="Main ion species mass (c.f. H)")
+         long_name="Main ion species mass (c.f. H)")
 
   end subroutine write_input_parameters
 
