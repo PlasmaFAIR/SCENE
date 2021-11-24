@@ -332,6 +332,7 @@ contains
     call neasyf_write(ncid, "bppts", bppts, dim_ids=dimids2d, units='T')
 
     call write_input_parameters(ncid)
+    call write_0D_quantities(ncid)
 
     call neasyf_close(ncid)
     if (debug) print *, "*** SUCCESS writing NETCDF file "
@@ -544,5 +545,107 @@ contains
          long_name="Main ion species mass (c.f. H)")
 
   end subroutine write_input_parameters
+
+  !> Write some 0D quantities
+  !>
+  !> These are the equivalent to the variables written in [[getdata_mod:popcon]]
+  subroutine write_0D_quantities(file_id)
+    use param, only : avt, avti, avel, nebar, avio, zm, zeffav, area, beta, betap, betexp, &
+         bmfus, bmshine, conft, cur, betlim, hipb98y1, hipb98y2, ncon, mu0, negw, paux, &
+         pfus, petty, pi, r0, rcen, rli2, rli3, rodi, taue, tauh, totbs, totdi, totex, totex2, &
+         vol, sfac, totnb, totps
+    use profiles_mod, only : dense, densi, fprof
+    use neasyf, only: neasyf_write
+
+    !> NetCDF ID of parent file
+    integer, intent(in) :: file_id
+
+    call neasyf_write(file_id, 'volume_average_Te', avt, units='eV', &
+         long_name="Volume average electron temperature")
+    call neasyf_write(file_id, 'volume_average_Ti', avti, units='eV', &
+         long_name="Volume average electron temperature")
+
+    call neasyf_write(file_id, 'volume_average_Ne', avel, units='m^-3', &
+         long_name="Volume average electron density")
+    call neasyf_write(file_id, 'central_Ne', dense(0.0, 0), units='m^-3', &
+         long_name="Central electron density")
+    call neasyf_write(file_id, 'line_average_Ne', nebar*1.0d19, units='m^-3', &
+         long_name="Line average electron density")
+    call neasyf_write(file_id, 'N_gw', negw, &
+         long_name="Line average electron density normalised to Greenwald limit")
+
+    call neasyf_write(file_id, 'volume_average_Ni', avio*1.0d19, units='m^-3', &
+         long_name="Volume average ion density")
+    call neasyf_write(file_id, 'central_Ni', densi(0.0, 1, 0), units='m^-3', &
+         long_name="Central ion density")
+
+    call neasyf_write(file_id, 'Z_i', zm, long_name="Charge on main ions")
+    call neasyf_write(file_id, 'Zeff', zeffav, &
+         long_name="Volume average effective charge")
+
+    call neasyf_write(file_id, 'B tor (mag)', fprof(0.0,2)/r0, units='T')
+    call neasyf_write(file_id, 'B tor (geo)', fprof(0.0,2)/rcen, units='T')
+    call neasyf_write(file_id, 'Vac B tor (geo)', mu0*rodi/(2.*pi*rcen), units='T')
+
+    call neasyf_write(file_id, 'Tor. tot cur', cur/1000000., units='MA', &
+         long_name="Total toroidal current")
+    call neasyf_write(file_id, 'Tor. bs cur', totbs/1000000., units='MA', &
+         long_name="Bootstrap toroidal current")
+    call neasyf_write(file_id, 'Tor. nb cur', totnb/1000000., units='MA', &
+         long_name="Neutral beam toroidal current")
+    call neasyf_write(file_id, 'Tor. ps cur', totps/1000000., units='MA', &
+         long_name="Pfirsch-Schluter toroidal current")
+    call neasyf_write(file_id, 'Tor. dia cur', totdi/1000000., units='MA', &
+         long_name="Diamagnetic toroidal current")
+    call neasyf_write(file_id, 'Tor. ext cur', (totex+totex2)/1000000., units='MA', &
+         long_name="Externally driven toroidal current")
+
+    call neasyf_write(file_id, 'Rod Current', rodi/1000000., units='MA')
+
+    call neasyf_write(file_id, 'beta', beta, units='%', &
+         long_name="Plasma beta")
+    call neasyf_write(file_id, 'beta_norm', 3.5*betexp/betlim, &
+         long_name="Normalised beta")
+    call neasyf_write(file_id, 'beta_poloidal', betap, &
+         long_name="Poloidal beta")
+
+    call neasyf_write(file_id, 'q0', sfac(ncon), &
+         long_name="Safety factor at magnetic axis")
+    call neasyf_write(file_id, 'qa', sfac(1), &
+         long_name="Safety factor at edge")
+    call neasyf_write(file_id, 'qmin', minval(sfac,1), &
+         long_name="Minimum value of safety factor")
+
+    call neasyf_write(file_id, 'Pfus',pfus*1.0d-6*5, units='MW', &
+         long_name="Alpha heating power")
+    call neasyf_write(file_id, 'Beam fus',bmfus, units='MW', &
+         long_name="Beam fusion power")
+    call neasyf_write(file_id, 'Aux Pow',paux, units='MW', &
+         long_name="Auxiallary heating power")
+    call neasyf_write(file_id, 'NBP eff.', bmfus/(paux))
+    call neasyf_write(file_id, 'NBCD eff.', totnb/(1.0d6*paux))
+    call neasyf_write(file_id, 'Shine through', bmshine, units='MW')
+    call neasyf_write(file_id, 'Q', ((pfus*1.0d-6*5)+bmfus)/paux)
+
+    call neasyf_write(file_id, 'H_IPB98(y1)', hipb98y1, &
+         long_name="Confinement time relative to scaling laws")
+    call neasyf_write(file_id, 'H_IPB98(y2)', hipb98y2, &
+         long_name="Confinement time relative to scaling laws")
+    call neasyf_write(file_id, 'H_Petty08',   petty)
+    call neasyf_write(file_id, 'Tau_e', taue*1.0e3, units='ms', &
+         long_name="Energy confinement time")
+    call neasyf_write(file_id, 'Tau_h', tauh, &
+         long_name="Alpha confinement time")
+
+    call neasyf_write(file_id, 'Area', area, units='m^2', &
+         long_name="Plasma cross-sectional area")
+    call neasyf_write(file_id, 'Volume', vol, units='m^3', &
+         long_name="Plasma volume")
+    call neasyf_write(file_id, 'li(3)', rli3, &
+         long_name="Internal inductance")
+    call neasyf_write(file_id, 'li(2)', rli2, &
+         long_name="Internal inductance")
+    call neasyf_write(file_id, 'Energy', conft/1.0e6, units='MJ')
+  end subroutine write_0D_quantities
 
 end module netcdf_interface
