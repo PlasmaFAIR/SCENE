@@ -327,8 +327,10 @@ contains
 
     if (debug) print *, 'Defined TGLF variables'
 
-    call neasyf_write(ncid, "rpts", rpts, dim_ids=dimids2d, units='m')
-    call neasyf_write(ncid, "zpts", zpts, dim_ids=dimids2d, units='m')
+    call neasyf_write(ncid, "rpts", rpts, dim_ids=dimids2d, units='m', &
+         long_name="Flux surface R points")
+    call neasyf_write(ncid, "zpts", zpts, dim_ids=dimids2d, units='m', &
+         long_name="Flux surface Z points")
     call neasyf_write(ncid, "bppts", bppts, dim_ids=dimids2d, units='T')
 
     call write_input_parameters(ncid)
