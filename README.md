@@ -24,6 +24,7 @@ cmake . -B build
 # Compile SCENE
 cmake --build build
 ```
+This will create a `scene` executable under `build/bin/`.
 
 You can run the tests like so:
 
@@ -55,19 +56,16 @@ cmake . -B build -DnetCDFFortran_ROOT=/path/to/netcdf/fortran
 
 ### Using GHOST
 
-To compile SCENE with GHOST, you either need to tell CMake about the
-location of GHOST, or you can tell CMake to download and build it
-automatically:
+To compile SCENE with GHOST, you can either let CMake download and
+build it automatically, or give the location of an existing installation:
 
 ```bash
 # Configure the build, telling CMake to download GHOST
-cmake . -B build -DSCENE_DOWNLOAD_GHOST=ON
+cmake . -B build -DSCENE_USE_GHOST=ON
 # OR
 # Configure the build, telling CMake where to find GHOST
-cmake . -B build -DGHOST_ROOT=/path/to/ghost
+cmake . -B build -DSCENE_USE_GHOST=ON -DGHOST_ROOT=/path/to/ghost
 ```
-
-This will create a `scene` executable under `build/bin/`.
 
 [ghost]: https://github.com/ZedThree/GHOST
 [neasyf]: https://github.com/PlasmaFAIR/neasy-f
