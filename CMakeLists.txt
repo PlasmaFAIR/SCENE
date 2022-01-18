@@ -9,6 +9,9 @@ project(SCENE
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
+##################################################
+# Build config options
+
 include(CMakeDependentOption)
 
 option(SCENE_ENABLE_DOUBLE "Promotes precisions of real and complex to double" ON)
@@ -18,7 +21,15 @@ cmake_dependent_option(SCENE_DOWNLOAD_GHOST "Download and build GHOST as part of
 option(SCENE_USE_NBEAMS "Has modified version of NBEAMS with SCENE support" OFF)
 option(SCENE_DOWNLOAD_NEASYF "Download and build neasy-f as part of SCENE build" ON)
 option(SCENE_DOWNLOAD_FUUID4 "Download and build fuuid4 as part of SCENE build" ON)
+option(SCENE_UPDATE_GIT_SUBMODULE "Check submodules are up-to-date during build" ON)
 
+##################################################
+# Targets
+
+include(UpdateSubmodules)
+scene_update_submodules()
+
+add_subdirectory(externals/fortran-git-version)
 add_subdirectory(lib/dierckx)
 
 add_subdirectory(src)
