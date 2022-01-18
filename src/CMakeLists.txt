@@ -7,6 +7,7 @@ set(SCENE_SOURCES
   balpar.f90
   bandat.f90
   bandit.f90
+  build_config.F90
   caxe_out.f90
   chease_dat.f90
   coldat.f90
@@ -50,6 +51,11 @@ set(SCENE_SOURCES
 target_sources(scene PRIVATE ${SCENE_SOURCES})
 set_target_properties(scene PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+set_source_files_properties(build_config.F90 PROPERTIES
+  Fortran_PREPROCESS ON
+  COMPILE_DEFINITIONS "SCENE_ENABLE_DOUBLE=${SCENE_ENABLE_DOUBLE};SCENE_USE_GHOST=${SCENE_USE_GHOST};SCENE_USE_NBEAMS=${SCENE_USE_NBEAMS}"
+  )
 
 ##################################################
 # Dependencies
