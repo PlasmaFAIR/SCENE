@@ -41,6 +41,8 @@ program scene
   logical :: debug
   type(header_type) :: header
 
+  call parse_command_line()
+
   header = header_type()
 
   debug = .false.
@@ -230,4 +232,47 @@ program scene
 
   call error_msg('Clean exit', 0)
 
+contains
+
+  !> Parse some basic command line arguments. Currently just 'version' and 'help'.
+  !>
+  !> This should be called before anything else, but especially before initialising MPI.
+  subroutine parse_command_line()
+    use git_version, only: get_git_version
+    use build_config, only : formatted_build_config
+    integer :: arg_count, arg_n
+    integer :: arg_length
+    character(len=:), allocatable :: argument
+    character(len=*), parameter :: nl = new_line('a')
+    character(len=*), parameter :: usage = &
+         "scene [--version|-v] [--help|-h] [--build-config]" // nl // nl // &
+         "SCENE is a tokamak equilibrium solver which can generate equilibria in a variety of file formats." &
+         // nl // nl // &
+         "  -h, --help     Print this message" // nl // &
+         "  -v, --version  Print the SCENE version" // nl // &
+         "  --build-config Print the current build configuration"
+
+    arg_count = command_argument_count()
+
+    do arg_n = 0, arg_count
+      call get_command_argument(arg_n, length=arg_length)
+      if (allocated(argument)) deallocate(argument)
+      allocate(character(len=arg_length)::argument)
+      call get_command_argument(arg_n, argument)
+
+      if ((argument == "--help") .or. (argument == "-h")) then
+        write(*, '(a)') usage
+        stop
+      else if ((argument == "--version") .or. (argument == "-v")) then
+        write(*, '("SCENE version ", a)') get_git_version()
+        stop
+      else if (argument == "--build-config") then
+        write(*, '(a)') formatted_build_config()
+        stop
+      else if (argument(1:1) == "-") then
+        write(*, '(a)') "Error: Unrecognised argument '" // argument // "'. Usage is:" // nl // nl // usage
+        stop 2
+      end if
+    end do
+  end subroutine parse_command_line  
 end program scene
