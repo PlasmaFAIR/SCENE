@@ -91,7 +91,7 @@ else()
 endif()
 target_link_libraries(scene PRIVATE fuuid4::fuuid4)
 
-if (SCENE_HAS_NBEAMS)
+if (SCENE_USE_NBEAMS)
   find_package(nbeams REQUIRED)
   target_link_libraries(scene PRIVATE nbeams::nbeams)
   target_sources(scene PRIVATE nbicur.f90)
