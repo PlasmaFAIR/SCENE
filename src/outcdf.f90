@@ -224,6 +224,7 @@ contains
     call neasyf_metadata(ncid, &
                          software_name="SCENE", &
                          software_version=get_git_version(), &
+                         title=title, &
                          file_id=header%run_uuid, &
                          date_created=header%date_time)
 
@@ -351,7 +352,7 @@ contains
                      tpoi, ti0, tia, tiped, tiedg, xitb, cur, paux, bpol, pfac, &
                      betan, dil, rodi, imat, ifast, scl, omega, frac, zm, zmai, &
                      icontour, imp, itot, fast, neo, nco, ncon, npts, nouter, &
-                     ninner, npass, errit, errffd, icont, nbi
+                     ninner, npass, errit, errffd, icont, nbi, nimp
     use balpar, only: nbal, ibal, nturns, nchi0, nchi, chi0val, lamges
     use neasyf, only: neasyf_write, neasyf_error
     use netcdf, only: nf90_def_grp
@@ -468,6 +469,8 @@ contains
          long_name="Edge main ion density fraction for imp==1")
     call neasyf_write(group_id, "ninn", ninner, &
          long_name="Number of inner iterations in Grad-Shafranov solver")
+    call neasyf_write(group_id, "nimp", nimp, &
+         long_name="Number of impurity species")
     call neasyf_write(group_id, "nout", nouter, &
          long_name="Number of iterations in Grad-Shafranov solver")
     call neasyf_write(group_id, "npas", npass, &
@@ -546,7 +549,54 @@ contains
     call neasyf_write(group_id, "zmai", zmai, &
          long_name="Main ion species mass (c.f. H)")
 
+    call write_impurity_input_parameters(group_id)
+
   end subroutine write_input_parameters
+
+  subroutine write_impurity_input_parameters(input_group_id)
+    use param, only: iz, zmas, ztpow, zt0, zta, ztped, ztedg, znpow, zn0, zna, znped, znedg, nimp
+    use neasyf, only: neasyf_write, neasyf_error
+    use netcdf, only: nf90_def_grp
+    !> NetCDF ID of the input parameter group
+    integer, intent(in) :: input_group_id
+
+    ! NetCDF ID of the parameter group
+    integer :: impurity_group_id
+    character(len=11) :: impurity_group_name
+    integer :: impurity
+
+    do impurity = 2, nimp + 1
+      write(impurity_group_name, '("impurity_", i2.2)') impurity - 1
+      call neasyf_error(nf90_def_grp(input_group_id, impurity_group_name, impurity_group_id), &
+                        ncid=input_group_id, message="creating inputs group")
+
+      call neasyf_write(impurity_group_id, "Z", iz(impurity), &
+                        long_name="Impurity charge")
+      call neasyf_write(impurity_group_id, "M", zmas(impurity), &
+                        long_name="Impurity mass", units="Mp")
+      call neasyf_write(impurity_group_id, "at", ztpow(impurity), &
+                        long_name="Impurity temperature profile")
+      call neasyf_write(impurity_group_id, "T0", zt0(impurity), &
+                        long_name="Central impurity temperature")
+      call neasyf_write(impurity_group_id, "Ta", zta(impurity), &
+                        long_name="Edge impurity temperature")
+      call neasyf_write(impurity_group_id, "Tped", ztped(impurity), &
+                        long_name="Pedestal impurity temperature")
+      call neasyf_write(impurity_group_id, "Tedg", ztedg(impurity), &
+                        long_name="Pedestal impurity temperature gradient")
+      call neasyf_write(impurity_group_id, "an", znpow(impurity), &
+                        long_name="Impurity density profile")
+      call neasyf_write(impurity_group_id, "n0", zn0(impurity), &
+                        long_name="Central impurity density")
+      call neasyf_write(impurity_group_id, "na", zna(impurity), &
+                        long_name="Edge impurity density")
+      call neasyf_write(impurity_group_id, "nped", znped(impurity), &
+                        long_name="Pedestal impurity density")
+      call neasyf_write(impurity_group_id, "nedg", znedg(impurity), &
+                        long_name="Pedestal impurity density gradient")
+    end do
+
+  end subroutine write_impurity_input_parameters
 
   !> Write some 0D quantities
   !>
