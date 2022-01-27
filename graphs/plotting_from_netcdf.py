@@ -6,34 +6,42 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import itertools
 import re
+from typing import List
+import textwrap
 
 
-def plot_flux_surface(df: xr.Dataset, inputs: xr.Dataset, step=None):
+def plot_flux_surface(
+    df: xr.Dataset, inputs: xr.Dataset, impurities: List[xr.Dataset], step=None
+):
     if step is None:
         step = df["rpts"].shape[1] // 20
 
-    grid_spec = plt.GridSpec(2, 2, height_ratios=(1, 9))
+    grid_spec = plt.GridSpec(2, 3, height_ratios=(1, 9))
     fig = plt.figure(figsize=(11.69, 8.27))
     title_ax = fig.add_subplot(grid_spec[0, :])
-    ax0 = fig.add_subplot(grid_spec[1, 0])
+    ax0 = fig.add_subplot(grid_spec[1:, 0])
     ax1 = fig.add_subplot(grid_spec[1, 1])
+    ax2 = fig.add_subplot(grid_spec[1, 2])
 
     title_ax.text(
+        0.5, 0.75, f"{df.title}", fontsize="xx-large", horizontalalignment="center"
+    )
+    title_ax.text(
         0.5,
-        0.75,
+        0.5,
         f"{df.software_name} {df.software_version}",
-        fontsize="xx-large",
         horizontalalignment="center",
     )
     title_ax.text(
         0.5,
-        0.25,
+        0.0,
         f"Created:{df.date_created}\nRun ID: {df.id}",
         horizontalalignment="center",
     )
     title_ax.axis("off")
 
     ax0.plot(df["rpts"][:, ::step], df["zpts"][:, ::step], color="black", linewidth=1)
+    ax0.plot(df["rpts"][:, 0], df["zpts"][:, 0], color="black", linewidth=4)
 
     ax0.axis("equal")
 
@@ -44,15 +52,39 @@ def plot_flux_surface(df: xr.Dataset, inputs: xr.Dataset, step=None):
     ax1.set_title("Input parameters")
     ax1.axis("off")
 
-    all_inputs = ", ".join(
-        [f"{key} = {value.data:.5G}" for key, value in inputs.data_vars.items()]
+    all_inputs = "  ".join(
+        [f"{key}\xa0=\xa0{value.data:.5G}" for key, value in inputs.data_vars.items()]
     )
-    columned_inputs = re.sub(
-        ", ",
-        lambda m, c=itertools.count(1): m.group() if next(c) % 3 else "\n",
-        all_inputs,
+    columned_inputs = textwrap.fill(all_inputs, width=35)
+    ax1.text(0.05, 1, columned_inputs, verticalalignment="top")
+
+    ax2.set_title("Impurity information")
+    ax2.axis("off")
+
+    def format_impurity(impurity) -> str:
+        def fmt(attr: str) -> str:
+            return f"{impurity[attr].data:.5G}"
+
+        def fmt_key(attr: str) -> str:
+            return f"{attr} = {fmt(attr)}"
+
+        text = []
+        text.append(f"Z = {fmt('Z')} M/Mp = {fmt('M')}")
+        text.append(
+            "  ".join([fmt_key(attr) for attr in ["at", "T0", "Ta", "Tped", "Tedg"]])
+        )
+        text.append(
+            "  ".join([fmt_key(attr) for attr in ["an", "n0", "na", "nped", "nedg"]])
+        )
+        return "\n".join(text)
+
+    columned_impurities = "\n\n".join(
+        [format_impurity(impurity) for impurity in impurities]
     )
-    ax1.text(0.05, 0.5, columned_inputs, verticalalignment="center")
+    ax2.text(
+        0.05, 1, f"Number of impurities = {inputs.nimp.data}", verticalalignment="top"
+    )
+    ax2.text(0.05, 0.95, columned_impurities, verticalalignment="top")
 
     fig.tight_layout()
     return fig, (title_ax, ax0, ax1)
@@ -113,10 +145,15 @@ if __name__ == "__main__":
     df = xr.open_dataset(args.filename)
     inputs = xr.open_dataset(args.filename, group="inputs")
 
-    fig_fluxsurface, _ = plot_flux_surface(df, inputs)
+    impurities = [
+        xr.open_dataset(args.filename, group=f"inputs/impurity_{i:02d}")
+        for i in range(inputs.nimp.data)
+    ]
 
+    fig_fluxsurface, _ = plot_flux_surface(df, inputs, impurities)
+
+    fig_profiles, _ = profiles(df)
     plt.show()
-    # fig_profiles, _ = profiles(df)
 
     if args.output is not None:
         with PdfPages(args.output) as pdf:
