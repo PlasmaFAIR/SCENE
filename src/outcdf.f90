@@ -619,7 +619,7 @@ contains
 
     call neasyf_write(file_id, 'volume_average_Ne', avel, units='m^-3', &
          long_name="Volume average electron density")
-    call neasyf_write(file_id, 'central_Ne', dense(0.0, 0), units='m^-3', &
+    call neasyf_write(file_id, 'central_Ne', dense(0.0d0, 0), units='m^-3', &
          long_name="Central electron density")
     call neasyf_write(file_id, 'line_average_Ne', nebar*1.0d19, units='m^-3', &
          long_name="Line average electron density")
@@ -628,15 +628,15 @@ contains
 
     call neasyf_write(file_id, 'volume_average_Ni', avio*1.0d19, units='m^-3', &
          long_name="Volume average ion density")
-    call neasyf_write(file_id, 'central_Ni', densi(0.0, 1, 0), units='m^-3', &
+    call neasyf_write(file_id, 'central_Ni', densi(0.0d0, 1, 0), units='m^-3', &
          long_name="Central ion density")
 
     call neasyf_write(file_id, 'Z_i', zm, long_name="Charge on main ions")
     call neasyf_write(file_id, 'Zeff', zeffav, &
          long_name="Volume average effective charge")
 
-    call neasyf_write(file_id, 'B tor (mag)', fprof(0.0,2)/r0, units='T')
-    call neasyf_write(file_id, 'B tor (geo)', fprof(0.0,2)/rcen, units='T')
+    call neasyf_write(file_id, 'B tor (mag)', fprof(0.0d0, 2)/r0, units='T')
+    call neasyf_write(file_id, 'B tor (geo)', fprof(0.0d0, 2)/rcen, units='T')
     call neasyf_write(file_id, 'Vac B tor (geo)', mu0*rodi/(2.*pi*rcen), units='T')
 
     call neasyf_write(file_id, 'Tor. tot cur', cur/1000000., units='MA', &
