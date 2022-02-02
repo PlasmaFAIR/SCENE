@@ -336,6 +336,7 @@ contains
 
     call write_input_parameters(ncid)
     call write_0D_quantities(ncid)
+    call write_major_radius_profiles(ncid, dimidsR)
 
     call neasyf_close(ncid)
     if (debug) print *, "*** SUCCESS writing NETCDF file "
@@ -699,5 +700,96 @@ contains
          long_name="Internal inductance")
     call neasyf_write(file_id, 'Energy', conft/1.0e6, units='MJ')
   end subroutine write_0D_quantities
+
+  subroutine write_major_radius_profiles(file_id, R_dims_id)
+    use, intrinsic :: iso_fortran_env, only: real64
+    use param, only : ixout, nr, nsym, u, umax, r, psiv, sfac, tnue
+    use profiles_mod, only : fprof, tempe, tempi, press, densi, dense
+    use equilibrium, only : bp
+    use neasyf, only: neasyf_dim, neasyf_write, neasyf_error
+    use netcdf, only: nf90_def_grp
+    implicit none
+
+    !> NetCDF ID of parent file
+    integer, intent(in) :: file_id
+
+    ! NetCDF ID of the parameter group
+    integer :: group_id
+    ! NetCDF ID of R dimension
+    integer, intent(in), dimension(1) :: R_dims_id
+
+    integer :: i, con
+
+    real(real64), dimension(nr) :: B_tor, B_tot, n_e, n_i, B_pol, safety_factor, T_e, T_i, P_e, psi_R, nu_star_e
+    real(real64) :: ratio, psi, rr
+
+    call neasyf_error(nf90_def_grp(file_id, "R_profiles", group_id), &
+         ncid=file_id, message="creating R_profiles group")
+
+    do i = 1, nr
+      if (ixout(i,nsym) .eq. 1) then
+        !If point is inside boundary
+        psi = umax-u(i,nsym)
+        rr = r(i)
+
+        con = nearest_psi(psi)
+        ratio = (psi-psiv(con))/(psiv(con+1) - psiv(con) )
+
+        safety_factor(i) =  interp_surface_to_mesh(sfac, ratio, con)
+        nu_star_e(i) = interp_surface_to_mesh(tnue, ratio, con)
+      else if (ixout(i,nsym) .eq. -1) then
+        !If point is on plasma boundary
+        psi = umax
+        safety_factor(i) = sfac(1)
+        nu_star_e(i) = tnue(1)
+
+        !Interpolate onto actual flux surface of bdry
+        ratio = u(i, nsym) / (u(i, nsym) - u(i-1, nsym))
+        rr = r(i) - ratio*(r(i) - r(i-1))
+      end if
+
+      B_tor(i) = fprof(psi,2)/rr
+      B_pol(i) = bp(rr, 0.d0)
+      B_tot(i) = sqrt((B_tor(i)**2) + (B_pol(i)**2))
+      n_e(i) = dense(psi, 0)
+      n_i(i) = densi(psi, 1, 0)
+      T_e(i) = tempe(psi, 0) / 1e3
+      T_i(i) = tempi(psi, 1, 0) / 1e3
+      P_e(i) = press(psi, 0)
+      psi_R(i) = psi
+    end do
+
+    call neasyf_write(group_id, "B_T", B_tor, dim_ids=R_dims_id, units="T", long_name="Toroidal magnetic field")
+    call neasyf_write(group_id, "B_P", B_pol, dim_ids=R_dims_id, units="T", long_name="Poloidal magnetic field")
+    call neasyf_write(group_id, "B", B_tot, dim_ids=R_dims_id, units="T", long_name="Total magnetic field")
+    call neasyf_write(group_id, "n_e", n_e, dim_ids=R_dims_id, units="m^-3", long_name="Electron density")
+    call neasyf_write(group_id, "n_i", n_i, dim_ids=R_dims_id, units="m^-3", long_name="Ion density")
+    call neasyf_write(group_id, "T_e", T_e, dim_ids=R_dims_id, units="keV", long_name="Electron temperature")
+    call neasyf_write(group_id, "T_i", T_i, dim_ids=R_dims_id, units="keV", long_name="Ion temperature")
+    call neasyf_write(group_id, "P_e", P_e, dim_ids=R_dims_id, long_name="Pressure")
+    call neasyf_write(group_id, "nu_star_e", nu_star_e, dim_ids=R_dims_id, long_name="Electron collisionality")
+    call neasyf_write(group_id, "q", safety_factor, dim_ids=R_dims_id, long_name="Safety factor")
+
+  contains
+    !> Find closest flux surface
+    integer function nearest_psi(psi)
+      use param, only: psiv, ncon
+      real(real64), intent(in) :: psi
+      integer :: j
+      nearest_psi = 1
+      do j = 1, ncon - 1
+        if (psiv(j) < psi) return
+        nearest_psi = j
+      end do
+    end function nearest_psi
+
+    !> Linear interpolation from flux surface grid to mesh grid
+    real function interp_surface_to_mesh(field, factor, surface)
+      real, dimension(:), intent(in) :: field
+      real, intent(in) :: factor
+      integer, intent(in) :: surface
+      interp_surface_to_mesh = field(surface) + (factor * (field(surface + 1) - field(surface)))
+    end function interp_surface_to_mesh
+  end subroutine write_major_radius_profiles
 
 end module netcdf_interface
