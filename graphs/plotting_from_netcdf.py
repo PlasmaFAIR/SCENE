@@ -4,10 +4,11 @@ import argparse
 import xarray as xr
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
-import itertools
-import re
 from typing import List
 import textwrap
+
+
+A4_SIZE = (11.69, 8.27)
 
 
 def plot_flux_surface(
@@ -17,7 +18,7 @@ def plot_flux_surface(
         step = df["rpts"].shape[1] // 20
 
     grid_spec = plt.GridSpec(2, 3, height_ratios=(1, 9))
-    fig = plt.figure(figsize=(11.69, 8.27))
+    fig = plt.figure(figsize=A4_SIZE)
     title_ax = fig.add_subplot(grid_spec[0, :])
     ax0 = fig.add_subplot(grid_spec[1:, 0])
     ax1 = fig.add_subplot(grid_spec[1, 1])
@@ -35,7 +36,7 @@ def plot_flux_surface(
     title_ax.text(
         0.5,
         0.0,
-        f"Created:{df.date_created}\nRun ID: {df.id}",
+        f"Created: {df.date_created}\nRun ID: {df.id}",
         horizontalalignment="center",
     )
     title_ax.axis("off")
@@ -90,45 +91,75 @@ def plot_flux_surface(
     return fig, (title_ax, ax0, ax1)
 
 
-def profiles(df: xr.Dataset):
+def profiles(df: xr.Dataset, min_R: float, max_R: float):
 
-    fig, ax = plt.subplots(ncols=2, nrows=2)
+    fig, ax = plt.subplots(ncols=2, nrows=2, figsize=A4_SIZE)
 
-    ax[0, 0].plot(df.R, df.Ne, "r", label="$n_e$", linewidth=2)
-    ax[0, 0].plot(df.R, df.Ni, "b", label="$n_i$", linewidth=2)
-    ax[0, 0].legend(loc=1)
-    ax[0, 0].xlabel("R (m)", fontsize=20)
-    ax[0, 0].ylabel("Density $(m^{-3})$", fontsize=20)
-    ax[0, 0].title("Electron density", fontsize=24)
-    ax[0, 0].xticks(size=20)
-    ax[0, 0].yticks(size=20)
+    density_ax, field_ax, safety_ax, temperature_ax = ax.flat
 
-    ax[0, 1].plot(df.R, df.B_t, label=r"$B_\phi$")
-    ax[0, 1].plot(df.R, df.B_p, label=r"$B_\theta$")
-    ax[0, 1].plot(df.R, df.B, label="$B$")
-    ax[0, 1].xlabel("R (m)")
-    ax[0, 1].ylabel("Field (T)")
-    ax[0, 1].title("Magnetic fields")
-    ax[0, 1].legend(loc=1)
+    colour_cycle = [c for c in plt.rcParams["axes.prop_cycle"]]
+    first_colour = colour_cycle[0]["color"]
+    second_colour = colour_cycle[1]["color"]
 
-    ax[1, 0].plot(df.R, df.q)
-    ax[1, 0].title("Safety Factor")
-    ax[1, 0].xlabel("R (m) ")
-    ax[1, 0].ylabel("Safety factor")
+    density_ax.plot(df.R, df.n_e, label="$n_e$", linewidth=2)
+    density_ax.plot(df.R, df.n_i, label="$n_i$", linewidth=2)
+    density_ax.legend(loc=1)
+    density_ax.set_xlabel("R [m]")
+    density_ax.set_ylabel("Density $[m^{-3}]$")
+    density_ax.set_title("Electron density")
 
-    ax[0, 1].plot(df.R, df.T, "r--", label="$Temp$", linewidth=2)
-    ax[0, 1].set_xlabel("R (m)", fontsize=20)
-    ax[0, 1].set_ylabel("Temp (keV)", fontsize=20)
-    ax[0, 1].tick_params("y", colors="r")
-    ax[0, 1].xticks(size=20)
-    ax[0, 1].yticks(size=20)
-    ax2 = ax[0, 1].twinx()
-    ax2.plot(df.R, df.p, "b.", label="$Pressure$")
-    ax2.set_ylabel("Pressure", color="b")
-    ax2.tick_params("y", colors="b")
-    ax[0, 1].title("Electron Temperature", fontsize=24)
+    field_ax.plot(df.R, df.B_T, label=r"$B_\phi$", linewidth=2)
+    field_ax.plot(df.R, df.B_P, label=r"$B_\theta$", linewidth=2)
+    field_ax.plot(df.R, df.B, label="$B$")
+    field_ax.set_xlabel("R [m]")
+    field_ax.set_ylabel("Field [T]")
+    field_ax.set_title("Magnetic fields")
+    field_ax.legend(loc=1)
 
-    return fig, ax
+    safety_ax.plot(df.R, df.q, label="q", linewidth=2, color=first_colour)
+    safety_ax.set_title("Safety Factor")
+    safety_ax.set_xlabel("R [m]")
+    safety_ax.set_ylabel("Safety factor", color=first_colour)
+    safety_ax.tick_params("y", colors=first_colour)
+
+    collisions_ax = safety_ax.twinx()
+    collisions_ax.plot(
+        df.R, df.nu_star_e, "--", label=r"$\nu_{*e}$", linewidth=2, color=second_colour
+    )
+    collisions_ax.set_ylabel("Collisionality", color=second_colour)
+    collisions_ax.tick_params("y", colors=second_colour)
+
+    lines = safety_ax.get_lines() + collisions_ax.get_lines()
+    labels = [line.get_label() for line in lines]
+    collisions_ax.legend(lines, labels)
+
+    temperature_ax.plot(
+        df.R, df.T_e, "--", label="$T_e$", linewidth=2, color=first_colour
+    )
+    temperature_ax.plot(
+        df.R, df.T_i, ".", label="$T_i$", linewidth=2, color=first_colour
+    )
+    temperature_ax.set_xlabel("R [m]")
+    temperature_ax.set_ylabel("Temperature [keV]", color=first_colour)
+    temperature_ax.tick_params("y", colors=first_colour)
+    temperature_ax.set_title("Electron temperature and pressure")
+
+    pressure_ax = temperature_ax.twinx()
+    pressure_ax.plot(df.R, df.P_e, "-.", label="Pressure", color=second_colour)
+    pressure_ax.set_ylabel("Pressure", color=second_colour)
+    pressure_ax.tick_params("y", colors=second_colour)
+
+    lines = temperature_ax.get_lines() + pressure_ax.get_lines()
+    labels = [line.get_label() for line in lines]
+    pressure_ax.legend(lines, labels)
+
+    for axis in list(ax.flat) + [pressure_ax]:
+        axis.set_xlim(min_R, max_R)
+        axis.set_ylim(bottom=0)
+
+    fig.tight_layout()
+
+    return fig, (ax, pressure_ax)
 
 
 if __name__ == "__main__":
@@ -147,15 +178,18 @@ if __name__ == "__main__":
 
     impurities = [
         xr.open_dataset(args.filename, group=f"inputs/impurity_{i:02d}")
-        for i in range(inputs.nimp.data)
+        for i in range(1, inputs.nimp.data + 1)
     ]
+
+    r_profiles = xr.open_dataset(args.filename, group="R_profiles")
+    r_profiles["R"] = df.R
 
     fig_fluxsurface, _ = plot_flux_surface(df, inputs, impurities)
 
-    fig_profiles, _ = profiles(df)
+    fig_profiles, _ = profiles(r_profiles, df.rpts[:, :-1].min(), df.rpts.max())
     plt.show()
 
     if args.output is not None:
         with PdfPages(args.output) as pdf:
             pdf.savefig(fig_fluxsurface)
-            # pdf.savefig(fig_profiles)
+            pdf.savefig(fig_profiles)
