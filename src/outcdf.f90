@@ -640,7 +640,8 @@ contains
          long_name='Toroidal magnetic field (geometric axis)')
     call neasyf_write(file_id, 'B tor (geo)', fprof(0.0d0, 2)/rcen, units='T', &
          long_name='Toroidal magnetic field (geometric axis)')
-    call neasyf_write(file_id, 'Vac B tor (geo)', mu0*rodi/(2.*pi*rcen), units='T')
+    call neasyf_write(file_id, 'Vac B tor (geo)', mu0*rodi/(2.*pi*rcen), units='T', &
+         long_name='Vacuum magnetic field (geometric axis)')
 
     call neasyf_write(file_id, 'Tor. tot cur', cur/1000000., units='MA', &
          long_name="Total toroidal current")

@@ -6,9 +6,20 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from typing import List
 import textwrap
+import re
 
 
 A4_SIZE = (11.69, 8.27)
+EXPONENTS_RE = re.compile(r"\^?(-?[0-9]+)")
+
+
+def format_scalar(da: xr.DataArray) -> str:
+    """Format a scalar DataArray as 'name = value [units]'"""
+    name = da.attrs.get("long_name", da.name)
+    units = da.attrs.get("units", "")
+    units_latex = " " + EXPONENTS_RE.sub(r"$^{\1}$", units)
+
+    return f"{name} = {da.data:.5G}{units_latex}"
 
 
 def plot_scene_title(title_ax: plt.Axes, df: xr.Dataset):
@@ -123,7 +134,7 @@ def profiles(df: xr.Dataset, profiles: xr.Dataset, inputs: xr.Dataset):
     density_ax.plot(profiles.R, profiles.n_i, label="$n_i$", linewidth=2)
     density_ax.legend(loc=1)
     density_ax.set_xlabel("R [m]")
-    density_ax.set_ylabel("Density $[m^{-3}]$")
+    density_ax.set_ylabel("Density [m^${-3}$]")
     density_ax.set_title("Electron density")
 
     field_ax.plot(profiles.R, profiles.B_T, label=r"$B_\phi$", linewidth=2)
@@ -213,13 +224,18 @@ def profiles(df: xr.Dataset, profiles: xr.Dataset, inputs: xr.Dataset):
         "Zeff",
         "B tor (mag)",
         "B tor (geo)",
+        "Vac B tor (geo)",
+        "Tor. bs cur",
+        "Tor. tot cur",
+        "beta",
+        "beta_norm",
+        "beta_poloidal",
+        "q0",
+        "qa",
     ]
 
-    def fmt_param(param):
-        return f"{param.long_name} = {param.data:.5G} {param.units}"
-
-    formatted_params = [fmt_param(inputs[param]) for param in input_params] + [
-        fmt_param(df[param]) for param in output_params
+    formatted_params = [format_scalar(inputs[param]) for param in input_params] + [
+        format_scalar(df[param]) for param in output_params
     ]
 
     text = "\n".join(formatted_params)
