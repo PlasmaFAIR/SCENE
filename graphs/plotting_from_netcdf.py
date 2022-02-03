@@ -246,6 +246,70 @@ def profiles(df: xr.Dataset, profiles: xr.Dataset, inputs: xr.Dataset):
     return fig, all_axes
 
 
+def plot_currents(df: xr.Dataset):
+
+    grid_spec = plt.GridSpec(3, 3, height_ratios=(1, 5, 5))
+    fig = plt.figure(figsize=A4_SIZE)
+    title_ax = fig.add_subplot(grid_spec[0, :])
+    title_ax = plot_scene_title(title_ax, df)
+
+    ps_ax = fig.add_subplot(grid_spec[1, 0])
+    tot_ax = fig.add_subplot(grid_spec[1, 1])
+    bs_ax = fig.add_subplot(grid_spec[2, 0])
+    dia_ax = fig.add_subplot(grid_spec[2, 1])
+
+    df.JPS.plot(ax=ps_ax, label=r"$J_{ps}$")
+    df.JBS.plot(ax=bs_ax, label=r"$J_{bs}$")
+    df.JDIA.plot(ax=dia_ax, label=r"$J_{dia}$")
+
+    df.JTOT.plot(ax=tot_ax, label="Total J")
+    df.JEXT.plot(ax=tot_ax, label="External J")
+    df.JEXT2.plot(ax=tot_ax, label="Aux J")
+    tot_ax.set_ylabel(r"$J_\phi$ [kA/m$^-2$]")
+
+    all_axes = [ps_ax, tot_ax, bs_ax, dia_ax]
+
+    min_R = df.rpts[:, :-1].min()
+    max_R = df.rpts.max()
+    for axes in all_axes:
+        axes.set_xlim(min_R, max_R)
+        axes.legend()
+
+    parameters_ax = fig.add_subplot(grid_spec[1:, 2])
+    parameters_ax.set_title("Parameters")
+    parameters_ax.axis("off")
+
+    parameters = [
+        "Tor. tot cur",
+        "Tor. bs cur",
+        "Tor. nb cur",
+        "Tor. ps cur",
+        "Tor. dia cur",
+        "Tor. ext cur",
+        "Pfus",
+        "Beam fus",
+        "Aux Pow",
+        "Q",
+        "H_IPB98(y1)",
+        "H_IPB98(y2)",
+        "Area",
+        "Volume",
+        "li(3)",
+        "li(2)",
+        "Energy",
+        "Tau_e",
+        "N_gw",
+    ]
+    formatted_params = [format_scalar(df[param]) for param in parameters]
+
+    text = "\n".join(formatted_params)
+    parameters_ax.text(0.0, 1.0, text, verticalalignment="top")
+
+    fig.tight_layout()
+
+    return fig, all_axes
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         "plot_scene", description="Plot various quantities from SCENE"
@@ -269,11 +333,13 @@ if __name__ == "__main__":
     r_profiles["R"] = df.R
 
     fig_fluxsurface, _ = plot_flux_surface(df, inputs, impurities)
-
     fig_profiles, _ = profiles(df, r_profiles, inputs)
+    fig_currents, _ = plot_currents(df)
+
     plt.show()
 
     if args.output is not None:
         with PdfPages(args.output) as pdf:
             pdf.savefig(fig_fluxsurface)
             pdf.savefig(fig_profiles)
+            pdf.savefig(fig_currents)

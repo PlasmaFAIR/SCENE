@@ -285,13 +285,20 @@ contains
     call neasyf_write(ncid, "Pp", pp, dim_ids=dimidsrho)
     call neasyf_write(ncid, "dPsidrho", dPsidrhos, dim_ids=dimidsrho, units='Wb/m3')
 
-    call neasyf_write(ncid, "JTOT", gradj(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2")
-    call neasyf_write(ncid, "JEXT", exph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2")
-    call neasyf_write(ncid, "JEXT2", exph2(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2")
-    call neasyf_write(ncid, "JBS", bsph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2")
-    call neasyf_write(ncid, "JDIA", diph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2")
-    call neasyf_write(ncid, "JPS", psph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2")
-    call neasyf_write(ncid, "JNBI", nbph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2")
+    call neasyf_write(ncid, "JTOT", gradj(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2", &
+         long_name="Toroidal current")
+    call neasyf_write(ncid, "JEXT", exph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2", &
+         long_name="Toroidal external current")
+    call neasyf_write(ncid, "JEXT2", exph2(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2", &
+         long_name="Toroidal external current 2")
+    call neasyf_write(ncid, "JBS", bsph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2", &
+         long_name="Toroidal bootstrap current")
+    call neasyf_write(ncid, "JDIA", diph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2", &
+         long_name="Toroidal diamagnetic current")
+    call neasyf_write(ncid, "JPS", psph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2", &
+         long_name="Toroidal Pfrisch-Shlüter current")
+    call neasyf_write(ncid, "JNBI", nbph(:, nsym) / 1000, dim_ids=dimidsR, units="kA/m2", &
+         long_name="Toroidal NBI current")
 
     !TGLF 1d variables assigment
     call neasyf_write(ncid, "TGLF_ZS_i", tglf_zs_i)
