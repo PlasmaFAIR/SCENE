@@ -11,6 +11,33 @@ import textwrap
 A4_SIZE = (11.69, 8.27)
 
 
+def plot_scene_title(title_ax: plt.Axes, df: xr.Dataset):
+    title_ax.text(
+        0.5,
+        0.75,
+        f"{df.title}",
+        fontsize="xx-large",
+        horizontalalignment="center",
+        verticalalignment="bottom",
+    )
+    title_ax.text(
+        0.5,
+        0.5,
+        f"{df.software_name} {df.software_version}",
+        horizontalalignment="center",
+        verticalalignment="center",
+    )
+    title_ax.text(
+        0.5,
+        0.0,
+        f"Created: {df.date_created}\nRun ID: {df.id}",
+        horizontalalignment="center",
+        verticalalignment="top",
+    )
+    title_ax.axis("off")
+    return title_ax
+
+
 def plot_flux_surface(
     df: xr.Dataset, inputs: xr.Dataset, impurities: List[xr.Dataset], step=None
 ):
@@ -24,22 +51,7 @@ def plot_flux_surface(
     ax1 = fig.add_subplot(grid_spec[1, 1])
     ax2 = fig.add_subplot(grid_spec[1, 2])
 
-    title_ax.text(
-        0.5, 0.75, f"{df.title}", fontsize="xx-large", horizontalalignment="center"
-    )
-    title_ax.text(
-        0.5,
-        0.5,
-        f"{df.software_name} {df.software_version}",
-        horizontalalignment="center",
-    )
-    title_ax.text(
-        0.5,
-        0.0,
-        f"Created: {df.date_created}\nRun ID: {df.id}",
-        horizontalalignment="center",
-    )
-    title_ax.axis("off")
+    plot_scene_title(title_ax, df)
 
     ax0.plot(df["rpts"][:, ::step], df["zpts"][:, ::step], color="black", linewidth=1)
     ax0.plot(df["rpts"][:, 0], df["zpts"][:, 0], color="black", linewidth=4)
